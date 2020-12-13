@@ -48,13 +48,17 @@ require_once 'headerInclude.php';
       
       });  
       $('#form_infovei').submit(function( event ) {
+            id_RAM = <?=$i['id_RAM']?>;
+
             prog=$('#info_prog').val()
-            console.log(prog)
+            //console.log(prog)
             idvei = $('#info_idvei').val()
             targa=$('#targa').val()
             marca=$('#marca').val()
-            modello=$('#modello').val()
+            modello=$('#modello').val() 
             costo=$('#costo').val()
+            tipo_veicolo = $('#info_tipo_veicolo').val()
+            totdoc =getTotDoc(tipo_veicolo)
             tipo=$('#tipo_acquisizione option:selected').val()
                               $.ajax({
                                     type: "POST",
@@ -63,6 +67,9 @@ require_once 'headerInclude.php';
                                     dataType: "html",
                                     success: function(msg)
                                     {     
+                                          
+                                          console.log(totdoc)
+                                          
                                           $('#targa_'+idvei).html(targa)
                                           $('#marca_'+idvei).html(marca)
                                           $('#modello_'+idvei).html(modello)
@@ -70,10 +77,24 @@ require_once 'headerInclude.php';
                                           
                                           $('#costo_'+idvei).html(deuro)
                                           if(tipo=='01'){
+                                                //console.log(totdoc)
                                                 tipo="Acquisto";
+                                                checkdoc = $('#c_t_d_'+tipo_veicolo+'_'+prog).html()
+                                                checkdoc = parseInt(checkdoc)
+                                                checkdoc =parseInt(totdoc)-1;
+                                                console.log(checkdoc)
+                                                $('#c_t_d_'+tipo_veicolo+'_'+prog).html(checkdoc)
+                                                $('#btn_docmodal_'+idvei).attr('onclick','docmodal('+prog+','+tipo_veicolo+','+id_RAM+',\'01\');')
+                                                
                                           }
                                           if(tipo=='02'){
                                                 tipo='Leasing';
+                                                checkdoc=parseInt(totdoc)
+                                                console.log(checkdoc)
+                                                console.log(tipo_veicolo)
+                                                console.log(prog)
+                                                $('#c_t_d_'+tipo_veicolo+'_'+prog).html(checkdoc)
+                                                $('#btn_docmodal_'+idvei).attr('onclick','docmodal('+prog+','+tipo_veicolo+','+id_RAM+',\'02\');')
                                           }
                                           $('#tipo_acquisizione_'+idvei).html(tipo)
                                           alert='<div id="message2"style="position: fixed;z-index: 1000;right: 0;bottom: 0px;">' 
@@ -259,7 +280,7 @@ require_once 'headerInclude.php';
                               buttonA='<button type="button" onclick="infoAlle('+data.id+');"class="btn btn-warning btn-xs" title="Visualizza Info Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
                               buttonB='<button type="button" onclick="window.open(\''+data.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                               buttonC='<a type="button" href="download.php?id='+data.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
-                              buttonD='<button type="button" onclick="delAll('+data.id+',this)"title="Elimina Documento"class="btn btn-xs btn-danger " style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                              buttonD='<button type="button" onclick="delAll('+data.id+','+tipoalle+','+progalle+',this)"title="Elimina Documento"class="btn btn-xs btn-danger " style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
 
                               
                               
@@ -345,7 +366,26 @@ require_once 'headerInclude.php';
       $('#docModal').on('hidden.bs.modal', function (e) {
             $('#campi_allegati').empty();
       }) 
-      
+      function getTotDoc(tipo){
+            $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=countDocVeicolo",
+                        data: {tipo_veicolo:tipo},
+                        dataType: "json",
+                        success: function(data){
+                             // console.log("conta documenti "+data)
+                             totdoc = parseInt(data)
+                             console.log("conta documenti "+data)
+                              return totdoc;
+                            
+                                                          
+                        }
+                       
+                  })
+
+               //   return totdoc;
+
+      }
       function getCampo(cod){
             $.ajax({
                         type: "POST",
@@ -413,19 +453,20 @@ require_once 'headerInclude.php';
          $('#form_infovei')[0].reset();
          $("#tipo_acquisizione").html('<option value="01">Acquisto</option><option value="02">Leasing</option>');
          $("#tipo_acquisizione").prop('required',true);
-         $("#tipo_acquisizione").selectpicker("refresh");
-
+         $(".bootstrap-select-wrapper select").selectpicker("refresh");
+         getInfoVei2(id);
             //alert(id);
             $("#infoModal").modal("toggle");
             $("#info_idvei").val(id);
             $("#info_prog").val(prog);
 
       } 
-      function infomodalup(id){
+      function infomodalup(prog,id){
 
             //alert(id);
             $("#infoModal").modal("toggle");
             getInfoVei(id);
+            $("#info_prog").val(prog);
             $("#info_idvei").val(id);
            
 
@@ -455,6 +496,7 @@ require_once 'headerInclude.php';
                               $('#marca').val(data.marca)
                               $('#modello').val(data.modello)
                               $('#costo').val(data.costo)
+                              $('#info_tipo_veicolo').val(data.tipo_veicolo)
                               
                               $('.bootstrap-select-wrapper select').val(data.tipo_acquisizione);
                               $('.bootstrap-select-wrapper select').selectpicker('render');
@@ -466,12 +508,34 @@ require_once 'headerInclude.php';
 
 
       }
-      function docmodal(prog,tipovei,istanza){
-            id_RAM =istanza,
+      function getInfoVei2(id){
+            //$(".selinfo option").remove();
+            //$('.selinfo select').selectpicker('refresh')
+                  $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=getInfoVei",
+                        data: {id:id},
+                        dataType: "json",
+                        success: function(data){
+                            
+                            
+                              $('#info_tipo_veicolo').val(data.tipo_veicolo)
+                              
+                             
+                            
+                                                          
+                        }
+                  })
 
+
+      } 
+      function docmodal(prog,tipovei,istanza,tipoac){
+            id_RAM =istanza;
+           // var ckdoc = ckInfoVei(id);
+            
             //$('#tipo_documento').remove();
-            $(".bootstrap-select-wrapper option").remove();
-            $('.bootstrap-select-wrapper select').selectpicker('refresh')
+            $(".seldoc option").remove();
+            $('.seldoc select').selectpicker('refresh')
             //alert(id);
             $("#docModal").modal("toggle");
             //$("#doc_idvei").val(id);
@@ -484,10 +548,12 @@ require_once 'headerInclude.php';
                         dataType: "json",
                         success: function(data){
                               //console.log(data)
+                              
                               $.each(data, function(k,v){
-                                    //console.log(v.codice_tipo_documento)
+                                    console.log(v.codice_tipo_documento)
                                     tip=v.codice_tipo_documento
-                                    tipoDoc(tip)
+                                    //console.log(ckdoc)
+                                    tipoDoc(tip,tipoac)
 
 
                               })
@@ -575,7 +641,7 @@ require_once 'headerInclude.php';
                  }
            })
       }
-      function tipoDoc(tipo){
+      function tipoDoc(tipo,tipoac){
             //id_RAM = '<?=$i['id_RAM']?>';
             $.ajax({
                         type: "POST",
@@ -584,14 +650,21 @@ require_once 'headerInclude.php';
                         dataType: "json",
                         success: function(data){
                               $.each(data, function(k,v){
-                                    console.log(v.tdoc_descrizione)
+                                   if(v.tdoc_codice=='9' && tipoac=='01'){
+                                    //     console.log('entra '+v.tdoc_codice)
+                                  //  $('.bootstrap-select-wrapper select').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + '" value="' + v.tdoc_codice + '"></option>');
+                                   // $('.bootstrap-select-wrapper select').selectpicker('refresh')
+                                   }else{
+                                    $('.seldoc select').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + '" value="' + v.tdoc_codice + '"></option>');
+                                    $('.seldoc select').selectpicker('refresh')
+
+                                   }
+                                    //console.log(v.tdoc_descrizione)
                                     //$('#tipo_documento').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + ' <i class=\'fa fa-ban\' aria-hidden=\'true\' style=\'color:red;\'></i>" value="' + v.tdoc_codice + '"></option>');
 
-                                    $('#tipo_documento').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + '" value="' + v.tdoc_codice + '"></option>');
-                                    $('.bootstrap-select-wrapper select').selectpicker('refresh')
+                                    
                               })
-
-                              }
+                        }
                                                           
                         
                   })
@@ -664,7 +737,7 @@ require_once 'headerInclude.php';
                         }
                   })
       }
-      function delAll(ida,elem){
+      function delAll(ida,tipo,prog,elem){
            
            
 
@@ -689,7 +762,7 @@ require_once 'headerInclude.php';
                                         
                                          if(results)
                                          {
-                                               
+                                          checkDocVei(tipo,prog);  
                                           $(elem).closest('tr').remove();
                                                Swal.fire(
                                                      'Eliminato!',
@@ -707,7 +780,7 @@ require_once 'headerInclude.php';
                  })
       }
       function checkDocVei(tipo,prog){
-
+            console.log('check')
             checkvp=$('#c_p_d_'+tipo+'_'+prog).html()
             checkvt=$('#c_t_d_'+tipo+'_'+prog).html()
             
@@ -725,7 +798,7 @@ require_once 'headerInclude.php';
                   docvei = false
             }
             //console.log(checkvp)
-            //console.log(checkvt)
+            console.log('chech ' +checkvt)
             //console.log(docvei)
             if(checkcatp==checkcatt){
                   catvei = true
@@ -746,7 +819,7 @@ require_once 'headerInclude.php';
                         dataType: "json",
                         success: function(data){
                               //console.log(data)
-                              if(data.n==data.of){
+                              if(data.n==checkvt){
                                     ic="check"
                                     color="green"
                                     if(catvei == false){
@@ -766,7 +839,7 @@ require_once 'headerInclude.php';
                                     color="red"
                               }
                               
-                              icon='<i class="fa fa-'+ic+'" style="color:'+color+';"aria-hidden="true"></i> Documenti veicoli caricati <b id="c_p_d_'+tipo+'_'+prog+'">'+data.n+'</b> di  <b id="c_t_d_'+tipo+'_'+prog+'">'+data.of+'</b>'
+                              icon='<i class="fa fa-'+ic+'" style="color:'+color+';"aria-hidden="true"></i> Documenti veicoli caricati <b id="c_p_d_'+tipo+'_'+prog+'">'+data.n+'</b> di  <b id="c_t_d_'+tipo+'_'+prog+'">'+checkvt+'</b>'
                               $('#check_vei_'+tipo+'_'+prog).html(icon);
                              
                               

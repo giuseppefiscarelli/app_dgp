@@ -255,7 +255,7 @@
                                                       
                                                       <input type="hidden" name="tipo_veicolo" id="tipo_veicolo" value="">
                                                       <input type="hidden" name="progressivo" id="progressivo" value="">
-                                                        <div class="bootstrap-select-wrapper">
+                                                        <div class="bootstrap-select-wrapper seldoc">
                                                             <label>Tipo Documento</label>
                                                             <select id="tipo_documento" name="tipo_documento"title="Scegli un tipo di documento">
                                                           
@@ -288,6 +288,7 @@
                                                         <form method="post" id="form_infovei">
                                                           <input type="hidden" id="info_idvei" value="" >
                                                           <input type="hidden"id="info_prog" value="">
+                                                          <input type="hidden" id="info_tipo_veicolo" value="">
                                                           <div class="form-group">
                                                               <input type="text" required placeholder="Inserire targa" oninput="this.value = this.value.toUpperCase();"value="<?=$rv['targa']?>" class="form-control" id="targa" name="targa" required>
                                                           
@@ -310,7 +311,7 @@
                                                             
                                                           </span>
                                                         
-                                                          <div class="bootstrap-select-wrapper" style="margin-top:50px;">
+                                                          <div class="bootstrap-select-wrapper selinfo" style="margin-top:50px;">
                                                               <label for="roletype" >Tipo Acquisizione</label>
                                                               <select title="Scegli una opzione"  class="selectpicker required" id="tipo_acquisizione" name="tipo_acquisizione"  >
                                                                   

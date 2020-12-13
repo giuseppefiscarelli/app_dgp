@@ -449,6 +449,35 @@ function countCatVei( $cat,$id_RAM){
       return $total;
 
 }
+function countCatVeiTipoac( $cat,$id_RAM,$progressivo){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+    
+      $result = [];
+
+      
+
+      $sql = 'SELECT *  FROM veicolo';
+
+          $sql .=" WHERE tipo_veicolo = $cat and id_RAM = $id_RAM and tipo_acquisizione='01' and progressivo = $progressivo";
+       
+    
+        //  echo $sql;
+      
+        $res = $conn->query($sql);
+      
+        if($res && $res->num_rows){
+          $result = $res->fetch_assoc();
+          
+        }
+      return $result;
+
+}
 function checkTipVei($codice){
   /**
    * @var $conn mysqli
@@ -783,7 +812,7 @@ function newAllegato($data){
 
 
 }
-function getInfoVei($id){
+function getInfoVei($id){ 
   /**
   * @var $conn mysqli
   */

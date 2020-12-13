@@ -1,4 +1,4 @@
-                  <div class="collapse-header " id="heading1-sc<?=$ca['ctgi_codice']?>">
+<div class="collapse-header " id="heading1-sc<?=$ca['ctgi_codice']?>">
                     <button data-toggle="collapse" data-target="#collapse1-sc<?=$ca['ctgi_codice']?>" aria-expanded="<?=$ca['ctgi_codice']==1?'true':'false'?>" aria-controls="collapse1-sc<?=$ca['ctgi_codice']?>">
                        Categoria <?=utf8_decode($ca['ctgi_categoria'])?><br> <small><?=$ca['ctgi_descrizione']?></small>
                     </button>
@@ -20,21 +20,36 @@
                                 <?php
                                   foreach($tipVei as $tve){
                                     $countCatVei=countCatVei($tve['tpvc_codice'],$i['id_RAM']);
+                                   
                                     if($countCatVei==!0){
-                                      $check = countDocVeicolo($tve['tpvc_codice']);//numero tipi documento
-                                       $totalDoc = 0;
-                                       $checkVei=0;
-                                      //var_dump($check);
-                                      //var_dump(intval($countCatVei));
+                                      $totalDoc = 0;
+                                      $checkVei=0;
                                       $b= intval($countCatVei);
-                                      for ($iii=1; $iii <$b; $iii++) { 
+                                      $iii=1;
+                                      for ($iii; $iii <=$b; $iii++) { 
+                                        $check = countDocVeicolo($tve['tpvc_codice']);//numero tipi documento
+                                       // var_dump($check);
                                         $checkb =countDocVeicoloInfo($i['id_RAM'],$tve['tpvc_codice'],$iii);
+                                       // var_dump($tve['tpvc_codice']);
+                                        $checktipoac = countCatVeiTipoac($tve['tpvc_codice'],$i['id_RAM'],$iii);
                                         $checkb = intval($checkb);
-                                        $totalDoc = $totalDoc + $checkb;
-                                        if($checkb==$check&&$checkb>0){
-                                          $checkVei = $checkVei+1;
+                                       if($checktipoac){
+                                          $totvei = $check-1;
+                                        }else{
+                                          $totvei=intval($check);
                                         }
-
+                                        $totalDoc = $totalDoc + $checkb;
+                                       //var_dump($checkb);var_dump($totvei);
+                                      //var_dump($totvei);
+                                        if($checkb==$totvei&&$checkb>0){
+                                         //var_dump('ok');
+                                       
+                                          $checkVei = $checkVei+1;
+                                          
+                                        }else{
+                                        //  var_dump('no');
+                                        }
+                                       
                                       }
                                       //var_dump($totalDoc);
                                       //var_dump($checkVei);

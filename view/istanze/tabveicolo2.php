@@ -1,5 +1,4 @@
-                                        <div id="accordionDivVeicoli" class="collapse-div collapse-background-active" role="tablist">
-
+                                    <div id="accordionDivVeicoli_<?=$tvei["tpvc_codice"]?>" class="collapse-div " role="tablist">
                                             <?php
                                                     $veicolo = getRowVeicolo($tvei["tpvc_codice"],$i['id_RAM']);
                                                     //var_dump($veicolo);
@@ -10,13 +9,18 @@
                                                         //var_dump($countDocVeicolo);
                                                         $countDocVeicoloInfo=countDocVeicoloInfo($rv['id_RAM'],$rv['tipo_veicolo'],$rv['progressivo']);
                                                         //var_dump($countDocVeicoloInfo);
+                                                        if($rv['tipo_acquisizione']=='01'){
+                                                            $countDocVeicolo =$countDocVeicolo-1;
+
+
+                                                        }
                                                     ?>
 
 
 
 
                                             
-                                            <div class="collapse-header" id="headingA<?=$rv['progressivo']?>">
+                                            <div class="collapse-header" id="headingA<?=$rv['progressivo']?>_<?=$rv['id']?>">
                                                 <button data-toggle="collapse" data-target="#accordion<?=$rv['progressivo']?>_<?=$rv['id']?>" aria-expanded="false" aria-controls="accordion<?=$rv['progressivo']?>_<?=$rv['id']?>">
                                                 Veicolo #<?=$rv['progressivo']?> <?=$rv['targa']?' - Targa '.$rv['targa']:''?>
                                                 </button>
@@ -55,7 +59,7 @@
                                             </div>
                                                                 
                                             </div>
-                                            <div id="accordion<?=$rv['progressivo']?>_<?=$rv['id']?>" class="collapse " role="tabpanel" aria-labelledby="headingA<?=$rv['progressivo']?>" data-parent="#accordionDivVeicoli">
+                                            <div id="accordion<?=$rv['progressivo']?>_<?=$rv['id']?>" class="collapse " role="tabpanel" aria-labelledby="headingA<?=$rv['progressivo']?>_<?=$rv['id']?>" data-parent="#accordionDivVeicoli_<?=$tvei["tpvc_codice"]?>">
                                                 <div class="collapse-body">
                                             
                                                     <div class="row">
@@ -129,7 +133,7 @@
                                                                            if(!isUserAdmin()&&$rend['aperta']==1){?>
                                                                         <tr>
                                                                             <th colspan="5">
-                                                                                <button type="button" class="btn btn-success btn-sm" onclick="docmodal(<?=$rv['progressivo']?>,<?=$rv['tipo_veicolo']?>,<?=$rv['id_RAM']?>);" ><i class="fa fa-upload" aria-hidden="true"></i> Carica documento</button>
+                                                                                    <button type="button" id="btn_docmodal_<?=$rv['id']?>" class="btn btn-success btn-sm" onclick="docmodal(<?=$rv['progressivo']?>,<?=$rv['tipo_veicolo']?>,<?=$rv['id_RAM']?>,'<?=$rv['tipo_acquisizione']?>');" ><i class="fa fa-upload" aria-hidden="true"></i> Carica documento</button>
                                                                             </th>
                                                                         
                                                                         </tr>
@@ -166,7 +170,7 @@
                                                                                             <a type="button" href="download.php?id=<?=$alle['id']?>" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>
                                                                                             <?php
                                                                                                     if(!isUserAdmin()&&$rend['aperta']==1){?>
-                                                                                            <button type="button" onclick="delAll(<?=$alle['id']?>,this)"title="Elimina Documento"class="btn btn-xs btn-danger " style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                                                            <button type="button" onclick="delAll(<?=$alle['id']?>,<?=$rv['tipo_veicolo']?>,<?=$rv['progressivo']?>,this)"title="Elimina Documento"class="btn btn-xs btn-danger " style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                                                                             <?php
                                                                                             }
                                                                                             ?>

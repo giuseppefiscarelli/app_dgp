@@ -6,7 +6,7 @@ $action = getParam('action','');
 require '../model/istanze.php';
 $params = $_GET;
 switch ($action){
-   
+    
     case 'store':
       
     break; 
@@ -224,5 +224,10 @@ switch ($action){
       $res = closeRend($id_ram);
 
       echo json_encode($res);
+    break;
+    case 'countDocVeicolo':
+      $tipo_veicolo = $_REQUEST['tipo_veicolo'];
+      $res = countDocVeicolo($tipo_veicolo);
+      echo  json_encode($res);
     break;
    }
