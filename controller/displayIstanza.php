@@ -24,5 +24,9 @@
   if(!$rend){
     createSrtructure($i);
   } 
+  //if(isUserAdmin()){
+  //  require_once 'view/istanze/istanzaAdmin.php';
+  //}else{
   require_once 'view/istanze/istanza_page.php';
+  //}
 ?>

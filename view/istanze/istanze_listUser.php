@@ -28,7 +28,7 @@
                 //var_dump($test);
                     foreach($ist as $i){?>
                     <tr>
-                    <td>2020/<?=$i['id_RAM']?></td>
+                    <td><?=$i['id_RAM']?>/2020</td>
                     <td>Investimenti 2020</td>
                     <td> 
                     <?php

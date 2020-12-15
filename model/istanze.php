@@ -65,7 +65,7 @@ function getIstanzeUser($email){
   
       $conn = $GLOBALS['mysqli'];
       $records = [];
-        $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec";
+      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
         //echo $sql;
         $res = $conn->query($sql);
         
