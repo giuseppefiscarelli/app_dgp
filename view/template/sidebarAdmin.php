@@ -19,7 +19,7 @@
 require_once 'model/menu.php';
   $newticket = getNewticket();
   $newticketmsg =getNewticketmsg();
-  
+  //var_dump($newticket);
   $ticketnot=count($newticket)+count($newticketmsg);
  
   ?>

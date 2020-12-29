@@ -13,7 +13,7 @@ function getNewticket(){
 
         
 
-        $sql ="SELECT * FROM comunicazioni where read_msg = null";
+        $sql ="SELECT * FROM comunicazioni where read_msg = 0";
        
         $res = $conn->query($sql);
         if($res) {
