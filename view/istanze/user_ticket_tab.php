@@ -86,7 +86,7 @@
                         <label>Tipo Richiesta</label>
                         <select title="Scegli una opzione" id="tipo" name="tipo"required="required">
                            <?php
-                               foreach ($tipi as $tipo){?>
+                               foreach ($tipiCom as $tipo){?>
                                <<option value="<?=$tipo['cod_msg']?>"><?=$tipo['des_msg']?></option>
                             <?php       
                                }           

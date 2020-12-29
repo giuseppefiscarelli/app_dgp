@@ -84,7 +84,7 @@ $navOrderByQueryString = http_build_query($orderByNavigatorParams,'&amp;');
     $params['search4']=1;
     $closedMsg= countComunicazioni($params);
     $tipi= getTipi();
-    var_dump($closedMsg);
+    //var_dump($closedMsg);
      require_once 'view/comunicazioni/comunicazioni_user.php';
     
 

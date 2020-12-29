@@ -1596,5 +1596,33 @@ function checkUnreadConv($id,$role){
 
 
 }
+function getTipiComunicazione(){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT * FROM tipo_comunicazione';
+  
+  
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+ return $records;
+
+
+
+}
 
 

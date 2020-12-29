@@ -18,7 +18,7 @@
     $utente= $_SESSION['userData']['email'];
     $i = getIstanzaUser($utente);
   }
-
+  $tipiCom= getTipiComunicazione();
   $rend = checkRend($i['id_RAM']);
   //var_dump($rend);die;
   if(!$rend){
