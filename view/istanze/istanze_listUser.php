@@ -25,7 +25,7 @@
                 <tbody>
                 <?php
                 $ist=getIstanzeUser($_SESSION['userData']['email']);
-                //var_dump($test);
+                //var_dump($ist);
                     foreach($ist as $i){?>
                     <tr>
                     <td><?=$i['id_RAM']?>/2020</td>

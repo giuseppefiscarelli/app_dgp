@@ -6,7 +6,18 @@
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-tab1-tab" data-toggle="tab" href="#nav-tab1" role="tab" aria-controls="nav-tab1" aria-selected="true">Dati della Domanda</a>
       <a class="nav-item nav-link" id="nav-tab2-tab" data-toggle="tab" href="#nav-tab2" role="tab" aria-controls="nav-tab2" aria-selected="false">Investimento / Rendicontazione</a>
-      <a class="nav-item nav-link" id="nav-tab3-tab" data-toggle="tab" href="#nav-tab3" role="tab" aria-controls="nav-tab3" aria-selected="false">Comunicazioni</a>
+      <a class="nav-item nav-link" id="nav-tab3-tab" data-toggle="tab" href="#nav-tab3" role="tab" aria-controls="nav-tab3" aria-selected="false">Comunicazioni   <?php
+                                                                                                                                                                                                                                     if($notifiche){
+                                                                                                                                                                                                                                       if(count($notifiche)>1){
+                                                                                                                                                                                                                                         $textnot = 'nuove notifiche';
+                                                                                                                                                                                                                                       }else{
+                                                                                                                                                                                                                                        $textnot = 'nuova notifica';
+                                                                                                                                                                                                                                       }
+                                                                                                                                                                                                                                       ?>                 
+                                                                                                                                                                                                                                    <br><span class="badge badge-warning"> <?=count($notifiche)?></span> <small> <?=$textnot?></small>
+                                                                                                                                                                                                                                    <?php
+                                                                                                                                                                                                                                     }
+                                                                                                                                                                                                                                    ?></a>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
@@ -224,23 +235,12 @@
                                               
     </div>
     <div class="tab-pane p-4 fade" id="nav-tab3" role="tabpanel" aria-labelledby="nav-tab3-tab">
-      <div class="row">
-        <div class="col-12 col-lg-4">
-          <!--start card-->
-          <div class="card-wrapper">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Comunicazioni</h5>
-                <p>Non Ci sono Comunicazioni!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>          
+                <?php require 'user_ticket_tab.php'?>
     </div>
     
+    
   </div>
-  <!-- Modal -->
+                                              <!-- Modal -->
                                               <div class="modal fade" tabindex="-1" role="dialog" id="docModal">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                   <div class="modal-content">
@@ -273,8 +273,6 @@
                                                   </div>
                                                 </div>
                                               </div> 
-
-
                                               <div class="modal fade" tabindex="-1" role="dialog" id="infoModal">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                   <div class="modal-content">
@@ -407,6 +405,6 @@
                                                   </div>
                                                 </div>
                                               </div>
-                                                <!-- Modal -->
+                                              <!-- Modal -->
                                                 
                                           

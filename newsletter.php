@@ -71,8 +71,7 @@ require_once 'headerInclude.php';
             $('#data_ins_info').html(data.data_ins);
             $('#tipo_info').html(data.tipo);
             $('#testo_info').html(data.testo);
-            $('#stato_info').html(data.stato+' da '+data.user_info+' il '+data.data_info);
-           
+            $('#stato_info').html(data.stato);
             $('#gotomsg').attr('href','comunicazione.php?id='+data.id);
             if(data.read_msg == 0){
               $('#gotomsg').html('Prendi in carico');

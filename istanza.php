@@ -51,7 +51,7 @@ require_once 'headerInclude.php';
             id_RAM = <?=$i['id_RAM']?>;
 
             prog=$('#info_prog').val()
-            //console.log(prog)
+         
             idvei = $('#info_idvei').val()
             targa=$('#targa').val()
             marca=$('#marca').val()
@@ -67,9 +67,7 @@ require_once 'headerInclude.php';
                                     dataType: "html",
                                     success: function(msg)
                                     {     
-                                          
-                                          console.log(totdoc)
-                                          
+                                        
                                           $('#targa_'+idvei).html(targa)
                                           $('#marca_'+idvei).html(marca)
                                           $('#modello_'+idvei).html(modello)
@@ -77,12 +75,12 @@ require_once 'headerInclude.php';
                                           
                                           $('#costo_'+idvei).html(deuro)
                                           if(tipo=='01'){
-                                                //console.log(totdoc)
+                                        
                                                 tipo="Acquisto";
                                                 checkdoc = $('#c_t_d_'+tipo_veicolo+'_'+prog).html()
                                                 checkdoc = parseInt(checkdoc)
                                                 checkdoc =parseInt(totdoc)-1;
-                                                console.log(checkdoc)
+                                              
                                                 $('#c_t_d_'+tipo_veicolo+'_'+prog).html(checkdoc)
                                                 $('#btn_docmodal_'+idvei).attr('onclick','docmodal('+prog+','+tipo_veicolo+','+id_RAM+',\'01\');')
                                                 
@@ -90,9 +88,7 @@ require_once 'headerInclude.php';
                                           if(tipo=='02'){
                                                 tipo='Leasing';
                                                 checkdoc=parseInt(totdoc)
-                                                console.log(checkdoc)
-                                                console.log(tipo_veicolo)
-                                                console.log(prog)
+                                               
                                                 $('#c_t_d_'+tipo_veicolo+'_'+prog).html(checkdoc)
                                                 $('#btn_docmodal_'+idvei).attr('onclick','docmodal('+prog+','+tipo_veicolo+','+id_RAM+',\'02\');')
                                           }
@@ -117,7 +113,7 @@ require_once 'headerInclude.php';
                                     alert("Chiamata fallita, si prega di riprovare...");
                                     }
 
-                              });//ajax
+                              });
 
                               
          $("#infoModal").modal('hide');
@@ -137,10 +133,7 @@ require_once 'headerInclude.php';
                                     success: function(results){     
                                         
                                           $.each(results,function(k,v){
-                                               console.log(k)
-                                               console.log(v)
-                                               
-                                                  
+                                             
                                                required= v.richiesto
                                                if(required=="o"){
                                                      req = true
@@ -148,8 +141,7 @@ require_once 'headerInclude.php';
                                                if(required =="f"){
                                                      req=false
                                                }
-                                               //conter=1
-                                               console.log(req)
+                                               
                                                var namecampo = v.nome_campo.replace(" ", "_");
                                             
                                            if (v.tipo_valore=='d'){
@@ -235,7 +227,7 @@ require_once 'headerInclude.php';
             event.preventDefault();
             tipo=$('#tipo_documento option:selected').attr("data-content")
             tipo= tipo.replace(/(<([^>]+)>)/ig,"");
-            console.log(tipo)
+         
             formData = new FormData(this);
             
                   $.ajax({
@@ -246,7 +238,6 @@ require_once 'headerInclude.php';
                                       var percentComplete = ((evt.loaded / evt.total) * 100);
                                       $("#progress-bar").width(percentComplete + '%');
                                      
-                                      //$(".progress-bar").html(percentComplete+'%');
                                   }
                               }, false);
                               return xhr;
@@ -278,7 +269,7 @@ require_once 'headerInclude.php';
                               ora_ins= convOre(data.data_agg)
                               //tipo_vei= formData.get('doc_idvei')
                               buttonA='<button type="button" onclick="infoAlle('+data.id+');"class="btn btn-warning btn-xs" title="Visualizza Info Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
-                              buttonB='<button type="button" onclick="window.open(\''+data.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                              buttonB='<button type="button" onclick="window.open(\'allegato.php?id='+data.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                               buttonC='<a type="button" href="download.php?id='+data.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
                               buttonD='<button type="button" onclick="delAll('+data.id+','+tipoalle+','+progalle+',this)"title="Elimina Documento"class="btn btn-xs btn-danger " style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
 
@@ -307,21 +298,19 @@ require_once 'headerInclude.php';
                   
             event.preventDefault();
             tipo=$('#tipo_alle').val()
-            //tipo= tipo.replace(/(<([^>]+)>)/ig,"");
-            console.log(tipo)
+           
             formData = new FormData(this);
             
                   $.ajax({
                               xhr: function() {
                               var xhr = new window.XMLHttpRequest();
                               xhr.upload.addEventListener("progress", function(evt) {
-                                    console.log(evt)
+                                
                                   if (evt.lengthComputable) {
                                       var percentComplete = ((evt.loaded / evt.total) * 100);
-                                      //console.log(evt)
+                                    
                                       $("#progress-bar").width(percentComplete + '%');
                                      
-                                      //$(".progress-bar").html(percentComplete+'%');
                                   }
                               }, false);
                               return xhr;
@@ -365,7 +354,10 @@ require_once 'headerInclude.php';
       })
       $('#docModal').on('hidden.bs.modal', function (e) {
             $('#campi_allegati').empty();
-      }) 
+      })
+      $('#infoAllegato').on('hidden.bs.modal', function (e) {
+            $('.modal-backdrop').css('z-index',1040);
+      })  
       function getTotDoc(tipo){
             $.ajax({
                         type: "POST",
@@ -373,9 +365,9 @@ require_once 'headerInclude.php';
                         data: {tipo_veicolo:tipo},
                         dataType: "json",
                         success: function(data){
-                             // console.log("conta documenti "+data)
+                            
                              totdoc = parseInt(data)
-                             console.log("conta documenti "+data)
+                             
                               return totdoc;
                             
                                                           
@@ -393,11 +385,7 @@ require_once 'headerInclude.php';
                         data: {cod:cod},
                         dataType: "json",
                         success: function(data){
-                             // console.log(data)
-                             
                               return data
-                            
-                                                          
                         }
                   })
 
@@ -410,6 +398,9 @@ require_once 'headerInclude.php';
                   minimumFractionDigits: 2
             })
             $('#infoAllegato').modal('toggle');
+            $('#infoAllegato').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
+            $('.modal-backdrop').css('z-index',1051);
+
             $('#info_tab_alle tbody').empty();
             $.ajax({
                         type: "POST",
@@ -417,17 +408,20 @@ require_once 'headerInclude.php';
                         data: {id:id},
                         dataType: "json",
                         success: function(data){
-                              console.log(data)
-                              console.log(data['allegato'].json_data)
+                             
                               test = $.parseJSON(data['allegato'].json_data)
-                              console.log(test)
-                              //test = $.parseJSON(data.json_data)
+                             
                               $.each(test, function(k, v) {
+                                  
                                     campo = k.split("_")
                                     campo= capitalizeFirstLetter(campo[0])+' '+ capitalizeFirstLetter(campo[1])
-                                    console.log(campo)
+                                  
                                     if(campo=="Importo "){
                                           v = formatter.format(v);
+
+                                    }
+                                    if(campo=="Tipo Documento"){
+                                          v = data['allegato'].tipo_documento;
 
                                     }
                                     $('#info_tab_alle').append('<tr><td>'+campo+'</td><td>'+v+'</td></tr>');
@@ -468,16 +462,16 @@ require_once 'headerInclude.php';
             getInfoVei(id);
             $("#info_prog").val(prog);
             $("#info_idvei").val(id);
-           
+            
 
       } 
       function docmagmodal(id,tipodoc){
-            //$("#infoModal").modal("toggle");
+           
             $("#docMaggiorazione").modal("toggle");
             $("#tipo_doc_mag").val(tipodoc);
             $("#tipo_alle").val(id);
             tipo = $('#tipo_magg_'+id).text();
-            console.log(tipo);
+        
             $('#tipo_documento_magg').val(tipo);
 
 
@@ -491,7 +485,7 @@ require_once 'headerInclude.php';
                         data: {id:id},
                         dataType: "json",
                         success: function(data){
-                              console.log(data)
+                           
                               $('#targa').val(data.targa)
                               $('#marca').val(data.marca)
                               $('#modello').val(data.modello)
@@ -531,14 +525,12 @@ require_once 'headerInclude.php';
       } 
       function docmodal(prog,tipovei,istanza,tipoac){
             id_RAM =istanza;
-           // var ckdoc = ckInfoVei(id);
-            
-            //$('#tipo_documento').remove();
+          
             $(".seldoc option").remove();
             $('.seldoc select').selectpicker('refresh')
-            //alert(id);
+           
             $("#docModal").modal("toggle");
-            //$("#doc_idvei").val(id);
+           
             $("#tipo_veicolo").val(tipovei);
             $("#progressivo").val(prog);
                   $.ajax({
@@ -547,12 +539,11 @@ require_once 'headerInclude.php';
                         data: {tipovei:tipovei,id_RAM:id_RAM,progressivo:prog},
                         dataType: "json",
                         success: function(data){
-                              //console.log(data)
-                              
+                            
                               $.each(data, function(k,v){
-                                    console.log(v.codice_tipo_documento)
+                                   
                                     tip=v.codice_tipo_documento
-                                    //console.log(ckdoc)
+                                 
                                     tipoDoc(tip,tipoac)
 
 
@@ -651,18 +642,11 @@ require_once 'headerInclude.php';
                         success: function(data){
                               $.each(data, function(k,v){
                                    if(v.tdoc_codice=='9' && tipoac=='01'){
-                                    //     console.log('entra '+v.tdoc_codice)
-                                  //  $('.bootstrap-select-wrapper select').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + '" value="' + v.tdoc_codice + '"></option>');
-                                   // $('.bootstrap-select-wrapper select').selectpicker('refresh')
+                                 
                                    }else{
                                     $('.seldoc select').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + '" value="' + v.tdoc_codice + '"></option>');
                                     $('.seldoc select').selectpicker('refresh')
-
                                    }
-                                    //console.log(v.tdoc_descrizione)
-                                    //$('#tipo_documento').append('<option data-subtext="Documento già inserito" data-content="' + v.tdoc_descrizione + ' <i class=\'fa fa-ban\' aria-hidden=\'true\' style=\'color:red;\'></i>" value="' + v.tdoc_codice + '"></option>');
-
-                                    
                               })
                         }
                                                           
@@ -672,7 +656,8 @@ require_once 'headerInclude.php';
 
 
       
-      }      
+      }
+           
       function convData(isodata){
             newdata = new Date(isodata);
             newgiorno =newdata.getDate()
@@ -697,9 +682,9 @@ require_once 'headerInclude.php';
            
             div_down= elem.parentNode.id;
             div_up=div_down.split("_");
-            //console.log(div_up)
+           
             div_up = div_up[1];
-            //console.log("upload_"+div_up)
+           
             Swal.fire({
                   title: 'Vuoi eliminare l\'allegato?',
                   text: "Non potrai più recuperarlo",
@@ -728,7 +713,7 @@ require_once 'headerInclude.php';
                                                       'success'
                                                 )
                                           }
-                                          //console.log(results)
+                                         
                                     }
 
                               })
@@ -738,20 +723,15 @@ require_once 'headerInclude.php';
                   })
       }
       function delAll(ida,tipo,prog,elem){
-           
-           
-
-         
-
-           Swal.fire({
-                 title: 'Vuoi eliminare l\'allegato?',
-                 text: "Non potrai più recuperarlo",
-                 icon: 'warning',
-                 showCancelButton: true,
-                 confirmButtonColor: '#3085d6',
-                 cancelButtonColor: '#d33',
-                 confirmButtonText: 'SI Eliminalo!',
-                 cancelButtonText: 'NO, Annulla!'
+                 Swal.fire({
+                  title: 'Vuoi eliminare l\'allegato?',
+                  text: "Non potrai più recuperarlo",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'SI Eliminalo!',
+                  cancelButtonText: 'NO, Annulla!'
                  }).then((result) => {
                        if (result.isConfirmed) {
                              $.ajax({
@@ -770,7 +750,7 @@ require_once 'headerInclude.php';
                                                      'success'
                                                )
                                          }
-                                         //console.log(results)
+                                        
                                    }
 
                              })
@@ -780,7 +760,7 @@ require_once 'headerInclude.php';
                  })
       }
       function checkDocVei(tipo,prog){
-            console.log('check')
+          
             checkvp=$('#c_p_d_'+tipo+'_'+prog).html()
             checkvt=$('#c_t_d_'+tipo+'_'+prog).html()
             
@@ -797,19 +777,13 @@ require_once 'headerInclude.php';
             }else{
                   docvei = false
             }
-            //console.log(checkvp)
-            console.log('chech ' +checkvt)
-            //console.log(docvei)
+            
             if(checkcatp==checkcatt){
                   catvei = true
             }else{
                   catvei = false
             }
-            //console.log(checkcatp)
-            //console.log(checkcatt)
-            //console.log(catvei)
-
-            
+           
             id_RAM =<?=$i['id_RAM']?>,
             
             $.ajax({
@@ -818,7 +792,7 @@ require_once 'headerInclude.php';
                         data: {id_RAM:id_RAM,tipo_veicolo:tipo,progressivo:prog},
                         dataType: "json",
                         success: function(data){
-                              //console.log(data)
+                            
                               if(data.n==checkvt){
                                     ic="check"
                                     color="green"
@@ -834,9 +808,19 @@ require_once 'headerInclude.php';
                                           }    
 
                                     }
+                                    
                               }else{
-                                    ic="ban"
-                                    color="red"
+                                    ic="ban";
+                                    color="red";
+                                    if(docvei == true){
+                                          checkcatp = checkcatp-1; 
+                                        
+                                          $('#ch_p_'+tipo).html(checkcatp);
+                                          $('#ch_i_'+tipo).removeClass();
+                                                $('#ch_i_'+tipo).addClass("fa fa-ban");
+                                                $('#ch_i_'+tipo).css("color", "red");
+                                    }
+                                    
                               }
                               
                               icon='<i class="fa fa-'+ic+'" style="color:'+color+';"aria-hidden="true"></i> Documenti veicoli caricati <b id="c_p_d_'+tipo+'_'+prog+'">'+data.n+'</b> di  <b id="c_t_d_'+tipo+'_'+prog+'">'+checkvt+'</b>'
@@ -855,7 +839,7 @@ require_once 'headerInclude.php';
       }
       function closeRend(id_ram){
             check=checkIstanza();
-            console.log(check);
+          
             textAlert="";
             if(check==0){
                   Swal.fire({
@@ -890,7 +874,7 @@ require_once 'headerInclude.php';
                                                                               }
                                                                   })
                                           }
-                                          //console.log(results)
+                                        
                                     }
 
                               })
@@ -951,7 +935,7 @@ require_once 'headerInclude.php';
 
 
                                                       }
-                                                      //console.log(results)
+                                                   
                                                 }
 
                                           })
@@ -972,8 +956,7 @@ require_once 'headerInclude.php';
 
       }
       function testDate(str) {
-            console.log(str.value)
-            console.log(str.id)
+          
             data= str.value
             var t = data.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
             if(t === null)
@@ -999,16 +982,14 @@ require_once 'headerInclude.php';
                 
             });
       }   
-
       function checkIstanza(){
 
             veiok=0;
             veitot=0
-            //checkvei=$("[id^=ch_p_]").html();
-            //console.log(checkvei);
+           
             $("[id^=ch_p_]").each(function() {
                   value=$(this).text()
-                       //console.log(value)
+                      
                        value = parseFloat(value);
                        if(!isNaN(value) && value.length != 0) {
                         veiok += value;
@@ -1018,7 +999,7 @@ require_once 'headerInclude.php';
                    });
             $("[id^=ch_t_]").each(function() {
                   valuet=$(this).text()
-                       //console.log(value)
+                     
                        valuet = parseFloat(valuet);
                        if(!isNaN(valuet) && valuet.length != 0) {
                         veitot += valuet;
@@ -1034,6 +1015,138 @@ require_once 'headerInclude.php';
                    }
                  
       }
+      function infovei(id,cat,tipo){
+            const formatter = new Intl.NumberFormat('it-IT', {
+                  style: 'currency',
+                  currency: 'EUR',
+                  minimumFractionDigits: 2
+            })
+                  $('#doctab tbody').empty();
+                  $('#modalinfovei').modal('toggle');
+                  $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=getInfoVei",
+                        data: {id:id},
+                        dataType: "json",
+                        success: function(data){
+                            
+                              $('#info_targa').html(data.targa)
+                              $('#info_marca').html(data.marca)
+                              $('#info_modello').html(data.modello)
+                              v = formatter.format(data.costo);
+                              $('#info_costo').html(v)
+                              if(data.tipo_acquisizione =="01"){
+                                    tipoac="Acquisto";
+                              }
+                              if(data.tipo_acquisizione =="02"){
+                                    tipoac="Leasing";
+                              }
+                              $('#info_tipo_acquisizione').html(tipoac);
+                             cat='<span class="badge badge-danger" style="font-size:20px;width: -webkit-fill-available;">'+cat+'</span>';
+                             tipo ='<span class="badge badge-secondary" style="font-size:20px;width: -webkit-fill-available;">'+tipo+'</span>';
+                              $('#info_tipo_veicolo').html(tipo)
+                              $('#info_cat_veicolo').html(cat)
+                            
+                             $.ajax({
+                                    type: "POST",
+                                    url: "controller/updateIstanze.php?action=getAllegati",
+                                    data: {id_RAM:data.id_RAM,tipo_veicolo:data.tipo_veicolo,progressivo:data.progressivo},
+                                    dataType: "json",
+                                    success: function(alle){
+                                        
+                                         $.each(alle, function (k,v){
+                                               stato='<span class="badge badge-warning">Da Accettare</span>';
+                                               buttonA='<button type="button" onclick="infoAlle('+v.id+');"class="btn btn-warning btn-xs" title="Visualizza Info Allegato"style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
+                                                buttonB='<button type="button" onclick="window.open(\'allegato.php?id='+v.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;margin-right:10px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                                buttonC='<a type="button" href="download.php?id='+v.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
+
+                                                $.ajax({
+                                                      type: "POST",
+                                                      url: "controller/updateIstanze.php?action=getTipoDoc",
+                                                      data: {tipo:v.tipo_documento},
+                                                      dataType: "json",
+                                                      success: function(data){
+                                                            
+                                                            tipdocu=data[0].tdoc_descrizione
+                                                            row = '<tr><td>'+tipdocu+'</td><td>'+v.note+'</td><td>'+stato+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
+                                                            $('#doctab> tbody:last-child').append(row);
+                                                      }
+                                                                              
+                                                      
+                                                })
+                                        
+                                         
+
+                                         })
+                                          
+                                    
+                                                                  
+                                    }
+                              })
+                            
+                                                          
+                        }
+                  })
+
+
+      }  
+      function infomsg(id){
+
+$.ajax({
+      type: "POST",
+      url: "controller/updateComunicazioni.php?action=getMsg",
+      data: {id:id},
+      dataType: "json",
+      success: function(data){
+        console.log(data);
+        $('#msginfoModal').modal('toggle');
+        $('#id_info').html(data.id);
+        $('#data_ins_info').html(data.data_ins);
+        $('#tipo_info').html(data.tipo);
+        $('#testo_info').html(data.testo);
+        $('#stato_info').html(data.stato);
+
+
+           
+      }
+                              
+      
+})
+
+
+}
+function infomsgAd(id){
+
+$.ajax({
+      type: "POST",
+      url: "controller/updateComunicazioni.php?action=getMsg",
+      data: {id:id},
+      dataType: "json",
+      success: function(data){
+        console.log(data);
+        $('#msginfoModal').modal('toggle');
+        $('#id_info').html(data.id);
+        $('#data_ins_info').html(data.data_ins);
+        $('#tipo_info').html(data.tipo);
+        $('#testo_info').html(data.testo);
+        $('#stato_info').html(data.stato+' da '+data.user_info+' il '+data.data_info);
+        $('#gotomsg').attr('href','comunicazione.php?id='+data.id);
+        if(data.read_msg == 0){
+          $('#gotomsg').html('Prendi in carico');
+
+        }else{
+          $('#gotomsg').html('Vedi dettaglio');
+        }
+
+
+          
+      }
+                              
+      
+})
+
+
+}
             
 </script>
 

@@ -25,3 +25,21 @@ impoerto
 
 
 se infoveicolo select acquisto =>escudi tipo documento 9
+
+
+inv id 27 
+
+
+
+rottamazione
+
+
+tipo_veicoli da 1 a 10 (se uno ha rott yes allora inserisci doc opzionali a e b ) visualizzarli in tutti i documenti veicolo 8sempre da 1 a 10)
+
+pmi "Maggiorazione PMI"
+rete "Maggiorazione Contratto rete d'imprese"
+
+    documenti veicoli
+ accettati
+ rifiutati
+ in sospeso

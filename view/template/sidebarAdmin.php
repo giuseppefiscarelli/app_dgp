@@ -15,7 +15,14 @@
                       <button class="btn close-menu" type="button"><span class="it-close"></span>close</button>
                     </div>
                     <div class="menu-wrapper">
-
+<?php
+require_once 'model/menu.php';
+  $newticket = getNewticket();
+  $newticketmsg =getNewticketmsg();
+  
+  $ticketnot=count($newticket)+count($newticketmsg);
+ 
+  ?>
                     
                       <ul class="navbar-nav">
                       
@@ -31,7 +38,19 @@
                         </li>
                         <li class="nav-item active"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='home.php'?'active':''?>" href="home.php"><span><i class="fa fa-home" aria-hidden="true"></i> Home</span><span class="sr-only">current</span></a></li>
                         <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='istanze.php'?'active':''?>" href="istanze.php"><span><i class="fa fa-list" aria-hidden="true"></i> Istanze </span></a></li>
-                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='comunicazioni.php'?'active':''?>" href="comunicazioni.php"><span><i class="fa fa-inbox" aria-hidden="true"></i> Comunicazioni</span></a></li>
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='comunicazioni.php'?'active':''?>" href="comunicazioni.php"><span><i class="fa fa-inbox" aria-hidden="true"></i> Help Desk <?php
+                                                                                                                                                                                                                                     if($ticketnot){
+                                                                                                                                                                                                                                      if($ticketnot>1){
+                                                                                                                                                                                                                                        $textnot = 'nuove notifiche';
+                                                                                                                                                                                                                                      }else{
+                                                                                                                                                                                                                                       $textnot = 'nuova notifica';
+                                                                                                                                                                                                                                      }?>                 
+                                                                                                                                                                                                                                    <span class="badge badge-warning"><?=$ticketnot?></span> <small><?=$textnot?></small>
+                                                                                                                                                                                                                                    <?php
+                                                                                                                                                                                                                                     }
+                                                                                                                                                                                                                                    ?></span></a></li>
+                        <!--<li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='newsletter.php'?'active':''?>" href="newsletter.php"><span><i class="fa fa-paper-plane" aria-hidden="true"></i> Newsletter</span></a></li>
+                          -->
                         
                       </ul>
                     </div>

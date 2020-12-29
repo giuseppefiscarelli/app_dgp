@@ -35,7 +35,6 @@ function getIstanza(int $id){
   
   
 }
-
 function getIstanzaUser($email){
 
   /**
@@ -245,6 +244,29 @@ function getCatInc(){
     }
 
    return $records;
+
+
+
+}
+function getCategoria($cod){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = "SELECT * FROM categoria_incentivo where ctgi_codice = '$cod'";
+  
+  
+  $result = [];
+
+  $res = $conn->query($sql);
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
 
 
 
@@ -827,6 +849,7 @@ function getInfoVei($id){
           
       if($res && $res->num_rows){
         $result = $res->fetch_assoc();
+       
         
       }
     return $result;
@@ -1303,7 +1326,6 @@ function closeRend($id_ram){
 
 
 }
-
 function countRendicontazione($stato){
 
   /**
@@ -1334,3 +1356,245 @@ function countRendicontazione($stato){
       return $total;
 
 }
+function getVeicoli($id_RAM){
+  
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT * FROM veicolo WHERE id_RAM ='.$id_RAM;
+ // echo $sql;
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+
+}
+function countVeiIstanza($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+    
+      $total = 0;
+
+      
+
+      $sql = 'SELECT count(*) as total FROM veicolo';
+
+          $sql .=" WHERE id_RAM = $id_RAM";
+       
+    
+        //  echo $sql;
+      
+
+      $res = $conn->query($sql);
+      if($res) {
+
+       $row = $res->fetch_assoc();
+       $total = $row['total'];
+      }
+      return $total;
+
+}
+function countDocIst($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+    
+      $total = 0;
+
+      
+
+      $sql = 'SELECT count(*) as total FROM allegato ';
+
+          $sql .=" WHERE id_ram = $id_RAM  and attivo='s' and tipo_documento<90";
+       
+    
+         // echo $sql;
+      
+
+      $res = $conn->query($sql);
+      if($res) {
+
+       $row = $res->fetch_assoc();
+       $total = $row['total'];
+      }
+      return $total;
+
+}
+function countVeiIstanzaCat($id_RAM,$tipo){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+    
+      $total = 0;
+
+      
+
+      $sql = 'SELECT count(*) as total FROM veicolo INNER JOIN tipo_veicolo as tp on veicolo.tipo_veicolo = tp.tpvc_codice';
+
+          $sql .=" WHERE veicolo.id_RAM =$id_RAM AND tp.codice_categoria_incentivo=$tipo";
+       
+    
+         // echo $sql;
+      
+         $res = $conn->query($sql);
+         if($res) {
+   
+          $row = $res->fetch_assoc();
+          $total = $row['total'];
+         }
+         return $total;
+
+}
+function countDocIstCat($id_RAM,$tipo){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+    
+      $total = 0;
+
+      
+
+      $sql = 'SELECT count(*) as total FROM allegato INNER JOIN tipo_veicolo as tp on allegato.tipo_veicolo = tp.tpvc_codice';
+
+          $sql .=" WHERE allegato.id_ram = $id_RAM  and allegato.attivo='s' and allegato.tipo_documento<90 AND tp.codice_categoria_incentivo=$tipo";
+       
+    
+         // echo $sql;
+      
+
+      $res = $conn->query($sql);
+      if($res) {
+
+       $row = $res->fetch_assoc();
+       $total = $row['total'];
+      }
+      return $total;
+
+}
+function getComunicazioni($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+     
+      
+      $records = [];
+
+      
+
+      $sql ="SELECT * FROM comunicazioni where id_RAM = $id_RAM";
+     
+      $sql .= " ORDER BY data_ins  DESC ";
+      //echo $sql;
+
+      $res = $conn->query($sql);
+      if($res) {
+
+        while( $row = $res->fetch_assoc()) {
+            $records[] = $row;
+            
+        }
+
+      }
+
+  return $records;
+
+}
+function getTipoComunicazione($tipo){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ="SELECT * FROM tipo_comunicazione WHERE cod_msg = '$tipo'";
+      //echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
+  
+  
+}
+function getNotificheuser($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+      $records = [];
+
+      
+    
+      $sql ="SELECT * FROM cron_comunicazioni LEFT JOIN comunicazioni on cron_comunicazioni.id_comunicazioni = comunicazioni.id where cron_comunicazioni.read_msg = 0 and cron_comunicazioni.role='admin' and comunicazioni.id_RAM = $id_RAM";
+     
+      $res = $conn->query($sql);
+      if($res) {
+
+        while( $row = $res->fetch_assoc()) {
+            $records[] = $row;
+            
+        }
+
+      }
+
+  return $records;
+
+}
+function checkUnreadConv($id,$role){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $totalUser=0;
+  $sql ="SELECT count(*) as totalConv FROM cron_comunicazioni WHERE role = '$role' and read_msg = 0 and id_comunicazioni =$id";
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res) {
+
+   $row = $res->fetch_assoc();
+   $totalUser = $row['totalConv'];
+  }
+
+  return $totalUser;
+
+
+}
+
+

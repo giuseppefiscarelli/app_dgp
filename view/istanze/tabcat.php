@@ -19,8 +19,7 @@
                               <div class="nav nav-tabs nav-tabs-vertical nav-tabs-vertical-background" id="nav-vertical-tab-bg" role="tablist" aria-orientation="vertical">
                                 <?php
                                   foreach($tipVei as $tve){
-                                    $countCatVei=countCatVei($tve['tpvc_codice'],$i['id_RAM']);
-                                   
+                                    $countCatVei=countCatVei($tve['tpvc_codice'],$i['id_RAM']);                                  
                                     if($countCatVei==!0){
                                       $totalDoc = 0;
                                       $checkVei=0;

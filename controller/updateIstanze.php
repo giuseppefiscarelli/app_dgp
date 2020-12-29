@@ -159,8 +159,40 @@ switch ($action){
       echo json_encode($res);
 
     break  ;
+    case 'getDocVei':
+      $data=$_REQUEST['tipovei'];
+      $id_RAM = $_REQUEST['id_RAM'];
+      //var_dump($data);
+      $res = getTipoDocumento($data);
+     // var_dump($res);
+      /*  if($res){
+        $check = array();
+          foreach($res as $r){
+            $datas['tipo_documento']=$r['codice_tipo_documento'];
+            $datas['id_ram']=$id_RAM;
+            $datas['tipo_veicolo']=$data;
+            $datas['progressivo']=$_REQUEST['progressivo'];
 
-    case 'getTipoDoc':
+            $res2= checkSelectTipoDoc($datas);
+          // var_dump($res2);
+            if($res2){
+              
+              //echo "ok tipo veicolo".$res2['tipo_veicolo'];
+              //echo "ok progressivo".$res2['progressivo'];
+              //echo "ok tipo_documento".$res2['tipo_documento'];
+            // array_push
+            }
+
+          }
+        }
+      */
+
+
+      echo json_encode($res);
+
+    break  ;
+
+    case 'getTipoDoc': 
       $data=$_REQUEST['tipo'];
       $res =getTipDocumento($data);
 
@@ -171,6 +203,9 @@ switch ($action){
     case 'getInfoVei':
       $id=$_REQUEST['id'];
       $res =getInfoVei($id);
+
+      
+      
       echo json_encode($res);
 
 
@@ -179,15 +214,26 @@ switch ($action){
     case 'getAllegato':
       $id=$_REQUEST['id'];
       $res =getAllegatoID($id);
-      
+      $tipo = getTipDocumento($res['tipo_documento']);
+      $res['tipo_documento']=$tipo[0]['tdoc_descrizione'];
       $json = array(
         "allegato" => $res,
         //"test" =>$res
         
       );
+      
       echo json_encode($json);
       //echo json_encode($res);
-    break;  
+    break;
+    case 'getAllegati':
+      $data=$_REQUEST;
+      $res =getAllegati($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
+
+      //$tipo = getTipDoc($res['tipo_documento']);
+      //var_dump($res);
+      echo json_encode($res);
+      //echo json_encode($res);
+    break;    
     case 'getInfoCampo':
       $cod=$_REQUEST['cod'];
       $res = getInfoCampo($cod);
@@ -230,4 +276,27 @@ switch ($action){
       $res = countDocVeicolo($tipo_veicolo);
       echo  json_encode($res);
     break;
+
+    case 'getIstanza':
+    
+    $id = $_REQUEST['id'];
+    //var_dump($id);
+    $res=getIstanza($id);
+    $res['data_nascita']= date("d/m/Y",strtotime($res['data_nascita']));
+    $res['luogo_nascita']=$res['luogo_nascita']."(".$res['prov_nascita'].")";
+
+    $res['indirizzo_residenza']= $res['indirizzo_residenza'].", ".$res['civico_residenza'];
+    $res['indirizzo_impr']= $res['indirizzo_impr'].", ".$res['civico_impr'];
+
+    $res['comune_residenza']= $res['cap_residenza']." - ".$res['comune_residenza']."(".$res['prov_residenza'].")";
+    $res['comune_impr']= $res['cap_impr']." - ".$res['comune_impr']."(".$res['prov_impr'].")";
+    $res['tel_impr'] = $res['pref_tel_impr']."/".$res['num_tel_impr'];  
+    $tipod=getTipoDich($res['tipo_dichiarante']);
+    $res['tipo']=$tipod['descrizione_tipo'];
+    $res['cciaa']="Provincia ".$res['cciaa_prov']." <br>Codice ".$res['cciaa_codice']."<br>Data ".date("d/m/Y",strtotime($res['cciaa_data']));
+    $res['banca']="Istituto ".$res['banca_istituto']."<br>Agenzia ".$res['banca_agenzia']."<br>IBAN ".$res['iban_it']." ".$res['iban_num_chk']." ".$res['iban_cin']." ".$res['iban_abi']." ".$res['iban_cab']." ".$res['iban_cc'];
+
+    echo json_encode($res);
+    
+     break;
    }
