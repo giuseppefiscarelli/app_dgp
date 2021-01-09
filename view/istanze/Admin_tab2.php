@@ -97,7 +97,7 @@
    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="max-width:80%">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title">Scheda Veicolo
+            <h5 class="modal-title">Scheda Veicolo<br><small>n° protocollo <?=$i['id_RAM']?>/2020 - <?=$i['ragione_sociale']?></small>
             </h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                <svg class="icon">
@@ -108,23 +108,7 @@
          <div class="modal-body">
             <div class="row">
                 <div class="col-12 col-lg-6">
-                    <h5>Dati Istanza</h5>
-                    <table class="table table-sm">
-                        <tbody>
-                            <tr>
-                                <td>n° protocollo</td><td style="font-weight:bold;"><?=$i['id_RAM']?>/2020</td>
-                              
-                            </tr>
-                             <tr>
-                               
-                                <td>Ragione Sociale</td><td style="font-weight:bold;"><?=$i['ragione_sociale']?></td>
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                </div>
-               
-                <div class="col-12 col-lg-6">
+                    <h5 style="font-weight: bold;">Dati Veicolo</h5>
                     <table class="table table-sm">
                         <tbody>
                             <tr><td>Categoria</td><td id="info_cat_veicolo"></td></tr>
@@ -137,6 +121,27 @@
                             
                         </tbody>
                     </table>
+                   
+                </div>
+               
+                <div class="col-12 col-lg-6">
+                <h5 style="font-weight: bold;">Dati Istruttoria</h5>
+                
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr><td>Valore Contributo</td><td></td></tr>
+                            <tr><td>Maggiorazione PMI</td><td></td></tr>
+                            <tr><td>Maggiorazione RETE</td><td></td></tr>
+                            <tr><td>Note</td><td></td></tr>
+                            <tr><td>Stato Lavorazione</td><td></td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr><td colspan=2><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#istruttoriaModal">
+                                    Aggiorna dati
+                            </button></td></tr>
+                        </tfoot>
+                    </table>
+                   
                 </div>
             </div>
             <div class="row">
@@ -174,13 +179,15 @@
         <div class="modal-body">
         
             <div class="container">
-            <table class="table table-sm" id="info_tab_alle">
-            
-            <tbody>
+                <table class="table table-sm" id="info_tab_alle">
                 
-            </tbody>
-            </table>
-            
+                <tbody>
+                    
+                </tbody>
+                </table>
+            <div id="upinfoalle">
+                
+            </form>
             </div>
             
         
@@ -197,4 +204,35 @@
         </div>
         </div>
     </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="istruttoriaModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Dati Istruttoria
+        </h5>
+      </div>
+      <div class="modal-body">
+        <form method="get" action="" id="formIstr">
+        <input type="hidden" id="id_veicolo" name= "id_veicolo" value="">
+                <div class="form-group">
+                    <input type="text" class="form-control"name="note_istruttoria" placeholder="Scrivi Nota" id="note_istruttoria">
+                    <label for="exampleInputText">Note</label>
+                </div>
+
+             
+          <div class="bootstrap-select-wrapper">
+            <label>Stato Lavorazione</label>
+                <select title="Seleziona Stato">
+                     <option value="A">In Lavorazione</option><option value="B">Accettata</option><option value="C">Rigettata</option>
+                </select>
+          </div>      
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
+        <button class="btn btn-primary btn-sm" onclick="upIstr()"type="button">Aggiorna Informazioni</button>
+      </div>
+    </div>
+  </div>
 </div>

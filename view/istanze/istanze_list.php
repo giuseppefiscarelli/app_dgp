@@ -175,6 +175,11 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
       <div class="modal-header">
         <h5 class="modal-title">Informazioni Istanza
         </h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Chiudi">
+                  <svg class="icon" style="width:70px;height:70px">
+                     <use xlink:href="svg/sprite.svg#it-close"></use>
+                  </svg>
+               </button>
       </div>
       <div class="modal-body">
         <div class="row">

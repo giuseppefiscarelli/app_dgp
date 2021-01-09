@@ -357,7 +357,13 @@ require_once 'headerInclude.php';
       })
       $('#infoAllegato').on('hidden.bs.modal', function (e) {
             $('.modal-backdrop').css('z-index',1040);
+           
+      }) 
+      $('##istruttoriaModal').on('show.bs.modal', function (e) {
+            $('.modal-backdrop').css('z-index',1040);
+            $('#istruttoriaModal').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
       })  
+
       function getTotDoc(tipo){
             $.ajax({
                         type: "POST",
@@ -402,20 +408,25 @@ require_once 'headerInclude.php';
             $('.modal-backdrop').css('z-index',1051);
 
             $('#info_tab_alle tbody').empty();
+            $('#upinfoalle').empty();
             $.ajax({
                         type: "POST",
                         url: "controller/updateIstanze.php?action=getAllegato",
                         data: {id:id},
                         dataType: "json",
                         success: function(data){
-                             
+                              console.log(data);
                               test = $.parseJSON(data['allegato'].json_data)
-                             
+                             console.log(test);
                               $.each(test, function(k, v) {
                                   
-                                    campo = k.split("_")
-                                    campo= capitalizeFirstLetter(campo[0])+' '+ capitalizeFirstLetter(campo[1])
-                                  
+                                    campo = k.split("_");
+                                    console.log(campo)
+                                   /* campo= capitalizeFirstLetter(campo[0])*/
+                                    if (campo[1]) {
+                                          campo= capitalizeFirstLetter(campo[0])+' '+ capitalizeFirstLetter(campo[1])
+                                    }
+                                    console.log(campo)
                                     if(campo=="Importo "){
                                           v = formatter.format(v);
 
@@ -426,13 +437,23 @@ require_once 'headerInclude.php';
                                     }
                                     $('#info_tab_alle').append('<tr><td>'+campo+'</td><td>'+v+'</td></tr>');
 
-                              });
+                              })
                               view = '<button type="button" onclick="window.open(\'allegato.php?id='+id+'\', \'_blank\')" title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
 
                               down ='<a type="button" href="download.php?id='+id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
-
+                              stato_istanza = '<div class="bootstrap-select-wrapper" style="margin-top:30px;"><label>Stato Lavorazione</label><select id="stato_veicolo" nome="stato_veicolo "title="Seleziona Stato"><option value="A" style="background: #ffda73; color: #fff;">In Lavorazione</option><option value="B" style="background: #5cb85c; color: #fff;">Accettato</option><option value="C"style="background: #d9364f; color: #fff;">Rigettato</option></select></div>'
+                              note_istanza = '<div class="form-group" style="margin-top:30px;"><input type="text" class="form-control" id="note_admin" nome="note_admin"><label for="note_admin">Scivi note</label></div>'      
                               $('#info_tab_alle').append('<tr><td>Scarica Allegato</td><td>'+down+'</td></tr>');
                               $('#info_tab_alle').append('<tr><td>Visualizza allegato</td><td>'+view+'</td></tr>');
+                              $form = $("<form></form>");
+                             
+                              $form.append(note_istanza);
+                              $form.append(stato_istanza);
+                             
+                              $('#upinfoalle').append($form);
+                              $('.bootstrap-select-wrapper select').selectpicker('render');
+                             
+                             
 
 
                             
@@ -1029,7 +1050,7 @@ require_once 'headerInclude.php';
                         data: {id:id},
                         dataType: "json",
                         success: function(data){
-                            
+                              $('#id_veicolo').val(data.id)
                               $('#info_targa').html(data.targa)
                               $('#info_marca').html(data.marca)
                               $('#info_modello').html(data.modello)
