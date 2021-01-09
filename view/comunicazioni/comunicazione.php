@@ -157,6 +157,12 @@ if(!isUserUser()){?>
       <form id="msgform" action="<?=$updateUrl?>" method="post">
             <input type="hidden" name="action"value="newConv">
             <input type="hidden" name="id_comunicazioni"value="<?=$c['id']?>">
+            <?php
+                if(isUserUser()){?>
+            <input type="hidden" id="risolto" name="risolto" value="0">
+                <?php
+                }
+                ?>
                 
                
                     <div class="form-group" style="top:30px;">
