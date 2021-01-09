@@ -221,7 +221,8 @@ function newConv(array $data){
       $conn = $GLOBALS['mysqli'];
       $id_comunicazioni = $conn->escape_string($data['id_comunicazioni']);
         $testo = $conn->escape_string($data['testo']);
-        $risolto = $conn->escape_string($data['risolto']);
+        //$risolto = $conn->escape_string($data['risolto']);
+        $risolto = array_key_exists('risolto', $data) ? $data['risolto'] : '0';
         $data_ins = date("Y-m-d H:i:s");
         $user_ins = $_SESSION['userData']['email'];
         $role = $_SESSION['userData']['roletype'];

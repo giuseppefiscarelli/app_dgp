@@ -138,8 +138,9 @@
     }
 if(!isUserUser()){?>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal" title="Rispondi"><i class="fa fa-plus-circle" aria-hidden="true"></i> Rispondi</button>
-
+<!--
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#supportoModal" style="margin-left:10px;"title="Richiedi supporto Tecnico"><i class="fa fa-wrench" aria-hidden="true"></i> Supporto Tecnico</button>
+-->
 <?php
 }
 ?>
@@ -153,7 +154,7 @@ if(!isUserUser()){?>
         </h5>
       </div>
       <div class="modal-body">
-      <form id="msgform" action="<?=$updateUrl?>">
+      <form id="msgform" action="<?=$updateUrl?>" method="post">
             <input type="hidden" name="action"value="newConv">
             <input type="hidden" name="id_comunicazioni"value="<?=$c['id']?>">
                 
