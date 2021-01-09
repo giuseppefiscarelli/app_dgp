@@ -174,6 +174,14 @@
                                   Agenzia <?=$i['banca_agenzia']?><br>
                                   IBAN <?=$i['iban_it']?> <?=$i['iban_num_chk']?> <?=$i['iban_cin']?> <?=$i['iban_abi']?> <?=$i['iban_cab']?> <?=$i['iban_cc']?></td>
                               </tr>
+                              <tr>
+                              <th scope="row">Maggiorazione PMI</th>
+                              <td><?=$i['pmi']=='Off'?'Non Presente':'Presente'?></td>
+                              </tr>
+                              <tr>
+                              <th scope="row">Maggiorazione Contratto rete d'Imprese</th>
+                              <td><?=$i['rete']=='Off'?'Non Presente':'Presente'?></td>
+                              </tr>
                           </tbody>
                       </table>
                   </div>
