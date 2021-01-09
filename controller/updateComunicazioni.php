@@ -46,7 +46,7 @@ switch ($action){
     break;
 
     case 'newConv':
-    $data = $params;
+    $data = $_POST;
     //var_dump($data);die;
     $id = $data['id_comunicazioni'];
     if($data['risolto']==1){
