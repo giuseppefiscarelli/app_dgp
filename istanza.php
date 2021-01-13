@@ -45,8 +45,40 @@ require_once 'headerInclude.php';
                   
             });
       
-      
+    
       });  
+   
+      function checkAlle(){
+           
+            
+            var fa = document.getElementById("file_allegato");
+            var f = fa.files[0]
+            
+            //var len = fa.files.length;
+            console.log(f)
+           // console.log(len)
+            
+
+                 
+
+                  if (f.type==='application/pdf') {
+                        if (f.size > 3388608 || f.fileSize > 3388608)
+                  {
+                  //show an alert to the user
+                  
+                  Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
+
+                  //reset file upload control
+                  fa.value = null;
+                  }
+                       
+                  }else{
+                        Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF", "warning");
+                        fa.value = null;
+                  }
+            
+            
+      }
       $('#form_infovei').submit(function( event ) {
             id_RAM = <?=$i['id_RAM']?>;
 
@@ -194,7 +226,7 @@ require_once 'headerInclude.php';
                                                 $('#campi_allegati').append(field); 
                                                 field='<div class="form-group">'
                                                 field+='<label for="file_allegato" class="active">Documento</label>'
-                                                field+='<input type="file" accept="application/pdf" class="form-control-file" id="file_allegato" name="file_allegato"required></div>'
+                                                field+='<input type="file" accept="application/pdf" class="form-control-file" id="file_allegato" onchange="checkAlle();" name="file_allegato"required><small>dimensioni max 3MB  - accettati solo PDF</small></div>'
 
                                                 $('#campi_allegati').append(field) 
     
@@ -356,14 +388,12 @@ require_once 'headerInclude.php';
             $('#campi_allegati').empty();
       })
       $('#infoAllegato').on('hidden.bs.modal', function (e) {
-            $('.modal-backdrop').css('z-index',1040);
-           
+            $('.modal-backdrop').css('z-index',1040);          
       }) 
       $('##istruttoriaModal').on('show.bs.modal', function (e) {
             $('.modal-backdrop').css('z-index',1040);
             $('#istruttoriaModal').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
       })  
-
       function getTotDoc(tipo){
             $.ajax({
                         type: "POST",
@@ -677,8 +707,7 @@ require_once 'headerInclude.php';
 
 
       
-      }
-           
+      }    
       function convData(isodata){
             newdata = new Date(isodata);
             newgiorno =newdata.getDate()
@@ -1113,61 +1142,54 @@ require_once 'headerInclude.php';
       }  
       function infomsg(id){
 
-$.ajax({
-      type: "POST",
-      url: "controller/updateComunicazioni.php?action=getMsg",
-      data: {id:id},
-      dataType: "json",
-      success: function(data){
-        console.log(data);
-        $('#msginfoModal').modal('toggle');
-        $('#id_info').html(data.id);
-        $('#data_ins_info').html(data.data_ins);
-        $('#tipo_info').html(data.tipo);
-        $('#testo_info').html(data.testo);
-        $('#stato_info').html(data.stato);
-
-
-           
+            $.ajax({
+                  type: "POST",
+                  url: "controller/updateComunicazioni.php?action=getMsg",
+                  data: {id:id},
+                  dataType: "json",
+                  success: function(data){
+                  console.log(data);
+                  $('#msginfoModal').modal('toggle');
+                  $('#id_info').html(data.id);
+                  $('#data_ins_info').html(data.data_ins);
+                  $('#tipo_info').html(data.tipo);
+                  $('#testo_info').html(data.testo);
+                  $('#stato_info').html(data.stato);
+                  }                  
+            })
       }
-                              
-      
-})
+      function infomsgAd(id){
+
+            $.ajax({
+                  type: "POST",
+                  url: "controller/updateComunicazioni.php?action=getMsg",
+                  data: {id:id},
+                  dataType: "json",
+                  success: function(data){
+                  console.log(data);
+                  $('#msginfoModal').modal('toggle');
+                  $('#id_info').html(data.id);
+                  $('#data_ins_info').html(data.data_ins);
+                  $('#tipo_info').html(data.tipo);
+                  $('#testo_info').html(data.testo);
+                  $('#stato_info').html(data.stato+' da '+data.user_info+' il '+data.data_info);
+                  $('#gotomsg').attr('href','comunicazione.php?id='+data.id);
+                  if(data.read_msg == 0){
+                  $('#gotomsg').html('Prendi in carico');
+
+                  }else{
+                  $('#gotomsg').html('Vedi dettaglio');
+                  }
 
 
-}
-function infomsgAd(id){
-
-$.ajax({
-      type: "POST",
-      url: "controller/updateComunicazioni.php?action=getMsg",
-      data: {id:id},
-      dataType: "json",
-      success: function(data){
-        console.log(data);
-        $('#msginfoModal').modal('toggle');
-        $('#id_info').html(data.id);
-        $('#data_ins_info').html(data.data_ins);
-        $('#tipo_info').html(data.tipo);
-        $('#testo_info').html(data.testo);
-        $('#stato_info').html(data.stato+' da '+data.user_info+' il '+data.data_info);
-        $('#gotomsg').attr('href','comunicazione.php?id='+data.id);
-        if(data.read_msg == 0){
-          $('#gotomsg').html('Prendi in carico');
-
-        }else{
-          $('#gotomsg').html('Vedi dettaglio');
-        }
+                  
+                  }
+                                          
+                  
+            })
 
 
-          
       }
-                              
-      
-})
-
-
-}
             
 </script>
 

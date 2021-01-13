@@ -3,17 +3,9 @@
 
 session_start();
 require_once 'functions.php';
-
-
-
-
-
-
-
 require_once 'view/template/top.php';
 
 ?>
-
   <body>
         <div class="it-header-slim-wrapper">
             <div class="container">

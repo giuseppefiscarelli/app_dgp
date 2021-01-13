@@ -365,7 +365,7 @@
 
                                                           <div class="form-group">
                                                             <label for="file_allegato" class="active">Allegato</label>
-                                                            <input type="file" accept="application/pdf" class="form-control-file" id="file_allegato" name="file_allegato"required>
+                                                            <input type="file" accept="application/pdf" class="form-control-file" onchange="checkAlle();" id="file_allegato" name="file_allegato"required><small>Dimensioni Max 3MB - accettati solo PDF</small>
                                                           </div>
 
                                                         
