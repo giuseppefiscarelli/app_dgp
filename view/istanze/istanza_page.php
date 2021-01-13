@@ -242,7 +242,7 @@
         </div>
                                               
     </div>
-    <div class="tab-pane p-4 fade" id="nav-tab3" role="tabpanel" aria-labelledby="nav-tab3-tab">
+    <div class="tab-pane p-4 fade" id="nav-tab3" role="tabpanel" aria-labelledby="nav-tab3-tab" style="display:none;">
                 <?php require 'user_ticket_tab.php'?>
     </div>
     
