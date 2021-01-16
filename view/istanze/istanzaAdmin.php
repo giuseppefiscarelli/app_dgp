@@ -9,6 +9,7 @@
         <a class="nav-link" id="nav-vertical-tab-ico2-tab" data-toggle="tab" href="#nav-vertical-tab-ico2" role="tab" aria-controls="nav-vertical-tab-ico2" aria-selected="false">Dati Veicoli </a>
         <a class="nav-link" id="nav-vertical-tab-ico3-tab" data-toggle="tab" href="#nav-vertical-tab-ico3" role="tab" aria-controls="nav-vertical-tab-ico3" aria-selected="false">Riepilogo </a>
         <a class="nav-link" id="nav-vertical-tab-ico4-tab" data-toggle="tab" href="#nav-vertical-tab-ico4" role="tab" aria-controls="nav-vertical-tab-ico4" aria-selected="false">Comunicazioni </a>
+        <a class="nav-link" id="nav-vertical-tab-ico5-tab" data-toggle="tab" href="#nav-vertical-tab-ico5" role="tab" aria-controls="nav-vertical-tab-ico5" aria-selected="false">Report </a>
 
       </div>
     </div>
@@ -18,7 +19,7 @@
         <div class="tab-pane p-3 fade" id="nav-vertical-tab-ico2" role="tabpanel" aria-labelledby="nav-vertical-tab-ico2-tab"><?php require_once 'Admin_tab2.php'; ?></div>
         <div class="tab-pane p-3 fade" id="nav-vertical-tab-ico3" role="tabpanel" aria-labelledby="nav-vertical-tab-ico3-tab"><?php require_once 'Admin_tab3.php'; ?></div>
         <div class="tab-pane p-3 fade" id="nav-vertical-tab-ico4" role="tabpanel" aria-labelledby="nav-vertical-tab-ico4-tab"><?php require_once 'Admin_tab4.php'; ?></div>
-
+        <div class="tab-pane p-3 fade" id="nav-vertical-tab-ico5" role="tabpanel" aria-labelledby="nav-vertical-tab-ico5-tab"><?php require_once 'Admin_tab5.php'; ?></div>
       </div>
     </div>
   </div>

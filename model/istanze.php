@@ -729,19 +729,22 @@ function getAllegati($id_RAM,$tipo_veicolo,$progressivo){
 
   $conn = $GLOBALS['mysqli'];
   
-  $sql = 'SELECT * FROM allegato WHERE id_ram ='.$id_RAM.' and tipo_veicolo ='.$tipo_veicolo.' and progressivo='.$progressivo.' and attivo="s" ';
+  $sql = 'SELECT * FROM allegato left join tipo_documento on allegato.tipo_documento = tipo_documento.tdoc_codice WHERE allegato.id_ram ='.$id_RAM.' and allegato.tipo_veicolo ='.$tipo_veicolo.' and allegato.progressivo='.$progressivo.' and allegato.attivo="s" ';
   //echo $sql;
   $records = [];
 
   $res = $conn->query($sql);
   if($res) {
-
+    
     while( $row = $res->fetch_assoc()) {
+     
         $records[] = $row;
-        
+     
     }
 
   }
+  
+  
 
   return $records;
 
@@ -834,6 +837,40 @@ function newAllegato($data){
 
 
 }
+function upAlleAdmin($data){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $id = $data['id'];
+  $note_admin= $data['note_admin'];
+  $stato_admin= $data['stato_admin'];
+  $data_admin= date("Y/m/d H:i:s");
+  $result=0;
+  
+  $sql ='UPDATE allegato SET ';
+  $sql .= "note_admin = '$note_admin'";
+  $sql .= ", stato_admin = '$stato_admin'";
+  $sql .= ", data_admin = '$data_admin'";
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+ // echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+   
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+
+
+}
+
+
 function getInfoVei($id){ 
   /**
   * @var $conn mysqli
@@ -1626,3 +1663,330 @@ function getTipiComunicazione(){
 }
 
 
+function upIstruttoria($data){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $id = $conn->escape_string($data['id']);
+ 
+  $stato_admin = $conn->escape_string($data['stato_admin']);
+  $note_admin = $conn->escape_string($data['note_admin']);
+  $data_admin = date("Y/m/d H:i:s");
+  $user_admin = $_SESSION['userData']['email'];
+  
+
+
+  $result=0;
+  $sql ='UPDATE veicolo SET ';
+  $sql .= "stato_admin = '$stato_admin', note_admin = '$note_admin', data_admin = '$data_admin',user_admin ='$user_admin'";
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+
+
+
+}
+function getAlleOk($id_RAM,$tipo_veicolo,$progressivo){
+
+   
+  /**
+   * @var $conn mysqli
+   */
+
+            $conn = $GLOBALS['mysqli'];
+
+              
+           
+              
+            $total = 0;
+
+  
+      
+
+
+     
+                $sql = 'SELECT count(*) as total FROM allegato';
+
+                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo = 's' and stato_admin = 'B'";
+               // $sql .=" where stato_admin = 'B'";
+                  //echo $sql;
+                
+
+                
+                  $res = $conn->query($sql);
+                  if($res) {
+  
+                  $row = $res->fetch_assoc();
+                  $total = $row['total'];
+                  
+                  return $total;
+  
+                }
+                return $total;
+          
+}
+function getAlleNo($id_RAM,$tipo_veicolo,$progressivo){
+
+   
+  /**
+   * @var $conn mysqli
+   */
+
+            $conn = $GLOBALS['mysqli'];
+
+              
+           
+              
+            $total = 0;
+
+  
+      
+
+
+     
+                $sql = 'SELECT count(*) as total FROM allegato';
+
+                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s' and stato_admin='C'";
+                //  echo $sql;
+                
+
+                $res = $conn->query($sql);
+                if($res) {
+
+                $row = $res->fetch_assoc();
+                $total = $row['total'];
+                
+                return $total;
+
+              }
+          
+}
+function getAlleValid($id_RAM,$tipo_veicolo,$progressivo){
+
+   
+  /**
+   * @var $conn mysqli
+   */
+
+            $conn = $GLOBALS['mysqli'];
+
+              
+           
+              
+            $total = 0;
+
+  
+      
+
+
+     
+                $sql = 'SELECT count(*) as total FROM allegato';
+
+                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s' and stato_admin='C'";
+                //  echo $sql;
+                
+
+                $res = $conn->query($sql);
+                if($res) {
+
+                $row = $res->fetch_assoc();
+                $total = $row['total'];
+                
+                return $total;
+
+              }
+          
+}
+function countAlle($id_RAM,$tipo_veicolo,$progressivo){
+
+   
+  /**
+   * @var $conn mysqli
+   */
+
+            $conn = $GLOBALS['mysqli'];
+
+              
+           
+              
+            $total = 0;
+
+  
+      
+
+
+     
+                $sql = 'SELECT count(*) as total FROM allegato';
+
+                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s'";
+                //  echo $sql;
+                
+
+                $res = $conn->query($sql);
+                if($res) {
+
+                $row = $res->fetch_assoc();
+                $total = $row['total'];
+                
+                return $total;
+
+              }
+          
+}
+function getRichInt(){
+    /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT * FROM campi_integrazione';
+  
+  
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+ return $records;
+
+
+
+}
+function getTipoReport(){
+    /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT * FROM tipo_report';
+
+
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+
+
+
+}
+function getTipoInt($id){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = "SELECT * FROM campi_integrazione where id = $id";
+  
+  
+  $result = [];
+
+  $res = $conn->query($sql);
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
+}
+function newInt($data){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $id_RAM = $conn->escape_string($data['id_RAM']);
+  $tipo_report = $conn->escape_string($data['tipo']);
+  $user_ins = $_SESSION['userData']['email'];
+  $data_ins = date("Y-m-d H:i:s");
+  $stato = "B";
+
+  $result=0;
+  $sql ='INSERT INTO report (id,id_RAM,tipo_report,user_ins,data_ins,stato) ';
+  $sql .= "VALUES (NULL,$id_RAM,$tipo_report,'$user_ins','$data_ins','$stato')  ";
+  
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+   // move_uploaded_file($file['tmp_name'],$pathAlle.$docu_id_file_archivio);
+
+    $last_id= mysqli_insert_id($conn);
+    
+  }else{
+    $last_id=0;  
+  }
+  return $last_id;
+
+
+
+
+}
+function newIntDett($data){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  
+  $id_report = $conn->escape_string($data['id_report']);
+  $tipo = $conn->escape_string($data['tipo']);
+  $descrizione = $conn->escape_string($data['descrizione']);
+  $prog= $conn->escape_string($data['prog']);
+
+  $result=0;
+  $sql ='INSERT INTO dettaglio_report (id,id_report,tipo,descrizione,prog) ';
+  $sql .= "VALUES (NULL,$id_report,'$tipo','$descrizione','$prog')  ";
+  
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+   // move_uploaded_file($file['tmp_name'],$pathAlle.$docu_id_file_archivio);
+
+    $last_id= mysqli_insert_id($conn);
+    
+  }else{
+    $last_id=0;  
+  }
+  return $last_id;
+
+
+
+
+}

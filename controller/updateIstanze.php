@@ -117,7 +117,14 @@ switch ($action){
        
 
     break; 
+    case 'upAlleAdmin':
+      $data=$_REQUEST;
 
+      $res = upAlleAdmin($data);
+
+      echo json_encode($res);
+
+    break;  
     case 'delAllegato':
       $id=$_REQUEST['id'];
       //var_dump($id);
@@ -228,11 +235,19 @@ switch ($action){
     case 'getAllegati':
       $data=$_REQUEST;
       $res =getAllegati($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
-
+      
       //$tipo = getTipDoc($res['tipo_documento']);
       //var_dump($res);
-      echo json_encode($res);
-      //echo json_encode($res);
+      if($res){
+       
+        
+        echo json_encode($res); 
+      }
+       // var_dump($res);
+       // var_dump($res);
+        
+     // echo json_encode($res);
+     // echo json_encode($res);
     break;    
     case 'getInfoCampo':
       $cod=$_REQUEST['cod'];
@@ -279,24 +294,54 @@ switch ($action){
 
     case 'getIstanza':
     
-    $id = $_REQUEST['id'];
-    //var_dump($id);
-    $res=getIstanza($id);
-    $res['data_nascita']= date("d/m/Y",strtotime($res['data_nascita']));
-    $res['luogo_nascita']=$res['luogo_nascita']."(".$res['prov_nascita'].")";
+      $id = $_REQUEST['id'];
+      //var_dump($id);
+      $res=getIstanza($id);
+      $res['data_nascita']= date("d/m/Y",strtotime($res['data_nascita']));
+      $res['luogo_nascita']=$res['luogo_nascita']."(".$res['prov_nascita'].")";
 
-    $res['indirizzo_residenza']= $res['indirizzo_residenza'].", ".$res['civico_residenza'];
-    $res['indirizzo_impr']= $res['indirizzo_impr'].", ".$res['civico_impr'];
+      $res['indirizzo_residenza']= $res['indirizzo_residenza'].", ".$res['civico_residenza'];
+      $res['indirizzo_impr']= $res['indirizzo_impr'].", ".$res['civico_impr'];
 
-    $res['comune_residenza']= $res['cap_residenza']." - ".$res['comune_residenza']."(".$res['prov_residenza'].")";
-    $res['comune_impr']= $res['cap_impr']." - ".$res['comune_impr']."(".$res['prov_impr'].")";
-    $res['tel_impr'] = $res['pref_tel_impr']."/".$res['num_tel_impr'];  
-    $tipod=getTipoDich($res['tipo_dichiarante']);
-    $res['tipo']=$tipod['descrizione_tipo'];
-    $res['cciaa']="Provincia ".$res['cciaa_prov']." <br>Codice ".$res['cciaa_codice']."<br>Data ".date("d/m/Y",strtotime($res['cciaa_data']));
-    $res['banca']="Istituto ".$res['banca_istituto']."<br>Agenzia ".$res['banca_agenzia']."<br>IBAN ".$res['iban_it']." ".$res['iban_num_chk']." ".$res['iban_cin']." ".$res['iban_abi']." ".$res['iban_cab']." ".$res['iban_cc'];
+      $res['comune_residenza']= $res['cap_residenza']." - ".$res['comune_residenza']."(".$res['prov_residenza'].")";
+      $res['comune_impr']= $res['cap_impr']." - ".$res['comune_impr']."(".$res['prov_impr'].")";
+      $res['tel_impr'] = $res['pref_tel_impr']."/".$res['num_tel_impr'];  
+      $tipod=getTipoDich($res['tipo_dichiarante']);
+      $res['tipo']=$tipod['descrizione_tipo'];
+      $res['cciaa']="Provincia ".$res['cciaa_prov']." <br>Codice ".$res['cciaa_codice']."<br>Data ".date("d/m/Y",strtotime($res['cciaa_data']));
+      $res['banca']="Istituto ".$res['banca_istituto']."<br>Agenzia ".$res['banca_agenzia']."<br>IBAN ".$res['iban_it']." ".$res['iban_num_chk']." ".$res['iban_cin']." ".$res['iban_abi']." ".$res['iban_cab']." ".$res['iban_cc'];
 
-    echo json_encode($res);
+      echo json_encode($res);
+      
+    break;
+
+    case 'upIstruttoria':
+      $data=$_REQUEST;
+      $res =upIstruttoria($data);
+      echo json_encode($res);
+
+
+    break;
+
+    case 'getTipoInt':
+      $id=$_REQUEST['tipo'];
+      $res =getTipoInt($id);
+
+      
+      
+      echo json_encode($res);
     
-     break;
+    break;
+
+    case 'newInt':
+      $data = $_REQUEST;
+      $res = newInt($data);
+      echo json_encode($res);
+      break;
+    case 'newIntDett': 
+      $data = $_REQUEST;
+      $res = newIntDett($data);
+      echo json_encode($res);
+
+      break;
    }

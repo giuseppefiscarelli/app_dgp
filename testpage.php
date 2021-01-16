@@ -133,82 +133,17 @@ if(!empty($_SESSION['message'])){
     require 'view/template/message.php';
     unset($_SESSION['message'],$_SESSION['success']);
   } 
+
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/test/vendor/autoload.php';
+  use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Exception\ExceptionFormatter;
+ // require 'vendor/autoload.php';
+ $html2pdf = new Html2Pdf();
+ $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
+ $html2pdf->output();
       ?>
-      <div class="container my-4">
-
-      <h3>Benvenuto Ragione Sociale S.r.l</h3>
-      <h4>Per visualizzare Le Istanze, Clicca su "Le Mie Istanze"</h4>
-        <div class="it-carousel-wrapper it-carousel-landscape-abstract">
-          <div class="it-carousel-all owl-carousel" >
-            <div class="it-single-slide-wrapper" >
-              <a href="#">
-                <div class="img-responsive-wrapper">
-                  <div class="img-responsive">
-                    <div class="img-wrapper"><img src="images/img1.jpg" title="img title" alt="ima1"></div>
-                  </div>
-                </div>
-              </a>
-              <div class="it-text-slider-wrapper-outside">
-                <div class="card-wrapper">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="category-top" style="display:none;">
-                        <!-- category heading--><a class="category" href="#">Category</a>
-                        <!-- category data--><span class="data">10/12/2018</span>
-                      </div>
-                      <h5 class="card-title big-heading">Decreto del Ministero delle infrastrutture e dei trasporti n. 203 del 12 maggio 2020</h5>
-                      <h4 class="card-title big-heading">       Incentivo agli investimenti nel settore dell’autotrasporto</h4>
-                      <p style="text-align:justify;"class="card-text">Il D.M. 12 maggio 2020 n. 203, recante modalità di erogazione dei contributi a favore degli investimenti delle imprese di autotrasporto, per l'annualità 2020, è stato pubblicato nella Gazzetta Ufficiale Serie Generale n. 187 del 27 luglio 2020. Il connesso Decreto direttoriale prot. 145 del 07 agosto 2020 recante disposizioni di attuazione del suddetto D.M. 203/2020 è stato pubblicato nella Gazzetta Ufficiale Serie Generale n. 206 del 19 agosto 2020.</p>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            
-          </div>
-        </div>
-
-<button type="button" onclick="prova();" class="btn btn-primary btn-lg btn-block"></button>
-
-
-
-<script>
-function prova(){
- 
-  Swal.fire(
-                                                                  'Rendicontazione Chiusa!',
-                                                                  'La rendicontazione è stata chiusa correttamente.',
-                                                                  'success'
-                                                            ).then((result) => {
-                                                                               if (result.isConfirmed) {
-                                                                                          location.href='home.php'
-                                                                              }
-                                                                  })
-    
-
-}
-</script>
-
-
-<form id="test">
-<div class="bootstrap-select-wrapper">
-  <label>Etichetta</label>
-  <select title="Scegli una opzione" id="testselect"required="required">
-    <option value="Value 1">Opzione 1</option>
-    <option value="Value 2">Opzione 2</option>
-    <option value="Value 3">Opzione 3</option>
-    <option value="Value 4">Opzione 4</option>
-    <option value="Value 5">Opzione 5</option>
-  </select>
-</div>
-
-
-<button type="submit" name="" id="testbtn" onclick="testbtn();"class="btn btn-primary btn-lg btn-block"></button>
-</form>
-
-      </div>
+  
       
      
    <!-- JS -->
@@ -216,73 +151,7 @@ function prova(){
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 
-<script type="text/javascript">
-        $( document ).ready(function() {
-            $('#message').delay(3000).fadeOut();
-        });
-   
-$('#testbtn').on('click', function(){
 
-val= $('#testselect option:selected').val()
-
-if(val==""){
-  alert(val);
-  return false;
-  break;
-}
-
-})
-</script> 
   </body>
-  <script>
   
-  
-$(document).ready(function() {
-
-  $(".owl-carousel").owlCarousel();
-  var owl = $('.owl-carousel');
-
-owl.trigger('play.owl.autoplay',[8000])
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu','Lug','Ago','Set','Ott','Nov','Dic'],
-        datasets: [{
-            label: 'Fondo Residuo (dimostrativo)',
-            data: [12000000, 11800000, 11600000, 11000000, 10800000, 10800000,10800000, 10700000, 10700000, 10200000, 10200000, 10000000],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-
-
-});
-  </script>
 </html>

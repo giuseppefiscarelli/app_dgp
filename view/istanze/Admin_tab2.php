@@ -49,16 +49,47 @@
                         $countDocVeicolo =$countDocVeicolo-1;
                     }
                     $countDocVeicoloInfo=countDocVeicoloInfo($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
-                    
+                    $alleok = 0;
+                    $alleno= 0;
+                    $countAlle =0;
+                    $alleok = getAlleValid($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
+                    $alleok = intval($alleok);
+                    //var_dump($alleok);
+                    $alleno = getAlleNo($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
+                    $alleno = intval($alleno);
+                    $countAlle = countAlle($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
+                    $countAlle = intval($countAlle);
+                    //var_dump($alleok);var_dump($alleno);var_dump($countAlle);
                     $countDocVeicolo = intval($countDocVeicolo);
                     $countDocVeicoloInfo = intval($countDocVeicoloInfo);
                 // var_dump($countDocVeicolo);
                     //var_dump($countDocVeicoloInfo);
+                    if($alleok==$countAlle){
+                       $alleType="success";
+                    }else{
+                        $alleType="warning";
+                    }
+                    if($alleno == 0){
+                        $allenoType = "success";
+                    }else{
+                        $allenoType = "danger";
+                    }
+                    
                     if($countDocVeicoloInfo==$countDocVeicolo){
 
                         $countType = 'success';
                     }else{
                         $countType = 'warning';
+                    }
+
+                    if($v['stato_admin']=='A'||$v['stato_admin']==null){
+                        $stato_admin = '<span class="badge badge-warning" style="width: -webkit-fill-available;">In Lavorazione</span>';
+                    }
+                    if($v['stato_admin']=='B'){
+                        $stato_admin = '<span class="badge badge-success" style="width: -webkit-fill-available;">Accettata</span>';
+                    }
+                    if($v['stato_admin']=='C'){
+                        $stato_admin = '<span class="badge badge-danger" style="width: -webkit-fill-available;">Rigettata</span>';
                     }
             ?>
             <tr>
@@ -72,11 +103,35 @@
                 <td style="vertical-align:middle;"><?=$v['tipo_acquisizione']=="01"?'<span class="badge badge-info"  style="width: -webkit-fill-available;">Acquisizione</span>':'<span class="badge badge-warning"  style="width: -webkit-fill-available;">Leasing</span>'?></td>
                 <td style="vertical-align:middle;"><?=$v['costo']?'€ '.number_format($v['costo'], 2, ',', '.'):'Non Presente'?></td>
                 <td style="vertical-align:middle;">
-                    <table class="table-sm table-borderless" style="font-size:15px;">
-                    <tr><td>Check Veicolo</td><td><span class="badge badge-primary" style="width: -webkit-fill-available;">Stato a</span></td></tr>
-                    <tr><td>Dati Veicolo</td><td><span class="badge badge-<?=$color?>" style="width: -webkit-fill-available;"><?=$text?></span></td></tr>
-                    <tr><td>Documenti Veicolo</td><td><span style="width: -webkit-fill-available;"class="badge badge-<?=$countType?>"><?=$countDocVeicoloInfo?> di <?=$countDocVeicolo?></span></td></tr>
+                <div class="row">
+                    <table class="table-sm table-borderless" style="font-size:15px;" class="col-6">
+                    <tr>
+                        <td>Stato Istruttoria</td><td id="stato_istruttoria_<?=$v['id']?>"><?=$stato_admin?></td>
+                        <?php
+                            if($v['stato_admin']=='B'||$v['stato_admin']=='C'){?>
+                                <td>da</td>
+                                <td id="user_istruttoria_<?=$v['id']?>">
+                                <?=$v['user_admin']?></td>
+                         <?php
+                           }else{?>
+                           <td> </td> <td id="user_istruttoria_<?=$v['id']?>">______ </td>
+
+                           <?php
+                           }?>
+                        </tr>
+                    <tr>
+                        <td rowspan="2">Documenti Veicolo</td><td rowspan="2"><span style="width: -webkit-fill-available;"class="badge badge-<?=$countType?>"><?=$countDocVeicoloInfo?> di <?=$countDocVeicolo?></span></td>
+                            <td>Accettati</td><td><span style="width: -webkit-fill-available;"class="badge badge-<?=$alleType?>"><?=$alleok?> di <?=$countAlle?></span></td>
+                    </tr>
+                    <tr>
+                        <td>Respinti</td><td><span style="width: -webkit-fill-available;"class="badge badge-<?=$allenoType?>"><?=$alleno?> di <?=$countAlle?></span></td>
+                    </tr>
+                    <tr>
+                    <td>Dati Veicolo</td><td><span class="badge badge-<?=$color?>" style="width: -webkit-fill-available;"><?=$text?></span></td><td colspan="3"></td>
+                    </tr>        
                     </table>
+                   
+                </div>    
                 </td>
                 <td><button type="button" onclick="infovei(<?=$v['id']?>,'<?=$categ['ctgi_categoria']?>','<?=$tipo['tpvc_descrizione_breve']?>');"class="btn btn-success btn-xs" title="Visualizza Info Veicolo"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
     </td>
@@ -130,13 +185,13 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr><td>Valore Contributo</td><td></td></tr>
-                            <tr><td>Maggiorazione PMI</td><td></td></tr>
-                            <tr><td>Maggiorazione RETE</td><td></td></tr>
-                            <tr><td>Note</td><td></td></tr>
-                            <tr><td>Stato Lavorazione</td><td></td></tr>
+                            <tr><td>Maggiorazione PMI</td><td><?=$i['pmi']=='Off'?'Non Presente':'Presente'?></td></tr>
+                            <tr><td>Maggiorazione RETE</td><td><?=$i['rete']=='Off'?'Non Presente':'Presente'?></td></tr>
+                            <tr><td>Note</td><td id="info_note_admin"></td></tr>
+                            <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td></tr>
                         </tbody>
                         <tfoot>
-                            <tr><td colspan=2><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#istruttoriaModal">
+                            <tr><td colspan=2><button type="button" id="btn_istr"class="btn btn-primary" onclick="infoVeiIstr();">
                                     Aggiorna dati
                             </button></td></tr>
                         </tfoot>
@@ -153,6 +208,7 @@
                                     <th>Tipo</th>
                                     <th>Note</th>
                                     <th>Stato</th>
+                                    <th>Note Admin</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -172,36 +228,37 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="infoAllegato">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Info Allegato
-            </h5>
-        </div>
-        <div class="modal-body">
-        
-            <div class="container">
-                <table class="table table-sm" id="info_tab_alle">
-                
-                <tbody>
-                    
-                </tbody>
-                </table>
-            <div id="upinfoalle">
-                
-            </form>
+            <div class="modal-header">
+                <h5 class="modal-title">Info Allegato
+                </h5>
             </div>
+            <div class="modal-body">
             
-        
-            
+                <div class="container">
+                    <table class="table table-sm" id="info_tab_alle">
+                    
+                    <tbody>
+                        
+                    </tbody>
+                    </table>
+                    <div id="upinfoalle">
+                        
+                    
+                    </div>
+                
+                </div>
+                
 
-            
-            
-            
+                
+                
+                
 
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Chiudi</button>
-            
-        </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Chiudi</button>
+                <button class="btn btn-primary btn-sm"  onclick="info_alle();" type="button">Salva Modifichce</button>
+                
+            </div>
         </div>
     </div>
 </div>
@@ -223,7 +280,7 @@
              
           <div class="bootstrap-select-wrapper">
             <label>Stato Lavorazione</label>
-                <select title="Seleziona Stato">
+                <select title="Seleziona Stato" name="stato_istruttoria" id="stato_istruttoria">
                      <option value="A">In Lavorazione</option><option value="B">Accettata</option><option value="C">Rigettata</option>
                 </select>
           </div>      
@@ -231,7 +288,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
-        <button class="btn btn-primary btn-sm" onclick="upIstr()"type="button">Aggiorna Informazioni</button>
+        <button class="btn btn-primary btn-sm" id="btn_info_istr"onclick="upIstr()"type="button">Aggiorna Informazioni</button>
       </div>
     </div>
   </div>

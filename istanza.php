@@ -154,6 +154,122 @@ require_once 'headerInclude.php';
          event.preventDefault();
            
       });
+      function info_alle(){
+           
+            Swal.fire({ 
+                  html:true,
+                  title: "Caricamento in Corso",
+                  type: "info"
+            });
+            note_ad = $('#note_admin').val();
+            id = $('#id_allegato').val();
+            stato_ad=$('#stato_allegato_admin').val()
+
+            console.log(note_ad);
+            $('#infoAllegato').modal('toggle');
+            $.ajax({
+                                    type: "POST",
+                                    url: "controller/updateIstanze.php?action=upAlleAdmin",
+                                    data: {id:id,note_admin:note_ad,stato_admin:stato_ad},
+                                    dataType: "json",
+                                    success: function(results){
+                                          Swal.fire({ 
+                                                
+                                                title: "Dati Veicolo Aggiornati",
+                                                type: "info"
+                                          });
+                                    
+                                                 if(stato_ad=='A'){
+                                                stato='<span class="badge badge-warning">In Lavorazione</span>';
+                                               }
+                                               if(stato_ad=='B'){
+                                                stato='<span class="badge badge-success">Accettato</span>';
+                                               }
+                                               if(stato_ad=='C'){
+                                                stato='<span class="badge badge-danger">Respinto</span>';
+                                               }
+                                               newstato= '#stato_admin_'+id;
+                                          $('#stato_admin_'+id).html(stato);
+                                          $('#note_admin_'+id).html(note_ad);
+                                     }
+            })
+            
+      };
+      function newInt(tipo){
+            
+            id_RAM = <?=$i['id_RAM']?>;
+            $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=newInt",
+                        data: {id_RAM:id_RAM,tipo:tipo},
+                        dataType: "json",
+                        success: function(id){
+                              $('#id_report').val(id);
+                              
+
+                        }
+            }) 
+            $('#reportModal').modal('toggle');         
+      }
+      $('#tipo_report').change(function(){
+            tipo=$('#tipo_report option:selected').val()
+            console.log(tipo);
+            if(tipo ==1){
+                  $('#reportModal').modal('toggle');
+                  newInt(tipo);
+            }
+      });
+      $('#tipo_integrazione').change(function(){
+            tipo=$('#tipo_integrazione option:selected').val()
+            $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=getTipoInt",
+                        data: {tipo:tipo},
+                        dataType: "json",
+                        success: function(data){
+                              console.log(data.frase)
+                              $('#descrizione_integrazione').html(data.frase);
+                              
+                              $('#lab_des').addClass("active");
+                              $('#lab_des').css("width","auto");
+                              $('#des_int,#div_btn_add_int').show();
+
+                        }
+            })          
+      });
+      progtr=1;
+      function addInt(){
+            id_RAM= <?=$i['id_RAM']?>;
+            id_report= $('#id_report').val();
+            tipo = $('#tipo_integrazione option:selected').text()
+            tipocod = $('#tipo_integrazione option:selected').val()
+            //desc =  $('#descrizione_integrazione').html();
+            desc =  $('#descrizione_integrazione').val();
+
+            btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+            btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+            $("#tab_int > tbody").append(html);
+           
+            $("#div_tab_int").show();
+            $('#des_int,#div_btn_add_int').hide();
+            $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=newIntDett",
+                        data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:tipocod,descrizione:desc},
+                        dataType: "json",
+                        success: function(data){
+                              console.log(data)
+                             
+
+                        }
+            })  
+            $("#div_tab_int").show();
+            $('#des_int,#div_btn_add_int').hide();
+            progtr++;    
+            
+            //alert(desc);
+      }
       $('#tipo_documento').change(function(){
             $('#campi_allegati').empty();
             tipo=$('#tipo_documento option:selected').val()
@@ -221,7 +337,7 @@ require_once 'headerInclude.php';
 
                                           field='<div class="form-group" style="margin-top: inherit;">'
                                                 field+='<label for="note_allegato">Note</label>'
-                                                field+='<textarea  class="form-control" id="note_allegato" rows="3" id="note_allegato" name="note_allegato"></textarea>'
+                                                field+='<textarea  class="form-control"  rows="3" id="note_allegato" name="note_allegato"></textarea>'
                                                 field+='</div>'
                                                 $('#campi_allegati').append(field); 
                                                 field='<div class="form-group">'
@@ -390,9 +506,9 @@ require_once 'headerInclude.php';
       $('#infoAllegato').on('hidden.bs.modal', function (e) {
             $('.modal-backdrop').css('z-index',1040);          
       }) 
-      $('##istruttoriaModal').on('show.bs.modal', function (e) {
+      $('#istruttoriaModal').on('hidden.bs.modal', function (e) {
             $('.modal-backdrop').css('z-index',1040);
-            $('#istruttoriaModal').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
+            
       })  
       function getTotDoc(tipo){
             $.ajax({
@@ -427,6 +543,62 @@ require_once 'headerInclude.php';
 
 
       }
+      function infoVeiIstr(id){
+            note = $('#info_note_admin').html();
+            stato =$('#info_stato_admin').text();
+            $('#note_istruttoria').val(note);
+            if(stato=="In Lavorazione"){
+                  stato='A';
+            }
+            if(stato=="Accettata"){
+                  stato='B';
+            }
+            if(stato=="Rigettata"){
+                  stato='C';
+            }
+            
+
+            console.log(stato);
+           
+            $('#stato_istruttoria').val(stato);
+            $('.bootstrap-select-wrapper select').selectpicker('refresh');
+            $('#istruttoriaModal').modal('toggle');
+            $('#istruttoriaModal').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
+            $('.modal-backdrop').css('z-index',1050);
+            $('#id_veicolo').val(id);
+          
+            $('#btn_info_istr').attr('onclick','upIstr('+id+')');
+      }
+      function upIstr(id){
+            note=$('#note_istruttoria').val()
+            stato=$('#stato_istruttoria option:selected').val();
+            $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=upIstruttoria",
+                        data: {id:id,note_admin:note,stato_admin:stato},
+                        dataType: "json",
+                        success: function(data){
+                              Swal.fire({ 
+                                                
+                                                title: "Dati Veicolo Aggiornati",
+                                                type: "info"
+                                          });
+                              $('#info_note_admin').html(note)
+                              if(stato=='A'){
+                                                stato='<span class="badge badge-warning">In Lavorazione</span>';
+                                               }
+                                               if(stato=='B'){
+                                                stato='<span class="badge badge-success">Accettata</span>';
+                                               }
+                                               if(stato=='C'){
+                                                stato='<span class="badge badge-danger">Rigettata</span>';
+                                               }
+                                               $('#info_stato_admin').html(stato)
+                                               $('#istruttoriaModal').modal('toggle');
+                        }
+            })
+
+      }
       function infoAlle(id){
             const formatter = new Intl.NumberFormat('it-IT', {
                   style: 'currency',
@@ -435,7 +607,7 @@ require_once 'headerInclude.php';
             })
             $('#infoAllegato').modal('toggle');
             $('#infoAllegato').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
-            $('.modal-backdrop').css('z-index',1051);
+            $('.modal-backdrop').css('z-index',1050);
 
             $('#info_tab_alle tbody').empty();
             $('#upinfoalle').empty();
@@ -445,9 +617,9 @@ require_once 'headerInclude.php';
                         data: {id:id},
                         dataType: "json",
                         success: function(data){
-                              console.log(data);
+                              //console.log(data);
                               test = $.parseJSON(data['allegato'].json_data)
-                             console.log(test);
+                             //console.log(test);
                               $.each(test, function(k, v) {
                                   
                                     campo = k.split("_");
@@ -466,22 +638,28 @@ require_once 'headerInclude.php';
 
                                     }
                                     $('#info_tab_alle').append('<tr><td>'+campo+'</td><td>'+v+'</td></tr>');
+                                    
 
                               })
                               view = '<button type="button" onclick="window.open(\'allegato.php?id='+id+'\', \'_blank\')" title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
-
+                              if(data['allegato'].note_admin==null){
+                                    data['allegato'].note_admin = '';
+                              }
                               down ='<a type="button" href="download.php?id='+id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
-                              stato_istanza = '<div class="bootstrap-select-wrapper" style="margin-top:30px;"><label>Stato Lavorazione</label><select id="stato_veicolo" nome="stato_veicolo "title="Seleziona Stato"><option value="A" style="background: #ffda73; color: #fff;">In Lavorazione</option><option value="B" style="background: #5cb85c; color: #fff;">Accettato</option><option value="C"style="background: #d9364f; color: #fff;">Rigettato</option></select></div>'
-                              note_istanza = '<div class="form-group" style="margin-top:30px;"><input type="text" class="form-control" id="note_admin" nome="note_admin"><label for="note_admin">Scivi note</label></div>'      
+                              stato_istanza = '<div class="bootstrap-select-wrapper" style="margin-top:30px;"><label>Stato Lavorazione</label><select id="stato_allegato_admin" nome="stato_allegato_admin "title="Seleziona Stato"><option value="A" style="background: #ffda73; color: #fff;">In Lavorazione</option><option value="B" style="background: #5cb85c; color: #fff;">Accettato</option><option value="C"style="background: #d9364f; color: #fff;">Rigettato</option></select></div>'
+                              note_istanza = '<div class="form-group" style="margin-top:30px;"><textarea rows="4" class="form-control" id="note_admin" nome="note_admin"  placeholder="inserire note">'+data['allegato'].note_admin+'</textarea><label for="note_admin" class="active">Scrivi note</label></div>'      
                               $('#info_tab_alle').append('<tr><td>Scarica Allegato</td><td>'+down+'</td></tr>');
                               $('#info_tab_alle').append('<tr><td>Visualizza allegato</td><td>'+view+'</td></tr>');
-                              $form = $("<form></form>");
-                             
+                              $form = $("<form method='post' id='info_alle_modal'></form>");
+                             id_alle="<input type='hidden' id='id_allegato' name='id_allegato' value='"+id+"'>";
+                             $form.append(id_alle);
                               $form.append(note_istanza);
                               $form.append(stato_istanza);
-                             
+                            
                               $('#upinfoalle').append($form);
                               $('.bootstrap-select-wrapper select').selectpicker('render');
+                              $('#stato_allegato_admin ').val(data['allegato'].stato_admin);
+                              $('.bootstrap-select-wrapper select').selectpicker('refresh');
                              
                              
 
@@ -1083,6 +1261,21 @@ require_once 'headerInclude.php';
                               $('#info_targa').html(data.targa)
                               $('#info_marca').html(data.marca)
                               $('#info_modello').html(data.modello)
+                              $('#info_note_admin').html(data.note_admin)
+                              $('#btn_istr').attr('onclick','infoVeiIstr('+data.id+')');
+
+                              
+                              if(data.stato_admin=='A'||data.stato_admin==null){
+                                    stato='<span class="badge badge-warning">In Lavorazione</span>';
+                              }
+                              if(data.stato_admin=='B'){
+                                    stato='<span class="badge badge-success">Accettata</span>';
+                              }
+                              if(data.stato_admin=='C'){
+                                   stato='<span class="badge badge-danger">Rigettata</span>';
+                              }
+
+                              $('#info_stato_admin').html(stato);
                               v = formatter.format(data.costo);
                               $('#info_costo').html(v)
                               if(data.tipo_acquisizione =="01"){
@@ -1105,27 +1298,26 @@ require_once 'headerInclude.php';
                                     success: function(alle){
                                         
                                          $.each(alle, function (k,v){
-                                               stato='<span class="badge badge-warning">Da Accettare</span>';
+                                               if(v.stato_admin=='A'){
+                                                stato='<span class="badge badge-warning">Da Accettare</span>';
+                                               }
+                                               if(v.stato_admin=='B'){
+                                                stato='<span class="badge badge-success">Accettato</span>';
+                                               }
+                                               if(v.stato_admin=='C'){
+                                                stato='<span class="badge badge-danger">Respinto</span>';
+                                               }
+                                               
+                                                     note_ad=v.note_admin;
+                                          
+                                               
                                                buttonA='<button type="button" onclick="infoAlle('+v.id+');"class="btn btn-warning btn-xs" title="Visualizza Info Allegato"style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
                                                 buttonB='<button type="button" onclick="window.open(\'allegato.php?id='+v.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;margin-right:10px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                                                 buttonC='<a type="button" href="download.php?id='+v.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
-
-                                                $.ajax({
-                                                      type: "POST",
-                                                      url: "controller/updateIstanze.php?action=getTipoDoc",
-                                                      data: {tipo:v.tipo_documento},
-                                                      dataType: "json",
-                                                      success: function(data){
-                                                            
-                                                            tipdocu=data[0].tdoc_descrizione
-                                                            row = '<tr><td>'+tipdocu+'</td><td>'+v.note+'</td><td>'+stato+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
-                                                            $('#doctab> tbody:last-child').append(row);
-                                                      }
-                                                                              
-                                                      
-                                                })
-                                        
-                                         
+                                               
+                                              
+                                        row = '<tr><td>'+v.tdoc_descrizione+'</td><td>'+v.note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
+                                                $('#doctab> tbody:last-child').append(row);
 
                                          })
                                           
