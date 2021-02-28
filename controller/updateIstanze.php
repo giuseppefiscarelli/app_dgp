@@ -120,11 +120,62 @@ switch ($action){
     case 'upAlleAdmin':
       $data=$_REQUEST;
 
-      $res = upAlleAdmin($data);
+      $res2 = upAlleAdmin($data);
+      $id = $data['id'];
+      $v =  getAllegatoID($id);
+      //var_dump($v);die;
+      $alleok = getAlleOk($v['id_ram'],$v['tipo_veicolo'],$v['progressivo']);
+      $alleno = getAlleNo($v['id_ram'],$v['tipo_veicolo'],$v['progressivo']);
+      $countAlle = countAlle($v['id_ram'],$v['tipo_veicolo'],$v['progressivo']);
+      $vei=getVeicolo($v['id_ram'],$v['tipo_veicolo'],$v['progressivo']);
 
+      //var_dump( $vei);die;
+      $res = array(
+              'response' => intVal($res2),
+              'accettati' =>  intVal($alleok),
+              'respinti' => intVal($alleno),
+              'totali' => intVal($countAlle),
+              'id_veicolo'=> $vei['id']
+      );
+              //var_dump($res);
+
+      //die;
       echo json_encode($res);
 
-    break;  
+    break;
+    case 'upAlleAdminIstanza':
+      $data=$_REQUEST;
+      //var_dump($data);
+      $id = $data['id'];
+      $v =  getAllegatoID($id);
+      $istanza = getIstanza($v['id_ram']);
+      $tipo_impresa = $istanza['tipo_impresa'];
+      $tipo = getTipDocumento($data['tipo_documento']);
+      $tipo_doc = $tipo[0]['tdoc_dichiarazioni'];
+      
+      //var_dump($findInstanza);die;
+      //die;
+      $res = upAlleAdmin($data);
+      if($res){
+        $findInstanza = findCheckIstanza($v['id_ram']);
+        $find = $findInstanza?$findInstanza:0;
+        if($find){
+          $res2 = upCheckIstanza($v['id_ram'],$tipo_impresa,$tipo_doc);
+        }else{
+          $res2 = newCheckIstanza($v['id_ram'],$tipo_impresa,$tipo_doc);
+        }
+       
+      }
+     
+      
+     // var_dump($v);die;
+      
+      
+
+      //die;
+      echo json_encode($v);
+
+    break;   
     case 'delAllegato':
       $id=$_REQUEST['id'];
       //var_dump($id);
@@ -210,8 +261,13 @@ switch ($action){
     case 'getInfoVei':
       $id=$_REQUEST['id'];
       $res =getInfoVei($id);
+      //var_dump($res);
+      $contr= calcolaContributo($res);
+      //var_dump($contr);
+      $res['val_contributo']=$contr[0]['contributo'];
+      $res['val_pmi']=$contr[0]['pmi']?$contr[0]['pmi']:'0.00';
+      $res['val_rete']=$contr[0]['rete']?$contr[0]['rete']:0.00;
 
-      
       
       echo json_encode($res);
 
@@ -223,6 +279,20 @@ switch ($action){
       $res =getAllegatoID($id);
       $tipo = getTipDocumento($res['tipo_documento']);
       $res['tipo_documento']=$tipo[0]['tdoc_descrizione'];
+      $json = array(
+        "allegato" => $res,
+        //"test" =>$res
+        
+      );
+      
+      echo json_encode($json);
+      //echo json_encode($res);
+    break;
+    case 'getAllegatoIstanza':
+      $id=$_REQUEST['id'];
+      $res =getAllegatoID($id);
+      $tipo = getTipDocumento($res['tipo_documento']);
+      $res['tipo_doc']=$tipo[0]['tdoc_descrizione'];
       $json = array(
         "allegato" => $res,
         //"test" =>$res
@@ -337,11 +407,164 @@ switch ($action){
       $data = $_REQUEST;
       $res = newInt($data);
       echo json_encode($res);
-      break;
+    break;
     case 'newIntDett': 
       $data = $_REQUEST;
       $res = newIntDett($data);
       echo json_encode($res);
 
-      break;
-   }
+    break;
+    case 'saveReport':
+      $data = $_REQUEST;
+      //var_dump($data);die;
+      $res = saveReport($data);
+      $res2 =getReportId($data['id']);
+      $res3 = getTipoRep($res2['tipo_report']);
+     
+      
+      $res2['descrizione'] = $res3;
+      $res2['data_inserimento'] = date("d/m/y H:i", strtotime($res2['data_ins']));
+      //var_dump($res2);
+      //die;
+      echo json_encode($res2);
+    break; 
+      
+    case 'delReport': 
+      $data = $_REQUEST;
+      $res= delReport($data['id']);
+      echo json_encode($res);
+    break;
+    case 'getReport': 
+      $id = $_REQUEST['id'];
+      $res= getReportId($id);
+      $res2 = getTipoRep($res['tipo_report']);
+      $res['descrizione_rep'] = $res2;
+      echo json_encode($res);
+    break;
+    case 'newMail':
+        $file=$_FILES['file_allegato_mail']?$_FILES['file_allegato_mail']:'';
+        $data=$_POST;
+        //var_dump($file);
+        //var_dump($data);
+
+        $defaultRep = $data['defaultreportId'];
+        if($defaultRep){
+          //var_dump($data);die;
+          $tipo_mail = $data['tipo_mail'];
+          
+          if($tipo_mail ==1){
+            $id=$data['defaultreportId'];
+
+            header('Location:../report/integrazione/int.php?id='.$id.'&tipo=D');
+            $rep= getReportId($id);
+            
+
+
+          }
+          if($tipo_mail ==2){
+           
+          }
+          if($tipo_mail ==3){
+            
+          }
+          if($tipo_mail ==4){
+            
+          }
+          $data['allegato'] = $rep['nome_file'];
+          $res = newMail($data);
+
+
+        }elseif($file['size']>0){
+        $tipo_mail = $data['tipo_mail'];
+        $id_RAM = $data['id_RAM'];
+        $docu_nome_file_origine =  $file['name'];
+        $path_parts = pathinfo($docu_nome_file_origine);
+        $docu_id_file_archivio = $id_RAM."_".$tipo_mail."_".strtotime("now").".".$path_parts['extension'];
+        move_uploaded_file($file['tmp_name'],$pathMail.$docu_id_file_archivio);
+        if(file_exists($pathMail.$docu_id_file_archivio)){
+          $data['allegato'] = $docu_id_file_archivio;
+          $res = newMail($data);
+  
+         }
+        }
+
+        echo json_encode($res);
+    break;
+
+    case 'checkCert':
+      $data = $_REQUEST;
+      $res = checkIstanza($data['id_ram']);
+      $tipo = $data['tipo'];
+      $note =  $res['note_'.$tipo]?$res['note_'.$tipo]:'';
+      $sel = $res[$tipo];
+      if(is_null($sel)){
+        $select = "A";
+      }
+      if($sel==1){
+        $select = "B";
+      }
+      if($sel=='0'){
+        $select = "C";
+      }
+      $json = array(
+        "note" => $note,
+        "select" => $select
+      );
+      echo json_encode($json);
+    break;  
+    case 'upCert':
+      $data = $_REQUEST;
+      //var_dump($data);die;
+      $res= upCert($data);
+      //var_dump($res);die;
+      
+        $c = getcheckIstanza($data);
+        //var_dump($c);die;
+        $n = $c['note_'.$data['tipo']];
+        $tipo = $c[$data['tipo']];
+        if(is_null($tipo)){
+          $stato_tipo ='<span class="badge badge-warning" >In Lavorazione</span>';
+        }
+        if ($tipo==1){
+          $stato_tipo ='<span class="badge badge-success" >Accettato</span>';
+        }
+        if($tipo =='0'){
+          $stato_tipo ='<span class="badge badge-danger" >Respinto</span>';
+        }
+        $json = array(
+
+          "note"=> $n,
+          "stato_tipo"=>$stato_tipo,
+          "tipo"=> $data['tipo']
+        );
+        echo json_encode($json);
+      
+     
+    break;  
+
+    case 'getDocR':
+      $id_RAM =$_REQUEST['id_RAM'];
+
+      $veicoli = getVeicoli($id_RAM);
+
+      foreach ($veicoli as $v){
+      
+        $tipo_veicolo = $v['tipo_veicolo'];
+        $progressivo =$v['progressivo'];
+        $allegati = getAllegatiR($id_RAM,$tipo_veicolo,$progressivo);
+        foreach ($allegati as $a){
+        
+            $a['tipo_documento'] = getTipDoc($a['tipo_documento']);
+           
+           
+          }
+          $v['allegati']=$allegati;  
+        }
+        
+      
+     // var_dump($res);
+    
+   
+      echo json_encode($veicoli);
+    break;
+    }

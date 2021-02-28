@@ -119,7 +119,7 @@ require_once 'view/template/top.php';
                     <div class="it-brand-wrapper" style="min-width: -webkit-fill-available;">
                       <div class="row">
                         <a href="#">
-                          <img src="images/logo.svg" alt="Home" style="max-height: -webkit-fill-available;    padding: 7px;">
+                          <img src="images/logo.svg" alt="Home" style="max-height: 50%;    padding: 7px;">
                           <div class="it-brand-text">
                             <h2 class="no_toc">Ministero
                             </h2>

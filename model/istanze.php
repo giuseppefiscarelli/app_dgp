@@ -35,6 +35,7 @@ function getIstanza(int $id){
   
   
 }
+
 function getIstanzaUser($email){
 
   /**
@@ -109,7 +110,7 @@ function getIstanze( array $params = []){
 
         
 
-        $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
         if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
@@ -751,6 +752,35 @@ function getAllegati($id_RAM,$tipo_veicolo,$progressivo){
 
 
 }
+function getAllegatiR($id_RAM,$tipo_veicolo,$progressivo){
+  /**
+  * @var $conn mysqli
+  */
+
+  $conn = $GLOBALS['mysqli'];
+  
+  $sql = 'SELECT * FROM allegato left join tipo_documento on allegato.tipo_documento = tipo_documento.tdoc_codice WHERE allegato.id_ram ='.$id_RAM.' and allegato.tipo_veicolo ='.$tipo_veicolo.' and allegato.progressivo='.$progressivo.' and allegato.attivo="s" and allegato.stato_admin="C" ';
+  //echo $sql;
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+    
+    while( $row = $res->fetch_assoc()) {
+     
+        $records[] = $row;
+     
+    }
+
+  }
+  
+  
+
+  return $records;
+
+
+
+}
 function upVeicolo($data){
   /**
    * @var $conn mysqli
@@ -869,8 +899,6 @@ function upAlleAdmin($data){
 
 
 }
-
-
 function getInfoVei($id){ 
   /**
   * @var $conn mysqli
@@ -1414,6 +1442,22 @@ function getVeicoli($id_RAM){
   return $records;
 
 }
+function getVeicolo($id_RAM,$tipo_veicolo,$progressivo){
+  
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = "SELECT * FROM veicolo  WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo";
+ // echo $sql;
+ $result = [];
+
+ $res = $conn->query($sql);
+ if($res && $res->num_rows){
+   $result = $res->fetch_assoc();
+   
+ }
+ return $result;
+
+}
 function countVeiIstanza($id_RAM){
 
   /**
@@ -1900,6 +1944,69 @@ function getTipoReport(){
 
 
 }
+function getReportIdRam($id_RAM){
+ /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = "SELECT * FROM report where id_RAM =$id_RAM and attivo = 1";
+  
+  
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+ return $records;
+}
+function getReportId($id){
+  /**
+    * @var $conn mysqli
+    */
+ 
+   $conn = $GLOBALS['mysqli'];
+ 
+   $sql = "SELECT * FROM report where id =$id";
+   
+   
+   $result = [];
+
+  $res = $conn->query($sql);
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
+}
+function getTipoRep($id){
+  
+   /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT descrizione FROM tipo_report where id='.$id;
+  //echo $sql;
+  $des = 0;
+
+  $res = $conn->query($sql);
+      if($res) {
+
+       $row = $res->fetch_assoc();
+       $des = $row['descrizione'];
+      }
+      return $des;
+}
 function getTipoInt($id){
   
   /**
@@ -1919,6 +2026,30 @@ function getTipoInt($id){
     
   }
   return $result;
+}
+function getDettReport($id){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = "SELECT * FROM dettaglio_report where id_report =$id";
+  
+  
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+ return $records;
 }
 function newInt($data){
   /**
@@ -1988,5 +2119,352 @@ function newIntDett($data){
 
 
 
+
+}
+function saveReport($data){
+  /**
+  * @var $conn mysqli
+  */
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $id=$data['id'];
+  $prot_RAM=$data['prot_RAM']?$data['prot_RAM']:'';
+ 
+  if($data['data_prot']){
+    $date_prot = $data['data_prot'];
+    $date = str_replace('/', '-', $date_prot);
+    $data_prot=date("Y-m-d", strtotime( $date));
+  }
+  
+  
+
+
+  $sql ='UPDATE report SET ';
+  $sql .= "attivo = 1, prot_RAM='$prot_RAM'";
+  if($data['data_prot']){
+    $sql .=", data_prot='$data_prot'";
+  }
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+
+
+}
+
+function delReport($id){
+  /**
+  * @var $conn mysqli
+  */
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+ 
+  
+
+
+  $sql ='UPDATE report SET ';
+  $sql .= "attivo = 0 ";
+  
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+
+
+}
+function newMail($data){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $user_ins = $_SESSION['userData']['email'];
+  $data_ins = date("Y-m-d H:i:s");
+  $stato_invio = "A";
+  $id_RAM = $conn->escape_string($data['id_RAM']);
+  $destinatario=$conn->escape_string($data['dest_mail']);
+  $oggetto=$conn->escape_string($data['oggetto_mail']);
+  $allegato=$conn->escape_string($data['allegato']);
+  $tipo_mail=$conn->escape_string($data['tipo_mail']);
+
+
+  
+
+  $result=0;
+  $sql ='INSERT INTO mail_pec (id,user_ins,data_ins,stato_invio,id_RAM,destinatario,oggetto,allegato,tipo_mail) ';
+  $sql .= "VALUES (NULL,'$user_ins','$data_ins','$stato_invio','$id_RAM','$destinatario','$oggetto','$allegato','$tipo_mail')  ";
+  
+ // echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+   // move_uploaded_file($file['tmp_name'],$pathAlle.$docu_id_file_archivio);
+
+    $last_id= mysqli_insert_id($conn);
+    
+  }else{
+    $last_id=0;  
+  }
+  return $last_id;
+
+
+
+
+}
+function calcolaContributo($data){
+  $conn = $GLOBALS['mysqli'];
+ // $conn = mysqli_connect('localhost', 'root', '', 'inv2020_git');
+  if (!$conn) {
+    die('Could not connect: ' . mysqli_connect_error());
+  }
+
+  $id_ram = $data['id_RAM'];
+  $tv = array_key_exists('tipo_veicolo',$data)?$data['tipo_veicolo']:'';
+  $progr = array_key_exists('progressivo',$data)?$data['progressivo']:'';
+  $costo = array_key_exists('costo',$data)?$data['costo']:'';
+  
+  $result = array();
+  
+  $valori = array("1"=>4000,"2"=>8000,"3"=>20000,"4"=>8000,"5"=>20000,"6"=>4000,"7"=>8000,"8"=>20000,"9"=>10000,"10"=>20000,"11"=>1000,"12"=>5000,"13"=>15000,"14"=>2000,"15"=>1500,"16"=>1500,"17"=>8500);
+  
+  if ($tv){
+    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. " AND tipo_veicolo = ".$tv." AND progressivo = ".$progr;
+  //	$sql = "SELECT istanza.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM istanza LEFT JOIN istanza_check ON istanza.id_ram = istanza_check.id_ram WHERE istanza.id_RAM = ".$id_ram;
+  } else {
+    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. "  order by veicolo.id_RAM, tipo_veicolo, progressivo";
+  }
+  //echo $sql;die;
+  $rs = mysqli_query($conn, $sql);
+  if (!$rs){
+    $result = array("result" => "KO");
+  //	array_push($result);			// errore DB
+    echo json_encode($result);
+    die;	
+  }
+  $i = 0;
+  while ($row = mysqli_fetch_array($rs)) {
+    $i ++;
+    if ($i == 1){
+      $pmi = $row['pmi_check'];
+      $rete = $row['rete_check'];
+      $impresa = $row['impresa_check'];	
+      $result = array("result" => "OK");
+    } 
+    $tv = $row['tipo_veicolo'];
+    $progr = $row['progressivo'];
+    $costo = $row['costo'];
+    $valore_contributo = 0;
+    $maggiorazione_pmi = 0;
+    $maggiorazione_rete = 0; 
+  
+    if ($tv != '15' && $tv != '16' ){
+      $valore_contributo = $valori[$tv];
+      if ($pmi) $maggiorazione_pmi = $valore_contributo * .10;
+      if ($rete) $maggiorazione_rete = $valore_contributo * .10;
+    } else {
+      if ($impresa == 3) $valore_contributo = 1500;
+      if ($impresa == 1){
+        $valore_contributo = $costo * .20;
+      } else {
+        if ($impresa == 2) $valore_contributo = $costo * .10;
+      }
+      if ($valore_contributo > 5000) $valore_contributo = 5000;
+    }
+  
+    $ele = array(
+      'id' => $row['id'],
+      'tv' => $row['tipo_veicolo'],	
+      'progr' => $row['progressivo'],	
+       'contributo' => $valore_contributo,
+       'pmi' => $maggiorazione_pmi,
+       'rete' => $maggiorazione_rete
+      );
+  
+    array_push($result, $ele);
+  
+  
+  }
+  
+  if (!$i){
+    $result = array("result" => "KO");
+  //  echo json_encode($result);		// errore per istanza non trovata (impossibile)
+    die;	
+  }
+return $result;
+  //echo json_encode($result);
+  
+  //var_dump($result);
+  
+  
+ // mysqli_free_result($rs);
+  
+ // die;
+  
+
+}
+function findCheckIstanza($id_ram){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $result['id']=0;
+  $sql ='SELECT id FROM istanza_check WHERE id_ram = '.$id_ram;
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+  
+  }
+  return $result['id'];
+
+}
+function  upCheckIstanza($id_ram,$tipo_impresa,$tipo){
+ /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  
+  $sql ='UPDATE istanza_check SET ';
+  $sql .= "$tipo = 1 ";
+  $sql .=' WHERE id_ram = '.$id_ram;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+}
+function  newCheckIstanza($id_ram,$tipo_impresa,$tipo){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $sql ="INSERT INTO istanza_check (id,id_ram,$tipo) ";
+  $sql .= "VALUES (NULL,$id_ram,1)  ";
+  
+ // echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    $last_id= mysqli_insert_id($conn);
+    
+  }else{
+    $last_id=0;  
+  }
+  return $last_id;
+}
+function checkIstanza($id_ram){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  
+  $sql ='SELECT * FROM istanza_check WHERE id_ram = '.$id_ram;
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+  
+  }
+  return $result;
+
+}
+function  upCert($data){
+  /**
+    * @var $conn mysqli
+    */
+ 
+   $conn = $GLOBALS['mysqli'];
+   $result=0;
+   $id_ram = $data['id_ram'];
+   $tipo = $data['tipo'];
+   $note = $data['note'];
+   $campo_note = 'note_'.$tipo;
+   $check = $data['tipo'];
+   if($data['select']=="A"){
+     $select = 'null';
+   }
+   if($data['select']=="B"){
+    $select = 1;
+    }
+    if($data['select']=="C"){
+      $select = 0;
+    }
+
+   
+   $sql ='UPDATE istanza_check SET ';
+   $sql .= "$tipo = $select, $campo_note = '$note' ";
+   $sql .=' WHERE id_ram = '.$id_ram;
+   //print_r($data);
+   //echo $sql;//die;
+   $res = $conn->query($sql);
+   
+   if($res ){
+     $result =  $conn->affected_rows;
+     
+   }else{
+     $result -1;  
+   }
+   return $result;
+}
+ function getcheckIstanza($data){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $id_ram = $data['id_ram'];
+  $sql ='SELECT * FROM istanza_check WHERE id_ram = '.$id_ram;
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+   
+  
+  }
+  return $result;
+
+  
 
 }

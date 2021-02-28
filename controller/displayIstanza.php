@@ -31,6 +31,7 @@
   }else{
   $notifiche = getNotificheuser($i['id_RAM']);
  // var_dump(count($notifiche));
+ $_SESSION['userData']['check_ram'] = $i['id_RAM'];
   require_once 'view/istanze/istanza_page.php';
  }
 ?>

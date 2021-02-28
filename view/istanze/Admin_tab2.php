@@ -1,11 +1,7 @@
 <div class="row">
 <?php
-        
-
-            
-
-            require "alleistanza2.php";
-            ?>
+ //   require "alleistanza2.php";
+?>
 </div>
 <div class="row">
     <table class="table">
@@ -42,9 +38,7 @@
                     }else{
                         $color="success";
                         $text="Presenti";
-                    }
-
-                    
+                    }                    
                     if($v['tipo_acquisizione']=='01'){
                         $countDocVeicolo =$countDocVeicolo-1;
                     }
@@ -52,7 +46,7 @@
                     $alleok = 0;
                     $alleno= 0;
                     $countAlle =0;
-                    $alleok = getAlleValid($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
+                    $alleok = getAlleOk($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
                     $alleok = intval($alleok);
                     //var_dump($alleok);
                     $alleno = getAlleNo($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
@@ -121,13 +115,13 @@
                         </tr>
                     <tr>
                         <td rowspan="2">Documenti Veicolo</td><td rowspan="2"><span style="width: -webkit-fill-available;"class="badge badge-<?=$countType?>"><?=$countDocVeicoloInfo?> di <?=$countDocVeicolo?></span></td>
-                            <td>Accettati</td><td><span style="width: -webkit-fill-available;"class="badge badge-<?=$alleType?>"><?=$alleok?> di <?=$countAlle?></span></td>
+                            <td>Accettati</td><td id="accettati_<?=$v['id']?>"><span style="width: -webkit-fill-available;"class="badge badge-<?=$alleType?>"><?=$alleok?> di <?=$countAlle?></span></td>
                     </tr>
                     <tr>
-                        <td>Respinti</td><td><span style="width: -webkit-fill-available;"class="badge badge-<?=$allenoType?>"><?=$alleno?> di <?=$countAlle?></span></td>
+                        <td>Respinti</td><td id="respinti_<?=$v['id']?>"><span style="width: -webkit-fill-available;"class="badge badge-<?=$allenoType?>"><?=$alleno?> di <?=$countAlle?></span></td>
                     </tr>
                     <tr>
-                    <td>Dati Veicolo</td><td><span class="badge badge-<?=$color?>" style="width: -webkit-fill-available;"><?=$text?></span></td><td colspan="3"></td>
+                    <td>Dati Veicolo</td><td id="tot_alle_<?=$v['id']?>"><span class="badge badge-<?=$color?>" style="width: -webkit-fill-available;"><?=$text?></span></td><td colspan="3"></td>
                     </tr>        
                     </table>
                    
@@ -183,15 +177,47 @@
                 <h5 style="font-weight: bold;">Dati Istruttoria</h5>
                 
                     <table class="table table-sm">
+                    <input type="hidden" id="info_contr" value="">
+                    <input type="hidden" id="info_contr_pmi" value="">
+                    <input type="hidden" id="info_contr_rete" value="">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Calcolato</th>
+                            <th>Accordato</th>
+                        </tr>
+                    </thead>
                         <tbody>
-                            <tr><td>Valore Contributo</td><td></td></tr>
-                            <tr><td>Maggiorazione PMI</td><td><?=$i['pmi']=='Off'?'Non Presente':'Presente'?></td></tr>
-                            <tr><td>Maggiorazione RETE</td><td><?=$i['rete']=='Off'?'Non Presente':'Presente'?></td></tr>
-                            <tr><td>Note</td><td id="info_note_admin"></td></tr>
-                            <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td></tr>
+                            <tr>
+                                <td>Valore Contributo</td>
+                                <td id="contributo"></td>
+                                <td><span class="input-number input-number-currency">
+                                    <input type="number" id="contr_up" name="contr_up" value="0.00" min="0">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Maggiorazione PMI</td>
+                                <td id="contr_pmi"></td>
+                                <td> <span class="input-number input-number-currency">
+                                    <input type="number" id="contr_up_pmi" name="contr_up_pmi" value="0.00" min="0">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Maggiorazione RETE</td>
+                                <td id="contr_rete"></td>
+                                <td><span class="input-number input-number-currency">
+                                    <input type="number" id="contr_up_rete" name="contr_up_rete" value="0.00" min="0">
+                                    </span></td></tr>
+                            <tr><td>Note</td><td  colspan="2"> <div class="form-group">
+                                            <textarea id="info_note_admin" rows="3"></textarea>
+                                         
+                                            </div></td></tr>
+                            <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td><td></td></tr>
                         </tbody>
                         <tfoot>
-                            <tr><td colspan=2><button type="button" id="btn_istr"class="btn btn-primary" onclick="infoVeiIstr();">
+                            <tr><td colspan="3"><button type="button" id="btn_istr"class="btn btn-primary" style="float:right;" onclick="infoVeiIstr();">
                                     Aggiorna dati
                             </button></td></tr>
                         </tfoot>
@@ -272,10 +298,13 @@
       <div class="modal-body">
         <form method="get" action="" id="formIstr">
         <input type="hidden" id="id_veicolo" name= "id_veicolo" value="">
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom:15px;">
                     <input type="text" class="form-control"name="note_istruttoria" placeholder="Scrivi Nota" id="note_istruttoria">
                     <label for="exampleInputText">Note</label>
                 </div>
+              
+          
+                
 
              
           <div class="bootstrap-select-wrapper">

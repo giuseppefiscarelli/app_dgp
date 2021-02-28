@@ -38,17 +38,17 @@ require_once 'headerInclude.php';
 
 <script type="text/javascript"> 
 
-      $(document).ready(function() {
-            $('.it-date-datepicker').datepicker({
-                  inputFormat: ["dd/MM/yyyy"],
-                  outputFormat: 'dd/MM/yyyy',
-                  
-            });
-      
-    
-      });  
+$(document).ready(function() {
+      $('.it-date-datepicker').datepicker({
+            inputFormat: ["dd/MM/yyyy"],
+            outputFormat: 'dd/MM/yyyy',
+            
+      });
+
+
+});  
    
-      function checkAlle(){
+    function checkAlle(){
            
             
             var fa = document.getElementById("file_allegato");
@@ -78,12 +78,43 @@ require_once 'headerInclude.php';
                   }
             
             
-      }
-      $('#form_infovei').submit(function( event ) {
+    }
+    function checkAlleMail(){
+           
+            
+           var fa = document.getElementById("file_allegato_mail");
+           var f = fa.files[0]
+           
+           //var len = fa.files.length;
+           console.log(f)
+          // console.log(len)
+           
+
+                
+
+                 if (f.type==='application/pdf') {
+                       if (f.size > 3388608 || f.fileSize > 3388608)
+                 {
+                 //show an alert to the user
+                 
+                 Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
+
+                 //reset file upload control
+                 fa.value = null;
+                 }
+                      
+                 }else{
+                       Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF", "warning");
+                       fa.value = null;
+                 }
+           
+           
+    }
+    $('#form_infovei').submit(function( event ) {
             id_RAM = <?=$i['id_RAM']?>;
 
             prog=$('#info_prog').val()
-         
+            
             idvei = $('#info_idvei').val()
             targa=$('#targa').val()
             marca=$('#marca').val()
@@ -99,7 +130,7 @@ require_once 'headerInclude.php';
                                     dataType: "html",
                                     success: function(msg)
                                     {     
-                                        
+                                          
                                           $('#targa_'+idvei).html(targa)
                                           $('#marca_'+idvei).html(marca)
                                           $('#modello_'+idvei).html(modello)
@@ -107,12 +138,12 @@ require_once 'headerInclude.php';
                                           
                                           $('#costo_'+idvei).html(deuro)
                                           if(tipo=='01'){
-                                        
+                                          
                                                 tipo="Acquisto";
                                                 checkdoc = $('#c_t_d_'+tipo_veicolo+'_'+prog).html()
                                                 checkdoc = parseInt(checkdoc)
                                                 checkdoc =parseInt(totdoc)-1;
-                                              
+                                                
                                                 $('#c_t_d_'+tipo_veicolo+'_'+prog).html(checkdoc)
                                                 $('#btn_docmodal_'+idvei).attr('onclick','docmodal('+prog+','+tipo_veicolo+','+id_RAM+',\'01\');')
                                                 
@@ -120,7 +151,7 @@ require_once 'headerInclude.php';
                                           if(tipo=='02'){
                                                 tipo='Leasing';
                                                 checkdoc=parseInt(totdoc)
-                                               
+                                                
                                                 $('#c_t_d_'+tipo_veicolo+'_'+prog).html(checkdoc)
                                                 $('#btn_docmodal_'+idvei).attr('onclick','docmodal('+prog+','+tipo_veicolo+','+id_RAM+',\'02\');')
                                           }
@@ -137,7 +168,7 @@ require_once 'headerInclude.php';
                                           $("#btn_up_"+prog+"_"+idvei).html(html)
                                           htmlck ='<i class="fa fa-check" style="color:green" aria-hidden="true"></i> Dati Veicolo presenti'
                                           $("#ckeck_info_vei_"+prog+"_"+idvei).html(htmlck)
-    
+
 
                                     },
                                     error: function()
@@ -148,13 +179,13 @@ require_once 'headerInclude.php';
                               });
 
                               
-         $("#infoModal").modal('hide');
-         $(this)[0].reset();
-         $("#tipo_acquisizione").val('').selectpicker("refresh");
-         event.preventDefault();
-           
-      });
-      function info_alle(){
+            $("#infoModal").modal('hide');
+            $(this)[0].reset();
+            $("#tipo_acquisizione").val('').selectpicker("refresh");
+            event.preventDefault();
+            
+    });
+    function info_alle(){
            
             Swal.fire({ 
                   html:true,
@@ -172,7 +203,10 @@ require_once 'headerInclude.php';
                                     url: "controller/updateIstanze.php?action=upAlleAdmin",
                                     data: {id:id,note_admin:note_ad,stato_admin:stato_ad},
                                     dataType: "json",
-                                    success: function(results){
+                                    success: function(data){
+
+                                          console.log(data);
+                                          if(data.response){
                                           Swal.fire({ 
                                                 
                                                 title: "Dati Veicolo Aggiornati",
@@ -191,85 +225,597 @@ require_once 'headerInclude.php';
                                                newstato= '#stato_admin_'+id;
                                           $('#stato_admin_'+id).html(stato);
                                           $('#note_admin_'+id).html(note_ad);
+                                          }
+
+                                          id = data.id_veicolo;
+                                          ok= data.accettati;
+                                          no= data.respinti;
+                                          tot= data.totali;
+                                          if(ok==tot){
+                                                
+                                                badgeA=' <span style="width: -webkit-fill-available;"class="badge badge-success">'+data.accettati+' di '+data.totali+'</span>'; 
+                                               
+                                               
+                                          }else{
+                                               
+                                                badgeA=' <span style="width: -webkit-fill-available;"class="badge badge-warning">'+data.accettati+' di '+data.totali+'</span>';
+                                          }
+                                          if(no == 0){
+                                               
+                                                badgeB=' <span style="width: -webkit-fill-available;"class="badge badge-success">'+data.respinti+' di '+data.totali+'</span>'; 
+                                          }else{
+                                             
+                                                badgeB=' <span style="width: -webkit-fill-available;"class="badge badge-danger">'+data.respinti+' di '+data.totali+'</span>';
+                                          }
+                                          $('#accettati_'+id).html( badgeA);
+                                          $('#respinti_'+id).html( badgeB);
+                                         
                                      }
             })
             
-      };
-      function newInt(tipo){
+    };
+    
+    function newInt(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report').val(id);
+                                $('#prev_btn').attr('onclick','prevRep('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport('+id+');');
+                                
+
+                            }
+                }) 
             
-            id_RAM = <?=$i['id_RAM']?>;
-            $.ajax({
-                        type: "POST",
-                        url: "controller/updateIstanze.php?action=newInt",
-                        data: {id_RAM:id_RAM,tipo:tipo},
-                        dataType: "json",
-                        success: function(id){
-                              $('#id_report').val(id);
+    }
+    
+    function newRig(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report2').val(id);
+                                $('#prev_btn2').attr('onclick','prevRep2('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    function newVer(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report3').val(id);
+                                $('#prev_btn3').attr('onclick','prevRep3('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    function newIna(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report4').val(id);
+                                $('#prev_btn4').attr('onclick','prevRep4('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    function saveReport(id){
+                prot_RAM=$('input[name="prot_RAM"]').val();
+                data_prot=$('input[name="data_prot"]').val();
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=saveReport",
+                            data: {id:id,prot_RAM:prot_RAM,data_prot:data_prot},
+                            dataType: "json",
+                            success: function(data){
+                                
+                                Swal.fire("Operazione Completata!", "Report Salvato", "info");
+                                $('div[id^="reportModal"]').modal('hide');
+                                td1=data.data_inserimento+'<br>'+data.user_ins;
+                                td2=data.descrizione;
+                                td3='Richiesta non inviata';
+                                if(data.tipo_report==1){
+                                    td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                }else if(data.tipo_report==2){
+                                    td4='<button type="button" onclick="prevRep2('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                              }else if(data.tipo_report==3){
+                                    td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+
+                              }else if(data.tipo_report==4){
+                                    td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+
+                              }
+                              td4+='<button type="button" onclick="delRep('+data.id+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                                
+                                
+                                
+                                
+                                html= '<tr><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
+                                $("#reportTable > tbody").append(html);
+                            }
+                }) 
+
+    }
+    
+    $('#tipo_report').change(function(){
+        tipo=$('#tipo_report option:selected').val()
+        
+        //console.log(tipo);
+        if(tipo ==1){
+                $('#reportModal').modal('toggle');
+                newInt(tipo);
+                id_RAM = <?=$i['id_RAM']?>;
+                  $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=getDocR",
+                    data: {id_RAM:id_RAM},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data)
+                            $.each(data.respinti , function (k,v){
+                                  console.log(k)
+                                  console.log(v)
+                            })
+                          
+
+                    }
+                  })         
+        }
+        if(tipo ==2){
+                $('#reportModal2').modal('toggle');
+                newRig(tipo);
+        }
+        if(tipo ==3){
+                $('#reportModal3').modal('toggle');
+                newVer(tipo);
+               
+        }
+        if(tipo ==4){
+                $('#reportModal4').modal('toggle');
+                $("#tab_int4 > tbody").empty();
+                newIna(tipo);
+        }
+        $('#tipo_report').val("")
+        $('.bootstrap-select-wrapper select').selectpicker('refresh');
+
+    });
+    $('#tipo_integrazione').change(function(){
+        tipo=$('#tipo_integrazione option:selected').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=getTipoInt",
+                    data: {tipo:tipo},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data.frase)
+                            $('#descrizione_integrazione').html(data.frase);
+                            
+                            $('#lab_des').addClass("active");
+                            $('#lab_des').css("width","auto");
+                            $('#des_int,#div_btn_add_int').show();
+
+                    }
+        })          
+    });
+    progtr=1;
+    function addInt(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report').val();
+        tipo = $('#tipo_integrazione option:selected').text()
+        tipocod = $('#tipo_integrazione option:selected').val()
+        //desc =  $('#descrizione_integrazione').html();
+        desc =  $('#descrizione_integrazione').val();
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+        html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+        $("#tab_int > tbody").append(html);
+        
+        $("#div_tab_int").show();
+        $('#des_int,#div_btn_add_int').hide();
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:tipocod,descrizione:desc},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data)
+                            
+
+                    }
+        })  
+        $("#div_tab_int").show();
+        $('#des_int,#div_btn_add_int').hide();
+        progtr++;    
+        
+        //alert(desc);
+    }
+    progtr2=1;
+    function addInt2(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report2').val();
+        tipo = 'Preavviso al Rigetto'
+        tipocod = 2
+        //desc =  $('#descrizione_integrazione').html();
+        desc =  $('#motivazione').val();
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+        html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr2+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+        $("#tab_int2 > tbody").append(html);
+        
+        $("#div_tab_int2").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:tipocod,descrizione:desc},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data)
+                            $('#motivazione').val("");
+
+                    }
+        })  
+        //$("#div_tab_int").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        progtr2++;    
+        
+        //alert(desc);
+    }
+    progtr3=1;
+    function addInt3(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report3').val();
+        
+        tipocod = 3
+        //desc =  $('#descrizione_integrazione').html();
+        //desc =  $('#motivazione').val();
+        num_prot=$('#num_prot3').val()
+        dat_prot=$('#dat_prot3').val()
+        data_verbale=$('#data_verbale').val()
+
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+       
+        
+        $("#div_tab_int3").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:1,descrizione:num_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#num_prot').val("");
+                            tipo = 'Numero protocollo Domanda Ammissione'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+num_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int3 > tbody").append(html);
                               
 
-                        }
-            }) 
-            $('#reportModal').modal('toggle');         
-      }
-      $('#tipo_report').change(function(){
-            tipo=$('#tipo_report option:selected').val()
-            console.log(tipo);
-            if(tipo ==1){
-                  $('#reportModal').modal('toggle');
-                  newInt(tipo);
+                    }
+        })
+        progtr3++;  
+        $.ajax({
+              
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:2,descrizione:dat_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#dat_prot').val("");
+                            tipo='Data protocollo Domanda Ammissione';
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+dat_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int3 > tbody").append(html);
+
+                    }
+        }) 
+        progtr3++; 
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:3,descrizione:data_verbale},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data verbale'
+                            $('#data_verbale').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+data_verbale+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int3 > tbody").append(html);
+
+                    }
+        }) 
+        progtr3++; 
+
+
+
+
+
+
+
+
+        //$("#div_tab_int").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        progtr3++;    
+        
+        //alert(desc);
+    }
+    progtr4=1;
+    function addInt4(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report4').val();
+        
+        tipocod = 4
+        //desc =  $('#descrizione_integrazione').html();
+        //desc =  $('#motivazione').val();
+
+        
+       
+       
+
+      
+        
+        
+
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+       
+        
+        $("#div_tab_int4").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        num_prot=$('#num_prot_in').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:1,descrizione:num_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#num_prot_in').val("");
+                            tipo = 'Numero protocollo Domanda Ammissione'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+                              
+
+                    }
+        })
+        progtr4++;  
+        dat_prot=$('#dat_prot_in').val()
+        $.ajax({
+              
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:2,descrizione:dat_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#dat_prot_in').val("");
+                            tipo='Data protocollo Domanda Ammissione';
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+dat_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+        data_verbale=$('#data_verbale_in').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:3,descrizione:data_verbale},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data verbale'
+                            $('#data_verbale_in').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_verbale+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++;
+        num_prot_rig = $('#num_prot_rig').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:4,descrizione:num_prot_rig},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#num_prot_rig').val("");
+                            tipo = 'Numero protocollo Preavviso di rigetto'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot_rig+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+                              
+
+                    }
+        })
+        progtr4++;  
+        data_prot_rig = $('#dat_prot_rig').val()
+        $.ajax({
+              
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:5,descrizione:data_prot_rig},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#dat_prot_rig').val("");
+                            tipo='Data protocollo Preavviso di rigetto';
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_rig+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+        data_prot_pre = $('#dat_prot_pre').val()
+        
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:6,descrizione:data_prot_pre},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data nota Preavviso'
+                            $('#dat_prot_pre').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_pre+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+        mot_ina=$('#mot_ina').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:7,descrizione:mot_ina},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Motivazione di Inassibilità'
+                            $('#mot_ina').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+mot_ina+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+
+
+
+
+
+
+
+
+        //$("#div_tab_int").show();
+        //$('#des_int,#div_btn_add_int').hide();
+       
+        
+        //alert(desc);
+    }
+    $('#form_allegato_mail').submit(function(event){
+        event.preventDefault();
+        defaultRep = $("#defaultreportId").val();
+        console.log(defaultRep);
+        newRep=$("#file_allegato_mail").val();
+            if(defaultRep){
+                  tipo = $('#tipo_report_mail').val()
+                  if(tipo ==1){
+                        
+                  }
+                  formData = new FormData(this);
+                  $.ajax({
+                            
+                              url: "controller/updateIstanze.php?action=newMail",
+                              type:"POST",
+                              data: formData,
+                              dataType: 'json',
+                              contentType: false,
+                              cache: false,
+                              processData:false,
+                              
+                              success: function(data){
+                                    
+                                    
+                                    Swal.fire("Operazione Completata!", "ccorrettamente.", "success");
+                              
+                              }
+                        })
             }
-      });
-      $('#tipo_integrazione').change(function(){
-            tipo=$('#tipo_integrazione option:selected').val()
-            $.ajax({
-                        type: "POST",
-                        url: "controller/updateIstanze.php?action=getTipoInt",
-                        data: {tipo:tipo},
-                        dataType: "json",
-                        success: function(data){
-                              console.log(data.frase)
-                              $('#descrizione_integrazione').html(data.frase);
-                              
-                              $('#lab_des').addClass("active");
-                              $('#lab_des').css("width","auto");
-                              $('#des_int,#div_btn_add_int').show();
-
-                        }
-            })          
-      });
-      progtr=1;
-      function addInt(){
-            id_RAM= <?=$i['id_RAM']?>;
-            id_report= $('#id_report').val();
-            tipo = $('#tipo_integrazione option:selected').text()
-            tipocod = $('#tipo_integrazione option:selected').val()
-            //desc =  $('#descrizione_integrazione').html();
-            desc =  $('#descrizione_integrazione').val();
-
-            btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
-            btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
-            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
-            $("#tab_int > tbody").append(html);
-           
-            $("#div_tab_int").show();
-            $('#des_int,#div_btn_add_int').hide();
-            $.ajax({
-                        type: "POST",
-                        url: "controller/updateIstanze.php?action=newIntDett",
-                        data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:tipocod,descrizione:desc},
-                        dataType: "json",
-                        success: function(data){
-                              console.log(data)
-                             
-
-                        }
-            })  
-            $("#div_tab_int").show();
-            $('#des_int,#div_btn_add_int').hide();
-            progtr++;    
+            else if(newRep){
+                  var htmltext='<div class="progress"><div class="progress-bar" role="progressbar" id="progress-bar2"style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>'
             
-            //alert(desc);
-      }
+            
+                  Swal.fire({ 
+                        html:true,
+                        title: "Caricamento in Corso",
+                        html:htmltext,
+                        type: "info",
+                        allowOutsideClick:false,
+                        showConfirmButton:false
+                  });
+                  formData = new FormData(this);
+                  $.ajax({
+                              xhr: function() {
+                                    var xhr = new window.XMLHttpRequest();
+                                    xhr.upload.addEventListener("progress", function(evt) {
+                                    if (evt.lengthComputable) {
+                                          var percentComplete = ((evt.loaded / evt.total) * 100);
+                                          $("#progress-bar2").width(percentComplete + '%');
+                                          
+                                    }
+                                    }, false);
+                                    return xhr;
+                              },
+                              url: "controller/updateIstanze.php?action=newMail",
+                              type:"POST",
+                              data: formData,
+                              dataType: 'json',
+                              contentType: false,
+                              cache: false,
+                              processData:false,
+                              beforeSend: function(){
+                                    $("#progress-bar2").width('0%');
+                                    $('#uploadStatus').html('<img src="images/loading.gif"/>');
+                              },
+                              error:function(){
+                                    
+                                    Swal.fire("Operazione Non Completata!", "Allegato non caricato.", "warning");
+                              
+                              },
+                              success: function(data){
+                                    
+                                    
+                                    Swal.fire("Operazione Completata!", "Mail generata correttamente.", "success");
+                              
+                              }
+                        })
+
+            }
+
+    })
       $('#tipo_documento').change(function(){
             $('#campi_allegati').empty();
             tipo=$('#tipo_documento option:selected').val()
@@ -379,7 +925,7 @@ require_once 'headerInclude.php';
             formData = new FormData(this);
             
                   $.ajax({
-                              xhr: function() {
+                        xhr: function() {
                               var xhr = new window.XMLHttpRequest();
                               xhr.upload.addEventListener("progress", function(evt) {
                                   if (evt.lengthComputable) {
@@ -389,7 +935,7 @@ require_once 'headerInclude.php';
                                   }
                               }, false);
                               return xhr;
-                          },
+                        },
                         url: "controller/updateIstanze.php?action=newAllegato",
                         type:"POST",
                         data: formData,
@@ -510,6 +1056,10 @@ require_once 'headerInclude.php';
             $('.modal-backdrop').css('z-index',1040);
             
       })  
+      $('#nav-3').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href") // activated tab
+             alert(target);
+      });
       function getTotDoc(tipo){
             $.ajax({
                         type: "POST",
@@ -546,6 +1096,14 @@ require_once 'headerInclude.php';
       function infoVeiIstr(id){
             note = $('#info_note_admin').html();
             stato =$('#info_stato_admin').text();
+
+            contr=$('#info_contr').val()
+            pmi=$('#info_contr_pmi').val()
+            rete=$('#info_contr_rete').val()
+            $('#contr_up').val(contr)
+            $('#contr_up_pmi').val(pmi)
+
+            $('#contr_up_rete').val(rete)
             $('#note_istruttoria').val(note);
             if(stato=="In Lavorazione"){
                   stato='A';
@@ -565,6 +1123,7 @@ require_once 'headerInclude.php';
             $('#istruttoriaModal').modal('toggle');
             $('#istruttoriaModal').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
             $('.modal-backdrop').css('z-index',1050);
+            $('.modal-backdrop').css('opacity', 0.4)
             $('#id_veicolo').val(id);
           
             $('#btn_info_istr').attr('onclick','upIstr('+id+')');
@@ -594,6 +1153,7 @@ require_once 'headerInclude.php';
                                                 stato='<span class="badge badge-danger">Rigettata</span>';
                                                }
                                                $('#info_stato_admin').html(stato)
+                                               $('#stato_istruttoria_'+id).html(stato)
                                                $('#istruttoriaModal').modal('toggle');
                         }
             })
@@ -651,8 +1211,8 @@ require_once 'headerInclude.php';
                               $('#info_tab_alle').append('<tr><td>Scarica Allegato</td><td>'+down+'</td></tr>');
                               $('#info_tab_alle').append('<tr><td>Visualizza allegato</td><td>'+view+'</td></tr>');
                               $form = $("<form method='post' id='info_alle_modal'></form>");
-                             id_alle="<input type='hidden' id='id_allegato' name='id_allegato' value='"+id+"'>";
-                             $form.append(id_alle);
+                              id_alle="<input type='hidden' id='id_allegato' name='id_allegato' value='"+id+"'>";
+                              $form.append(id_alle);
                               $form.append(note_istanza);
                               $form.append(stato_istanza);
                             
@@ -671,7 +1231,104 @@ require_once 'headerInclude.php';
 
 
 
-      }     
+      } 
+      function infoAlleIstanza(id){
+            const formatter = new Intl.NumberFormat('it-IT', {
+                  style: 'currency',
+                  currency: 'EUR',
+                  minimumFractionDigits: 2
+            })
+            $('#infoDichiarazioni').modal('toggle');
+           $('#info_tab_alle_istanza,#upinfoalle_istanza').empty()
+            $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=getAllegatoIstanza",
+                        data: {id:id},
+                        dataType: "json",
+                        success: function(data){
+                              console.log(data.allegato);
+                              if(data.allegato.stato_admin=='A'||data.allegato.stato_admin==null){
+                                    stato_admin = '<span class="badge badge-warning">In Lavorazione</span>';
+                              }
+                              if(data.allegato.stato_admin=='B'){
+                                    stato_admin = '<span class="badge badge-success">Accettata</span>';
+                              }
+                              if(data.allegato.stato_admin=='C'){
+                                    stato_admin = '<span class="badge badge-danger" >Rigettata</span>';
+                              }
+                              view = '<button type="button" onclick="window.open(\'allegato.php?id='+id+'\', \'_blank\')" title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                              down ='<a type="button" href="download.php?id='+id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
+
+                              tr ='<tr><td>Tipo documento</td><td>'+data.allegato.tipo_doc+'</td></tr>'
+                              tr +='<tr><td>Stato Documento</td><td id="stato_doc_istanza_'+id+'">'+stato_admin+'</td></tr>'
+                              tr += '<tr><td>Visualizza Allegato</td><td>'+view+'</td></tr>'
+                              tr += '<tr><td>Scarica Allegato</td><td>'+down+'</td></tr>'
+                              $('#info_tab_alle_istanza').append(tr)
+                              stato_istanza = '<div class="bootstrap-select-wrapper" style="margin-top:30px;"><label>Stato Lavorazione</label><select id="stato_allegato_admin_istanza" nome="stato_allegato_admin "title="Seleziona Stato"><option value="A" style="background: #ffda73; color: #fff;">In Lavorazione</option><option value="B" style="background: #5cb85c; color: #fff;">Accettato</option><option value="C"style="background: #d9364f; color: #fff;">Rigettato</option></select></div>'
+                              if(data.allegato.note_admin==null){
+                                    data.allegato.note_admin = '';
+                              }
+                              note_istanza = '<div class="form-group" style="margin-top:30px;"><textarea rows="4" class="form-control" id="note_admin_istanza" nome="note_admin"  placeholder="inserire note">'+data.allegato.note_admin+'</textarea><label for="note_admin" class="active">Scrivi note</label></div>'      
+                              form = $("<form method='post' id='info_alle_modal_istanza'></form>");
+                              id_alle="<input type='hidden' id='id_allegato_istanza' name='id_allegato' value='"+id+"'>";
+                              tipo="<input type='hidden' id='tipo_allegato_istanza' name='id_allegato' value='"+data.allegato.tipo_documento+"'>";
+                              form.append(id_alle);
+                              form.append(tipo);
+                              form.append(note_istanza);
+                              form.append(stato_istanza);
+                            
+                              $('#upinfoalle_istanza').append(form);
+                              $('.bootstrap-select-wrapper select').selectpicker('render');
+                              $('#stato_allegato_admin_istanza ').val(data.allegato.stato_admin);
+                              $('.bootstrap-select-wrapper select').selectpicker('refresh');
+                              
+                             
+                             
+
+
+                            
+                                                          
+                        }
+                  })
+
+
+
+      }
+      function info_alle_istanza(){
+           
+          
+           note_ad = $('#note_admin_istanza').val();
+           id = $('#id_allegato_istanza').val();
+           stato_ad=$('#stato_allegato_admin_istanza').val()
+           tipo= $('#tipo_allegato_istanza').val()
+           
+           
+           //$('#infoAllegato').modal('toggle');
+           $.ajax({
+                                   type: "POST",
+                                   url: "controller/updateIstanze.php?action=upAlleAdminIstanza",
+                                   data: {id:id,note_admin:note_ad,stato_admin:stato_ad,tipo_documento:tipo},
+                                   dataType: "json",
+                                   success: function(data){
+
+                                         console.log(data);
+                                         if(data){
+                                         Swal.fire({ 
+                                               
+                                               title: "Dati Istanza Aggiornati",
+                                               icon: "info"
+                                         });
+                                   
+                                             
+                                      
+                                         }
+
+                                      
+                                        
+                                    }
+           })
+           
+      };     
       function infomodal(prog,id){
          $('#form_infovei')[0].reset();
          $("#tipo_acquisizione").html('<option value="01">Acquisto</option><option value="02">Leasing</option>');
@@ -1251,6 +1908,13 @@ require_once 'headerInclude.php';
             })
                   $('#doctab tbody').empty();
                   $('#modalinfovei').modal('toggle');
+                  $('#contributo').html("")
+                 
+                  $('#contr_pmi').html("")
+                  $('#contr_rete').html("")
+                  $('#info_contr').val("")
+                  $('#info_contr_pmi').val("")
+                  $('#info_contr_rete').val("")
                   $.ajax({
                         type: "POST",
                         url: "controller/updateIstanze.php?action=getInfoVei",
@@ -1258,6 +1922,18 @@ require_once 'headerInclude.php';
                         dataType: "json",
                         success: function(data){
                               $('#id_veicolo').val(data.id)
+                              contr = parseFloat(data.val_contributo).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+
+                              val_pmi = parseFloat(data.val_pmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                              val_rete = parseFloat(data.val_rete).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                              $('#info_contr').val(data.val_contributo)
+                              $('#info_contr_pmi').val(data.val_pmi)
+                              $('#info_contr_rete').val(data.val_rete)
+
+                              $('#contributo').html(contr)
+                              $('#contr_pmi').html(val_pmi)
+                              $('#contr_rete').html(val_rete)
+
                               $('#info_targa').html(data.targa)
                               $('#info_marca').html(data.marca)
                               $('#info_modello').html(data.modello)
@@ -1381,6 +2057,66 @@ require_once 'headerInclude.php';
             })
 
 
+      }
+      function infoCert(idRam,tipo,title){
+
+           // alert(idRam+' tipo:'+tipo)
+            $('#certModal')
+            .find('.modal-title').text(title).end()  
+            .modal('toggle');
+            $.ajax({
+                  type: "POST",
+                  url: "controller/updateIstanze.php?action=checkCert",
+                  data: {id_ram:idRam,tipo:tipo},
+                  dataType: "json",
+                  success: function(data){
+
+                        //console.log(data);
+                        $('#tipo_cert').val(tipo)
+                        $('#note_check_cert').text(data.note)
+                        $('#stato_check_cert').val(data.select);
+                        $('#stato_check_cert').selectpicker('render');
+                        $('#btnSaveCert').attr('onclick','saveCert('+idRam+',\''+tipo+'\');')
+                        
+                  
+                              
+                        
+                        
+
+                        
+                        
+                  }
+           })
+      }
+      function saveCert(idRam,tipo){
+
+            select=$('#stato_check_cert option:selected').val()
+            note = $('#note_check_cert').val()
+            $.ajax({
+                  type: "POST",
+                  url: "controller/updateIstanze.php?action=upCert",
+                  data: {id_ram:idRam,tipo:tipo,select:select,note:note},
+                  dataType: "json",
+                  success: function(data){
+                        console.log(data)
+                      
+                        $('#note_'+tipo).html(data.note)
+                        $('#stato_'+tipo).html(data.stato_tipo)
+                      
+                        if(data){
+                              $('#certModal').modal('toggle')
+
+                        }
+                      
+                  
+                              
+                        
+                        
+
+                        
+                        
+                  }
+           })
       }
             
 </script>

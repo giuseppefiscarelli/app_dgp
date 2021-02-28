@@ -114,19 +114,19 @@
 	</page_header>
 
     <table style="margin-left:400px;">
-         <tr><td>Roma li,</td><td></td></tr>
+         <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_ins']))?></td></tr>
     </table>
 
     <table style="margin-left:400px;">
-        <tr><td>Spett.le</td><td></td><td></td></tr>
-        <tr><td></td><td colspan="2">Ragione Sociale</td></tr>
-        <tr><td></td><td colspan="2">indirizzo line 1</td></tr>
-        <tr><td></td><td colspan="2">indirizzo line 2</td></tr>
-        <tr><td></td><td colspan="2">indirizzo line 3</td></tr>
+        <tr><td>Spett.le</td><td ></td><td></td></tr>
+        <tr><td></td><td colspan="2" style="width:50mm;justify-content:left;font-weight:bold;"><?=$user['ragione_sociale']?></td></tr>
+        <tr><td></td><td colspan="2" style="width:50mm;justify-content:left;"><?=$user['indirizzo_impr']?>, <?=$user['civico_impr']?></td></tr>
+        <tr><td></td><td colspan="2" style="width:50mm;justify-content:left;"><?=$user['cap_impr']?> - <?=$user['comune_impr']?> (<?=$user['prov_impr']?>)</td></tr>
+        
     </table>
     <table style="margin-top:45px;">
-        <tr><td>Prot n°</td><td></td></tr>
-        <tr><td>Raccomandata via pec all&#39;indirizzo:</td><td></td></tr>
+        <tr><td style="text-align:right;">Prot n°</td><td  style="font-weight:bold;"> <?=$rep['prot_RAM']?></td></tr>
+        <tr><td style="text-align:right;">Raccomandata via pec all&#39;indirizzo: </td><td  style="font-weight:bold;"> <?=$user['pec_impr']?></td></tr>
     </table>
     <hr style="height:0.1px;">
 
@@ -140,9 +140,24 @@
             effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.A. In / 2019 abbiamo
             necessità di ricevere i seguenti chiarimenti e/o documenti:</td></tr>
     </table>
-  
+
+    <div class="row"style="height:280px;margin-top:20px;">               
+    <table>
+        <?php
+        //var_dump($dettagli);
+        foreach($dettagli as $d){?>
+        <tr><td style="text-align:justify;font-weight:bold;">- <?=$d['descrizione']?></td></tr>
+       <?php
+     }?>                
     
-    <div style="margin-top:300px;">
+    
+    </table>
+                
+    </div> 
+
+
+    
+    <div>
     <table >
         <tr><td style="text-align:justify;">Pertanto, ai sensi e per gli effetti dell&#39;art. 10, comma 3 del 11 ottobre 2019,
 Vi invitiamo a fornirci la suddetta documentazione entro e non oltre il termine perentorio di

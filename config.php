@@ -14,7 +14,9 @@ return [
 
     ],
     'numLinkNavigator' => 4,
-    $pathAlle = "/inv2020/allegati/"
+    $pathAlle = "/inv2020/allegati/",
+    $pathReport= "/inv2020/report/",
+    $pathMail= "/inv2020/mailatt/"
 ]
     
 ;

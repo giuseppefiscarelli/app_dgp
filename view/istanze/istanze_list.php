@@ -107,7 +107,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                       <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
                                     <?php
                                     if(!isUserUser()){?>
-                                    <button type="button" onclick="infoIstanza(<?=$i['id']?>);"class="btn btn-success" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i></button>
+                                    <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i></button>
 
                                     <?php  
                                     }
@@ -123,7 +123,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                       <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
                                       <?php
                                     if(!isUserUser()){?>
-                                    <button type="button" onclick="infoIstanza(<?=$i['id']?>);"class="btn btn-success" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i></button>
+                                    <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i></button>
 
                                     <?php  
                                     }

@@ -16,6 +16,8 @@ require_once  '../../functions.php';
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
+
+
 $tipo = $_GET['tipo'];
 /*
 //$contrId = intval($data['id_contratto']);
@@ -40,7 +42,7 @@ try {
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->pdf->SetProtection(array('print','copy'));
     ob_start();
-    include dirname(__FILE__).'/res/integrazione.php';
+    include dirname(__FILE__).'/res/ammissione.php';
     
      
     
@@ -49,13 +51,7 @@ try {
     $html2pdf->writeHTML($content);
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
-    if($tipo =="P"){
-        $html2pdf->output($filename.".pdf",'I');
-    }
-    if($tipo =="D"){
-        $html2pdf->output($path.$filename.".pdf",'FD');
-    }
-   
+    $html2pdf->output($path.$filename.".pdf",'FI');
 } catch (Html2PdfException $e) {
     $html2pdf->clean();
 

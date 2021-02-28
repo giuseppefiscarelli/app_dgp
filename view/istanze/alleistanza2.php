@@ -29,60 +29,25 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
                     <div id="accordionalle" class="collapse-div collapse-background-active" role="tablist">
                         <div class="collapse-header" id="headingAlle">
                             <button data-toggle="collapse" data-target="#accordionAllegati" aria-expanded="false" aria-controls="accordionAllegati">
-                            <i class="fa fa-paperclip" aria-hidden="true"></i> Allegati Dichiarazioni
+                            <i class="fa fa-paperclip" aria-hidden="true"></i>Allegati Dichiarazioni 
                             </button>
                         </div>
-                        <div id="accordionAllegati" class="collapse " role="tabpanel" aria-labelledby="headingAlle" data-parent="#accordionalle">
+                        <div id="accordionAllegati" class="collapse" role="tabpanel" aria-labelledby="headingAlle" data-parent="#accordionalle">
                             <div class="collapse-body">
                                 <div class="row">
                                     <div class=" col-12">
                                         <table class="table table-borderless table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th style="width:75%">Tipo</th>
-                                                    <th style="width:11%">Data Caricamento</th>
-                                                    <th style="width:14%"></th>
+                                                    <th style="width:65%">Tipo</th>
+                                                    <th style="width:10%">Data Caricamento</th>
+                                                    <th style="width:10%">Stato</th>
+                                                    <th style="width:15%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size:15px;">
                                             <?php
-                                            /*
-                                            $data_ampl = false;
-                                            $file_ampl =  false;
-                                            $data_rete = false;
-                                            $file_rete =  false;
-                                            $data_pmi=false;
-                                            $file_pmi=false;
-                                            if($alleMag){
-                                                foreach($alleMag as$aM){
-                                                    $tipo=$aM['docu_id_file_archivio'];
-                                                    $tipo = explode("_",$tipo);
-                                                    $tipo = $tipo[1];
-                                                    //var_dump($tipo);
-                                                    if($tipo == "pmi"){
-
-                                                        $data_pmi = date("d/m/Y",strtotime($aM['data_agg']));
-                                                        $file_pmi = file_exists($pathAlle.$aM['docu_id_file_archivio']);
-                                                        $id_alle_pmi=$aM['id'];
-                                                       
-                                                       
-                                                    }elseif($tipo == "rete"){
-
-                                                        $data_rete = date("d/m/Y",strtotime($aM['data_agg']));
-                                                        $file_rete =  file_exists($pathAlle.$aM['docu_id_file_archivio']);
-                                                        $id_alle_rete =$aM['id'];
-                                                    }elseif($tipo == "ampl"){
-
-                                                        $data_ampl = date("d/m/Y",strtotime($aM['data_agg']));
-                                                        $file_ampl =  file_exists($pathAlle.$aM['docu_id_file_archivio']);
-                                                        $id_alle_ampl =$aM['id'];
-                                                    }
-
-                                                     
-                                                }
-
-
-                                            }*/
+                                         
 
                                                 
                                                     if($i['pmi']=="Yes"){
@@ -92,6 +57,7 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
                                                         $tipo="pmi";
                                                         $tipo_doc= $pmi;
                                                         if($allepmi){
+                                                            
                                                             $alle=$allepmi;
                                                             $data_alle = date("d/m/Y",strtotime($alle['data_agg']));
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
@@ -137,6 +103,10 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
                                                 
 
                                                     ?>
+                                            
+                                              
+
+
                                             </tbody>
 
                                         </table>
@@ -151,3 +121,44 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
             </div>
         </div>
  
+
+
+
+ <!-- modals -->
+ <div class="modal fade" tabindex="-1" role="dialog" id="infoDichiarazioni">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">info Allegato Dichiarazioni
+                </h5>
+            </div>
+            <div class="modal-body">
+            
+                <div class="container">
+                    <table class="table table-sm"  id="info_tab_alle_istanza">
+                    
+                    <tbody>
+                        
+                    </tbody>
+                    </table>
+                    <div id="upinfoalle_istanza">
+                        
+                    
+                    </div>
+                
+                </div>
+                
+
+                
+                
+                
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Chiudi</button>
+                <button class="btn btn-primary btn-sm"  onclick="info_alle_istanza();" type="button">Salva Modifichce</button>
+                
+            </div>
+        </div>
+    </div>
+</div>

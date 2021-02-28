@@ -45,9 +45,9 @@ try {
      
     
     $content = ob_get_clean();
-    $path = $pathReport;
+    $path = $pathMail;
     $html2pdf->writeHTML($content);
-    $filename = $rep['id']."_".$rep['id_RAM']."_".time();
+    $filename = $rep['id_RAM']."_".$rep['tipo_report']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
     if($tipo =="P"){
         $html2pdf->output($filename.".pdf",'I');

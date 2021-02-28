@@ -39,23 +39,21 @@ try {
     $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5, 5, 5, 2),true);
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->pdf->SetProtection(array('print','copy'));
+   
+    //$html2pdf->setDefaultFont('roboto');
     ob_start();
-    include dirname(__FILE__).'/res/integrazione.php';
+    include dirname(__FILE__).'/res/inammissibilita.php';
     
      
     
     $content = ob_get_clean();
     $path = $pathReport;
     $html2pdf->writeHTML($content);
+
+    //$html2pdf->addFont($family, $style, $file);
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
-    if($tipo =="P"){
-        $html2pdf->output($filename.".pdf",'I');
-    }
-    if($tipo =="D"){
-        $html2pdf->output($path.$filename.".pdf",'FD');
-    }
-   
+    $html2pdf->output($path.$filename.".pdf",'FI');
 } catch (Html2PdfException $e) {
     $html2pdf->clean();
 
