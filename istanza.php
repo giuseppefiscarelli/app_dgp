@@ -375,6 +375,8 @@ $(document).ready(function() {
     }
     
     $('#tipo_report').change(function(){
+      $('#veiNonConf').hide()
+      $('#tabVeiNonConf >tbody').empty()
         tipo=$('#tipo_report option:selected').val()
         
         //console.log(tipo);
@@ -389,9 +391,14 @@ $(document).ready(function() {
                     dataType: "json",
                     success: function(data){
                             console.log(data)
-                            $.each(data.respinti , function (k,v){
-                                  console.log(k)
-                                  console.log(v)
+                            $.each(data , function (k,v){
+                                 targa= v.targa
+                                 tdoc= v.tipo_documento
+                                 badge='<span class="badge badge-primary">'+targa+'</span><br>'
+                                 tr='<tr><td>'+badge+'</td><td>'+tdoc+'</td></tr>'
+                                 $('#veiNonConf').show()
+                                 $('#tabVeiNonConf >tbody').append(tr)
+
                             })
                           
 
@@ -735,6 +742,7 @@ $(document).ready(function() {
         
         //alert(desc);
     }
+
     $('#form_allegato_mail').submit(function(event){
         event.preventDefault();
         defaultRep = $("#defaultreportId").val();
@@ -825,20 +833,20 @@ $(document).ready(function() {
                                     data: {tipo:tipo},
                                     dataType: "json",
                                     success: function(results){     
-                                        
+                                          
                                           $.each(results,function(k,v){
-                                             
-                                               required= v.richiesto
-                                               if(required=="o"){
-                                                     req = true
-                                               }
-                                               if(required =="f"){
-                                                     req=false
-                                               }
-                                               
-                                               var namecampo = v.nome_campo.replace(" ", "_");
-                                            
-                                           if (v.tipo_valore=='d'){
+                                                
+                                                required= v.richiesto
+                                                if(required=="o"){
+                                                      req = true
+                                                }
+                                                if(required =="f"){
+                                                      req=false
+                                                }
+                                                
+                                                var namecampo = v.nome_campo.replace(" ", "_");
+                                                
+                                                if (v.tipo_valore=='d'){
                                                 field='<div class="it-datepicker-wrapper "><div class="form-group">'
                                                 field+='<input onblur="testDate(this)" onkeypress="return event.charCode >= 47 && event.charCode <= 57" class="form-control it-date-datepicker" id="'+namecampo+'"name="'+namecampo+'" maxlength="10"type="text"  placeholder="inserisci la data">'
                                                 field+='<label for="'+namecampo+'">'+v.nome_campo+'</label></div></div>'
@@ -849,17 +857,17 @@ $(document).ready(function() {
                                                       outputFormat: 'dd/MM/yyyy',
                                                 });
                                                 $("#"+namecampo).attr("required", req);
-                                           }
-                                           if (v.tipo_valore=='t'){
+                                                }
+                                                if (v.tipo_valore=='t'){
                                                 field='<div class="form-group" style="margin-top: inherit;">'
                                                 field+='<label for="'+namecampo+'">'+v.nome_campo+'</label>'
                                                 field+='<input oninput="this.value = this.value.toUpperCase();" type="text" class="form-control" id="'+namecampo+'" name="'+namecampo+'" >'
                                                 field+='</div>'
-                                               
+                                                
                                                 $('#campi_allegati').append(field)
                                                 $("#"+namecampo).attr("required", req);
-                                           }
-                                           if (v.tipo_valore=='i'){
+                                                }
+                                                if (v.tipo_valore=='i'){
                                                 field='<label for="'+namecampo+'" class="input-number-label">'+v.nome_campo+'</label>'
                                                 field+='<span class="input-number input-number-currency">'
                                                 field+='<input type="number" id="'+namecampo+'" name="'+namecampo+'" step="any" value="0"  >'
@@ -867,17 +875,17 @@ $(document).ready(function() {
                                                 
                                                 $('#campi_allegati').append(field)
                                                 $("#"+namecampo).attr("required", req);
-                                           }
-                                           if (v.tipo_valore=='n'){
+                                                }
+                                                if (v.tipo_valore=='n'){
                                                 field='<label for="'+namecampo+'" class="input-number-label">'+v.nome_campo+'</label>'
                                                 field+='<span class="input-number">'
                                                 field+='<input type="number" id="'+namecampo+'" name="'+namecampo+'" step="any" value="0" >'
                                                 field+='</span>'
-                                              
+                                                
                                                 $('#campi_allegati').append(field)
                                                 $("#"+namecampo).attr("required", req);
-                                           }
-                                                    
+                                                }
+                                                      
 
                                           })
 
@@ -891,7 +899,7 @@ $(document).ready(function() {
                                                 field+='<input type="file" accept="application/pdf" class="form-control-file" id="file_allegato" onchange="checkAlle();" name="file_allegato"required><small>dimensioni max 3MB  - accettati solo PDF</small></div>'
 
                                                 $('#campi_allegati').append(field) 
-    
+
 
                                     },
                                     error: function()
@@ -907,8 +915,8 @@ $(document).ready(function() {
       $('#form_allegato').submit(function(event){
             $('#docModal').modal('toggle');
             var htmltext='<div class="progress"><div class="progress-bar" role="progressbar" id="progress-bar"style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>'
-      
-       
+
+            
             Swal.fire({ 
                   html:true,
                   title: "Caricamento in Corso",
@@ -917,22 +925,22 @@ $(document).ready(function() {
                   allowOutsideClick:false,
                   showConfirmButton:false
             });
-           
+            
             event.preventDefault();
             tipo=$('#tipo_documento option:selected').attr("data-content")
             tipo= tipo.replace(/(<([^>]+)>)/ig,"");
-         
+            
             formData = new FormData(this);
             
                   $.ajax({
                         xhr: function() {
                               var xhr = new window.XMLHttpRequest();
                               xhr.upload.addEventListener("progress", function(evt) {
-                                  if (evt.lengthComputable) {
-                                      var percentComplete = ((evt.loaded / evt.total) * 100);
-                                      $("#progress-bar").width(percentComplete + '%');
-                                     
-                                  }
+                                    if (evt.lengthComputable) {
+                                          var percentComplete = ((evt.loaded / evt.total) * 100);
+                                          $("#progress-bar").width(percentComplete + '%');
+                                          
+                                    }
                               }, false);
                               return xhr;
                         },
@@ -944,18 +952,18 @@ $(document).ready(function() {
                         cache: false,
                         processData:false,
                         beforeSend: function(){
-                                $("#progress-bar").width('0%');
-                                $('#uploadStatus').html('<img src="images/loading.gif"/>');
-                            },
-                            error:function(){
+                                    $("#progress-bar").width('0%');
+                                    $('#uploadStatus').html('<img src="images/loading.gif"/>');
+                              },
+                              error:function(){
                               
-                                Swal.fire("Operazione Non Completata!", "Allegato non caricato.", "warning");
-                             
-                            },
+                                    Swal.fire("Operazione Non Completata!", "Allegato non caricato.", "warning");
+                              
+                              },
                         success: function(data){
                               
                               
-                                Swal.fire("Operazione Completata!", "Allegato caricato correttamente.", "success");
+                                    Swal.fire("Operazione Completata!", "Allegato caricato correttamente.", "success");
                               tipoalle=data.tipo_veicolo
                               progalle=data.progressivo
                               checkDocVei(tipoalle,progalle)
@@ -972,7 +980,7 @@ $(document).ready(function() {
                               
                               row='<tr><td>'+tipo+'</td><td>'+data_ins+' '+ora_ins+'</td><td>'+data.note+'</td><td>'+buttonA+' '+buttonB+' '+buttonC+' '+buttonD+'</td></tr>'
                               $('#tab_doc_'+tipoalle+'_'+progalle+' > tbody:last-child').append(row);
-                             
+                              
                         }
                   })
 
@@ -980,7 +988,7 @@ $(document).ready(function() {
       $('#form_allegato_mag').submit(function(event){
             $('#docMaggiorazione').modal('toggle');
             var htmltext='<div class="progress"><div class="progress-bar" role="progressbar" id="progress-bar"style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>'
-      
+
                   Swal.fire({ 
                         html:true,
                         title: "Caricamento in Corso",
@@ -992,23 +1000,23 @@ $(document).ready(function() {
                   
             event.preventDefault();
             tipo=$('#tipo_alle').val()
-           
+            
             formData = new FormData(this);
             
                   $.ajax({
                               xhr: function() {
                               var xhr = new window.XMLHttpRequest();
                               xhr.upload.addEventListener("progress", function(evt) {
-                                
-                                  if (evt.lengthComputable) {
-                                      var percentComplete = ((evt.loaded / evt.total) * 100);
                                     
-                                      $("#progress-bar").width(percentComplete + '%');
-                                     
-                                  }
+                                    if (evt.lengthComputable) {
+                                          var percentComplete = ((evt.loaded / evt.total) * 100);
+                                    
+                                          $("#progress-bar").width(percentComplete + '%');
+                                          
+                                    }
                               }, false);
                               return xhr;
-                          },
+                              },
                         url: "controller/updateIstanze.php?action=newAllegatoMag",
                         type:"POST",
                         data: formData,
@@ -1017,19 +1025,19 @@ $(document).ready(function() {
                         cache: false,
                         processData:false,
                         beforeSend: function(){
-                                $("#progress-bar").width('0%');
-                                $('#uploadStatus').html('<img src="images/loading.gif"/>');
-                            },
-                            error:function(){
+                                    $("#progress-bar").width('0%');
+                                    $('#uploadStatus').html('<img src="images/loading.gif"/>');
+                              },
+                              error:function(){
                               
-                                Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
-                             
-                            },
+                                    Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
+                              
+                              },
                         success: function(data){
-                                                       
-                                Swal.fire("Operazione Completata!", "Allegato caricato correttamente.", "success");
+                                                            
+                                    Swal.fire("Operazione Completata!", "Allegato caricato correttamente.", "success");
                               
-                             
+                              
                               data_ins=convData(data.data_agg)
                               $('#data_'+tipo).html(data_ins)
                               $('#upload_'+tipo).hide()
@@ -1039,9 +1047,9 @@ $(document).ready(function() {
                               $('#down_'+tipo).attr("href","download.php?id="+data.id)
                               //id_table= formData.get('doc_idvei')
                               $('#file_allegato').val(null);
-                            
                               
-                             
+                              
+                              
                         }
                   })
 
@@ -1058,8 +1066,45 @@ $(document).ready(function() {
       })  
       $('#nav-3').on('shown.bs.tab', function (e) {
             var target = $(e.target).attr("href") // activated tab
-             alert(target);
+                  alert(target);
       });
+      $('#annForm').on('submit',function(e){
+            e.preventDefault();
+            formData = $(this).serialize();
+                Swal.fire({
+                  title: 'Vuoi annullarel\'istanza?',
+                  text: "Non potrai più riattivarla",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'SI Conferma annullamento!',
+                  cancelButtonText: 'NO, Esci senza Annullare!'
+                  }).then((result) => {
+                        if (result.isConfirmed) {
+                              $.ajax({
+                                    url: "controller/updateIstanze.php?action=annIstanza",
+                                    data: formData,
+                                    dataType: "json",
+                                    success: function(results){      
+                                          if(results==true)
+                                          {
+                                                Swal.fire({
+                                                      title:  'Annullata!',
+                                                      text:  'L\'istanza è stata annullata correttamente.',
+                                                      icon: 'success'
+                                                }).then(()=>{
+                                                      location.reload();
+                                                })       
+                                          }
+                                    }
+                              })
+                        }else{
+                              $('#offModal').modal('toggle')
+                        }
+                  })
+
+      })
       function getTotDoc(tipo){
             $.ajax({
                         type: "POST",
@@ -2118,7 +2163,7 @@ $(document).ready(function() {
                   }
            })
       }
-            
+
 </script>
 
 </body>

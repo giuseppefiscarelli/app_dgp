@@ -185,65 +185,24 @@ switch ($action){
 
     break;
     
+    
     case 'getDocVei':
       $data=$_REQUEST['tipovei'];
       $id_RAM = $_REQUEST['id_RAM'];
       //var_dump($data);
       $res = getTipoDocumento($data);
-     // var_dump($res);
-      /*  if($res){
-        $check = array();
-          foreach($res as $r){
-            $datas['tipo_documento']=$r['codice_tipo_documento'];
-            $datas['id_ram']=$id_RAM;
-            $datas['tipo_veicolo']=$data;
-            $datas['progressivo']=$_REQUEST['progressivo'];
+      //var_dump($res);die;
+      $ckrott =getIstanza($id_RAM);
+      if($ckrott['rott1']=='Yes'||$ckrott['rott2']=='Yes'||$ckrott['rott3']=='Yes'||$ckrott['rott4']=='Yes'||$ckrott['rott5']=='Yes'||$ckrott['rott6']=='Yes'||$ckrott['rott7']=='Yes'||$ckrott['rott8']=='Yes'||$ckrott['rott9']=='Yes'||$ckrott['rott10']=='Yes'){
+        $doc10 = array(
+          'codice_tipo_documento' => "10"
+        );
+        $doc14 = array(
+          'codice_tipo_documento' => "14"
+        );
+        array_push($res,$doc10,$doc14);
+      }
 
-            $res2= checkSelectTipoDoc($datas);
-          // var_dump($res2);
-            if($res2){
-              
-              //echo "ok tipo veicolo".$res2['tipo_veicolo'];
-              //echo "ok progressivo".$res2['progressivo'];
-              //echo "ok tipo_documento".$res2['tipo_documento'];
-            // array_push
-            }
-
-          }
-        }
-      */
-
-
-      echo json_encode($res);
-
-    break  ;
-    case 'getDocVei':
-      $data=$_REQUEST['tipovei'];
-      $id_RAM = $_REQUEST['id_RAM'];
-      //var_dump($data);
-      $res = getTipoDocumento($data);
-     // var_dump($res);
-      /*  if($res){
-        $check = array();
-          foreach($res as $r){
-            $datas['tipo_documento']=$r['codice_tipo_documento'];
-            $datas['id_ram']=$id_RAM;
-            $datas['tipo_veicolo']=$data;
-            $datas['progressivo']=$_REQUEST['progressivo'];
-
-            $res2= checkSelectTipoDoc($datas);
-          // var_dump($res2);
-            if($res2){
-              
-              //echo "ok tipo veicolo".$res2['tipo_veicolo'];
-              //echo "ok progressivo".$res2['progressivo'];
-              //echo "ok tipo_documento".$res2['tipo_documento'];
-            // array_push
-            }
-
-          }
-        }
-      */
 
 
       echo json_encode($res);
@@ -546,25 +505,39 @@ switch ($action){
       $id_RAM =$_REQUEST['id_RAM'];
 
       $veicoli = getVeicoli($id_RAM);
-
+      $arr =array();
       foreach ($veicoli as $v){
       
         $tipo_veicolo = $v['tipo_veicolo'];
         $progressivo =$v['progressivo'];
         $allegati = getAllegatiR($id_RAM,$tipo_veicolo,$progressivo);
-        foreach ($allegati as $a){
+        //var_dump($allegati);
         
-            $a['tipo_documento'] = getTipDoc($a['tipo_documento']);
+        foreach ($allegati as $a){
+          $a['id_RAM']= $a['id_ram'];
+         // var_dump($a);die; 
+          $res=getInfoVeiData($a);       
+            $a['tipo_documento'] = getTipDoc($a['tipo_documento']);           
            
-           
+            $a['targa']=$res['targa'];
+            array_push($arr,$a);
           }
-          $v['allegati']=$allegati;  
+         
+         
         }
         
       
-     // var_dump($res);
+     
     
    
-      echo json_encode($veicoli);
+      echo json_encode($arr);
+    break;
+
+    case 'annIstanza':
+        $data = $_REQUEST;
+
+        $res=annullaIstanza($data);
+        echo json_encode($res);
+
     break;
     }

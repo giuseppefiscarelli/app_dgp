@@ -32,7 +32,7 @@ require_once 'model/menu.php';
                             <img src="images/logo.svg" alt="Home" style="max-height: 50px;    padding: 7px;">
                               <div class="it-brand-text">
                                 <b class="no_toc" style="color:white;">Ministero</b>
-                                <b class="no_toc d-none d-md-block" style="color:white;font-size: 11px;">delle Infrastrutture e dei Trasporti</b>
+                                <b class="no_toc d-none d-md-block" style="color:white;font-size: 11px;">delle Infrastrutture<br> e della Mobiltà Sostenibili</b>
                               </div>
                           </div>
                         </li>
@@ -51,7 +51,8 @@ require_once 'model/menu.php';
                                                                                                                                                                                                                                     ?></span></a></li>
                         <!--<li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='newsletter.php'?'active':''?>" href="newsletter.php"><span><i class="fa fa-paper-plane" aria-hidden="true"></i> Newsletter</span></a></li>
                           -->
-                        
+                          <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='pec.php'?'active':''?>" href="pec.php"><span><i class="fa fa-envelope" aria-hidden="true"></i> Pec Comunicazioni </span></a></li>
+
                       </ul>
                     </div>
                   </div>

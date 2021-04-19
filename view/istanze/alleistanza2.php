@@ -50,7 +50,7 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
                                          
 
                                                 
-                                                    if($i['pmi']=="Yes"){
+                                                    if($i['pmi']=="Yes"||$i['nr_1']>0||$i['nr_2']>0){//aggiungere 3 condizione 
                                                         $descrizione=$pmidoc;
                                                         $alle=0;
                                                         $file=0;

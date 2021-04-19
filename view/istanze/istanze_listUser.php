@@ -4,7 +4,7 @@
   ?>
 
 <div class="row">
-  <div class="col-8 ">
+  <div class="col-12 ">
     <!--start card-->
     <div class="card-wrapper">
       <div class="card">
@@ -25,31 +25,21 @@
                 <tbody>
                 <?php
                 $ist=getIstanzeUser($_SESSION['userData']['email']);
-                //var_dump($ist);
-                    foreach($ist as $i){?>
+                var_dump($ist);
+                    foreach($ist as $i){
+                      $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
+                      $stato_istanza = getStatoIstanza($i['stato']);
+                      $status=checkRend($i['id_RAM']);?>
                     <tr>
-                    <td><?=$i['id_RAM']?>/2020</td>
-                    <td>Investimenti 2020</td>
-                    <td> 
-                    <?php
-                      $status= checkRend($i['id_RAM']);
+                    <td><?=$i['id_RAM']?>/<?=$tipo_istanza['anno']?><br></td>
+                    <td><b><?=$tipo_istanza['des']?></b></td>
+                   
+                    <td><span class="badge badge-pill badge-<?=$stato_istanza['style']?>"><?=$stato_istanza['des']?></span>
+                                    <?=$i['stato_des']?>
+                                      <?php
 
-                      if($status){
-
-                        if($status['aperta']==true){?>
-                          <span class="badge badge-primary">In Rendicontazione</span>
-                        <?php
-                        }else{?>
-                          <span class="badge badge-success">In Istruttoria</span><br>
-                          Rendicondazione chiusa il <?=date("d/m/Y",strtotime($status['data_chiusura']))?>
-                        <?php
-                        }
-
-                      }else{?>
-                        <span class="badge badge-warning">Attiva</span>
-                      <?php
-                      }
-                      ?>
+                                      ?>
+                                </td>
 
                           
                           
@@ -68,23 +58,9 @@
                     ?></td>
                     <td>
                         <div  class="btn-group btn-group-sm" role="group">
-                        <?php
-                          if($status){
-
-                              if($status['aperta']==true){?>
+                                           
                         <a type="button" href="istanza.php"class="btn btn-primary" style="color:white;"> Vai a Istanza</a>
-                            <?php
-                            }else{?>
-                              <a type="button" href="istanza.php"class="btn btn-primary" style="color:white;"> Vai a Istanza</a>
-
-                          <?php    
-                            }
-                        }else{?>
-                        <a type="button" href="istanza.php"class="btn btn-primary" style="color:white;"> vai a Istanza</a>
-                        <?php
-
-                        }
-                        ?>
+                           
 
                         </div>
                     </td>

@@ -49,7 +49,7 @@ try {
     $content = ob_get_clean();
     $path = $pathReport;
     $html2pdf->writeHTML($content);
-    $filename = $rep['id']."_".$rep['id_RAM']."_".time();
+   //$filename = $rep['id']."_".$rep['id_RAM']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
     $html2pdf->output($path.$filename.".pdf",'FI');
 } catch (Html2PdfException $e) {

@@ -8,21 +8,26 @@
     require 'view/template/message.php';
     unset($_SESSION['message'],$_SESSION['success']);
   }
+ 
   if(!isUserUser()){
   $id = getParam('id',0);
   if($id){
       $i = getIstanza($id);
+    
   }
   }else
   {
     $utente= $_SESSION['userData']['email'];
     $i = getIstanzaUser($utente);
+   
   }
+  $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
   $tipiCom= getTipiComunicazione();
   $rend = checkRend($i['id_RAM']);
   //var_dump($rend);die;
   if(!$rend){
     createSrtructure($i);
+    $rend = checkRend($i['id_RAM']);
   }
   $comunicazioni = getComunicazioni($i['id_RAM']); 
   if(isUserAdmin()){

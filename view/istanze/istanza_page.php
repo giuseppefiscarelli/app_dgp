@@ -1,4 +1,40 @@
-<h3 class="card-title">Istanza n° <?=$i['id_RAM']?>/<?=date("Y")?></h3>
+<?php
+ $activeIst = true;
+if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
+  $span='<span class="badge badge-success">In Istruttoria</span><br>Termine per la rendicondazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['scadenza']));
+  $activeIst = false;
+  
+
+}else{
+ $status= checkRend($i['id_RAM']);
+ if($status){
+
+  if($status['aperta']==1){
+    $stato= getStatoIstanza('C');
+    $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span>';
+   
+  }elseif($status['aperta']==0){
+    $stato= getStatoIstanza('D');
+    $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Rendicondazione chiusa il '.date("d/m/Y",strtotime($status['data_chiusura']));
+    $activeIst = false;
+  }
+  if($status['data_annullamento']){
+    $stato= getStatoIstanza('B');
+    $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Annullata da Impresa ';
+
+    $activeIst = false;
+  }
+}else{
+  $span='<span class="badge badge-warning">Attiva</span>';
+}
+}
+
+
+
+
+
+?>
+<h3 class="card-title">Istanza n° <?=$i['id_RAM']?>/<?=$tipo_istanza['anno']?> - <span style="font-size:17px;"><?=$i['ragione_sociale']?></span></h3>Stato Istanza <?=$span?>
 
 
 

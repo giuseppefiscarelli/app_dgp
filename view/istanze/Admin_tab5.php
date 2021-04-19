@@ -322,10 +322,7 @@ $reports = getReportIdRam($i['id_RAM']);
                         
                     </select>
                 </div>
-            </div>
-            <div class="col-6">
-
-                <div class="form-group">
+                <div class="form-group" style="margin-top:30px;">
                     <input type="text" class="form-control" name="prot_RAM" id="prot_RAM" placeholder="se disponibile, inserire numero protocollo documento" value="">
                     <label for="prot_RAM">Protocollo Documento</label>
                 </div>
@@ -335,6 +332,22 @@ $reports = getReportIdRam($i['id_RAM']);
                         <label for="data_prot">Data Documento</label>
                     </div>
                 </div>
+            </div>
+            <div class="col-6" id="veiNonConf" style="display:none;">
+            <label>Veicoli con elementi non accettati</label>
+            <div >
+                <table class="table table-sm" id="tabVeiNonConf">
+                        <thead>
+                            <tr>
+                                <th>Targa</th>
+                                <th>Tipo documento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                </table>            
+            </div>   
+               
 
             </div>
             <div class="col-6">

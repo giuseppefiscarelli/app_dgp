@@ -35,7 +35,90 @@ function getIstanza(int $id){
   
   
 }
+function getStatoIstanza($stato){
+  
+  /**
+   * @var $conn mysqli
+   */
 
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $sql ="SELECT * FROM stati_istanza WHERE cod = '$stato'";
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
+}
+function getStatiIstanza(){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $records=[];
+  $sql ='SELECT * FROM stati_istanza ';
+  //echo $sql;
+  $res = $conn->query($sql);
+        
+       
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+}
+function getTipoIstanza($tipo_istanza){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $sql ='SELECT * FROM tipo_istanza WHERE id = '.$tipo_istanza;
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
+}
+function getTipiIstanza(){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $records=[];
+  $sql ='SELECT * FROM tipo_istanza ';
+  //echo $sql;
+  $res = $conn->query($sql);
+        
+       
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+}
 function getIstanzaUser($email){
 
   /**
@@ -44,7 +127,7 @@ function getIstanzaUser($email){
 
     $conn = $GLOBALS['mysqli'];
     $result = [];
-      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
       //echo $sql;
       $res = $conn->query($sql);
       
@@ -65,15 +148,40 @@ function getIstanzeUser($email){
   
       $conn = $GLOBALS['mysqli'];
       $records = [];
-      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
         //echo $sql;
         $res = $conn->query($sql);
         
-       
         if($res) {
 
           while( $row = $res->fetch_assoc()) {
+
+
+            $stato=checkRend($row['id_RAM']);
+            $tipo_ist = getTipoIstanza($row['tipo_istanza']);
+            $row['stato_des']='';
+            if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
+              if($stato){
+                  if($stato['aperta']==1){
+                    $row['stato'] = 'C';
+                  }elseif($stato['aperta']==0){
+                    $row['stato'] = 'D';
+                    $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($stato['data_chiusura']));
+                  }
+                  if($stato['data_annullamento']){
+                    $row['stato'] = 'B';
+                    $row['stato_des'] ='<br>Annullata da impresa ';
+                  }
+                
+              }else{
+                $row['stato'] = 'A';
+              }
+            
+            } 
+           
               $records[] = $row;
+           
+              
               
           }
 
@@ -92,6 +200,20 @@ function getIstanze( array $params = []){
         $conn = $GLOBALS['mysqli'];
 
         $orderBy = array_key_exists('orderBy', $params) ? $params['orderBy'] : 'data_invio';
+        if($orderBy){
+          if($orderBy=='data_invio'){
+            $orderBy='xml.data_invio';
+          }
+          elseif($orderBy=='idRAM'){
+            $orderBy='istanza.id_RAM';
+          }
+          elseif($orderBy=='ragione_sociale'){
+            $orderBy='istanza.ragione_sociale';
+          }
+          elseif($orderBy=='pec_impr'){
+            $orderBy='istanza.pec_impr';
+          }
+        }
         $orderDir = array_key_exists('orderDir', $params) ? $params['orderDir'] : 'ASC';
         $limit = (int)array_key_exists('recordsPerPage', $params) ? $params['recordsPerPage'] : 10;
         $page = (int)array_key_exists('page', $params) ? $params['page'] : 0;
@@ -103,14 +225,40 @@ function getIstanze( array $params = []){
         $search1 = $conn->escape_string($search1);
         $search2 = array_key_exists('search2', $params) ? $params['search2'] : '';
         $search2 = $conn->escape_string($search2);
+        $search3 = array_key_exists('search3', $params) ? $params['search3'] : '';
+        $search3 = $conn->escape_string($search3);
+        $search4 = array_key_exists('search4', $params) ? $params['search4'] : '';
+        $search4 = $conn->escape_string($search4);
         if($orderDir !=='ASC' && $orderDir !=='DESC'){
           $orderDir = 'ASC';
         }
         $records = [];
 
-        
+        if ($search3){
+         $tipo= getTipoIstanza($search3);
+         $data_inizio = $tipo['data_invio_inizio'];
+         $data_fine = $tipo['data_invio_fine'];
+         $data_rend_inizio = $tipo['data_invio_inizio'];
+         $data_rend_fine = $tipo['data_invio_fine'];
+        }
+        if($search4){
 
-        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+          if($search4=='A'){
+            $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+          }
+          if($search4=='B'){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
+          }
+          if($search4=='C'){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
+          }
+          if($search4=='D'){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          }
+        }
+
+        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
+      
         if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
@@ -119,14 +267,48 @@ function getIstanze( array $params = []){
             $sql .=" AND istanza.id_RAM LIKE '%$search2%' ";
             
           }
-        $sql .= " ORDER BY xml.data_invio  $orderDir LIMIT $start, $limit";
+          if ($search3){
+            $sql .=" and xml.data_invio between '$data_inizio' and '$data_fine'";
+            $sql .=" AND istanza.tipo_istanza = $search3 ";
+            
+          }
+          if($search4){
+            $sql .= $parA;
+          }
+        $sql .= " ORDER BY $orderBy  $orderDir LIMIT $start, $limit";
         //echo $sql;
 
         $res = $conn->query($sql);
         if($res) {
 
           while( $row = $res->fetch_assoc()) {
+
+
+            $stato=checkRend($row['id_RAM']);
+            $tipo_ist = getTipoIstanza($row['tipo_istanza']);
+            $row['stato_des']='';
+            if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
+              if($stato){
+                  if($stato['aperta']==1){
+                    $row['stato'] = 'C';
+                  }elseif($stato['aperta']==0){
+                    $row['stato'] = 'D';
+                    $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($stato['data_chiusura']));
+                  }
+                  if($stato['data_annullamento']){
+                    $row['stato'] = 'B';
+                    $row['stato_des'] ='<br>Annullata da impresa ';
+                  }
+                
+              }else{
+                $row['stato'] = 'A';
+              }
+            
+            } 
+           
               $records[] = $row;
+           
+              
               
           }
 
@@ -150,14 +332,39 @@ function countIstanze( array $params = []){
         $search1 = $conn->escape_string($search1);
         $search2 = array_key_exists('search2', $params) ? $params['search2'] : '';
         $search2 = $conn->escape_string($search2);
+        $search3 = array_key_exists('search3', $params) ? $params['search3'] : '';
+        $search3 = $conn->escape_string($search3);
+        $search4 = array_key_exists('search4', $params) ? $params['search4'] : '';
+        $search4 = $conn->escape_string($search4);
         if($orderDir !=='ASC' && $orderDir !=='DESC'){
           $orderDir = 'ASC';
         }
         $totalUser = 0;
-
+        if ($search3){
+          $tipo= getTipoIstanza($search3);
+          $data_inizio = $tipo['data_invio_inizio'];
+          $data_fine = $tipo['data_invio_fine'];
+          $data_rend_inizio = $tipo['data_invio_inizio'];
+          $data_rend_fine = $tipo['data_invio_fine'];
+         }
+         if($search4){
+ 
+           if($search4=='A'){
+             $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+           }
+           if($search4=='B'){
+             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
+           }
+           if($search4=='C'){
+             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
+           }
+           if($search4=='D'){
+             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+           }
+         }
         
 
-        $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+        $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
         if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
@@ -166,7 +373,14 @@ function countIstanze( array $params = []){
             $sql .=" AND istanza.id_RAM LIKE '%$search2%' ";
             
           }
-        
+          if ($search3){
+            $sql .=" and xml.data_invio between '$data_inizio' and '$data_fine'";
+            $sql .=" AND istanza.tipo_istanza = $search3 ";
+            
+          }
+          if($search4){
+            $sql .= $parA;
+          }
 
         $res = $conn->query($sql);
         if($res) {
@@ -2467,4 +2681,41 @@ function  upCert($data){
 
   
 
+}
+function annullaIstanza($data){
+
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $id_RAM = $data['id_RAM'];
+  $note = $data['note_annullamento'];
+  $check = checkRend($id_RAM);
+  $today = date("Y-m-d H:i:s");
+  if($check){
+   
+  $sql ='UPDATE rendicontazione SET ';
+  $sql .= "data_annullamento = '$today', note_annullamento='$note', aperta = 0";
+  $sql .=' WHERE id_RAM = '.$id_RAM;
+  
+  
+
+  }else{
+    $sql ='INSERT INTO rendicontazione (id, id_RAM, data_annullamento,note_annullamento,aperta) ';
+    $sql .= "VALUES (NULL, $id_RAM, '$today','$note',0) ";
+  }
+  $res = $conn->query($sql);
+
+  if($res){
+    $sql2 ='UPDATE istanza SET ';
+    $sql2 .= "eliminata = '2'";
+    $sql2 .=' WHERE id_RAM = '.$id_RAM;
+  }
+  
+  $res2 = $conn->query($sql2);
+
+  if($res&&$res2){
+    return true;
+  }
 }

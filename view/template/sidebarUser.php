@@ -23,7 +23,7 @@
                             <img src="images/logo.svg" alt="Home" style="max-height: 50px;    padding: 7px;">
                               <div class="it-brand-text">
                                 <b class="no_toc" style="color:white;">Ministero</b>
-                                <b class="no_toc d-none d-md-block" style="color:white;font-size: 11px;">delle Infrastrutture e dei Trasporti</b>
+                                <b class="no_toc d-none d-md-block" style="color:white;font-size: 11px;">delle Infrastrutture<br> e della Mobiltà Sostenibili</b>
                               </div>
                           </div>
                         </li>
