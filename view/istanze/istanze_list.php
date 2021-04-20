@@ -125,7 +125,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                       $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                                       $stato_istanza = getStatoIstanza($i['stato']);
                                       $status=checkRend($i['id_RAM']);
-                                      $now=time();?>
+                                      $now=date("Y-m-d H:i:s");?>
                             <tr>
                                 <td><b><?=$tipo_istanza['des']?></b></td>      
                                 <td><?=$i['id_RAM']?></td>

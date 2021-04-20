@@ -154,12 +154,12 @@ function getIstanzeUser(array $params = []){
 
       $records = [];
      
-      $now=time();
+      $now=date("Y-m-d H:i:s");
       $tipo= getTipoIstanza($search3);
          $data_inizio = $tipo['data_invio_inizio'];
-         $data_fine = $tipo['data_invio_fine'];
-         $data_rend_inizio = $tipo['data_invio_inizio'];
-         $data_rend_fine = $tipo['data_invio_fine'];
+         $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
+         $data_rend_fine = $tipo['data_rendicontazione_fine'];
+
       $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '$data_inizio' and '$data_fine'";
         //echo $sql;
         $res = $conn->query($sql);
@@ -239,7 +239,8 @@ function getIstanze( array $params = []){
         $limit = (int)array_key_exists('recordsPerPage', $params) ? $params['recordsPerPage'] : 10;
         $page = (int)array_key_exists('page', $params) ? $params['page'] : 0;
         $start =$limit * ($page -1);
-        $now=time();
+       
+        $now =date("Y-m-d H:i:s");
         if($start<0){
           $start = 0;
         }
@@ -260,18 +261,19 @@ function getIstanze( array $params = []){
           $tipo= getTipoIstanza($search3);
           $data_inizio = $tipo['data_invio_inizio'];
           $data_fine = $tipo['data_invio_fine'];
-          $data_rend_inizio = $tipo['data_invio_inizio'];
-          $data_rend_fine = $tipo['data_invio_fine'];
-          if($data_rend_fine<$now){
-            // $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL and aperta=1 and data_chiusura IS NULL)  and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
-            $parA ='';
-           }
+          $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
+          $data_rend_fine = $tipo['data_rendicontazione_fine'];
+         
          }
         if($search4){
 
           if($search4=='A'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
           }
+          if($search4=='A'&&$data_rend_fine<$now){
+            $parA = ' and istanza.id_RAM =0';
+            
+         }
           if($search4=='B'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
           }
@@ -281,7 +283,7 @@ function getIstanze( array $params = []){
           if($search4=='C'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
           }
-          if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
+          if($search4=='C'&&$data_rend_fine<$now){
              $parA = ' and istanza.id_RAM =0';
 
           }
@@ -322,7 +324,7 @@ function getIstanze( array $params = []){
 
             $stato=checkRend($row['id_RAM']);
             $tipo_ist = getTipoIstanza($row['tipo_istanza']);
-           // var_dump($tipo_ist);
+            //var_dump($tipo_ist);
             $row['stato_des']='';
             if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
               if($stato){
@@ -344,6 +346,7 @@ function getIstanze( array $params = []){
               }else{
                 $row['stato'] = 'A';
                 if($tipo_ist['data_rendicontazione_fine']<$now){
+                 
                   $row['stato'] = 'B';
                   $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
                 } 
@@ -385,18 +388,16 @@ function countIstanze( array $params = []){
         if($orderDir !=='ASC' && $orderDir !=='DESC'){
           $orderDir = 'ASC';
         }
-        $now=time();
+        $now=date("Y-m-d H:i:s");
         $totalUser = 0;
         if ($search3){
           $tipo= getTipoIstanza($search3);
           $data_inizio = $tipo['data_invio_inizio'];
           $data_fine = $tipo['data_invio_fine'];
-          $data_rend_inizio = $tipo['data_invio_inizio'];
-          $data_rend_fine = $tipo['data_invio_fine'];
-          if($data_rend_fine<$now){
-            // $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL and aperta=1 and data_chiusura IS NULL)  and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
-            $parA ='';
-           }
+          $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
+          $data_rend_fine = $tipo['data_rendicontazione_fine'];
+
+        
          }
         if($search4){
 

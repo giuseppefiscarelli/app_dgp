@@ -63,10 +63,15 @@ if(!empty($_SESSION['message'])){
           
           $email=$_SESSION['userData']['email'];
           if(!$search3){
+            $istanze=[];
             foreach($tipi_istanze as $ti){
               $params['search3'] = $ti['id'];
-              $istanze = getIstanze($params);
+              $ist = getIstanze($params);
+              foreach($ist as $is){
+                array_push($istanze,$is);
+              }
               $totalUsers= countIstanze($params);
+             
             }
           }else{
             $istanze = getIstanze($params);
