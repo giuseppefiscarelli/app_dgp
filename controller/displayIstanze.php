@@ -38,8 +38,23 @@ if(!empty($_SESSION['message'])){
            $params['search1']= $_SESSION['userData']['email'];
           $totalUsers= countIstanze($params);
           $numPages= ceil($totalUsers/$recordsPerPage);
-           $email =  $_SESSION['userData']['email'];
-          $istanze = getIstanzeUser($email);
+           $params['search1'] =  $_SESSION['userData']['email'];
+           $tipi_istanze=getTipiIstanza();
+           $ist =[];
+           foreach($tipi_istanze as $ti){
+             
+            $params['search3'] = $ti['id'];
+            
+            $res = getIstanzeUser($params);
+            if($res){
+              foreach($res as $r){
+                array_push($ist,$r);
+              }
+            }
+          
+
+           }
+          
           
           //var_dump($istanze);
           require_once 'view/istanze/istanze_listUser.php';

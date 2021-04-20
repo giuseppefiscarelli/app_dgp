@@ -140,18 +140,29 @@ function getIstanzaUser($email){
   
   
 }
-function getIstanzeUser($email){
+function getIstanzeUser(array $params = []){
 
     /**
      * @var $conn mysqli
      */
   
       $conn = $GLOBALS['mysqli'];
+      $search1 = array_key_exists('search1', $params) ? $params['search1'] : '';
+        $search1 = $conn->escape_string($search1);
+        $search3 = array_key_exists('search3', $params) ? $params['search3'] : '';
+        $search3 = $conn->escape_string($search3);
+
       $records = [];
-      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+     
+      $now=time();
+      $tipo= getTipoIstanza($search3);
+         $data_inizio = $tipo['data_invio_inizio'];
+         $data_fine = $tipo['data_invio_fine'];
+         $data_rend_inizio = $tipo['data_invio_inizio'];
+         $data_rend_fine = $tipo['data_invio_fine'];
+      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '$data_inizio' and '$data_fine'";
         //echo $sql;
         $res = $conn->query($sql);
-        
         if($res) {
 
           while( $row = $res->fetch_assoc()) {
@@ -159,6 +170,7 @@ function getIstanzeUser($email){
 
             $stato=checkRend($row['id_RAM']);
             $tipo_ist = getTipoIstanza($row['tipo_istanza']);
+           // var_dump($tipo_ist);
             $row['stato_des']='';
             if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
               if($stato){
@@ -172,12 +184,21 @@ function getIstanzeUser($email){
                     $row['stato'] = 'B';
                     $row['stato_des'] ='<br>Annullata da impresa ';
                   }
+                  if(($tipo_ist['data_rendicontazione_fine']<$now&&$stato['aperta']==1)){
+                    $row['stato'] = 'B';
+                    $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                  } 
                 
               }else{
                 $row['stato'] = 'A';
+                if($tipo_ist['data_rendicontazione_fine']<$now){
+                  $row['stato'] = 'B';
+                  $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                } 
               }
             
-            } 
+            }
+           
            
               $records[] = $row;
            
@@ -218,6 +239,7 @@ function getIstanze( array $params = []){
         $limit = (int)array_key_exists('recordsPerPage', $params) ? $params['recordsPerPage'] : 10;
         $page = (int)array_key_exists('page', $params) ? $params['page'] : 0;
         $start =$limit * ($page -1);
+        $now=time();
         if($start<0){
           $start = 0;
         }
@@ -286,6 +308,7 @@ function getIstanze( array $params = []){
 
             $stato=checkRend($row['id_RAM']);
             $tipo_ist = getTipoIstanza($row['tipo_istanza']);
+           // var_dump($tipo_ist);
             $row['stato_des']='';
             if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
               if($stato){
@@ -299,12 +322,21 @@ function getIstanze( array $params = []){
                     $row['stato'] = 'B';
                     $row['stato_des'] ='<br>Annullata da impresa ';
                   }
+                  if(($tipo_ist['data_rendicontazione_fine']<$now&&$stato['aperta']==1)){
+                    $row['stato'] = 'B';
+                    $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                  } 
                 
               }else{
                 $row['stato'] = 'A';
+                if($tipo_ist['data_rendicontazione_fine']<$now){
+                  $row['stato'] = 'B';
+                  $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                } 
               }
             
-            } 
+            }
+           
            
               $records[] = $row;
            

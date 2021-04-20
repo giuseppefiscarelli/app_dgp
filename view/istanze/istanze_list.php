@@ -121,18 +121,20 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 if ($istanze){
                                     foreach ($istanze as $i){
                                      
-                                     
+                                    
                                       $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                                       $stato_istanza = getStatoIstanza($i['stato']);
-                                      $status=checkRend($i['id_RAM']);?>
+                                      $status=checkRend($i['id_RAM']);
+                                      $now=time();?>
                             <tr>
                                 <td><b><?=$tipo_istanza['des']?></b></td>      
                                 <td><?=$i['id_RAM']?></td>
                                 <td><?=date("d/m/Y H:i",strtotime($i['data_invio']))?></td></td>
                                 <td><?=$i['ragione_sociale']?></td>
                                 <td><?=$i['pec']?></td>
-                                <td><span class="badge badge-pill badge-<?=$stato_istanza['style']?>"><?=$stato_istanza['des']?></span>
-                                    <?=$i['stato_des']?>
+                                <td>
+                                    <span class="badge badge-pill badge-<?=$stato_istanza['style']?>"><?=$stato_istanza['des']?></span>
+                                      <?=$i['stato_des']?>
                                       <?php
 
                                       ?>
@@ -141,6 +143,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 <td>
                                 <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success btn-sm" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i></button>
                                 <?php
+                                  
                                   if($i['stato']!='A'){?>
                                   <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning btn-sm" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
                                   <?php }

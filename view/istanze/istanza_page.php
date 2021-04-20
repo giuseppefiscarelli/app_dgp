@@ -24,6 +24,11 @@ if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
 
     $activeIst = false;
   }
+  if(($tipo_istanza['data_rendicontazione_fine']<time()&&$status['aperta']==1)){
+    $stato= getStatoIstanza('B');
+    $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
+    $activeIst = false;
+  } 
 }else{
   $span='<span class="badge badge-warning">Attiva</span>';
 }

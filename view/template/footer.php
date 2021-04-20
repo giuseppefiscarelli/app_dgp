@@ -1,7 +1,4 @@
 <!-- JS -->
-<script src="assets/js/bootstrap-italia.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 
 <script type="text/javascript">
         $( document ).ready(function() {

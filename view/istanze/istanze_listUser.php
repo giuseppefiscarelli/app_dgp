@@ -1,7 +1,4 @@
-<?php
 
-  
-  ?>
 
 <div class="row">
   <div class="col-12 ">
@@ -24,8 +21,8 @@
                 </thead>
                 <tbody>
                 <?php
-                $ist=getIstanzeUser($_SESSION['userData']['email']);
-                var_dump($ist);
+               // $ist=getIstanzeUser($_SESSION['userData']['email']);
+               // var_dump($ist);
                     foreach($ist as $i){
                       $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                       $stato_istanza = getStatoIstanza($i['stato']);
