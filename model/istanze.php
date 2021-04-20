@@ -2778,6 +2778,13 @@ function annullaIstanza($data){
   $res2 = $conn->query($sql2);
 
   if($res&&$res2){
+    $log=[];
+        $log['user']['email']=$_SESSION['userData']['email'];
+        $log['log_funzione']="Annullamento Istanza";
+        $log['message']="Istanza idRAM ".$id_RAM;
+        $log['success']=true;
+        writelog($log);
+   
     return true;
   }
 }

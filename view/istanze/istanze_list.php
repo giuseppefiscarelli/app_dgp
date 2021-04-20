@@ -147,6 +147,9 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                   if($i['stato']!='A'){?>
                                   <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning btn-sm" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
                                   <?php }
+                                  if($i['stato']!='B'){?>
+                                    <button type="button" class="btn btn-danger btn-sm" title="Annulla Istanza" onclick="annIst(<?=$i['id_RAM']?>);"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                  <?php }
                                 ?>
                                 </td>      
                             </tr>
@@ -577,6 +580,31 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary btn-sm" data-dismiss="modal" type="button">Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="offModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="annTitle">Annullamento Istanza
+        </h5>
+      </div>
+      <div class="modal-body">
+        <form id="annForm">
+        <input type="hidden" id="annId"name="id_RAM" value="">
+          <div class="form-group">
+            <textarea id="note_annullamento"  name="note_annullamento" rows="3" maxlenght=500 placeholder="Inserisci riferimenti annullamento" required></textarea>
+            <label for="note_annullamento">Note Annullamento</label>
+          </div>
+          </form>  
+        
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" data-dismiss="modal" type="button">Esci senza annullare</button>
+        <button class="btn btn-success btn-sm" type="submit" form="annForm" type="button">Esegui Annullamento</button>
       </div>
     </div>
   </div>

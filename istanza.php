@@ -1072,7 +1072,7 @@ $(document).ready(function() {
             e.preventDefault();
             formData = $(this).serialize();
                 Swal.fire({
-                  title: 'Vuoi annullarel\'istanza?',
+                  title: 'Vuoi annullare l\'istanza?',
                   text: "Non potrai più riattivarla",
                   icon: 'warning',
                   showCancelButton: true,

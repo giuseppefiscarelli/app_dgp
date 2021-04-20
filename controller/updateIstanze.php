@@ -194,13 +194,13 @@ switch ($action){
       //var_dump($res);die;
       $ckrott =getIstanza($id_RAM);
       if($ckrott['rott1']=='Yes'||$ckrott['rott2']=='Yes'||$ckrott['rott3']=='Yes'||$ckrott['rott4']=='Yes'||$ckrott['rott5']=='Yes'||$ckrott['rott6']=='Yes'||$ckrott['rott7']=='Yes'||$ckrott['rott8']=='Yes'||$ckrott['rott9']=='Yes'||$ckrott['rott10']=='Yes'){
-        $doc10 = array(
-          'codice_tipo_documento' => "10"
+        $doc11 = array(
+          'codice_tipo_documento' => "11"
         );
         $doc14 = array(
           'codice_tipo_documento' => "14"
         );
-        array_push($res,$doc10,$doc14);
+        array_push($res,$doc11,$doc14);
       }
 
 

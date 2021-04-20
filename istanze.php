@@ -37,6 +37,50 @@ require_once 'headerInclude.php';
                   currency: 'EUR',
                   minimumFractionDigits: 2
             })
+
+  function annIst(id){
+    $('#note_annullamento').val("")
+    $('#annId').val(id)
+    $('#offModal').modal('show')
+    $('#annTitle').html('Annullamento Istanza - idRAM '+id)
+  } 
+  $('#annForm').on('submit',function(e){
+            e.preventDefault();
+            formData = $(this).serialize();
+                Swal.fire({
+                  title: 'Vuoi annullare l\'istanza?',
+                  text: "Non potrai più riattivarla",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'SI Conferma annullamento!',
+                  cancelButtonText: 'NO, Esci senza Annullare!'
+                  }).then((result) => {
+                        if (result.isConfirmed) {
+                              $.ajax({
+                                    url: "controller/updateIstanze.php?action=annIstanza",
+                                    data: formData,
+                                    dataType: "json",
+                                    success: function(results){      
+                                          if(results==true)
+                                          {
+                                                Swal.fire({
+                                                      title:  'Annullata!',
+                                                      text:  'L\'istanza è stata annullata correttamente.',
+                                                      icon: 'success'
+                                                }).then(()=>{
+                                                      location.reload();
+                                                })       
+                                          }
+                                    }
+                              })
+                        }else{
+                              $('#offModal').modal('toggle')
+                        }
+                  })
+
+      })         
   function infoIstanza(id){
 
     $('#infoModal').modal('toggle');

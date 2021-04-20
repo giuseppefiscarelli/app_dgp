@@ -42,21 +42,17 @@ if(!empty($_SESSION['message'])){
             require 'view/home/homeSuadmin.php';
           }
           if(isUserAdmin()){
-            require_once 'model/home.php';
+            require_once 'model/istanze.php';
             //require_once 'model/comunicazioni.php';
-            $totalIstanze= countIstanze($params);
-            $istTotali =countTotIstanze($params);
-             $istanze = getIstanze($params);
-             $istRend =countRendicontazione(1);
-             $istIstr =countRendicontazione(0);
-
+           
+/*
              $totalMsg = countTicket(); 
             
              $unreadMsg= countnewTicket();
              $readMsg= countreadTicket();
              $closedMsg= countcloseTicket();
 
-
+*/
             require 'view/home/homeAdmin.php';
           }
           if(isUserUser()){
