@@ -150,6 +150,10 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                   if($i['stato']!='B'){?>
                                     <button type="button" class="btn btn-danger btn-sm" title="Annulla Istanza" onclick="annIst(<?=$i['id_RAM']?>);"><i class="fa fa-times" aria-hidden="true"></i></button>
                                   <?php }
+                                  if($i['stato']=='B'){?>
+                                    <button type="button" class="btn btn-danger btn-sm" title="Info Annullamento Istanza" onclick="annInfo(<?=$i['id_RAM']?>);"><i class="fa fa-user-times" aria-hidden="true"></i></button>
+
+                                  <?php }
                                 ?>
                                 </td>      
                             </tr>
@@ -605,6 +609,30 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
       <div class="modal-footer">
         <button class="btn btn-danger btn-sm" data-dismiss="modal" type="button">Esci senza annullare</button>
         <button class="btn btn-success btn-sm" type="submit" form="annForm" type="button">Esegui Annullamento</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="annModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="annInfoTitle">Annullamento Istanza
+        </h5>
+      </div>
+      <div class="modal-body">
+       
+      
+      <div class="card-body">
+          <h5 class="card-title">Note Annullamento</h5>
+          <p class="card-text" id="note_info"></p>
+        </div>
+          </form>  
+        
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" data-dismiss="modal" type="button">Chiudi</button>
+       
       </div>
     </div>
   </div>

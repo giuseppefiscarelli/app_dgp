@@ -540,4 +540,11 @@ switch ($action){
         echo json_encode($res);
 
     break;
+
+    case 'annInfoIstanza':
+      $id_RAM = $_REQUEST['id'];
+
+      $res=infoannIstanza($id_RAM);
+      echo json_encode($res);
+      break;
     }

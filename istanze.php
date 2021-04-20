@@ -44,6 +44,27 @@ require_once 'headerInclude.php';
     $('#offModal').modal('show')
     $('#annTitle').html('Annullamento Istanza - idRAM '+id)
   } 
+  function annInfo(id){
+    $('#note_annullamento').val("")
+    
+   
+    $('#annInfoTitle').html('Info Annullamento Istanza - idRAM '+id)
+            $.ajax({
+                  url: "controller/updateIstanze.php?action=annInfoIstanza",
+                  data: {id:id},
+                  dataType: "json",
+                  success: function(results){    
+                        var d = new Date(results.data_annullamento)
+                        
+                       
+                        dataAnn = d.toLocaleString("it-IT")
+                        console.log(dataAnn)
+                        line= "<b>id RAM:</b> "+id+"<br><b>Annullata il:</b> "+dataAnn+"<br> <b>Note:</b> "+results.note_annullamento
+                        $('#note_info').html(line)
+                        $('#annModal').modal('show')  
+                  }
+            })
+  } 
   $('#annForm').on('submit',function(e){
             e.preventDefault();
             formData = $(this).serialize();

@@ -2788,3 +2788,24 @@ function annullaIstanza($data){
     return true;
   }
 }
+
+function infoannIstanza($id_RAM){
+
+/**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  
+  $sql ='SELECT * FROM rendicontazione WHERE id_RAM = '.$id_RAM;
+ // echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+   
+  
+  }
+  return $result;
+}
