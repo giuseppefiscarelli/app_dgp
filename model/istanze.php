@@ -257,27 +257,41 @@ function getIstanze( array $params = []){
         $records = [];
 
         if ($search3){
-         $tipo= getTipoIstanza($search3);
-         $data_inizio = $tipo['data_invio_inizio'];
-         $data_fine = $tipo['data_invio_fine'];
-         $data_rend_inizio = $tipo['data_invio_inizio'];
-         $data_rend_fine = $tipo['data_invio_fine'];
-        }
+          $tipo= getTipoIstanza($search3);
+          $data_inizio = $tipo['data_invio_inizio'];
+          $data_fine = $tipo['data_invio_fine'];
+          $data_rend_inizio = $tipo['data_invio_inizio'];
+          $data_rend_fine = $tipo['data_invio_fine'];
+          if($data_rend_fine<$now){
+            // $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL and aperta=1 and data_chiusura IS NULL)  and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+            $parA ='';
+           }
+         }
         if($search4){
 
-          if($search4=='A'){
+          if($search4=='A'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
           }
-          if($search4=='B'){
+          if($search4=='B'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
           }
-          if($search4=='C'){
+          if($search4=='B'&&$data_rend_fine<$now){
+            $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          }
+          if($search4=='C'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
+          }
+          if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
+             $parA = ' and istanza.id_RAM =0';
+
           }
           if($search4=='D'){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
           }
+
         }
+        
+        
 
         $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
       
@@ -298,7 +312,7 @@ function getIstanze( array $params = []){
             $sql .= $parA;
           }
         $sql .= " ORDER BY $orderBy  $orderDir LIMIT $start, $limit";
-        //echo $sql;
+       //echo $sql;
 
         $res = $conn->query($sql);
         if($res) {
@@ -371,6 +385,7 @@ function countIstanze( array $params = []){
         if($orderDir !=='ASC' && $orderDir !=='DESC'){
           $orderDir = 'ASC';
         }
+        $now=time();
         $totalUser = 0;
         if ($search3){
           $tipo= getTipoIstanza($search3);
@@ -378,22 +393,36 @@ function countIstanze( array $params = []){
           $data_fine = $tipo['data_invio_fine'];
           $data_rend_inizio = $tipo['data_invio_inizio'];
           $data_rend_fine = $tipo['data_invio_fine'];
-         }
-         if($search4){
- 
-           if($search4=='A'){
-             $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
-           }
-           if($search4=='B'){
-             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
-           }
-           if($search4=='C'){
-             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
-           }
-           if($search4=='D'){
-             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          if($data_rend_fine<$now){
+            // $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL and aperta=1 and data_chiusura IS NULL)  and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+            $parA ='';
            }
          }
+        if($search4){
+
+          if($search4=='A'&&$data_rend_fine>$now){
+            $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+          }
+          if($search4=='B'&&$data_rend_fine>$now){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
+          }
+          if($search4=='B'&&$data_rend_fine<$now){
+            $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          }
+          if($search4=='C'&&$data_rend_fine>$now){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
+          }
+          if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
+             $parA = ' and istanza.id_RAM =0';
+
+          }
+          if($search4=='D'){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          }
+
+        }
+        
+        
         
 
         $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";

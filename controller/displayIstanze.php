@@ -39,7 +39,7 @@ if(!empty($_SESSION['message'])){
           $totalUsers= countIstanze($params);
           $numPages= ceil($totalUsers/$recordsPerPage);
            $params['search1'] =  $_SESSION['userData']['email'];
-           $tipi_istanze=getTipiIstanza();
+          
            $ist =[];
            foreach($tipi_istanze as $ti){
              
@@ -59,10 +59,20 @@ if(!empty($_SESSION['message'])){
           //var_dump($istanze);
           require_once 'view/istanze/istanze_listUser.php';
          }else{
-          $totalUsers= countIstanze($params);
-          $numPages= ceil($totalUsers/$recordsPerPage);
+         
+          
           $email=$_SESSION['userData']['email'];
-          $istanze = getIstanze($params);
+          if(!$search3){
+            foreach($tipi_istanze as $ti){
+              $params['search3'] = $ti['id'];
+              $istanze = getIstanze($params);
+              $totalUsers= countIstanze($params);
+            }
+          }else{
+            $istanze = getIstanze($params);
+            $totalUsers= countIstanze($params);
+          }
+          $numPages= ceil($totalUsers/$recordsPerPage);
           //var_dump($istanze);
           
 
