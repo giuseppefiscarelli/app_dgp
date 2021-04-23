@@ -79,7 +79,7 @@
                   if($ti['data_rendicontazione_fine']<date("Y-m-d H:i:s")){?>
 
                   
-                  <div class="col-lg-4 col-12" style="margin-top:10px;">
+                  <div class="col-lg-4 col-12" style="margin-top:10px;cursor:pointer;" onclick="location.href='istanze.php?page=1&search1=&search2=&search3=&search4=E&recordsPerPage=10';">
                     <div class="card card-teaser rounded shadow" style="background-color:#d936b9c2">
                       <div class="icon">
                         <i class="fa fa-list" aria-hidden="true"></i>

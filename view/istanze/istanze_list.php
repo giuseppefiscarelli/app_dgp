@@ -63,7 +63,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                   <select  
                   name="recordsPerPage" 
                   id="recordsPerPage" 
-                  onchange="document.forms.searchForm.submit()">
+                  onchange="document.forms.searchForm.submit().page.value=1">
                         <option value="">Seleziona</option>
                         <?php foreach ($recordsPerPageOptions as $val){ ?>
                         
@@ -147,7 +147,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                   if($i['stato']!='A'){?>
                                   <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning btn-sm" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
                                   <?php }
-                                  if($i['stato']!='B'){?>
+                                  if($i['stato']!='B'&&$i['stato']!='E'){?>
                                     <button type="button" class="btn btn-danger btn-sm" title="Annulla Istanza" onclick="annIst(<?=$i['id_RAM']?>);"><i class="fa fa-times" aria-hidden="true"></i></button>
                                   <?php }
                                   if($i['stato']=='B'){?>

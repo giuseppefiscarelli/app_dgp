@@ -15,7 +15,7 @@
               $params['search4']='B';
               $annIstr= countIstanze($params);
 
-              $params['search4']='B';
+              $params['search4']='E';
               $scaIstr= countIstanze($params);
 
 

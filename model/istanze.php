@@ -275,12 +275,13 @@ function getIstanze( array $params = []){
             $parA = ' and istanza.id_RAM =0';
             
          }
-          if($search4=='B'&&$data_rend_fine>$now){
+          if($search4=='B'){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
           }
+          /*
           if($search4=='B'&&$data_rend_fine<$now){
             $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
-          }
+          }*/
           if($search4=='C'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
           }
@@ -291,6 +292,14 @@ function getIstanze( array $params = []){
           if($search4=='D'){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
           }
+          if($search4=='E'&&$data_rend_fine>$now){
+            $parA = ' and istanza.id_RAM =0';
+          }
+          if($search4=='E'&&$data_rend_fine<$now){
+            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
+
+          }
+
 
         }
         
@@ -348,7 +357,7 @@ function getIstanze( array $params = []){
                 $row['stato'] = 'A';
                 if($tipo_ist['data_rendicontazione_fine']<$now){
                  
-                  $row['stato'] = 'B';
+                  $row['stato'] = 'E';
                   $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
                 } 
               }
@@ -405,12 +414,14 @@ function countIstanze( array $params = []){
           if($search4=='A'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
           }
-          if($search4=='B'&&$data_rend_fine>$now){
+          if($search4=='B'){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
           }
+          /*
           if($search4=='B'&&$data_rend_fine<$now){
             $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
           }
+          */
           if($search4=='C'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
           }
@@ -420,6 +431,13 @@ function countIstanze( array $params = []){
           }
           if($search4=='D'){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          }
+          if($search4=='E'&&$data_rend_fine>$now){
+            $parA = ' and istanza.id_RAM =0';
+          }
+          if($search4=='E'&&$data_rend_fine<$now){
+            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
+
           }
 
         }
