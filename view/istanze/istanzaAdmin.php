@@ -37,7 +37,7 @@ if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
 
 
 
-
+ 
 ?>
 <div class="row">
   <div class="col-lg-8 col-12">

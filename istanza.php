@@ -1693,12 +1693,14 @@ $(document).ready(function() {
           
             checkvp=$('#c_p_d_'+tipo+'_'+prog).html()
             checkvt=$('#c_t_d_'+tipo+'_'+prog).html()
+           
             
             checkcatp= $('#ch_p_'+tipo).html()
             checkcatt= $('#ch_t_'+tipo).html()
 
             checkvp = parseInt(checkvp)
             checkvt= parseInt(checkvt)
+            
             checkcatp= parseInt(checkcatp)
             checkcatt= parseInt(checkcatt)
 
@@ -1722,7 +1724,9 @@ $(document).ready(function() {
                         data: {id_RAM:id_RAM,tipo_veicolo:tipo,progressivo:prog},
                         dataType: "json",
                         success: function(data){
-                            
+                              if(data.rott==true){ 
+                                   $('#c_p_d_R_'+tipo+'_'+prog).html(data.n_R)
+                              }
                               if(data.n==checkvt){
                                     ic="check"
                                     color="green"

@@ -55,8 +55,9 @@
                     ?></td>
                     <td>
                         <div  class="btn-group btn-group-sm" role="group">
-                                           
-                        <a type="button" href="istanza.php"class="btn btn-primary" style="color:white;"> Vai a Istanza</a>
+                        <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success btn-sm" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i> Info Istanza</button>
+                   
+                        <a type="button" href="istanza.php"class="btn btn-primary" style="color:white;margin-left:5px;"> Vai a Istanza</a>
                            
 
                         </div>
@@ -73,3 +74,6 @@
     <!--end card-->
   </div>
 </div>
+<!-- Modal -->
+
+<?php require_once 'infomodal.php'; ?>

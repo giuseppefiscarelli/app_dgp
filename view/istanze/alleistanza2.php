@@ -12,14 +12,11 @@ $allepmi = getAllegato($pmi,$i['id_RAM'],0);
 $allerete = getAllegato($rete,$i['id_RAM'],0);
 $alleampl = getAllegato($ampl,$i['id_RAM'],0);
 
-//var_dump($pmidoc);
-//var_dump($retedoc);
-///var_dump($ampldoc);
-//var_dump($allepmi);
-//var_dump($allerete);
-//var_dump($alleampl);
+$ckAllePmi = $i['pmi']=="Yes"||$i['nr_1']>0||$i['nr_2']>0??false;
+$ckAlleRete =$i['rete']=="Yes"??false;
+$ckAlleAmpl =$i['nr_1']>0||$i['nr_2']>0??false;
 
-
+if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
 ?>
         <div class="row"  style="margin-bottom:10px;">
             <div class="col-12">
@@ -50,7 +47,7 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
                                          
 
                                                 
-                                                    if($i['pmi']=="Yes"||$i['nr_1']>0||$i['nr_2']>0){//aggiungere 3 condizione 
+                                                    if($ckAllePmi||$ckAlleAmpl){//aggiungere 3 condizione 
                                                         $descrizione=$pmidoc;
                                                         $alle=0;
                                                         $file=0;
@@ -70,7 +67,7 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
 
                                                    
                                                     }
-                                                    if($i['rete']=="Yes"){
+                                                    if($ckAlleRete){
                                                         $descrizione=$retedoc;
                                                         $alle=0;
                                                         $file=0;
@@ -85,7 +82,7 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
                                                         require "allegatoistanza.php";
                                                    
                                                     }
-                                                    if($i['nr_1']>0||$i['nr_2']>0){
+                                                    if($ckAlleAmpl){
                                                         $descrizione=$ampldoc;
                                                         $alle=0;
                                                         $file=0;
@@ -121,7 +118,7 @@ $alleampl = getAllegato($ampl,$i['id_RAM'],0);
             </div>
         </div>
  
-
+<?php } ?>
 
 
  <!-- modals -->

@@ -1,24 +1,24 @@
                                     <div id="accordionDivVeicoli_<?=$tvei["tpvc_codice"]?>" class="collapse-div " role="tablist">
                                             <?php
-                                                    $veicolo = getRowVeicolo($tvei["tpvc_codice"],$i['id_RAM']);
-                                                    //var_dump($veicolo);
-                                                    foreach($veicolo as $rv ){
-                                                        
-                                                        $countDocVeicolo=countDocVeicolo($rv['tipo_veicolo']);
-                                                        $countDocVeicolo= $countDocVeicolo?$countDocVeicolo:0;
-                                                        //var_dump($countDocVeicolo);
-                                                        $countDocVeicoloInfo=countDocVeicoloInfo($rv['id_RAM'],$rv['tipo_veicolo'],$rv['progressivo']);
-                                                        //var_dump($countDocVeicoloInfo);
-                                                        if($rv['tipo_acquisizione']=='01'){
-                                                            $countDocVeicolo =$countDocVeicolo-1;
-
-
-                                                        }
-                                                    ?>
-
-
-
-
+                                                $veicolo = getRowVeicolo($tvei["tpvc_codice"],$i['id_RAM']);
+                                                foreach($veicolo as $rv ){
+                                                    $checkRott = checkRott($i['id_RAM'],$rv['tipo_veicolo']);
+                                                    //var_dump($checkRott);
+                                                   
+                                                    $countDocVeicolo=countDocVeicolo($rv['tipo_veicolo']);
+                                                    $countDocVeicolo= $countDocVeicolo?$countDocVeicolo:0;
+                                                    $countDocVeicoloInfo=countDocVeicoloInfo($rv['id_RAM'],$rv['tipo_veicolo'],$rv['progressivo']);
+                                                    if($rv['tipo_acquisizione']=='01'){
+                                                        $countDocVeicolo =$countDocVeicolo-1;
+                                                    }
+                                                    if($checkRott){
+                                                       
+                                                        $countDocVeicoloRottInfo=countDocVeicoloRottInfo($rv['id_RAM'],$rv['tipo_veicolo'],$rv['progressivo']);
+                                                        $countDocVeicoloInfo=$countDocVeicoloInfo-$countDocVeicoloRottInfo;
+                                                        $countDocVeicoloInfo<0?$countDocVeicoloInfo=0:$countDocVeicoloInfo;
+                                                    }
+                                                   
+                                            ?>
                                             
                                             <div class="collapse-header" id="headingA<?=$rv['progressivo']?>_<?=$rv['id']?>">
                                                 <button data-toggle="collapse" data-target="#accordion<?=$rv['progressivo']?>_<?=$rv['id']?>" aria-expanded="false" aria-controls="accordion<?=$rv['progressivo']?>_<?=$rv['id']?>">
@@ -39,23 +39,29 @@
                                                 <small class="form-text text-muted" id="ckeck_info_vei_<?=$rv['progressivo']?>_<?=$rv['id']?>" style="padding-left:50px"><i class="fa fa-<?=$icon?>" style="color:<?=$color?>;"aria-hidden="true"></i> Dati Veicolo<?=$text?> presenti</small>
                                                 <?php
                                                         $colorDoc="red";
-                                                        
                                                         $iconDoc="ban";
-                                                        
-
-                                                    if($countDocVeicoloInfo==$countDocVeicolo){
-                                                        $colorDoc="green";
-                                                        
-                                                        $iconDoc="check";
-                                                        
-                                                        
+                                                        if($countDocVeicoloInfo==$countDocVeicolo){
+                                                            $colorDoc="green";
+                                                            $iconDoc="check";
                                                         }
-                                                   
-                                                    
-                                                        ?>
-                                                <small id="check_vei_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>" class="form-text text-muted" style="padding-left:50px"><i class="fa fa-<?=$iconDoc?>" style="color:<?=$colorDoc?>;"aria-hidden="true"></i> 
-
-                                                Documenti veicoli caricati <b id="c_p_d_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>"><?=$countDocVeicoloInfo?></b> di <b id="c_t_d_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>"><?=$countDocVeicolo?></b></small>
+                                                ?>
+                                                <small id="check_vei_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>" class="form-text text-muted" style="padding-left:50px">
+                                                    <i class="fa fa-<?=$iconDoc?>" style="color:<?=$colorDoc?>;"aria-hidden="true"></i> 
+                                                    Documenti veicoli caricati <b id="c_p_d_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>"><?=$countDocVeicoloInfo?></b> 
+                                                    di <b id="c_t_d_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>"><?=$countDocVeicolo?></b>
+                                                </small>
+                                                <?php 
+                                                if($checkRott){
+                                                ?>
+                                                    <small id="check_vei_R_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>" class="form-text text-muted" style="padding-left:50px">
+                                                     
+                                                    Documenti Rottamazione caricati <b id="c_p_d_R_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>"><?=$countDocVeicoloRottInfo?></b> 
+                                                    di <b id="c_t_d_R_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>">2</b>
+                                                </small>
+                                                <?php }
+                                                
+                                                ?>            
+                                              
                                             </div>
                                                                 
                                             </div>

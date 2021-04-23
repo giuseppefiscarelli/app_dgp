@@ -27,20 +27,7 @@ $countdocIstanzaInfo=countDocIstanzaInfo($i['id_RAM']);
                 <?php
             }?> 
             Dati Veicoli Inseriti <?=$countdatveiinfo?> di <?=$countdatvei?><br>
-            <?php
-               //     if($countdocIstanzaInfo==$countdocIstanza){?>
-               <!-- <i class="fa fa-check" aria-hidden="true" style="color:green;"></i>
-                <?php
-           // }else{?>
-                <i class="fa fa-ban" aria-hidden="true" style="color:red;"></i>-->
-                <?php
-            //}?> 
-
-
-                <!-- Documenti Veicoli caricati  <?=$countdocIstanzaInfo?> di <?=$countdocIstanza?></p>
-                </p>-->
             
-                
                 </div>
             </div>
             

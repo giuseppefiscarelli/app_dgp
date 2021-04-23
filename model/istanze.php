@@ -157,6 +157,7 @@ function getIstanzeUser(array $params = []){
       $now=date("Y-m-d H:i:s");
       $tipo= getTipoIstanza($search3);
          $data_inizio = $tipo['data_invio_inizio'];
+         $data_fine = $tipo['data_invio_fine'];
          $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
          $data_rend_fine = $tipo['data_rendicontazione_fine'];
 
@@ -1459,6 +1460,42 @@ function countDocVeicoloInfo($id_RAM,$tipo_veicolo,$progressivo){
                 $sql = 'SELECT count(DISTINCT tipo_documento) as total FROM allegato';
 
                 $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s'";
+                //  echo $sql;
+                
+
+                $res = $conn->query($sql);
+                if($res) {
+
+                $row = $res->fetch_assoc();
+                $total = $row['total'];
+                
+                return $total;
+
+              }
+          
+}
+function countDocVeicoloRottInfo($id_RAM,$tipo_veicolo,$progressivo){
+
+   
+  /**
+   * @var $conn mysqli
+   */
+
+            $conn = $GLOBALS['mysqli'];
+
+              
+           
+              
+            $total = 0;
+
+  
+      
+
+
+     
+                $sql = 'SELECT count(DISTINCT tipo_documento) as total FROM allegato';
+
+                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s' and (tipo_documento = 11 or tipo_documento = 14) ";
                 //  echo $sql;
                 
 
@@ -2808,4 +2845,24 @@ function infoannIstanza($id_RAM){
   
   }
   return $result;
+}
+function checkRott($id_RAM,$tv){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ='SELECT * FROM istanza WHERE id_RAM = '.$id_RAM.' and rott'.$tv.'="Yes"' ;
+      //echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
+  
+  
 }

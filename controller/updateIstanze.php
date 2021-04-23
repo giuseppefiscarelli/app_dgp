@@ -192,8 +192,10 @@ switch ($action){
       //var_dump($data);
       $res = getTipoDocumento($data);
       //var_dump($res);die;
-      $ckrott =getIstanza($id_RAM);
-      if($ckrott['rott1']=='Yes'||$ckrott['rott2']=='Yes'||$ckrott['rott3']=='Yes'||$ckrott['rott4']=='Yes'||$ckrott['rott5']=='Yes'||$ckrott['rott6']=='Yes'||$ckrott['rott7']=='Yes'||$ckrott['rott8']=='Yes'||$ckrott['rott9']=='Yes'||$ckrott['rott10']=='Yes'){
+      //$ckrott =getIstanza($id_RAM);
+      $checkRott = checkRott($id_RAM,$data);
+      
+      if($checkRott){
         $doc11 = array(
           'codice_tipo_documento' => "11"
         );
@@ -291,12 +293,27 @@ switch ($action){
       $id_RAM =$data['id_RAM'];
       $tipo_veicolo=$data['tipo_veicolo'];
       $progressivo=$data['progressivo'];
+      $checkRott = checkRott($id_RAM,$tipo_veicolo);
+      
       $res =countDocVeicoloInfo($id_RAM,$tipo_veicolo,$progressivo);
       $res2 = countDocVeicolo($tipo_veicolo);
+      $rott=false;
+      
+      $n_R=0;
+      $of_R=2;
+      if($checkRott){
+        $n_R=countDocVeicoloRottInfo($id_RAM,$tipo_veicolo,$progressivo);
+        $res2 = $res2;
+        $res = $res-$n_R;
+        $res<0?$res=0:$res;
+        $rott=true;
+      }
       $json= array(
-
+        "rott"=>$rott,
+        "n_R"=>intval($n_R),
+        "of_R"=>$of_R,
         "n"=>$res,
-        "of"=>$res2
+        "of"=>intval($res2)
       );
 
 
