@@ -186,14 +186,14 @@ function getIstanzeUser(array $params = []){
                     $row['stato_des'] ='<br>Annullata da impresa ';
                   }
                   if(($tipo_ist['data_rendicontazione_fine']<$now&&$stato['aperta']==1)){
-                    $row['stato'] = 'B';
+                    $row['stato'] = 'E';
                     $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
                   } 
                 
               }else{
                 $row['stato'] = 'A';
                 if($tipo_ist['data_rendicontazione_fine']<$now){
-                  $row['stato'] = 'B';
+                  $row['stato'] = 'E';
                   $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
                 } 
               }
@@ -349,8 +349,8 @@ function getIstanze( array $params = []){
                     $row['stato_des'] ='<br>Annullata da impresa ';
                   }
                   if(($tipo_ist['data_rendicontazione_fine']<$now&&$stato['aperta']==1)){
-                    $row['stato'] = 'B';
-                    $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                    $row['stato'] = 'E';
+                    $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
                   } 
                 
               }else{
@@ -358,7 +358,7 @@ function getIstanze( array $params = []){
                 if($tipo_ist['data_rendicontazione_fine']<$now){
                  
                   $row['stato'] = 'E';
-                  $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                  $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
                 } 
               }
             
