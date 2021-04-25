@@ -1,33 +1,36 @@
-<?php
-session_start();
-require_once 'functions.php';
+   <?php    
+ $tipi_istanze =getTipiIstanza();
+            foreach($tipi_istanze as $ti){
+              $params['search3']=$ti['id'];
+              //$istTotali =countIstanze($params);
+              $istTotali =countTotIstanze($params);
+              $params['search4']='A';
+              $totalIstanze= countIstanze($params);
 
-if(!isUserLoggedin()){
+              $params['search4']='C';
+              $istRend= countIstanze($params);
 
-  header('Location:index.php');
-  exit;
-}
-/*
-require_once 'model/user.php';
-$updateUrl = 'userUpdate.php';
-$deleteUrl = 'controller/updateUser.php';
-*/
-require_once 'headerInclude.php';
+              $params['search4']='D';
+              $istIstr= countIstanze($params);
+              $params['search4']='B';
+              $annIstr= countIstanze($params);
 
+              $params['search4']='E';
+              $scaIstr= countIstanze($params);
+
+
+
+              
+require 'card/card1.php';
+            }
+          /*  $totalIstanze= countIstanze($params);
+            $istTotali =countTotIstanze($params);
+             $istanze = getIstanze($params);
+             $istRend =countRendicontazione(1);
+             $istIstr =countRendicontazione(0);*/
 ?>
- <div class="container my-4">
- <?php
-    require_once 'controller/displayHome.php';
-?>   
-        
-</div>
-     
-<!--End Dashboard Content-->
-
-<?php
-    require_once 'view/template/footer.php';
-?>
-<script type="text/javascript">
+   
+   <script type="text/javascript">
 $(document).ready(function() {
 
 
@@ -73,8 +76,5 @@ var myChart = new Chart(ctx, {
 
 });
 </script>
-  
-</script>
 
-</body>
-</html>    
+     

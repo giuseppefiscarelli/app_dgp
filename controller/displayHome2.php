@@ -26,37 +26,16 @@ if(!empty($_SESSION['message'])){
           $orderByQueryString = http_build_query($orderByParams,'&amp;');
           $navOrderByQueryString = http_build_query($orderByNavigatorParams,'&amp;');
 
-         // $totalUsers= countUsers($params);
-         // $numPages= ceil($totalUsers/$recordsPerPage);
-         // $users = getUsers($params);
-          //var_dump($users);
           if(isUserSuadmin()){
             require_once 'model/istanze.php';
-            $totalIstanze= countIstanze($params);
-            $istTotali =countTotIstanze($params);
-             $istanze = getIstanze($params);
-             $istRend =countRendicontazione(1);
-             $istIstr =countRendicontazione(0);
+           
 
-
-            require 'view/home/homeSuadmin.php';
+            require 'view/home/homeAdmin.php';
+           // require 'view/home/homeSuadmin.php';
           }
           if(isUserAdmin()){
-            require_once 'model/home.php';
-            //require_once 'model/comunicazioni.php';
-            $totalIstanze= countIstanze($params);
-            $istTotali =countTotIstanze($params);
-             $istanze = getIstanze($params);
-             $istRend =countRendicontazione(1);
-             $istIstr =countRendicontazione(0);
-
-             $totalMsg = countTicket(); 
-            
-             $unreadMsg= countnewTicket();
-             $readMsg= countreadTicket();
-             $closedMsg= countcloseTicket();
-
-
+            require_once 'model/istanze.php';
+           
             require 'view/home/homeAdmin.php';
           }
           if(isUserUser()){
