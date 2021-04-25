@@ -186,7 +186,7 @@
                                                                                     }
                                                                                 }else{?>
 
-                                                                                <tr><td>Non ci sono Documenti Caricati</td></tr> 
+                                                                                <tr id="tr_not"><td>Non ci sono Documenti Caricati</td></tr> 
                                                                                 <?php
                                                                                 }?>
                                                                         </tbody>

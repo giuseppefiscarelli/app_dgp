@@ -1470,7 +1470,7 @@ $(document).ready(function() {
                         data: {tipovei:tipovei,id_RAM:id_RAM,progressivo:prog},
                         dataType: "json",
                         success: function(data){
-                            
+                            $('#tr_not').hide()
                               $.each(data, function(k,v){
                                    
                                     tip=v.codice_tipo_documento

@@ -234,7 +234,7 @@ function countComunicazioni( array $params = []){
       }
     $sql .= " ORDER BY data_ins  $orderDir LIMIT $start, $limit";
     
-    echo $sql;    
+    //echo $sql;    
 
         $res = $conn->query($sql);
         if($res) {
