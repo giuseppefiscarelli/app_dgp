@@ -1,7 +1,5 @@
 <?php
 
-//require_once 'functions.php';
-//require_once 'model/user.php';
 require_once 'view/template/top.php';
  
 $pageUrl= $_SERVER['PHP_SELF'];
@@ -18,7 +16,10 @@ $page =getParam ('page',1);
 
 
     require_once 'view/template/topbar_header.php';
+?>
 
+
+<?php
     if(isUserSuadmin()){
       require_once 'view/template/sidebar.php';
     }
@@ -30,7 +31,9 @@ $page =getParam ('page',1);
       require_once 'view/template/sidebarUser.php';
     }
     
-?>    
+?>
+      
+   
 <!--End topbar header-->
 
  

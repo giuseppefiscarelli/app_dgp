@@ -2,8 +2,8 @@
  $tipi_istanze =getTipiIstanza();
             foreach($tipi_istanze as $ti){
               $params['search3']=$ti['id'];
-              $istTotali =countIstanze($params);
-              
+              //$istTotali =countIstanze($params);
+              $istTotali =countTotIstanze($params);
               $params['search4']='A';
               $totalIstanze= countIstanze($params);
 
