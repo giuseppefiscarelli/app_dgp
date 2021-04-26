@@ -328,7 +328,7 @@ function getIstanze( array $params = []){
             $sql .= $parA;
           }
         $sql .= " ORDER BY $orderBy  $orderDir LIMIT $start, $limit";
-       echo $sql;
+       //echo $sql;
 
         $res = $conn->query($sql);
         if($res) {
