@@ -2,6 +2,11 @@
 
 session_start();
 require_once 'functions.php';
+if(!isUserLoggedin()){
+
+      header('Location:index.php');
+      exit;
+    }
 $id = getParam('id','');
 require 'model/istanze.php';
 
