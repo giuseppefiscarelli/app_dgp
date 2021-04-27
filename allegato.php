@@ -19,7 +19,7 @@ if(isUserUser()){
       if($res['id_ram'] == $_SESSION['userData']['check_ram']){
             $file = $pathAlle.$res['docu_id_file_archivio']; 
             $filename = $res['docu_nome_file_origine']; 
-          
+            $filename = mb_ereg_replace("([^\w\s\d\-_~;\[\]\(\).])", '', $filename);
            
             header("Content-type: application/pdf");
                   header("Content-Disposition: inline; filename=".$filename."");
@@ -34,6 +34,8 @@ if(isUserUser()){
       $file = $pathAlle.$res['docu_id_file_archivio']; 
             $filename = $res['docu_nome_file_origine']; 
           
+            $filename = mb_ereg_replace("([^\w\s\d\-_~;\[\]\(\).])", '', $filename);
+         
            
             header("Content-type: application/pdf");
                   header("Content-Disposition: inline; filename=".$filename."");

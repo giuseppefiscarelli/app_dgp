@@ -20,6 +20,8 @@ $res =getAllegatoID($id);
             if($res['id_ram'] == $_SESSION['userData']['check_ram']){
                   $file = $pathAlle.$res['docu_id_file_archivio']; 
                   $filename = $res['docu_nome_file_origine']; 
+                  $filename = mb_ereg_replace("([^\w\s\d\-_~;\[\]\(\).])", '', $filename);
+
               
                   header("Content-type: application/pdf");
                        
@@ -34,6 +36,8 @@ $res =getAllegatoID($id);
       }else{
             $file = $pathAlle.$res['docu_id_file_archivio']; 
       $filename = $res['docu_nome_file_origine']; 
+      $filename = mb_ereg_replace("([^\w\s\d\-_~;\[\]\(\).])", '', $filename);
+
   
       header("Content-type: application/pdf");
            

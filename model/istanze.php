@@ -158,13 +158,13 @@ function getIstanzeUser(array $params = []){
      
       $now=date("Y-m-d H:i:s");
       $tipo= getTipoIstanza($search3);
-         $data_inizio = $tipo['data_invio_inizio'];
-         $data_fine = $tipo['data_invio_fine'];
-         $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
-         $data_rend_fine = $tipo['data_rendicontazione_fine'];
-     //    $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and  istanza.eliminata!='1' and xml.data_invio between '$data_inizio' and '$data_fine'";
+        $data_inizio = $tipo['data_invio_inizio'];
+        $data_fine = $tipo['data_invio_fine'];
+        $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
+        $data_rend_fine = $tipo['data_rendicontazione_fine'];
+        //    $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and  istanza.eliminata!='1' and xml.data_invio between '$data_inizio' and '$data_fine'";
 
-      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '$data_inizio' and '$data_fine'";
+        $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '$data_inizio' and '$data_fine'";
         //echo $sql;
         $res = $conn->query($sql);
         if($res) {
@@ -306,10 +306,10 @@ function getIstanze( array $params = []){
 
         }
         
-       // $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and istanza.eliminata != '1'";
+        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and istanza.eliminata != '1'";
   
 
-        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
+      //  $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
       
         if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
