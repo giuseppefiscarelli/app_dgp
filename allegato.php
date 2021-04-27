@@ -35,7 +35,7 @@ if(isUserUser()){
             $filename = $res['docu_nome_file_origine']; 
           
             $filename = mb_ereg_replace("([^\w\s\d\-_~;\[\]\(\).])", '', $filename);
-         
+          
            
             header("Content-type: application/pdf");
                   header("Content-Disposition: inline; filename=".$filename."");
