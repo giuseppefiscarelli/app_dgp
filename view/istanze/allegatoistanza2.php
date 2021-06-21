@@ -20,7 +20,13 @@
                                                         
                                                         
                                                         </td>
-                                                    <td> <?php
+                                                    <?php
+                                                       // var_dump($file);
+                                                            if($file==0){?>
+                                                        <td><?=$checkFile?></td>
+                                                        
+                                                            <?php }else{?>
+                                                    <td>  <?php
                                                             if(!isUserAdmin()&&$rend['aperta']==1){?> 
 
                                                         <div id="upload_<?=$tipo?>"style="display:<?=$alle?'none':''?>"    >
@@ -42,4 +48,5 @@
                                                         </div>
 
                                                     </td>
+                                                    <?php }?>
                                                 </tr>

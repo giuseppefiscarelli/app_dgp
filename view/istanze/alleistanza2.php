@@ -52,6 +52,7 @@ if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
                                                         $alle=0;
                                                         $file=0;
                                                         $tipo="pmi";
+                                                        
                                                         $tipo_doc= $pmi;
                                                         if($allepmi){
                                                             
@@ -60,7 +61,8 @@ if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
                                                             //var_dump($file);
                                                         }
-                                                        
+                                                        $checkFile='';
+                                                        if($file=0){ $checkFile='Documento non caricato';};
                                                         
                                                         
                                                         require "allegatoistanza.php";
@@ -79,6 +81,8 @@ if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
                                                             $data_alle = date("d/m/Y",strtotime($alle['data_agg']));
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
                                                         }
+                                                        $checkFile='';
+                                                        if($file=0){ $checkFile='Documento non caricato';};
                                                         require "allegatoistanza.php";
                                                    
                                                     }
@@ -94,6 +98,8 @@ if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
                                                             $data_alle = date("d/m/Y",strtotime($alle['data_agg']));
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
                                                         }
+                                                        $checkFile='';
+                                                        if($file=0){ $checkFile='Documento non caricato';};
                                                         require "allegatoistanza.php";
                                                                                                       
                                                     }

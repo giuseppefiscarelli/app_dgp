@@ -41,6 +41,7 @@ try {
     $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5, 5, 5, 2),true);
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->pdf->SetProtection(array('print','copy'));
+    $html2pdf->setDefaultFont('Times', 'Serif');
     ob_start();
     include dirname(__FILE__).'/res/ammissione.php';
     

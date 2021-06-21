@@ -1,12 +1,16 @@
 <?php
+//var_dump($tipo_istanza);
  $activeIst = true;
-if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
-  $span='<span class="badge badge-success">In Istruttoria</span><br>Termine per la rendicondazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['scadenza']));
+ $status= checkRend($i['id_RAM']);
+if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m-d")){
+  $span='<span class="badge badge-success">In Istruttoria</span><br>Termine per la rendicondazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
   $activeIst = false;
   
 
 }else{
- $status= checkRend($i['id_RAM']);
+ 
+// var_dump($status);
+
  if($status){
 
   if($status['aperta']==1){

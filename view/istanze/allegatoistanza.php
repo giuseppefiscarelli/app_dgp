@@ -20,7 +20,7 @@
                                                         
                                                         
                                                         </td>
-                                                    <td> <?php
+                                                        <?php
                                                             if(!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true){?> 
 
                                                         <div id="upload_<?=$tipo?>"style="display:<?=$alle?'none':''?>"    >
@@ -41,4 +41,5 @@
                                                         </div>
 
                                                     </td>
+                                                   
                                                 </tr>

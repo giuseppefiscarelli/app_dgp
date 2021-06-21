@@ -1,4 +1,4 @@
-<page pagegroup="new"  style="font-size:12px" backtop="30mm" backleft="15mm" backright="15mm" backbottom="9mm">
+<page pagegroup="new"  style="font-size:14px" backtop="30mm" backleft="15mm" backright="15mm" backbottom="9mm">
 	
 <style>
 	.testoParagrafo {
@@ -57,12 +57,8 @@
     
     <page_header> 
         <table width="75%" style="margin:30px;text-align:center;">
-        <tr><td style="text-align:center;"><img style="width:40px;height:40px;display:inline;"  src="../../images/italia.png"></td></tr>
-        <tr><td style="font-style:italic;font-weight: bold;">Ministero delle Infrastrutture e dei Trasporti</td></tr>
-        <tr><td>Dipartimento per i trasporti, la Navigazione</td></tr>
-        <tr><td>ed i Sistemi Informativi e Statistici</td></tr>
-        <tr><td>Direzione Generale per il Trasporto Stradale</td></tr>
-        <tr><td>e per lìIntermodalità</td></tr>
+        <tr><td style="text-align:center;"><img style="width:300px;display:inline;"  src="../../images/intest.png"></td></tr>
+        
 
         </table>
         
@@ -87,14 +83,15 @@
 
     <table style="width:70%;margin-right:50mm">
         <tr><td style="font-weight:bold;text-align:justify;vertical-align:top;">Oggetto:</td>
-        <td style="width:150mm;font-weight:bold;text-align:justify;"> Contributi ai sensi del D.D. 11 ottobre 2019 per le finalità di cui al D.M.
-22 luglio 2019 n. 336 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.<br>
+        <td style="width:150mm;font-weight:bold;text-align:justify;">Contributi ai sensi del D.D. 7 agosto 2020 n.145 per le finalità di cui al D.M.
+                                                                        12 maggio 2020 n. 203 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.<br>
 Protocollo Istanza In <?=$rep['prot_RAM']?>/2020 Informativa ai sensi dell'art.10-bis legge 241/90</td>
 </tr>
 
     </table>
     <table>
-        <tr><td style="text-align:justify;">In riferimento alola domanda di ammissione agli incentivi di cui al D.M. 22 luglio 2019 n.336 acquisita in data ../../.. con prot. n......... si comunica che, sulla base delle risultanze
+        <tr><td style="text-align:justify;">In riferimento alla domanda di ammissione agli incentivi di cui al D.M.
+                                                                        12 maggio 2020 n. 203 acquisita in data ../../.. con prot. n......... si comunica che, sulla base delle risultanze
         dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del
         22 luglio 2019 n.336, destinato alle imprese di autotrasporti merci, è risultata</td></tr>
     </table>

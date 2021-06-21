@@ -285,6 +285,7 @@ function getIstanze( array $params = []){
           if($search4=='B'&&$data_rend_fine<$now){
             $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
           }*/
+          
           if($search4=='C'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
           }
@@ -306,7 +307,8 @@ function getIstanze( array $params = []){
 
         }
         
-        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and istanza.eliminata != '1'";
+        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
+        $sql .=" and istanza.eliminata != '1'";
   
 
        // $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
@@ -327,12 +329,12 @@ function getIstanze( array $params = []){
           if($search4){
             $sql .= $parA;
           }
-        $sql .= " ORDER BY $orderBy  $orderDir LIMIT $start, $limit";
-       //echo $sql;
+        $sql .= " ORDER BY istanza.$orderBy  $orderDir LIMIT $start, $limit";
+     //echo $sql;
 
         $res = $conn->query($sql);
         if($res) {
-
+          
           while( $row = $res->fetch_assoc()) {
 
 
@@ -448,9 +450,9 @@ function countIstanze( array $params = []){
         
         
         
-        $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and  istanza.eliminata!='1' ";
+       // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and  istanza.eliminata !='1' ";
 
-      //  $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
+       $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
         if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
@@ -467,7 +469,7 @@ function countIstanze( array $params = []){
           if($search4){
             $sql .= $parA;
           }
-
+        //  echo $sql;
         $res = $conn->query($sql);
         if($res) {
 
@@ -2851,7 +2853,7 @@ function annullaIstanza($data){
 
 function infoannIstanza($id_RAM){
 
-/**
+ /**
    * @var $conn mysqli
    */
 

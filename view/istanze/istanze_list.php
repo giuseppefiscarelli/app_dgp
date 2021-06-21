@@ -121,7 +121,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 if ($istanze){
                                     foreach ($istanze as $i){
                                      
-                                    
+                                   
                                       $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                                       $stato_istanza = getStatoIstanza($i['stato']);
                                       $status=checkRend($i['id_RAM']);

@@ -66,7 +66,8 @@ $calcContributo=calcolaContributo($testData);
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
                                                             //var_dump($file);
                                                         }
-                                                        
+                                                        $checkFile='';
+                                                        if($file==0){ $checkFile='Documento non caricato';};
                                                         
                                                         
                                                         require "allegatoistanza2.php";
@@ -85,6 +86,8 @@ $calcContributo=calcolaContributo($testData);
                                                             $data_alle = date("d/m/Y",strtotime($alle['data_agg']));
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
                                                         }
+                                                        $checkFile='';
+                                                        if($file==0){ $checkFile='Documento non caricato';};
                                                         require "allegatoistanza2.php";
                                                    
                                                     }
@@ -100,6 +103,8 @@ $calcContributo=calcolaContributo($testData);
                                                             $data_alle = date("d/m/Y",strtotime($alle['data_agg']));
                                                             $file = file_exists($pathAlle.$alle['docu_id_file_archivio']);
                                                         }
+                                                        $checkFile='';
+                                                        if($file==0){ $checkFile='Documento non caricato';};
                                                         require "allegatoistanza2.php";
                                                                                                       
                                                     }
@@ -119,7 +124,25 @@ $calcContributo=calcolaContributo($testData);
                                         <?php
 
                                                     $c_i = checkIstanza($i['id_RAM']);
-                                                    //var_dump($c_i);
+                                                    
+                                                    if(!$c_i){
+                                                      $c_i = [
+                                                        'pec'=>null,
+                                                        'note_pec'=>'',
+                                                        'firma'=>null,
+                                                        'note_firma'=>'',
+                                                        'doc'=>null,
+                                                        'note_doc'=>'',
+                                                        'contratto'=>null,
+                                                        'note_contratto'=>'',
+                                                        'delega'=>null,
+                                                        'note_delega'=>''
+                                                      ];
+                                                    }
+                                                      
+                                                          
+                                                      
+                                                    
                                         ?>
                                         <table class="table table-borderless table-sm">
                                             <thead>

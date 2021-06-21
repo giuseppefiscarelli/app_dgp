@@ -89,10 +89,10 @@
 
     <table style="width:70%;margin-right:50mm">
         <tr><td style="font-weight:bold;text-align:justify;vertical-align:top;">Oggetto:</td>
-        <td style="width:150mm;font-weight:bold;text-align:justify;"> Contributi ai sensi del D.D. 11 ottobre 2019 per le finalità di cui al D.M.
-            22 luglio 2019 n. 336 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.<br>
-            Protocollo Istanza In <?=$rep['prot_RAM']?>/2020 Informativa ai sensi dell'art.10-bis legge 241/90</td>
-            </tr>
+        <td style="width:150mm;font-weight:bold;text-align:justify;"> Contributi ai sensi del D.D. 7 agosto 2020 n.145 per le finalità di cui al D.M.
+                                                                        12 maggio 2020 n. 203 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.<br>
+                                                                        Protocollo Istanza In <?=$rep['prot_RAM']?>/2020 Informativa ai sensi dell'art.10-bis legge 241/90</td>
+                                                                        </tr>
 
     </table>
     
@@ -130,7 +130,7 @@
       
       
         <tr><td style="text-align:justify;">- VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n <?=$prot?> del <?=$data_prot?>;</td></tr>
-        <tr><td style="text-align:justify;">- VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 11, comma 3, del D.D. 11 ottobre 2019, tenutasi il giorno <?=$data_verb?>;</td></tr>
+        <tr><td style="text-align:justify;">- VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, del D.D. 7 agosto 2020, tenutasi il giorno <?=$data_verb?>;</td></tr>
         <tr><td style="text-align:justify;">- VISTA la nota prot. n. In/<?=$prot_pre?> del <?=$prot_pre_data?> con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;</td></tr>
         <tr><td style="text-align:justify;">- CONSIDERATO che non è pervenuta alcuna risposta alla predetta nota del <?=$campo6?> ;</td></tr>
         <tr><td style="text-align:justify;">- CONSIDERATO che premane la seguente motivazione di inammissibilità: <?=$campo7?> ;</td></tr>

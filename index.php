@@ -123,10 +123,10 @@ require_once 'view/template/top.php';
                           <div class="it-brand-text">
                             <h2 class="no_toc">Ministero
                             </h2>
-                            <h3 class="no_toc  d-md-block"> delle Infrastrutture e dei Trasporti</h3>
+                            <b class="no_toc d-none d-md-block" style="color:white;font-size: 15px;">delle Infrastrutture<br> e della Mobiltà Sostenibili</b>
                           </div>
                           <div style="padding: 20px;">
-                           <img src="images/logo-ram-2018.png" alt="Home" style="max-height: -webkit-fill-available;">
+                           <img src="images/logo-ram-2018.png" alt="Home" style="height: 70px;">
                           </div>
                         </a>
                       

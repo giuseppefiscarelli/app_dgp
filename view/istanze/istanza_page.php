@@ -1,7 +1,7 @@
 <?php
  $activeIst = true;
-if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
-  $span='<span class="badge badge-success">In Istruttoria</span><br>Termine per la rendicondazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['scadenza']));
+if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m-d")){
+  $span='<span class="badge badge-success">In Istruttoria</span><br>Termine per la rendicondazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
   $activeIst = false;
   
 
@@ -47,7 +47,7 @@ if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-tab1-tab" data-toggle="tab" href="#nav-tab1" role="tab" aria-controls="nav-tab1" aria-selected="true">Dati della Domanda</a>
       <a class="nav-item nav-link" id="nav-tab2-tab" data-toggle="tab" href="#nav-tab2" role="tab" aria-controls="nav-tab2" aria-selected="false">Investimento / Rendicontazione</a>
-    <!--  <a class="nav-item nav-link" id="nav-tab3-tab" data-toggle="tab" href="#nav-tab3" role="tab" aria-controls="nav-tab3" aria-selected="false">Comunicazioni   <?php
+     <a class="nav-item nav-link" id="nav-tab3-tab" data-toggle="tab" href="#nav-tab3" role="tab" aria-controls="nav-tab3" aria-selected="false">Comunicazioni   <?php
                                                                                                                                                                                                                                      if($notifiche){
                                                                                                                                                                                                                                        if(count($notifiche)>1){
                                                                                                                                                                                                                                          $textnot = 'nuove notifiche';
@@ -58,7 +58,7 @@ if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
                                                                                                                                                                                                                                     <br><span class="badge badge-warning"> <?=count($notifiche)?></span> <small> <?=$textnot?></small>
                                                                                                                                                                                                                                     <?php
                                                                                                                                                                                                                                      }
-                                                                                                                                                                                                                                    ?></a>-->
+                                                                                                                                                                                                                                    ?></a>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
@@ -283,7 +283,7 @@ if(date("Y-m-d",strtotime($tipo_istanza['scadenza']))<date("Y-m-d")){
         </div>
                                               
     </div>
-    <div class="tab-pane p-4 fade" id="nav-tab3" role="tabpanel" aria-labelledby="nav-tab3-tab" style="display:none;">
+    <div class="tab-pane p-4 fade" id="nav-tab3" role="tabpanel" aria-labelledby="nav-tab3-tab">
                 <?php require 'user_ticket_tab.php'?>
     </div>
     

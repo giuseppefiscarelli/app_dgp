@@ -322,3 +322,12 @@
     </div>
   </div>
 </div>
+
+
+<script>
+
+        function getInfoVeicolo2(id,cat,tipvei){
+
+        }
+        
+</script>
