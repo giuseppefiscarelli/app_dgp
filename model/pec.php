@@ -20,7 +20,7 @@ function getReport(array $params = []){
     $search2 = array_key_exists('search2', $params) ? $params['search2'] : '';
     $search2 = $conn->escape_string($search2);
     if($orderDir !=='ASC' && $orderDir !=='DESC'){
-      $orderDir = 'ASC';
+      $orderDir = 'DESC';
     }
     $records = [];
 
@@ -135,7 +135,6 @@ function countReport( array $params = []){
     return $totalUser;
 
 }
-
 function getTipoReport($tipo){
 
     /**
@@ -229,6 +228,117 @@ function getUserIns(){
   }
 
   return $records;
+
+
+}
+function getReportId($id){
+    /**
+     * @var $conn mysqli
+     */
+  
+    $conn = $GLOBALS['mysqli'];
+    $result=[];
+    $sql ='SELECT * FROM report WHERE id = '.$id;
+    //echo $sql;
+    $res = $conn->query($sql);
+    
+    if($res && $res->num_rows){
+      $result = $res->fetch_assoc();
+      
+    }
+  return $result;
+}
+function getInfoReport($tipo){
+
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT * FROM tipo_report WHERE id='.$tipo ;
+  
+  $result = [];
+
+  $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+      
+        
+      }
+    return $result;
+
+
+}
+function getTipoIstanza($tipo_istanza){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $sql ='SELECT * FROM tipo_istanza WHERE id = '.$tipo_istanza;
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
+}
+function getTipiIstanza(){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $records=[];
+  $sql ='SELECT * FROM tipo_istanza ';
+  //echo $sql;
+  $res = $conn->query($sql);
+        
+       
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+}
+function convMail($data){
+  /**
+  * @var $conn mysqli
+  */
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $id = $data['id'];
+  $nome_file = $data['nome_file'];
+  $user_conv = $_SESSION['userData']['email'];
+  $data_conv = date("Y-m-d H:i:s");
+  
+  $sql ='UPDATE report SET ';
+  $sql .= "stato = 'A', nome_file = '$nome_file', user_conv ='$user_conv', data_conv='$data_conv'   ";
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
 
 
 }

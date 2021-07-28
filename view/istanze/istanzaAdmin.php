@@ -8,10 +8,7 @@ if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m
   
 
 }else{
- 
-// var_dump($status);
-
- if($status){
+  if($status){
 
   if($status['aperta']==1){
     $stato= getStatoIstanza('C');

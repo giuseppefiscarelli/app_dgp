@@ -56,6 +56,11 @@ try {
     if($tipo =="D"){
         $html2pdf->output($path.$filename.".pdf",'FD');
     }
+    if($tipo =="S"){
+        $html2pdf->output($path.$filename.".pdf",'F');
+        echo json_encode($filename.".pdf");
+    }
+    
    
 } catch (Html2PdfException $e) {
     $html2pdf->clean();

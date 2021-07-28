@@ -185,76 +185,7 @@ $(document).ready(function() {
             event.preventDefault();
             
     });
-    function info_alle(){
-           
-            Swal.fire({ 
-                  html:true,
-                  title: "Caricamento in Corso",
-                  type: "info"
-            });
-            note_ad = $('#note_admin').val();
-            id = $('#id_allegato').val();
-            stato_ad=$('#stato_allegato_admin').val()
-
-            console.log(note_ad);
-            $('#infoAllegato').modal('toggle');
-            $.ajax({
-                                    type: "POST",
-                                    url: "controller/updateIstanze.php?action=upAlleAdmin",
-                                    data: {id:id,note_admin:note_ad,stato_admin:stato_ad},
-                                    dataType: "json",
-                                    success: function(data){
-
-                                          console.log(data);
-                                          if(data.response){
-                                          Swal.fire({ 
-                                                
-                                                title: "Dati Veicolo Aggiornati",
-                                                type: "info"
-                                          });
-                                    
-                                                 if(stato_ad=='A'){
-                                                stato='<span class="badge badge-warning">In Lavorazione</span>';
-                                               }
-                                               if(stato_ad=='B'){
-                                                stato='<span class="badge badge-success">Accettato</span>';
-                                               }
-                                               if(stato_ad=='C'){
-                                                stato='<span class="badge badge-danger">Respinto</span>';
-                                               }
-                                               newstato= '#stato_admin_'+id;
-                                          $('#stato_admin_'+id).html(stato);
-                                          $('#note_admin_'+id).html(note_ad);
-                                          }
-
-                                          id = data.id_veicolo;
-                                          ok= data.accettati;
-                                          no= data.respinti;
-                                          tot= data.totali;
-                                          if(ok==tot){
-                                                
-                                                badgeA=' <span style="width: -webkit-fill-available;"class="badge badge-success">'+data.accettati+' di '+data.totali+'</span>'; 
-                                               
-                                               
-                                          }else{
-                                               
-                                                badgeA=' <span style="width: -webkit-fill-available;"class="badge badge-warning">'+data.accettati+' di '+data.totali+'</span>';
-                                          }
-                                          if(no == 0){
-                                               
-                                                badgeB=' <span style="width: -webkit-fill-available;"class="badge badge-success">'+data.respinti+' di '+data.totali+'</span>'; 
-                                          }else{
-                                             
-                                                badgeB=' <span style="width: -webkit-fill-available;"class="badge badge-danger">'+data.respinti+' di '+data.totali+'</span>';
-                                          }
-                                          $('#accettati_'+id).html( badgeA);
-                                          $('#respinti_'+id).html( badgeB);
-                                         
-                                     }
-            })
-            
-    };
-    
+  
     function newInt(tipo){
                 
                 id_RAM = <?=$i['id_RAM']?>;
@@ -1138,72 +1069,8 @@ $(document).ready(function() {
 
 
       }
-      function infoVeiIstr(id){
-            note = $('#info_note_admin').html();
-            stato =$('#info_stato_admin').text();
-
-            contr=$('#info_contr').val()
-            pmi=$('#info_contr_pmi').val()
-            rete=$('#info_contr_rete').val()
-            $('#contr_up').val(contr)
-            $('#contr_up_pmi').val(pmi)
-
-            $('#contr_up_rete').val(rete)
-            $('#note_istruttoria').val(note);
-            if(stato=="In Lavorazione"){
-                  stato='A';
-            }
-            if(stato=="Accettata"){
-                  stato='B';
-            }
-            if(stato=="Rigettata"){
-                  stato='C';
-            }
-            
-
-            console.log(stato);
-           
-            $('#stato_istruttoria').val(stato);
-            $('.bootstrap-select-wrapper select').selectpicker('refresh');
-            $('#istruttoriaModal').modal('toggle');
-            $('#istruttoriaModal').css("z-index", parseInt($('.modal-backdrop').css('z-index'))+100);
-            $('.modal-backdrop').css('z-index',1050);
-            $('.modal-backdrop').css('opacity', 0.4)
-            $('#id_veicolo').val(id);
-          
-            $('#btn_info_istr').attr('onclick','upIstr('+id+')');
-      }
-      function upIstr(id){
-            note=$('#note_istruttoria').val()
-            stato=$('#stato_istruttoria option:selected').val();
-            $.ajax({
-                        type: "POST",
-                        url: "controller/updateIstanze.php?action=upIstruttoria",
-                        data: {id:id,note_admin:note,stato_admin:stato},
-                        dataType: "json",
-                        success: function(data){
-                              Swal.fire({ 
-                                                
-                                                title: "Dati Veicolo Aggiornati",
-                                                type: "info"
-                                          });
-                              $('#info_note_admin').html(note)
-                              if(stato=='A'){
-                                                stato='<span class="badge badge-warning">In Lavorazione</span>';
-                                               }
-                                               if(stato=='B'){
-                                                stato='<span class="badge badge-success">Accettata</span>';
-                                               }
-                                               if(stato=='C'){
-                                                stato='<span class="badge badge-danger">Rigettata</span>';
-                                               }
-                                               $('#info_stato_admin').html(stato)
-                                               $('#stato_istruttoria_'+id).html(stato)
-                                               $('#istruttoriaModal').modal('toggle');
-                        }
-            })
-
-      }
+      
+     
       function infoAlle(id){
             const formatter = new Intl.NumberFormat('it-IT', {
                   style: 'currency',
@@ -1346,31 +1213,31 @@ $(document).ready(function() {
            id = $('#id_allegato_istanza').val();
            stato_ad=$('#stato_allegato_admin_istanza').val()
            tipo= $('#tipo_allegato_istanza').val()
-           
-           
-           //$('#infoAllegato').modal('toggle');
+           console.log(stato_ad);
+           console.log(tipo);
            $.ajax({
-                                   type: "POST",
-                                   url: "controller/updateIstanze.php?action=upAlleAdminIstanza",
-                                   data: {id:id,note_admin:note_ad,stato_admin:stato_ad,tipo_documento:tipo},
-                                   dataType: "json",
-                                   success: function(data){
-
-                                         console.log(data);
-                                         if(data){
-                                         Swal.fire({ 
-                                               
-                                               title: "Dati Istanza Aggiornati",
-                                               icon: "info"
-                                         });
-                                   
-                                             
-                                      
-                                         }
-
-                                      
-                                        
-                                    }
+                  type: "POST",
+                  url: "controller/updateIstanze.php?action=upAlleAdminIstanza",
+                  data: {id:id,note_admin:note_ad,stato_admin:stato_ad,tipo_documento:tipo},
+                  dataType: "json",
+                  success: function(data){
+                        if(data){
+                              Swal.fire({ 
+                              title: "Dati Istanza Aggiornati",
+                                    icon: "info"
+                              });
+                        $('#infoDichiarazioni').modal('toggle');
+                              if (stato_ad == 'A'){text = 'In Lavorazione';badge = 'warning';}
+                              if (stato_ad == 'B'){text = 'Accettato';badge = 'success';}
+                              if (stato_ad == 'C'){text = 'Rigettato';badge = 'danger';}
+                              if (tipo == 90){stato = 'pmi';} 
+                              if (tipo == 91){stato = 'rete';} 
+                              if (tipo == 92){stato = 'ampl';}   
+                              html = '<span class="badge badge-'+badge+'" style="width: -webkit-fill-available;">'+text+'</span>';
+                              console.log(html);
+                              $('#stato_'+stato).html(html) 
+                        }  
+                  }
            })
            
       };     
@@ -1949,114 +1816,7 @@ $(document).ready(function() {
                    }
                  
       }
-      function infovei(id,cat,tipo){
-            const formatter = new Intl.NumberFormat('it-IT', {
-                  style: 'currency',
-                  currency: 'EUR',
-                  minimumFractionDigits: 2
-            })
-                  $('#doctab tbody').empty();
-                  $('#modalinfovei').modal('toggle');
-                  $('#contributo').html("")
-                 
-                  $('#contr_pmi').html("")
-                  $('#contr_rete').html("")
-                  $('#info_contr').val("")
-                  $('#info_contr_pmi').val("")
-                  $('#info_contr_rete').val("")
-                  $.ajax({
-                        type: "POST",
-                        url: "controller/updateIstanze.php?action=getInfoVei",
-                        data: {id:id},
-                        dataType: "json",
-                        success: function(data){
-                              $('#id_veicolo').val(data.id)
-                              contr = parseFloat(data.val_contributo).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
-
-                              val_pmi = parseFloat(data.val_pmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
-                              val_rete = parseFloat(data.val_rete).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
-                              $('#info_contr').val(data.val_contributo)
-                              $('#info_contr_pmi').val(data.val_pmi)
-                              $('#info_contr_rete').val(data.val_rete)
-
-                              $('#contributo').html(contr)
-                              $('#contr_pmi').html(val_pmi)
-                              $('#contr_rete').html(val_rete)
-
-                              $('#info_targa').html(data.targa)
-                              $('#info_marca').html(data.marca)
-                              $('#info_modello').html(data.modello)
-                              $('#info_note_admin').html(data.note_admin)
-                              $('#btn_istr').attr('onclick','infoVeiIstr('+data.id+')');
-
-                              
-                              if(data.stato_admin=='A'||data.stato_admin==null){
-                                    stato='<span class="badge badge-warning">In Lavorazione</span>';
-                              }
-                              if(data.stato_admin=='B'){
-                                    stato='<span class="badge badge-success">Accettata</span>';
-                              }
-                              if(data.stato_admin=='C'){
-                                   stato='<span class="badge badge-danger">Rigettata</span>';
-                              }
-
-                              $('#info_stato_admin').html(stato);
-                              v = formatter.format(data.costo);
-                              $('#info_costo').html(v)
-                              if(data.tipo_acquisizione =="01"){
-                                    tipoac="Acquisto";
-                              }
-                              if(data.tipo_acquisizione =="02"){
-                                    tipoac="Leasing";
-                              }
-                              $('#info_tipo_acquisizione').html(tipoac);
-                             cat='<span class="badge badge-danger" style="font-size:20px;width: -webkit-fill-available;">'+cat+'</span>';
-                             tipo ='<span class="badge badge-secondary" style="font-size:20px;width: -webkit-fill-available;">'+tipo+'</span>';
-                              $('#info_tipo_veicolo').html(tipo)
-                              $('#info_cat_veicolo').html(cat)
-                            
-                             $.ajax({
-                                    type: "POST",
-                                    url: "controller/updateIstanze.php?action=getAllegati",
-                                    data: {id_RAM:data.id_RAM,tipo_veicolo:data.tipo_veicolo,progressivo:data.progressivo},
-                                    dataType: "json",
-                                    success: function(alle){
-                                        
-                                         $.each(alle, function (k,v){
-                                               if(v.stato_admin=='A'){
-                                                stato='<span class="badge badge-warning">Da Accettare</span>';
-                                               }
-                                               if(v.stato_admin=='B'){
-                                                stato='<span class="badge badge-success">Accettato</span>';
-                                               }
-                                               if(v.stato_admin=='C'){
-                                                stato='<span class="badge badge-danger">Respinto</span>';
-                                               }
-                                               
-                                                     note_ad=v.note_admin;
-                                          
-                                               
-                                               buttonA='<button type="button" onclick="infoAlle('+v.id+');"class="btn btn-warning btn-xs" title="Visualizza Info Allegato"style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
-                                                buttonB='<button type="button" onclick="window.open(\'allegato.php?id='+v.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;margin-right:10px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
-                                                buttonC='<a type="button" href="download.php?id='+v.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
-                                               
-                                              
-                                        row = '<tr><td>'+v.tdoc_descrizione+'</td><td>'+v.note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
-                                                $('#doctab> tbody:last-child').append(row);
-
-                                         })
-                                          
-                                    
-                                                                  
-                                    }
-                              })
-                            
-                                                          
-                        }
-                  })
-
-
-      }  
+     
       function infomsg(id){
 
             $.ajax({
@@ -2107,66 +1867,8 @@ $(document).ready(function() {
 
 
       }
-      function infoCert(idRam,tipo,title){
-
-           // alert(idRam+' tipo:'+tipo)
-            $('#certModal')
-            .find('.modal-title').text(title).end()  
-            .modal('toggle');
-            $.ajax({
-                  type: "POST",
-                  url: "controller/updateIstanze.php?action=checkCert",
-                  data: {id_ram:idRam,tipo:tipo},
-                  dataType: "json",
-                  success: function(data){
-
-                        //console.log(data);
-                        $('#tipo_cert').val(tipo)
-                        $('#note_check_cert').text(data.note)
-                        $('#stato_check_cert').val(data.select);
-                        $('#stato_check_cert').selectpicker('render');
-                        $('#btnSaveCert').attr('onclick','saveCert('+idRam+',\''+tipo+'\');')
-                        
-                  
-                              
-                        
-                        
-
-                        
-                        
-                  }
-           })
-      }
-      function saveCert(idRam,tipo){
-
-            select=$('#stato_check_cert option:selected').val()
-            note = $('#note_check_cert').val()
-            $.ajax({
-                  type: "POST",
-                  url: "controller/updateIstanze.php?action=upCert",
-                  data: {id_ram:idRam,tipo:tipo,select:select,note:note},
-                  dataType: "json",
-                  success: function(data){
-                        console.log(data)
-                      
-                        $('#note_'+tipo).html(data.note)
-                        $('#stato_'+tipo).html(data.stato_tipo)
-                      
-                        if(data){
-                              $('#certModal').modal('toggle')
-
-                        }
-                      
-                  
-                              
-                        
-                        
-
-                        
-                        
-                  }
-           })
-      }
+     
+     
 
 </script>
 

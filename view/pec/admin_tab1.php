@@ -1,7 +1,7 @@
 <div class="it-list-wrapper">
-        <div class="it-header-navbar-wrapper theme-light-desk">
-            <div class="container">
-                <div class="row">
+    <div class="it-header-navbar-wrapper theme-light-desk">
+        <div class="container">
+            <div class="row">
                 <div class="col-12">
                     <!--start nav-->
                     <nav class="navbar navbar-expand-lg has-megamenu">
@@ -17,6 +17,29 @@
                         </div>
                         <div class="menu-wrapper">
                         <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                                    <span>Filtro Edizione</span>
+                                    <svg class="icon icon-xs">
+                                        <use xlink:href="svg/sprite.svg#it-expand"></use>
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="link-list-wrapper">
+                                        <ul class="link-list" style="width:max-content;">
+                                            <li>
+                                                <h3 class="no_toc" id="heading-es-4">Edizione</h3>
+                                            </li>
+                                            <li><a class="list-item" onclick="showEd(0);"><span>Tutti</span></a></li>
+                                        <?php
+                                            foreach($edizioni as $ed){?>
+                                            <li><a class="list-item" onclick="showEd(<?=$ed['id']?>);"><span><?=$ed['des']?></span></a></li>
+                                        <?php }?>
+                                                        
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
                                     <span>Filtro Tipo Documento</span>
@@ -50,7 +73,7 @@
                                 <div class="dropdown-menu">
                                     <div class="link-list-wrapper">
                                         <ul class="link-list" style="width:max-content;">
-                                           
+                                        
                                             <li><a class="list-item" onclick="showUser(0);"><span>Tutti</span></a></li>
                                                         <?php
                                                             foreach($userIns as $ui){
@@ -64,7 +87,7 @@
                                 </div>
                             </li>
                             <li class="nav-item "><a class="nav-link " id="selAll"onclick="unsendCkAll();"><span>Seleziona Tutti </span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="#"><span>Invia Pec Selezionate</span></a></li>
+                        
                             <li class="nav-item"><a class="nav-link" href="#"><span>Elimina richieste Selezionate </span></a></li>
                             
                             
@@ -74,57 +97,51 @@
                     </div>
                     </nav>
                 </div>
-                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
-                <em>Tipo documento:</em> <small id="info_tipo">Tutti</small>
-            </div>
-            <div class="col-3">
-                <em>Utente Inserimento:</em> <small id="info_user">Tutti</small>
-            </div>                                                       
-         
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <em>Tipo documento:</em> <small id="info_tipo">Tutti</small>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
+        <div class="col-3">
+            <em>Utente Inserimento:</em> <small id="info_user">Tutti</small>
+        </div>                                                       
+        
+    </div>
   <ul class="it-list">
     
     <?php
 
-    if($pec){
-        foreach($pec as $pa){
-            if($pa['stato']=='B'){
-                $tipo = getTipoReport($pa['tipo_report']);
+    if($pecUnsend){ 
+        foreach($pecUnsend as $pa){
+                $tipo = getInfoReport($pa['tipo_report']);
+                //var_dump($tipo);
                 $istanza = getIstanza($pa['id_RAM']);
                 $classUser=explode('@',$pa['user_ins']);
+                $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
+               
                 ?>
-            <li class="tiporeport_<?=$pa['tipo_report']?> userins_<?=$classUser[0]?>">
+            <li class="tiporeport_<?=$pa['tipo_report']?> userins_<?=$classUser[0]?> edizione_<?=$istanza['tipo_istanza']?>">
                 <a class="it-has-checkbox" href="#">
                     <div class="form-check">
                         <input id="<?=$pa['id']?>" class="unsend"type="checkbox" >
                     <label for="<?=$pa['id']?>"></label>
                     </div>
                     <div class="it-right-zone">
-                        <div class="col-7">
-                            <span class="text"><?=$pa['id_RAM']?>/2020 <br><?=$istanza['ragione_sociale']?><em><?=$tipo?></em></span>
+                        <div class="col-4">
+                            <span class="text"><?=$pa['id_RAM']?>/<?=$tipo_istanza['anno']?> - <?=$tipo_istanza['des']?><br><?=$istanza['ragione_sociale']?></span>
                         </div>
                         <div class="col-3">
-                            <span class="text"><em>Inserita da:</em><p> <?=$pa['user_ins']?></p><p> <?=date("d/m/Y", strtotime($pa['data_ins']))?></p></span>
+                            <span class="text"><em><?=$tipo['descrizione']?></em></span>
+                        </div>
+                        <div class="col-3">
+                            <span class="text" style="font-size: 0.7em;"><em style="display:inline;">Inserita da: </em><?=$pa['user_ins']?> <?=date("d/m/Y", strtotime($pa['data_ins']))?></span>
                         </div>
                         <div class="col-2">
-                            <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec "><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Componi Messaggio " onclick="msgModal(<?=$pa['id']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                         </div>
@@ -133,16 +150,197 @@
                 </a>
             </li>
 
-            <?php }else{?>
-            <li>
-                <a class="it-has-checkbox" href="#">
-                   
-                    <div class="it-right-zone"><span class="text">Non ci sono pec da inviare</span>
-                    </div>
-                </a>
-            </li>
-            <?php }
-        }
-    }?>
+    <?php   }
+    }else{?>
+        <li>
+            <a class="it-has-checkbox" href="#">
+               
+                <div class="it-right-zone"><span class="text">Non ci sono pec da convalidare</span>
+                </div>
+            </a>
+        </li>
+        <?php }?>
   </ul>
 </div>
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="msgModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h5 class="modal-title">Anteprima Pec
+        </h5>
+      </div>
+        <div class="modal-body">
+           
+                <div class="form-group">
+                    <label >Destinatario</label>
+                    <input  type="text" id="pec_dest" value=""readonly placeholder=" ">
+                   
+                </div>
+           
+                <div class="form-group">
+                    <input s type="text" id="pec_object" readonly placeholder=" ">
+                    <label >Oggetto</label>
+                </div>
+            
+                <div class="form-group">
+                    <textarea  type="text" rows="6" id="pec_body" readonly placeholder=" "></textarea>
+                    <label >Corpo Mail</label>
+                </div>
+                <form method="post"  id="form_allegato_pec"  enctype="multipart/form-data">
+                    <input type="hidden" id="id_pec" name="id" value="">
+                    <input type="hidden" id=" id_ram_pec" name=" id_ram" value="">
+                   
+                    <input type="file" name="upload1" id="upload1" class="upload" onchange="checkDoc();" />
+                        <label for="upload1">
+                            <svg class="icon icon-sm" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-upload"></use></svg>
+                            <span>Upload</span>
+                        </label>
+                        <ul class="upload-file-list">
+                            <li class="upload-file success">
+                            <svg class="icon icon-sm" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-file"></use></svg>
+                            <p>
+                                <span class="sr-only">File caricato:</span>
+                               <span id="name_alle">Allegato</span>  <span class="upload-file-weight"></span>
+                            </p>
+                            <button disabled>
+                                <span class="sr-only">Caricamento ultimato</span>
+                                <svg class="icon" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-check"></use></svg>
+                            </button>
+                           
+                            </li>
+                        </ul>
+                </form>
+            
+        </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" data-dismiss="modal" type="button">Annulla</button>
+        <button class="btn btn-success btn-sm"  id="btnSubmitPec"type="submit" form="form_allegato_pec">Salva Pec</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function msgModal(id){     
+        $.ajax({
+            type: "POST",
+            url: "controller/updateReport.php?action=getReportId",
+            data: {id:id},
+            dataType: "json",
+            success: function(data){
+                console.log(data)
+                $('#id_pec').val(id)
+                $('#id_ram_pec').val(data.data.id_RAM)
+                $('#pec_dest').val(data.istanza.pec_impr)
+                $('#pec_object').val(data.type.object)
+                
+                html=data.type.body.replaceAll('%*', '\n').replace('%ragSoc%', data.istanza.ragione_sociale)
+                $('#pec_body').html(html)
+                $('#msgModal').modal('toggle')
+            }
+        });
+    }
+    function prevRep(id, dir){  
+        var url = dir+'?id='+id+'&tipo=P';
+        window.open(url,"Stampa");
+    }
+    function downRep(id, dir){
+        var url = dir+'?id='+id+'&tipo=D';
+        window.open(url,"Stampa");
+    }
+    function savePec(){
+        var fa = document.getElementById("upload1");
+        var f = fa.files[0]
+        console.log(f)
+    }
+    function checkDoc(){
+        var fa = document.getElementById("upload1");
+        var f = fa.files[0]      
+        if (f.type==='application/pdf') {
+            if (f.size > 3388608 || f.fileSize > 3388608)
+            {
+                Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
+                fa.value = null;
+            } 
+        }else{
+            Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF", "warning");
+            fa.value = null;
+        }
+           
+           
+   }
+    $('#form_allegato_pec').submit(function(event){
+        event.preventDefault();
+        var fa = document.getElementById("upload1");
+        var f = fa.files[0]
+        console.log(f)
+        formData = new FormData(this);
+        console.log(formData.get('id'))
+        if(f){
+        $.ajax({
+            url: "controller/updatePec.php?action=newAllegatoPec",
+            type:"POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+            error:function(){ 
+                Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
+            },
+            success: function(data){
+                        Swal.fire({
+                            title:"Operazione Completata!",
+                            html:"Allegato caricato correttamente.",
+                            icon:"success"}).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                                    location.reload()
+                                                        }
+                                                        });
+                    }
+        })
+        }else{
+            $.ajax({
+            url: "report/integrazione/integrazione.php?id="+formData.get('id')+"&tipo=S",
+            type:"POST",
+            success: function(filename){
+                formData.append('nome_file',filename)
+               
+                $.ajax({
+                    url: "controller/updatePec.php?action=newAllegatoPec",
+                    type:"POST",
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    error:function(){ 
+                        Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
+                    },
+                    success: function(data){
+                        Swal.fire({
+                            title:"Operazione Completata!",
+                            html:"Allegato caricato correttamente.",
+                            icon:"success"}).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                                    location.reload()
+                                                        }
+                                                        });
+                    }
+                })
+
+            }
+            })
+        }
+    })
+    $('#upload1').on('click', function(){
+        $('#btnSubmitPec').prop('disabled', true);
+    })
+    $('#upload1').on('change', function(){
+        var fa = document.getElementById("upload1");
+        var f = fa.files[0]
+        $('#name_alle').html(f.name)
+        $('#btnSubmitPec').prop('disabled', false);
+    })
+   
+</script>

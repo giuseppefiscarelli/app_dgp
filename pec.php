@@ -68,7 +68,15 @@ require_once 'headerInclude.php';
 $('.unsend').prop('checked', false);
 $('#selAll').attr('onclick', 'unsendCkAll();')
 }
-
+ function showEd(type){
+   $("[class*='edizione_']").hide();
+   if(type == 0){
+      $("[class*='edizione_']").show();
+   }else{
+      typeEd = 'edizione_'+type;
+      $("."+typeEd).show();
+   }
+ }
 </script>
 </body>
 </html>    

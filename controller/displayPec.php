@@ -91,16 +91,23 @@ $navOrderByQueryString = http_build_query($orderByNavigatorParams,'&amp;');
 
  }
  */
-$pec = getReport();
+
 $orderDirClass = $orderDir;
 $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
 $unreadMsg=0; //test
+
 $params['search1']='B';
 $unSend= countReport($params);
+$pecUnsend = getReport($params);
 $params['search1']='C';
 $send= countReport($params);
+$pecSend = getReport($params);
+$params['search1']='A';
+$conv= countReport($params);
+$pecConv = getReport($params);
 $tipiReport=getTipireport();
 $userIns= getUserIns();
-var_dump($userIns);
+$edizioni = getTipiIstanza();
+//var_dump($userIns);
 require_once 'view/pec/pecAdmin.php';
 ?>

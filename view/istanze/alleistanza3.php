@@ -127,6 +127,7 @@ $calcContributo=calcolaContributo($testData);
                                                     
                                                     if(!$c_i){
                                                       $c_i = [
+                                                        'dim_impresa' => null,
                                                         'pec'=>null,
                                                         'note_pec'=>'',
                                                         'firma'=>null,
@@ -278,6 +279,29 @@ $calcContributo=calcolaContributo($testData);
                                                     <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'delega','Verifica Delega con Firma Digitale');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
 
                                                     </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Verifica Dimensioni Impresa</td>
+                                                    <td id="note_dim_impresa"><?=$c_i['note_dim_impresa']?$c_i['note_dim_impresa']:''?></td>
+                                                    <td id="stato_dim_impresa">
+                                                    <?php
+                                                        if(is_null($c_i['dim_impresa'])){?>
+                                                          <span class="badge badge-warning" >In Lavorazione</span>
+                                                        <?php
+                                                         }
+                                                         if($c_i['dim_impresa']==1){?>
+                                                            <span class="badge badge-success" >Piccola</span>
+                                                        <?php
+                                                        } if($c_i['dim_impresa']==2){?>
+                                                        <span class="badge badge-success" >Media</span>
+                                                        <?php
+                                                        } if($c_i['dim_impresa']==3){?>
+                                                          <span class="badge badge-success" >Grande</span>
+                                                        <?php }?>
+                                                        </td>
+                                                    <td>
+                                                    <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'dim_impresa','Verifica Dimensioni Impresa');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
+                                                    </td>
                                                 </tr>      
 
                                             </tbody>
@@ -346,13 +370,22 @@ $calcContributo=calcolaContributo($testData);
             
                 <div id="upCheck_cert">
                 <input type="hidden" name="tipo_cert" id="tipo_cert" value="">
-                    <div class="bootstrap-select-wrapper col-4" style="margin-top:30px;">
+                    <div class="bootstrap-select-wrapper col-4" style="margin-top:30px;" id="select_all">
                     
                         <label>Stato Controllo</label>
                         <select id="stato_check_cert" nome="stato_check_cert "title="Seleziona Stato">
                             <option value="A" style="background: #ffda73; color: #fff;">In Lavorazione</option>
                             <option value="B" style="background: #5cb85c; color: #fff;">Accettato</option>
                             <option value="C"style="background: #d9364f; color: #fff;">Respinto</option>
+                        </select>
+                    </div>
+                    <div class="bootstrap-select-wrapper col-4" style="margin-top:30px;display:none;" id="select_dim_impresa" >
+                    
+                        <label>Dimensione Impresa</label>
+                        <select id="sel_dim_impresa" nome="sel_dim_impresa "title="Seleziona Dimensione">
+                            <option value="1" >Piccola</option>
+                            <option value="2" >Media</option>
+                            <option value="3">Grande</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-top:30px;">
@@ -375,3 +408,92 @@ $calcContributo=calcolaContributo($testData);
         </div>
     </div>
 </div>
+
+
+
+
+<script>
+    function infoCert(idRam,tipo,title){
+        $('#note_check_cert').html('');
+                if(tipo == 'dim_impresa'){
+                    $('#select_dim_impresa').show();
+                    $('#select_all').hide()
+                }else{
+                    $('#select_dim_impresa').hide();
+                    $('#select_all').show()
+                }
+            
+                $('#certModal')
+                .find('.modal-title').text(title).end()  
+                .modal('toggle');
+                $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=checkCert",
+                    data: {id_ram:idRam,tipo:tipo},
+                    dataType: "json",
+                    success: function(data){
+
+                            console.log(data);
+                            $('#tipo_cert').val(tipo)
+                            $('#note_check_cert').text(data.note)
+                            if(tipo == 'dim_impresa'){
+                                $('#sel_dim_impresa').val(data.select);
+                                $('#sel_dim_impresa').selectpicker('render');
+                            }else{
+                                $('#stato_check_cert').val(data.select);
+                                $('#stato_check_cert').selectpicker('render');
+                            }
+                        
+                            $('#btnSaveCert').attr('onclick','saveCert('+idRam+',\''+tipo+'\');')
+                            
+                    
+                                
+                            
+                            
+
+                            
+                            
+                    }
+                })
+    }
+    function saveCert(idRam,tipo){
+    
+        if(tipo == 'dim_impresa'){
+            
+            select=$('#sel_dim_impresa option:selected').val() 
+                }else{
+                    select=$('#stato_check_cert option:selected').val() 
+                }
+
+        note = $('#note_check_cert').val()
+
+        $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=upCert",
+            data: {id_ram:idRam,tipo:tipo,select:select,note:note},
+            dataType: "json",
+            success: function(data){
+                   
+                    if(tipo == 'dim_impresa'){
+                        if(select == 1){text = 'Piccola'}
+                        if(select == 2){text = 'Media'}
+                        if(select == 3){text = 'Grande'}
+                        html = '<span class="badge badge-success" >'+text+'</span>';
+                    }else{
+                        html  = data.stato_tipo;
+                    }
+                    $('#note_'+tipo).html(data.note)
+                    $('#stato_'+tipo).html(html)
+                
+                    if(data){
+                        $('#certModal').modal('toggle')
+
+                    }
+            
+            }
+        })
+
+
+    }
+
+</script>

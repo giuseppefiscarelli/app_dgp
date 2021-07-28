@@ -23,7 +23,7 @@ $reports = getReportIdRam($i['id_RAM']);
                         <svg class="icon">
                             <use xlink:href="svg/sprite.svg#it-file"></use>
                         </svg>
-                         <span class="text">Inserimento<br>Nuovo Ducumento</span>
+                         <span class="text">Predisponi<br>Nuova Comunicazione</span>
                     </div>
                     <div class="col-12" style="margin-top:45px;">
                         <div class="bootstrap-select-wrapper " >
@@ -62,7 +62,9 @@ $reports = getReportIdRam($i['id_RAM']);
                                                 <tr id="row_<?=$rep['id']?>">
                                                     <td><?=date("d/m/Y H:i", strtotime($rep['data_ins']))?><br><?=$rep['user_ins']?></td>
                                                     <td><?=getTipoRep($rep['tipo_report'])?></td>
-                                                    <td><?=$rep['stato']=="I"?'Richiesta inviata':'Richiesta non inviata'?></td>
+                                                    <td><?=$rep['stato']=="A"?'Pec da inviare':''?>
+                                                        <?=$rep['stato']=="B"?'Pec da convalidare':''?>
+                                                        <?=$rep['stato']=="C"?'Pec inviata':''?></td>
                                                     <td>
                                                     <div class="row">
                                                        <button type="button" onclick="newMail(<?=$rep['id']?>);"class="btn btn-warning btn-xs" title="componi pec" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-envelope" aria-hidden="true"></i></button>
@@ -128,15 +130,12 @@ $reports = getReportIdRam($i['id_RAM']);
         //setTimeout(function(){ location.reload(); }, 2000);
     
     }
-    function prevRep4(id){
-        
-    
+    function prevRep4(id){ 
         var url = 'report/inammissibilita/inammissibilita.php?id='+id+'&tipo=P';
         window.open(url,"Stampa");
         //setTimeout(function(){ location.reload(); }, 2000);
     
     }
-
     function downRep(id){
         var url = 'report/integrazione/integrazione.php?id='+id+'&tipo=D';
         window.open(url,"Stampa");
@@ -153,7 +152,6 @@ $reports = getReportIdRam($i['id_RAM']);
         var url = 'report/inammissibilita/inammissibilita.php?id='+id+'&tipo=D';s
         window.open(url,"Stampa");
     }
-
     function delRep(id){
         
         Swal.fire({

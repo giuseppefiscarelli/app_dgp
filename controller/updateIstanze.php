@@ -117,6 +117,7 @@ switch ($action){
        
 
     break; 
+    
     case 'upAlleAdmin':
       $data=$_REQUEST;
 
@@ -368,6 +369,13 @@ switch ($action){
 
 
     break;
+    case 'upCostoIstr':
+      $data=$_REQUEST;
+      $res =upIstruttoria($data);
+      echo json_encode($res);
+
+
+    break;
 
     case 'getTipoInt':
       $id=$_REQUEST['tipo'];
@@ -470,17 +478,27 @@ switch ($action){
     case 'checkCert':
       $data = $_REQUEST;
       $res = checkIstanza($data['id_ram']);
+     
       $tipo = $data['tipo'];
       $note =  $res['note_'.$tipo]?$res['note_'.$tipo]:'';
       $sel = $res[$tipo];
-      if(is_null($sel)){
-        $select = "A";
-      }
-      if($sel==1){
-        $select = "B";
-      }
-      if($sel=='0'){
-        $select = "C";
+      
+      if($tipo == 'dim_impresa'){
+        if(is_null($sel)){
+          $select = "";
+        }else{
+          $select = $sel;
+        }
+      }else{
+        if(is_null($sel)){
+          $select = "A";
+        }
+        if($sel==1){
+          $select = "B";
+        }
+        if($sel=='0'){
+          $select = "C";
+        }
       }
       $json = array(
         "note" => $note,
@@ -490,7 +508,7 @@ switch ($action){
     break;  
     case 'upCert':
       $data = $_REQUEST;
-      //var_dump($data);die;
+     
       $res= upCert($data);
       //var_dump($res);die;
       
@@ -498,6 +516,8 @@ switch ($action){
         //var_dump($c);die;
         $n = $c['note_'.$data['tipo']];
         $tipo = $c[$data['tipo']];
+        //var_dump($tipo);die;
+        $stato_tipo='';
         if(is_null($tipo)){
           $stato_tipo ='<span class="badge badge-warning" >In Lavorazione</span>';
         }
@@ -542,11 +562,7 @@ switch ($action){
          
          
         }
-        
-      
      
-    
-   
       echo json_encode($arr);
     break;
 

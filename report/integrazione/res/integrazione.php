@@ -147,7 +147,8 @@ quindici giorni decorrenti dalla data di ricezione della presente, accedendo al 
 dedicato sul Portale dell&#39;Automobilista, già utilizzato per la compilazione della domanda.
 Il Portale sarà abilitato alla modifica dei dati e, all&#39;interno della Sezione &quot;Richieste
 integrazioni&quot;, al caricamento dei documenti contenenti le integrazioni richieste.</td></tr>               
-</table ></div><div > <table >
+</table >
+<table >
         <tr><td style="text-align:justify;">Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto
 previsto dal decreto in oggetto specificato, si invita quest&#39;ultima a tenere presenti le
 seguenti inderogabili disposizioni:</td></tr>

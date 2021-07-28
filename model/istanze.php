@@ -157,14 +157,14 @@ function getIstanzeUser(array $params = []){
       $records = [];
      
       $now=date("Y-m-d H:i:s");
-      $tipo= getTipoIstanza($search3);
+        $tipo= getTipoIstanza($search3);
         $data_inizio = $tipo['data_invio_inizio'];
         $data_fine = $tipo['data_invio_fine'];
         $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
         $data_rend_fine = $tipo['data_rendicontazione_fine'];
         //    $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and  istanza.eliminata!='1' and xml.data_invio between '$data_inizio' and '$data_fine'";
 
-        $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '$data_inizio' and '$data_fine'";
+        $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and istanza.eliminata !=1";
         //echo $sql;
         $res = $conn->query($sql);
         if($res) {
@@ -1720,6 +1720,8 @@ function closeRend($id_ram){
         $log['message']="Chiusura";
         $log['success']=true;
         writelog($log);
+        $sql2 = "INSERT INTO  istanza_check (id, id_ram) values(null, $id_ram)";
+        $res2 = $conn->query($sql2);
     
   }else{
     $result -1;  
@@ -2054,16 +2056,51 @@ function upIstruttoria($data){
 
   $id = $conn->escape_string($data['id']);
  
-  $stato_admin = $conn->escape_string($data['stato_admin']);
-  $note_admin = $conn->escape_string($data['note_admin']);
+  $stato_admin = $data['stato_admin']??'null';
+  $note_admin = $data['note_admin']??'null';
   $data_admin = date("Y/m/d H:i:s");
   $user_admin = $_SESSION['userData']['email'];
+ 
+  $costo_istr = $data['costo_istr']??'null';
+  $valore_contr = $data['valore_contr']??'null';
+  $pmi_istr = $data['pmi_istr']??'null';
+  $rete_istr = $data['rete_istr']??'null';
+  $note_istr = $data['note_istr']??null;
+  $result=0;
+  $sql ='UPDATE veicolo SET ';
+  $sql .= "stato_admin = '$stato_admin', note_admin = '$note_admin', data_admin = '$data_admin',user_admin ='$user_admin',costo_istr=$costo_istr,valore_contr=$valore_contr,pmi_istr=$pmi_istr,rete_istr=$rete_istr,note_istr='$note_istr'";
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
   
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
 
+
+
+
+}
+function upCostoIstr($data){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $id = $conn->escape_string($data['id']);
+ 
+ 
+  $costo_istr = $data['costo_istr'];
 
   $result=0;
   $sql ='UPDATE veicolo SET ';
-  $sql .= "stato_admin = '$stato_admin', note_admin = '$note_admin', data_admin = '$data_admin',user_admin ='$user_admin'";
+  $sql .= "stato_admin = '$stato_admin',costo_istr=$costo_istr";
   $sql .=' WHERE id = '.$id;
   //print_r($data);
   //echo $sql;die;
@@ -2584,12 +2621,19 @@ function calcolaContributo($data){
   $result = array();
   
   $valori = array("1"=>4000,"2"=>8000,"3"=>20000,"4"=>8000,"5"=>20000,"6"=>4000,"7"=>8000,"8"=>20000,"9"=>10000,"10"=>20000,"11"=>1000,"12"=>5000,"13"=>15000,"14"=>2000,"15"=>1500,"16"=>1500,"17"=>8500);
-  
+  /*
   if ($tv){
     $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. " AND tipo_veicolo = ".$tv." AND progressivo = ".$progr;
   //	$sql = "SELECT istanza.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM istanza LEFT JOIN istanza_check ON istanza.id_ram = istanza_check.id_ram WHERE istanza.id_RAM = ".$id_ram;
   } else {
     $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. "  order by veicolo.id_RAM, tipo_veicolo, progressivo";
+  }
+  */
+  if ($tv){
+    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. " AND tipo_veicolo = ".$tv." AND progressivo = ".$progr;
+  //	$sql = "SELECT istanza.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM istanza LEFT JOIN istanza_check ON istanza.id_ram = istanza_check.id_ram WHERE istanza.id_RAM = ".$id_ram;
+  } else {
+    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. "  order by veicolo.id_RAM, tipo_veicolo, progressivo";
   }
   //echo $sql;die;
   $rs = mysqli_query($conn, $sql);
@@ -2597,7 +2641,7 @@ function calcolaContributo($data){
     $result = array("result" => "KO");
   //	array_push($result);			// errore DB
     echo json_encode($result);
-    die;	
+  //  die;	
   }
   $i = 0;
   while ($row = mysqli_fetch_array($rs)) {
@@ -2606,6 +2650,11 @@ function calcolaContributo($data){
       $pmi = $row['pmi_check'];
       $rete = $row['rete_check'];
       $impresa = $row['impresa_check'];	
+      if ($impresa == NULL){
+        $result = array("result" => "KO");
+        return json_encode($result);		// errore per istanza non trovata (impossibile)
+        //return;
+      }
       $result = array("result" => "OK");
     } 
     $tv = $row['tipo_veicolo'];
@@ -2646,7 +2695,7 @@ function calcolaContributo($data){
   if (!$i){
     $result = array("result" => "KO");
   //  echo json_encode($result);		// errore per istanza non trovata (impossibile)
-    die;	
+ //   die;	
   }
 return $result;
   //echo json_encode($result);
@@ -2757,16 +2806,19 @@ function  upCert($data){
    $note = $data['note'];
    $campo_note = 'note_'.$tipo;
    $check = $data['tipo'];
-   if($data['select']=="A"){
-     $select = 'null';
-   }
-   if($data['select']=="B"){
-    $select = 1;
+   if($tipo == 'dim_impresa'){
+     $select = $data['select'];
+   }else{
+    if($data['select']=="A"){
+      $select = 'null';
     }
-    if($data['select']=="C"){
-      $select = 0;
+    if($data['select']=="B"){
+      $select = 1;
+      }
+      if($data['select']=="C"){
+        $select = 0;
+      }
     }
-
    
    $sql ='UPDATE istanza_check SET ';
    $sql .= "$tipo = $select, $campo_note = '$note' ";
