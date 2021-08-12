@@ -77,6 +77,30 @@ function getStatiIstanza(){
 
   return $records;
 }
+function getStatiIstruttoria(){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $records=[];
+  $sql ='SELECT * FROM stati_istruttoria';
+  //echo $sql;
+  $res = $conn->query($sql);
+        
+       
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+}
 function getTipoIstanza($tipo_istanza){
   
   /**
@@ -256,6 +280,8 @@ function getIstanze( array $params = []){
         $search3 = $conn->escape_string($search3);
         $search4 = array_key_exists('search4', $params) ? $params['search4'] : '';
         $search4 = $conn->escape_string($search4);
+        $search5 = array_key_exists('search5', $params) ? $params['search5'] : '';
+        $search5 = $conn->escape_string($search5);
         if($orderDir !=='ASC' && $orderDir !=='DESC'){
           $orderDir = 'ASC';
         }
@@ -306,6 +332,24 @@ function getIstanze( array $params = []){
 
 
         }
+
+        if($search5){
+          if($search5 === 'A'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=1 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+          }
+          if($search5 === 'B'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=2 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+
+          }
+          if($search5 === 'C'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=3 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+
+          }
+          if($search5 === 'D'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=4 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+
+          }
+        }
         
         $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
         $sql .=" and istanza.eliminata != '1'";
@@ -328,6 +372,9 @@ function getIstanze( array $params = []){
           }
           if($search4){
             $sql .= $parA;
+          }
+          if($search5){
+            $sql .= $parB;
           }
         $sql .= " ORDER BY istanza.$orderBy  $orderDir LIMIT $start, $limit";
      //echo $sql;
@@ -401,6 +448,8 @@ function countIstanze( array $params = []){
         $search3 = $conn->escape_string($search3);
         $search4 = array_key_exists('search4', $params) ? $params['search4'] : '';
         $search4 = $conn->escape_string($search4);
+        $search5 = array_key_exists('search5', $params) ? $params['search5'] : '';
+        $search5 = $conn->escape_string($search5);
         if($orderDir !=='ASC' && $orderDir !=='DESC'){
           $orderDir = 'ASC';
         }
@@ -447,13 +496,32 @@ function countIstanze( array $params = []){
           }
 
         }
+        if($search5){
+          if($search5 === 'A'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=1 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+          }
+          if($search5 === 'B'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=2 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+
+          }
+          if($search5 === 'C'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=3 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+
+          }
+          if($search5 === 'D'){
+            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=4 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+
+          }
+        }
         
         
         
        // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and  istanza.eliminata !='1' ";
+       $sql ="SELECT count(*) as totalUser, istanza.id_RAM FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id  ";
 
-       $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
-        if ($search1){
+       //$sql ="SELECT count(*) as totalUser, istanza.id_RAM FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
+       $sql .=" and istanza.eliminata != '1'"; 
+       if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
         }
@@ -469,7 +537,11 @@ function countIstanze( array $params = []){
           if($search4){
             $sql .= $parA;
           }
+          if($search5){
+            $sql .= $parB;
+          }
         //  echo $sql;
+        
         $res = $conn->query($sql);
         if($res) {
 
@@ -2326,7 +2398,7 @@ function getReportIdRam($id_RAM){
 
   $conn = $GLOBALS['mysqli'];
 
-  $sql = "SELECT * FROM report where id_RAM =$id_RAM and attivo = 1";
+  $sql = "SELECT * FROM report where id_RAM =$id_RAM and attivo = 1 ORDER BY data_ins DESC";
   
   
   $records = [];
@@ -2933,6 +3005,27 @@ function checkRott($id_RAM,$tv){
       $result=[];
       $sql ='SELECT * FROM istanza WHERE id_RAM = '.$id_RAM.' and rott'.$tv.'="Yes"' ;
       //echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
+  
+  
+}
+function getStatusIstruttoria($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ="SELECT id, tipo_report, data_invio FROM report WHERE id_RAM = $id_RAM and stato = 'C' and data_invio = (select max(data_invio)  FROM report WHERE id_RAM = $id_RAM and stato = 'C')" ;
+      
+     // echo $sql;
       $res = $conn->query($sql);
       
       if($res && $res->num_rows){

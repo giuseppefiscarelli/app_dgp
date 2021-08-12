@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-2">
                                 <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-                                <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec " onclick="msgModal(<?=$pa['id']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec " onclick="msgModalPec(<?=$pa['id']?>, <?=$pa['id_RAM']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                                 <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                             </div>
@@ -137,3 +137,18 @@
 <?php }?>
   </ul>
 </div>
+<script>
+
+function msgModalPec(id, idRAM){     
+        $.ajax({
+            type: "POST",
+            url: "controller/updatePec.php?action=testSendMail",
+            data: {id:id, id_RAM:idRAM},
+            dataType: "json",
+            success: function(data){
+                console.log(data)
+              
+            }
+        });
+    }
+</script>

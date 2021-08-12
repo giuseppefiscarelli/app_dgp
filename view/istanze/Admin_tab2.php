@@ -368,7 +368,6 @@
                   $('#doctab tbody').empty();
                   $('#modalinfovei').modal('toggle');
                   $('#contributo').html("")
-                 
                   $('#contr_pmi').html("")
                   $('#contr_rete').html("")
                   $('#info_contr').val("")

@@ -58,6 +58,21 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                 </div>
               </div>
               <div class="form-group col-lg-2 bootstrap-select-wrapper">
+                <label for="recordsPerPage" class=" col-form-label">Stato Istruttoria</label>
+                <div class="col-sm-12">
+                  <select  
+                  name="search5" 
+                  id="search5" 
+                  onchange="document.forms.searchForm.submit()">
+                        <option value="">Tutti gli stati</option>
+                        <?php foreach ($stati_istruttoria as $si){ ?>
+                        
+                        <option value="<?=$si['cod']?>" <?=$search5 ==$si['cod']?'selected':''?>><?=$si['des']?></option>
+                        <?php }?>
+                    </select>
+                </div>
+              </div>
+              <div class="form-group col-lg-2 bootstrap-select-wrapper">
                 <label for="recordsPerPage" class=" col-form-label">Righe per Pagina</label>
                 <div class="col-sm-6">
                   <select  
@@ -113,6 +128,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 <th class="<?=$orderBy === 'pec_impr'?$orderDirClass: '' ?> " >
                                     <a href="<?=$pageUrl?>?<?=$orderByQueryString ?>&orderBy=pec_impr&orderDir=<?=$orderDir?>">Pec Impresa</a></th>    
                                 <th>Stato Istanza</th>
+                                <th>Stato Istruttoria</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -125,7 +141,10 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                       $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                                       $stato_istanza = getStatoIstanza($i['stato']);
                                       $status=checkRend($i['id_RAM']);
-                                      $now=date("Y-m-d H:i:s");?>
+                                      $now=date("Y-m-d H:i:s");
+                                      $status_istr= getStatusIstruttoria($i['id_RAM']);
+                                      //var_dump($status_istr);
+                                      ?>
                             <tr>
                                 <td><b><?=$tipo_istanza['des']?></b></td>      
                                 <td><?=$i['id_RAM']?></td>
@@ -135,9 +154,30 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 <td>
                                     <span class="badge badge-pill badge-<?=$stato_istanza['style']?>"><?=$stato_istanza['des']?></span>
                                       <?=$i['stato_des']?>
-                                      <?php
-
-                                      ?>
+                                      
+                                </td>
+                                <td>
+                                <?php
+                                        if($status_istr){
+                                            if($status_istr['tipo_report'] === '1'){
+                                                $text_istr = 'Integrazione';
+                                                $type_istr = 'warning';
+                                            }
+                                            if($status_istr['tipo_report'] === '3'){
+                                              $text_istr = 'Ammessa';
+                                              $type_istr = 'success';
+                                            }
+                                            if($status_istr['tipo_report'] === '2'){
+                                              $text_istr = 'Preavviso di rigetto';
+                                              $type_istr = 'warning';
+                                            }
+                                            if($status_istr['tipo_report'] === '4'){
+                                              $text_istr = 'Rigettata';
+                                              $type_istr = 'danger';
+                                            }?>
+                                             <span class="badge badge-pill badge-<?=$type_istr?>"><?=$text_istr?></span><br>
+                                             Pec inviata il <?=date("d/m/Y H:i:s", strtotime($status_istr['data_invio']))?>
+                                      <?php   }?>
                                 </td>
                                
                                 <td>
@@ -162,7 +202,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                     }
                                 }else{
                                     
-                                    echo '<tr><td colspan=7>Nessuna Istanza trovata</td></tr>';
+                                    echo '<tr><td colspan=8>Nessuna Istanza trovata</td></tr>';
                                 }?>
 
 

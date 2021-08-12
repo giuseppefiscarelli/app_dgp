@@ -42,7 +42,7 @@ function getReport(array $params = []){
         
       }
     $sql .= " ORDER BY data_ins  $orderDir LIMIT $start, $limit";
-    //echo $sql;
+   
 
     $res = $conn->query($sql);
     if($res) {
@@ -340,5 +340,72 @@ function convMail($data){
   return $result;
 
 
+
+}
+function sendMail($data){
+
+  include 'Mail.php';
+  include 'Mail/mime.php' ;
+  
+  $from    = "\"Test mail\" <fiscarelli.giu@gmail.com>";
+  $text = 'Text version of email';
+  $html = '<html><body>'.$data['body'].'</body></html>';
+  $file =  $data['file'];
+  $to = "giuseppe.fiscarelli@setec.it";
+   
+  $crlf = "\n";
+  $hdrs = array(
+      'From' => $from,
+      'Subject' => $data['Subject'],
+      "To"=>$to
+  );
+  
+  
+  $host    = "smtp.gmail.com";
+  $port    = "587";
+  $user    = "fiscarelli.giu@gmail.com";
+  $pass    = "01735583";
+  
+  $mime = new Mail_mime(array('eol' => $crlf));
+  $mime->setTXTBody($text);
+  $mime->setHTMLBody($html);
+  $mime->addAttachment($file, 'application/pdf');
+  $body = $mime->get();
+  $attachmentheaders  = $mime->headers($hdrs);
+  
+  $smtp    = @Mail::factory("smtp", array("host"=>$host, "port"=>$port, "auth"=> true, "username"=>$user, "password"=>$pass));
+  $mail = $smtp->send($to, $attachmentheaders , $body);
+
+  return $mail;
+
+  
+}
+function upReportSendMail($data){
+  /*
+  * @var $conn mysqli
+  */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $id = $data['id'];
+  $user_invio = $data['user_invio'];
+  $data_invio = $data['data_invio'];
+  $stato = $data['stato'];
+  $rif_invio = $data['rif_invio'];
+  
+  $sql ='UPDATE report SET ';
+  $sql .= "stato = '$stato', rif_invio = $rif_invio, user_invio ='$user_invio', data_invio='$data_invio'   ";
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
 
 }

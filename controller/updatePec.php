@@ -30,4 +30,41 @@ switch ($action){
        
 
     break;
+
+    case 'testSendMail':
+     
+      $id=$_POST['id'];
+      $id_RAM = $_POST['id_RAM'];
+      $istanza = getIstanza($id_RAM);
+      $report = getReportId($id);
+      $tipo_report =  getInfoReport($report['tipo_report']);
+      $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
+      $body = $tipo_report['body'];
+      $replace = '%ragSoc%';
+      $replace2 ='%*';
+      $time = time();
+      $rag = $istanza['ragione_sociale'];
+      $bodymod = str_replace($replace,$rag,$body);
+      $bodymod = str_replace('%*', '<br>', $bodymod);
+      $data = array(
+        'To'=> $istanza['pec_impr'],
+        'file' =>  $pathReport.$report['nome_file'],
+        'Subject' =>$tipo_report['object'].' - rif#'.$time,
+        'body' => $bodymod
+      );
+      $res = sendMail($data);
+     if($res){
+       $data = array(
+         'id' => $id,
+         'data_invio' => date("Y-m-d H:i:s"),
+         'user_invio' => $_SESSION['userData']['email'],
+         'rif_invio' => $time,
+         'stato' => 'C'
+       );
+       $res2 = upReportSendMail($data);
+     }else{
+       $response = 'bad pec';
+     }
+      echo json_encode($res2);
+    break;
 }

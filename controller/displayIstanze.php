@@ -12,6 +12,7 @@ if(!empty($_SESSION['message'])){
          $search2 = getParam('search2','');
          $search3 = getParam('search3','');
          $search4 = getParam('search4','');
+         $search5 = getParam('search5','');
           $params =[
             'orderBy' => $orderBy, 
             'orderDir'=> $orderDir,
@@ -20,6 +21,7 @@ if(!empty($_SESSION['message'])){
             'search2' => $search2,
             'search3' => $search3,
             'search4' => $search4,
+            'search5' => $search5,
             'page' => $page
           ];
 
@@ -31,6 +33,7 @@ if(!empty($_SESSION['message'])){
           $navOrderByQueryString = http_build_query($orderByNavigatorParams,'&amp;');
           $tipi_istanze = getTipiIstanza();
           $stati_istanze = getStatiIstanza();
+          $stati_istruttoria = getStatiIstruttoria();
          
           //var_dump($users);
          
@@ -64,13 +67,14 @@ if(!empty($_SESSION['message'])){
           $email=$_SESSION['userData']['email'];
           if(!$search3){
             $istanze=[];
+            $totalUsers =0;
             foreach($tipi_istanze as $ti){
               $params['search3'] = $ti['id'];
               $ist = getIstanze($params);
               foreach($ist as $is){
                 array_push($istanze,$is);
               }
-              $totalUsers= countIstanze($params);
+              $totalUsers+= countIstanze($params);
              
             }
           }else{
