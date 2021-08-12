@@ -9,7 +9,7 @@
 
 
 
- $status= checkRend($i['id_RAM']);
+
 
  /*
  if($status){
@@ -39,7 +39,9 @@
 }*/
 //}
 //var_dump($status);
+$activeIst = true;
 if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
+  $status= checkRend($i['id_RAM']);
   if($status){
     if($status['aperta']==1){
       $stato= getStatoIstanza('C');
@@ -58,13 +60,13 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
     }
     if(($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d H:i:s")&&$status['aperta']==1)){
       $stato= getStatoIstanza('E');
-      $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
+      $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Termini di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
       $activeIst = false;
     }
   }else{
-    $stato= getStatoIstanza('E');
-    $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
-    $activeIst = false;
+   
+    $span='<span class="badge badge-warning">Attiva</span>';
+    $activeIst = true;
   }
 }
 $status_istr= getStatusIstruttoria($i['id_RAM']);

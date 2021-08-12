@@ -1,5 +1,6 @@
 <?php
 //var_dump($tipo_istanza);
+/*
  $activeIst = true;
  $status= checkRend($i['id_RAM']);
 if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m-d")){
@@ -34,7 +35,37 @@ if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m
   $span='<span class="badge badge-warning">Attiva</span>';
 }
 }
-
+*/
+$activeIst = true;
+if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
+  $status= checkRend($i['id_RAM']);
+  if($status){
+    if($status['aperta']==1){
+      $stato= getStatoIstanza('C');
+      $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span>';
+     
+    }elseif($status['aperta']==0){
+      $stato= getStatoIstanza('D');
+      $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Rendicondazione chiusa il '.date("d/m/Y",strtotime($status['data_chiusura']));
+      $activeIst = false;
+    }
+    if($status['data_annullamento']){
+      $stato= getStatoIstanza('B');
+      $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Annullata da Impresa ';
+  
+      $activeIst = false;
+    }
+    if(($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d H:i:s")&&$status['aperta']==1)){
+      $stato= getStatoIstanza('E');
+      $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Termini di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
+      $activeIst = false;
+    }
+  }else{
+   
+    $span='<span class="badge badge-warning">Attiva</span>';
+    $activeIst = true;
+  }
+}
 
 
 

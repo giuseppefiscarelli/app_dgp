@@ -10,12 +10,19 @@ if(!empty($_SESSION['message'])){
     unset($_SESSION['message'],$_SESSION['success']);
   }
                   
-
+          $search2 = getParam('search2','');
+          $search3 = getParam('search3','');
+          $search4 = getParam('search4','');
+          $search5 = getParam('search5','');
           $params =[
             'orderBy' => $orderBy, 
             'orderDir'=> $orderDir,
             'recordsPerPage' =>$recordsPerPage,
             'search1' => $search1,
+            'search2' => $search2,
+            'search3' => $search3,
+            'search4' => $search4,
+            'search5' => $search5,
             'page' => $page
           ];
 
@@ -30,35 +37,31 @@ if(!empty($_SESSION['message'])){
          // $numPages= ceil($totalUsers/$recordsPerPage);
          // $users = getUsers($params);
           //var_dump($users);
-          if(isUserSuadmin()){
-            require_once 'model/istanze.php';
-            $totalIstanze= countIstanze($params);
-            $istTotali =countTotIstanze($params);
-             $istanze = getIstanze($params);
-             $istRend =countRendicontazione(1);
-             $istIstr =countRendicontazione(0);
-
-
-            require 'view/home/homeSuadmin.php';
-          }
-          if(isUserAdmin()){
+          if(isUserSuadmin() || isUserAdmin()){
             require_once 'model/home.php';
-            //require_once 'model/comunicazioni.php';
+            $params['search3']=1;
             $totalIstanze= countIstanze($params);
-            $istTotali =countTotIstanze($params);
-             $istanze = getIstanze($params);
-             $istRend =countRendicontazione(1);
-             $istIstr =countRendicontazione(0);
 
-             $totalMsg = countTicket(); 
-            
-             $unreadMsg= countnewTicket();
-             $readMsg= countreadTicket();
-             $closedMsg= countcloseTicket();
+            $params['search4']='A';
+            $istAttive =countIstanze($params);
 
+
+           
+             $params['search4']='C';
+             $istRend =countIstanze($params);
+
+             $params['search4']='D';
+             $istIstr =countIstanze($params);
+
+             $params['search4']='B';
+             $istAnnullate =countIstanze($params);
+
+             $params['search4']='E';
+             $istScadute =countIstanze($params);
 
             require 'view/home/homeAdmin.php';
           }
+           
           if(isUserUser()){
             require 'view/home/homeUser.php';
 

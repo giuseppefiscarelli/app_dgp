@@ -313,20 +313,20 @@ function getIstanze( array $params = []){
           }*/
           
           if($search4=='C'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL)';
           }
           if($search4=='C'&&$data_rend_fine<$now){
              $parA = ' and istanza.id_RAM =0';
 
           }
           if($search4=='D'){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL)';
           }
           if($search4=='E'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM =0';
           }
           if($search4=='E'&&$data_rend_fine<$now){
-            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
+            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
 
           }
 
@@ -469,7 +469,7 @@ function countIstanze( array $params = []){
           if($search4=='A'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
           }
-          if($search4=='B'){
+          else if($search4=='B'){
             $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
           }
           /*
@@ -477,21 +477,21 @@ function countIstanze( array $params = []){
             $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
           }
           */
-          if($search4=='C'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL)';
+          else if($search4=='C'&&$data_rend_fine>$now){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL)';
           }
-          if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
+          else if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
              $parA = ' and istanza.id_RAM =0';
 
           }
-          if($search4=='D'){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          else if($search4=='D'){
+            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL)';
           }
-          if($search4=='E'&&$data_rend_fine>$now){
+          else if($search4=='E'&&$data_rend_fine>$now){
             $parA = ' and istanza.id_RAM =0';
           }
-          if($search4=='E'&&$data_rend_fine<$now){
-            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
+          else if($search4=='E'&&$data_rend_fine<$now){
+            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
 
           }
 
