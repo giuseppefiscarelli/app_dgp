@@ -38,7 +38,7 @@ if(!empty($_SESSION['message'])){
          // $users = getUsers($params);
           //var_dump($users);
           if(isUserSuadmin() || isUserAdmin()){
-            require_once 'model/home.php';
+          /*  require_once 'model/home.php';
             $params['search3']=1;
             $totalIstanze= countIstanze($params);
 
@@ -59,7 +59,7 @@ if(!empty($_SESSION['message'])){
              $params['search4']='E';
              $istScadute =countIstanze($params);
 
-            require 'view/home/homeAdmin.php';
+            require 'view/home/homeAdmin.php';*/
           }
            
           if(isUserUser()){
