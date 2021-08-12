@@ -517,7 +517,7 @@ function countIstanze( array $params = []){
         
         
        // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and  istanza.eliminata !='1' ";
-       $sql ="SELECT count(*) as totalUser, istanza.id_RAM FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id  ";
+       $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id  ";
 
        //$sql ="SELECT count(*) as totalUser, istanza.id_RAM FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
        $sql .=" and istanza.eliminata != '1'"; 
@@ -540,7 +540,7 @@ function countIstanze( array $params = []){
           if($search5){
             $sql .= $parB;
           }
-          echo $sql;
+         // echo $sql;
         
         $res = $conn->query($sql);
         if($res) {
