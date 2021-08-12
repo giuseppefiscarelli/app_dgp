@@ -87,15 +87,18 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                     </select>
                 </div>
               </div>
-          
-            
-          </div> 
-      
-          <div class="form-footer" style="margin-top: 0px;">
+              <div class="col-lg-6 col-12">
+              <div class="form-footer" style="margin-top: 0px;">
               <button type="button" onclick="location.href='<?=$pageUrl?>'" id="resetBtn" class="btn btn-danger"><i class="fa fa-trash"></i> Reset</button>
               
               <button type="submit" onclick="document.forms.searchForm.page.value=1" class="btn btn-success"><i class="fa fa-search"></i> Ricerca</button>
           </div> 
+              </div>
+          
+            
+          </div> 
+      
+        
         </form>
       </div>
     </div>
@@ -129,7 +132,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                     <a href="<?=$pageUrl?>?<?=$orderByQueryString ?>&orderBy=pec_impr&orderDir=<?=$orderDir?>">Pec Impresa</a></th>    
                                 <th>Stato Istanza</th>
                                 <th>Stato Istruttoria</th>
-                                <th>Action</th>
+                                <th style="min-width:170px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -181,17 +184,17 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 </td>
                                
                                 <td>
-                                <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success btn-sm" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i></button>
+                                <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success btn-xs" title="Visualizza Info" style="width:35px;"><i class="fa fa-info" aria-hidden="true"></i></button>
                                 <?php
                                   
                                   if($i['stato']!='A'){?>
-                                  <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning btn-sm" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
+                                  <button onclick="window.location.href='istanza.php?id=<?=$i['id_RAM']?>'" type="button" class="btn btn-warning btn-xs" style="width:35px;" title="Visualizza Istanza"><i class="fa fa-list" aria-hidden="true"></i></button>
                                   <?php }
                                   if($i['stato']!='B'&&$i['stato']!='E'){?>
-                                    <button type="button" class="btn btn-danger btn-sm" title="Annulla Istanza" onclick="annIst(<?=$i['id_RAM']?>);"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Annulla Istanza" onclick="annIst(<?=$i['id_RAM']?>);" style="width:35px;"><i class="fa fa-times" aria-hidden="true"></i></button>
                                   <?php }
                                   if($i['stato']=='B'){?>
-                                    <button type="button" class="btn btn-danger btn-sm" title="Info Annullamento Istanza" onclick="annInfo(<?=$i['id_RAM']?>);"><i class="fa fa-user-times" aria-hidden="true"></i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Info Annullamento Istanza" onclick="annInfo(<?=$i['id_RAM']?>);" style="width:35px;"><i class="fa fa-user-times" aria-hidden="true"></i></button>
 
                                   <?php }
                                 ?>

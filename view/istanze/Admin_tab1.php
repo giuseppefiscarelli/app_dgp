@@ -170,9 +170,9 @@
       <!--end card-->
     </div>
 </div>
-<div class="row">
+
 <?php if($status['aperta']!=1){
     require "alleistanza3.php";
 }
 ?>
-</div>
+

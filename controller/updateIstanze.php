@@ -478,42 +478,60 @@ switch ($action){
     case 'checkCert':
       $data = $_REQUEST;
       $res = checkIstanza($data['id_ram']);
-     
-      $tipo = $data['tipo'];
-      $note =  $res['note_'.$tipo]?$res['note_'.$tipo]:'';
-      $sel = $res[$tipo];
-      
-      if($tipo == 'dim_impresa'){
-        if(is_null($sel)){
-          $select = "";
+    
+      if($res){
+        $tipo = $data['tipo'];
+        $note =  $res['note_'.$tipo]?$res['note_'.$tipo]:'';
+        $sel = $res[$tipo];
+        
+        if($tipo == 'dim_impresa'){
+          if(is_null($sel)){
+            $select = "";
+          }else{
+            $select = $sel;
+          }
         }else{
-          $select = $sel;
+          if(is_null($sel)){
+            $select = "A";
+          }
+          if($sel==1){
+            $select = "B";
+          }
+          if($sel=='0'){
+            $select = "C";
+          }
         }
+        $json = array(
+          "note" => $note,
+          "select" => $select
+        );
       }else{
-        if(is_null($sel)){
-          $select = "A";
-        }
-        if($sel==1){
-          $select = "B";
-        }
-        if($sel=='0'){
-          $select = "C";
-        }
+        $json = array(
+          "note" => '',
+          "select" => ''
+        );
       }
-      $json = array(
-        "note" => $note,
-        "select" => $select
-      );
+    
       echo json_encode($json);
     break;  
     case 'upCert':
       $data = $_REQUEST;
-     
+      $findInstanza = findCheckIstanza($data['id_ram']);
+      
+      $find = $findInstanza?$findInstanza:0;
+        if($find){
+          $res= upCert($data);
+        }else{
+          $istanza = getIstanza($data['id_ram']);
+          $tipo_impresa = $istanza['tipo_impresa'];
+          $res = newCheckIstanzaB($data['id_ram'],$tipo_impresa);
+        }
+       
       $res= upCert($data);
-      //var_dump($res);die;
+      
       
         $c = getcheckIstanza($data);
-        //var_dump($c);die;
+      
         $n = $c['note_'.$data['tipo']];
         $tipo = $c[$data['tipo']];
         //var_dump($tipo);die;

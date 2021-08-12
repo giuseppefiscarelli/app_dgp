@@ -128,6 +128,7 @@ $calcContributo=calcolaContributo($testData);
                                                     if(!$c_i){
                                                       $c_i = [
                                                         'dim_impresa' => null,
+                                                        'note_dim_impresa'=> null,
                                                         'pec'=>null,
                                                         'note_pec'=>'',
                                                         'firma'=>null,

@@ -2846,6 +2846,28 @@ function  newCheckIstanza($id_ram,$tipo_impresa,$tipo){
   }
   return $last_id;
 }
+function  newCheckIstanzaB($id_ram,$tipo_impresa){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $sql ="INSERT INTO istanza_check (id,id_ram) ";
+  $sql .= "VALUES (NULL,$id_ram)  ";
+  
+ // echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    $last_id= mysqli_insert_id($conn);
+    
+  }else{
+    $last_id=0;  
+  }
+  return $last_id;
+}
 function checkIstanza($id_ram){
   
   /**
