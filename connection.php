@@ -10,7 +10,7 @@ $mysqli = new mysqli(
     $config['mysql_password'],
     $config['mysql_db']
 );
-
+$mysqli -> set_charset("utf8");
  unset($config );
 
  if($mysqli->connect_error){
