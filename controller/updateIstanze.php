@@ -223,9 +223,7 @@ switch ($action){
     case 'getInfoVei':
       $id=$_REQUEST['id'];
       $res =getInfoVei($id);
-      //var_dump($res);
       $contr= calcolaContributo($res);
-      //var_dump($contr);
       $res['val_contributo']=$contr[0]['contributo'];
       $res['val_pmi']=$contr[0]['pmi']?$contr[0]['pmi']:'0.00';
       $res['val_rete']=$contr[0]['rete']?$contr[0]['rete']:0.00;
