@@ -2711,7 +2711,7 @@ function calcolaContributo($data){
   $rs = mysqli_query($conn, $sql);
   if (!$rs){
     $result = array("result" => "KO");
-  //	array_push($result);			// errore DB
+  
     echo json_encode($result);
   //  die;	
   }
