@@ -6,7 +6,7 @@
               <div class="card-body">
                 <h5 class="card-title">Dati richiedente</h5>
                 <table class="table table-sm">
-        
+         
                   <tbody>
                       <tr>
                       <th scope="row">Cognome</th>

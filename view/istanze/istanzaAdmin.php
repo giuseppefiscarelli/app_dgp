@@ -137,7 +137,7 @@ if(!$status['data_annullamento']&&$activeIst){?>
       <div class="tab-content" id="nav-tab-admin">
         <div class="tab-pane p-3 fade show active" id="tab-1" role="tabpanel" aria-labelledby="nav-1"><?php require_once 'Admin_tab1.php'; ?> </div>
         <div class="tab-pane p-3 fade" id="tab-2" role="tabpanel" aria-labelledby="nav-2"><?php require_once 'Admin_tab2.php'; ?></div>
-        <div class="tab-pane p-3 fade" id="tab-3" role="tabpanel" aria-labelledby="nav-3"><?php require_once 'Admin_tab3.php'; ?></div>
+       <!-- <div class="tab-pane p-3 fade" id="tab-3" role="tabpanel" aria-labelledby="nav-3"><?php //require_once 'Admin_tab3.php'; ?></div>-->
         <div class="tab-pane p-3 fade" id="tab-4" role="tabpanel" aria-labelledby="nav-4"><?php require_once 'Admin_tab4.php'; ?></div>
         <div class="tab-pane p-3 fade" id="tab-5" role="tabpanel" aria-labelledby="nav-5"><?php require_once 'Admin_tab5.php'; ?></div>
       
