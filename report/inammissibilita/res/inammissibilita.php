@@ -59,12 +59,12 @@
     
     <page_header> 
         <table width="75%" style="margin:30px;text-align:center;">
-        <tr><td style="text-align:center;"><img style="width:40px;height:40px;display:inline;"  src="../../images/italia.png"></td></tr>
+        <tr><td style="text-align:center;"><img style="width:40px;height:40px;display:inline;"  src="../../images/logo_italia.png"></td></tr>
         <tr><td style="font-style:italic;font-weight: bold;">Ministero delle Infrastrutture e dei Trasporti</td></tr>
         <tr><td>Dipartimento per i trasporti, la Navigazione</td></tr>
         <tr><td>ed i Sistemi Informativi e Statistici</td></tr>
         <tr><td>Direzione Generale per il Trasporto Stradale</td></tr>
-        <tr><td>e per lìIntermodalità</td></tr>
+        <tr><td>e per l'Intermodalità</td></tr>
 
         </table>
         

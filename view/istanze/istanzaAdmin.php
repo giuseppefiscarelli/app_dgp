@@ -37,8 +37,10 @@ if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m
 }
 */
 $activeIst = true;
+$status= checkRend($i['id_RAM']);
+
 if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
-  $status= checkRend($i['id_RAM']);
+ 
   if($status){
     if($status['aperta']==1){
       $stato= getStatoIstanza('C');
@@ -60,11 +62,11 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Termini di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
       $activeIst = false;
     }
-  }else{
-   
-    $span='<span class="badge badge-warning">Attiva</span>';
-    $activeIst = true;
   }
+}else{
+  $status['data_annullamento']= false;
+  $span='<span class="badge badge-warning">Attiva</span>';
+  $activeIst = true;
 }
 
 
