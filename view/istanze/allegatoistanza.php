@@ -19,7 +19,8 @@
                                                         ?>
                                                         
                                                         
-                                                        </td>
+                                                    </td>
+                                                    <td>
                                                         <?php
                                                             if(!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true){?> 
 

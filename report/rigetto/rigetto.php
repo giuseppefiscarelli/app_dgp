@@ -51,7 +51,17 @@ try {
     $html2pdf->writeHTML($content);
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
-    $html2pdf->output($path.$filename.".pdf",'FI');
+    
+    if($tipo =="P"){
+        $html2pdf->output($filename.".pdf",'I');
+    }
+    if($tipo =="D"){
+        $html2pdf->output($path.$filename.".pdf",'FD');
+    }
+    if($tipo =="S"){
+        $html2pdf->output($path.$filename.".pdf",'F');
+        echo json_encode($filename.".pdf");
+    }
 } catch (Html2PdfException $e) {
     $html2pdf->clean();
 
