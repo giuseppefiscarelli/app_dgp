@@ -38,28 +38,23 @@ if(!empty($_SESSION['message'])){
          // $users = getUsers($params);
           //var_dump($users);
           if(isUserSuadmin() || isUserAdmin()){
-          /*  require_once 'model/home.php';
+            require_once 'model/istanze.php';
             $params['search3']=1;
             $totalIstanze= countIstanze($params);
 
             $params['search4']='A';
             $istAttive =countIstanze($params);
+            $params['search4']='B';
+            $istAnnullate =countIstanze($params);
+            $params['search4']='C';
+            $istRend =countIstanze($params);
+            $params['search4']='D';
+            $istIstr =countIstanze($params);
+            $params['search4']='E';
+            $istScadute =countIstanze($params);
+         
 
-
-           
-             $params['search4']='C';
-             $istRend =countIstanze($params);
-
-             $params['search4']='D';
-             $istIstr =countIstanze($params);
-
-             $params['search4']='B';
-             $istAnnullate =countIstanze($params);
-
-             $params['search4']='E';
-             $istScadute =countIstanze($params);
-
-            require 'view/home/homeAdmin.php';*/
+           require 'view/home/homeAdmin.php';
           }
            
           if(isUserUser()){

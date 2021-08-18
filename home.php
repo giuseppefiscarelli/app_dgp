@@ -15,7 +15,7 @@ $deleteUrl = 'controller/updateUser.php';
 require_once 'headerInclude.php';
 
 ?>
- <div class="container my-4">
+ <div class="container my-4" style="max-width:95%">
  <?php
     require_once 'controller/displayHome.php';
 ?>   

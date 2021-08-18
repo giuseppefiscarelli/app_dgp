@@ -251,16 +251,16 @@ function getIstanze( array $params = []){
         $orderBy = array_key_exists('orderBy', $params) ? $params['orderBy'] : 'data_invio';
         if($orderBy){
           if($orderBy=='data_invio'){
-            $orderBy='xml.data_invio';
+            $orderBy='data_invio';
           }
           elseif($orderBy=='idRAM'){
-            $orderBy='istanza.id_RAM';
+            $orderBy='id_RAM';
           }
           elseif($orderBy=='ragione_sociale'){
-            $orderBy='istanza.ragione_sociale';
+            $orderBy='ragione_sociale';
           }
           elseif($orderBy=='pec_impr'){
-            $orderBy='istanza.pec_impr';
+            $orderBy='.pec_impr';
           }
         }
         $orderDir = array_key_exists('orderDir', $params) ? $params['orderDir'] : 'ASC';
@@ -298,14 +298,14 @@ function getIstanze( array $params = []){
         if($search4){
 
           if($search4=='A'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+            $parA = ' id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
           }
           if($search4=='A'&&$data_rend_fine<$now){
-            $parA = ' and istanza.id_RAM =0';
+            $parA = '  id_RAM =0';
             
          }
           if($search4=='B'){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
+            $parA = ' data_annullamento IS NOT NULL';
           }
           /*
           if($search4=='B'&&$data_rend_fine<$now){
@@ -313,20 +313,20 @@ function getIstanze( array $params = []){
           }*/
           
           if($search4=='C'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL)';
+            $parA = ' aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
           }
           if($search4=='C'&&$data_rend_fine<$now){
-             $parA = ' and istanza.id_RAM =0';
+             $parA = '  id_RAM =0';
 
           }
           if($search4=='D'){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL)';
+            $parA = ' aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL';
           }
           if($search4=='E'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM =0';
+            $parA = '  id_RAM =0';
           }
           if($search4=='E'&&$data_rend_fine<$now){
-            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
+            $parA = '  aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
 
           }
 
@@ -335,28 +335,63 @@ function getIstanze( array $params = []){
 
         if($search5){
           if($search5 === 'A'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=1 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=1 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
           }
           if($search5 === 'B'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=2 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=2 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
           }
           if($search5 === 'C'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=3 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=3 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
           }
           if($search5 === 'D'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=4 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=4 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
           }
         }
         
-        $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
-        $sql .=" and istanza.eliminata != '1'";
-  
+        //$sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
+        //$sql .=" and istanza.eliminata != '1'";
+          //mod view
+          $sql = "SELECT * FROM istanze_view";
+          if($search1 || $search2 || $search3 || $search4 || $search5){
+            $sql .=" WHERE";
+          }
+          if ($search1){
+            $sql .=" pec LIKE '%$search1%' ";
+            if($search2 || $search3 || $search4 || $search5){
+              $sql .=" AND";
+            }
 
+            
+          }
+          if ($search2){
+              $sql .="  id_RAM LIKE '%$search2%' ";
+              if( $search3 || $search4 || $search5){
+                $sql .=" AND";
+              }
+  
+          }
+          if ($search3){
+            //$sql .=" data_invio between '$data_inizio' and '$data_fine'";
+            $sql .=" tipo_istanza = $search3 ";
+            if( $search4 || $search5){
+              $sql .=" AND";
+            }
+            
+          }
+          if($search4){
+            $sql .= $parA;
+            if( $search5){
+              $sql .=" AND";
+            }
+          }
+          if($search5){
+            $sql .= $parB;
+          }
        // $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
-      
+      /*
         if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
@@ -376,7 +411,11 @@ function getIstanze( array $params = []){
           if($search5){
             $sql .= $parB;
           }
-        $sql .= " ORDER BY istanza.$orderBy  $orderDir LIMIT $start, $limit";
+          */
+
+
+      //  $sql .= " ORDER BY istanza.$orderBy  $orderDir LIMIT $start, $limit";
+      $sql .= " ORDER BY $orderBy  $orderDir LIMIT $start, $limit";
      //echo $sql;
 
         $res = $conn->query($sql);
@@ -464,52 +503,57 @@ function countIstanze( array $params = []){
 
         
          }
-        if($search4){
+         if($search4){
 
           if($search4=='A'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+            $parA = ' id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
           }
-          else if($search4=='B'){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE data_annullamento IS NOT NULL)';
+          if($search4=='A'&&$data_rend_fine<$now){
+            $parA = '  id_RAM =0';
+            
+         }
+          if($search4=='B'){
+            $parA = ' data_annullamento IS NOT NULL';
           }
           /*
           if($search4=='B'&&$data_rend_fine<$now){
             $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+          }*/
+          
+          if($search4=='C'&&$data_rend_fine>$now){
+            $parA = ' aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
           }
-          */
-          else if($search4=='C'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL)';
-          }
-          else if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
-             $parA = ' and istanza.id_RAM =0';
+          if($search4=='C'&&$data_rend_fine<$now){
+             $parA = '  id_RAM =0';
 
           }
-          else if($search4=='D'){
-            $parA = ' and istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL)';
+          if($search4=='D'){
+            $parA = ' aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL';
           }
-          else if($search4=='E'&&$data_rend_fine>$now){
-            $parA = ' and istanza.id_RAM =0';
+          if($search4=='E'&&$data_rend_fine>$now){
+            $parA = '  id_RAM =0';
           }
-          else if($search4=='E'&&$data_rend_fine<$now){
-            $parA = ' and (istanza.id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL) OR istanza.id_RAM not in( SELECT id_RAM FROM `rendicontazione`))';
+          if($search4=='E'&&$data_rend_fine<$now){
+            $parA = '  aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
 
           }
+
 
         }
         if($search5){
           if($search5 === 'A'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=1 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=1 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
           }
           if($search5 === 'B'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=2 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=2 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
           }
           if($search5 === 'C'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=3 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=3 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
           }
           if($search5 === 'D'){
-            $parB = " and istanza.id_RAM in( SELECT id_RAM FROM `report` WHERE id_RAM=istanza.id_RAM and tipo_report=4 and  data_invio = (select max(data_invio)  FROM report WHERE id_RAM = istanza.id_RAM and stato = 'C'))";
+            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=4 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
           }
         }
@@ -517,11 +561,11 @@ function countIstanze( array $params = []){
         
         
        // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and  istanza.eliminata !='1' ";
-       $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id  ";
-
+      // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id  ";
+       $sql = "SELECT count(*) as totalUser FROM istanze_view";
        //$sql ="SELECT count(*) as totalUser, istanza.id_RAM FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
-       $sql .=" and istanza.eliminata != '1'"; 
-       if ($search1){
+      // $sql .=" and istanza.eliminata != '1'"; 
+      /* if ($search1){
           $sql .=" AND xml.pec LIKE '%$search1%' ";
           
         }
@@ -539,8 +583,43 @@ function countIstanze( array $params = []){
           }
           if($search5){
             $sql .= $parB;
+          }*/
+          if($search1 || $search2 || $search3 || $search4 || $search5){
+            $sql .=" WHERE";
           }
-         // echo $sql;
+          if ($search1){
+            $sql .=" pec LIKE '%$search1%' ";
+            if($search2 || $search3 || $search4 || $search5){
+              $sql .=" AND";
+            }
+
+            
+          }
+          if ($search2){
+              $sql .="  id_RAM LIKE '%$search2%' ";
+              if( $search3 || $search4 || $search5){
+                $sql .=" AND";
+              }
+  
+          }
+          if ($search3){
+           // $sql .=" data_invio between '$data_inizio' and '$data_fine'";
+            $sql .=" tipo_istanza = $search3 ";
+            if( $search4 || $search5){
+              $sql .=" AND";
+            }
+            
+          }
+          if($search4){
+            $sql .= $parA;
+            if( $search5){
+              $sql .=" AND";
+            }
+          }
+          if($search5){
+            $sql .= $parB;
+          }
+          //echo $sql;
         
         $res = $conn->query($sql);
         if($res) {
