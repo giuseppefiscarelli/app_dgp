@@ -193,7 +193,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                   if($i['stato']!='B'&&$i['stato']!='E'){?>
                                     <button type="button" class="btn btn-danger btn-xs" title="Annulla Istanza" onclick="annIst(<?=$i['id_RAM']?>);" style="width:35px;"><i class="fa fa-times" aria-hidden="true"></i></button>
                                   <?php }
-                                  if($i['stato']=='B'){?>
+                                  if($i['stato']=='B'|| $i['stato']=='E'){?>
                                     <button type="button" class="btn btn-danger btn-xs" title="Info Annullamento Istanza" onclick="annInfo(<?=$i['id_RAM']?>);" style="width:35px;"><i class="fa fa-user-times" aria-hidden="true"></i></button>
 
                                   <?php }

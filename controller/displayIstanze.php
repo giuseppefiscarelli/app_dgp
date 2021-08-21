@@ -65,7 +65,7 @@ if(!empty($_SESSION['message'])){
          
           
           $email=$_SESSION['userData']['email'];
-          if(!$search3){
+          /*if(!$search3){
             $istanze=[];
             $totalUsers =0;
             foreach($tipi_istanze as $ti){
@@ -77,10 +77,10 @@ if(!empty($_SESSION['message'])){
               $totalUsers+= countIstanze($params);
              
             }
-          }else{
+          }else{*/
             $istanze = getIstanze($params);
             $totalUsers= countIstanze($params);
-          }
+         // }
           $numPages= ceil($totalUsers/$recordsPerPage);
          // var_dump($istanze);die;
           

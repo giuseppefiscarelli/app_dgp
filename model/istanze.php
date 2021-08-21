@@ -260,7 +260,7 @@ function getIstanze( array $params = []){
             $orderBy='ragione_sociale';
           }
           elseif($orderBy=='pec_impr'){
-            $orderBy='.pec_impr';
+            $orderBy='pec_impr';
           }
         }
         $orderDir = array_key_exists('orderDir', $params) ? $params['orderDir'] : 'ASC';
@@ -326,7 +326,7 @@ function getIstanze( array $params = []){
             $parA = '  id_RAM =0';
           }
           if($search4=='E'&&$data_rend_fine<$now){
-            $parA = '  aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
+            $parA = '  (aperta=1 or aperta is null) and data_chiusura IS NULL and data_annullamento IS NULL';
 
           }
 
@@ -534,8 +534,8 @@ function countIstanze( array $params = []){
             $parA = '  id_RAM =0';
           }
           if($search4=='E'&&$data_rend_fine<$now){
-            $parA = '  aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
-
+            $parA = '  (aperta=1 or aperta IS NULL) and data_chiusura IS NULL and data_annullamento IS NULL';
+          
           }
 
 
