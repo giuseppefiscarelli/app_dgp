@@ -619,7 +619,7 @@ function countIstanze( array $params = []){
           if($search5){
             $sql .= $parB;
           }
-          //echo $sql;
+         // echo $sql;
         
         $res = $conn->query($sql);
         if($res) {

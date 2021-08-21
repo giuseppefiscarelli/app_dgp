@@ -37,38 +37,40 @@ function countIstanze( array $params = []){
        if($search4){
 
         if($search4=='A'&&$data_rend_fine>$now){
-          $parA = '  id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+          $parA = ' id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
         }
-        else if($search4=='B'){
+        if($search4=='A'&&$data_rend_fine<$now){
+          $parA = '  id_RAM =0';
+          
+       }
+        if($search4=='B'){
           $parA = ' data_annullamento IS NOT NULL';
         }
         /*
         if($search4=='B'&&$data_rend_fine<$now){
           $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
-        }
-        */
-
+        }*/
         
-        else if($search4=='C'&&$data_rend_fine>$now){
-          $parA = '  id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL)';
+        if($search4=='C'&&$data_rend_fine>$now){
+          $parA = ' aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
         }
-        else if(($search4=='A'||$search4=='C')&&$data_rend_fine<$now){
+        if($search4=='C'&&$data_rend_fine<$now){
            $parA = '  id_RAM =0';
 
         }
-        else if($search4=='D'){
-          $parA = '  id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL)';
+        if($search4=='D'){
+          $parA = ' aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL';
         }
-        else if($search4=='E'&&$data_rend_fine>$now){
-          $parA = ' id_RAM =0';
+        if($search4=='E'&&$data_rend_fine>$now){
+          $parA = '  id_RAM =0';
         }
-        else if($search4=='E'&&$data_rend_fine<$now){
-          $parA = ' id_RAM in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL) OR id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+        if($search4=='E'&&$data_rend_fine<$now){
+          $parA = '  (aperta=1 or aperta IS NULL) and data_chiusura IS NULL and data_annullamento IS NULL';
+        
+        }
 
-        }
 
       }
-
       if($search5){
         if($search5 === 'A'){
           $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=1 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
@@ -133,7 +135,7 @@ function countIstanze( array $params = []){
         }
         if ($search3){
          // $sql .=" data_invio between '$data_inizio' and '$data_fine'";
-          $sql .=" AND tipo_istanza = $search3 ";
+          $sql .=" tipo_istanza = $search3 ";
           if( $search4 || $search5){
             $sql .=" AND";
           }
@@ -148,7 +150,7 @@ function countIstanze( array $params = []){
         if($search5){
           $sql .= $parB;
         }
-        echo $sql;
+        //echo $sql;
       
       $res = $conn->query($sql);
       if($res) {
@@ -159,50 +161,6 @@ function countIstanze( array $params = []){
 
   return $totalUser;
 
-}
-
-function countTotIstanze( array $params = []){
-
-    /**
-     * @var $conn mysqli
-     */
-  
-        $conn = $GLOBALS['mysqli'];
-  
-        $orderBy = array_key_exists('orderBy', $params) ? $params['orderBy'] : 'id';
-        $orderDir = array_key_exists('orderDir', $params) ? $params['orderDir'] : 'ASC';
-        $limit = (int)array_key_exists('recordsPerPage', $params) ? $params['recordsPerPage'] : 10;
-        $search1 = array_key_exists('search1', $params) ? $params['search1'] : '';
-        $search1 = $conn->escape_string($search1);
-        $search2 = array_key_exists('search2', $params) ? $params['search2'] : '';
-        $search2 = $conn->escape_string($search2);
-        if($orderDir !=='ASC' && $orderDir !=='DESC'){
-          $orderDir = 'ASC';
-        }
-        $totalUser = 0;
-  
-        
-  
-        $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
-        if ($search1){
-          $sql .=" AND xml.pec LIKE '%$search1%' ";
-          
-        }
-        if ($search2){
-            $sql .=" AND istanza.id_RAM LIKE '%$search2%' ";
-            
-          }
-        
-  
-        $res = $conn->query($sql);
-        if($res) {
-  
-         $row = $res->fetch_assoc();
-         $totalUser = $row['totalUser'];
-        }
-  
-    return $totalUser;
-  
 }
 
 function getIstanze( array $params = []){
@@ -255,6 +213,50 @@ function getIstanze( array $params = []){
         }
 
     return $records;
+
+}
+
+function countTotIstanze( array $params = []){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+      $orderBy = array_key_exists('orderBy', $params) ? $params['orderBy'] : 'id';
+      $orderDir = array_key_exists('orderDir', $params) ? $params['orderDir'] : 'ASC';
+      $limit = (int)array_key_exists('recordsPerPage', $params) ? $params['recordsPerPage'] : 10;
+      $search1 = array_key_exists('search1', $params) ? $params['search1'] : '';
+      $search1 = $conn->escape_string($search1);
+      $search2 = array_key_exists('search2', $params) ? $params['search2'] : '';
+      $search2 = $conn->escape_string($search2);
+      if($orderDir !=='ASC' && $orderDir !=='DESC'){
+        $orderDir = 'ASC';
+      }
+      $totalUser = 0;
+
+      
+
+      $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
+      if ($search1){
+        $sql .=" AND xml.pec LIKE '%$search1%' ";
+        
+      }
+      if ($search2){
+          $sql .=" AND istanza.id_RAM LIKE '%$search2%' ";
+          
+        }
+      
+
+      $res = $conn->query($sql);
+      if($res) {
+
+       $row = $res->fetch_assoc();
+       $totalUser = $row['totalUser'];
+      }
+
+  return $totalUser;
 
 }
 function countRendicontazione($stato){
