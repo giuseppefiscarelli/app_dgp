@@ -58,7 +58,7 @@
     
 <page_header> 
         <table width="75%" style="margin:30px;text-align:center;">
-        <tr><td style="text-align:center;"><img style="width:300px;display:inline;"  src="../../images/intest.PNG"></td></tr>
+        <tr><td style="text-align:center;"><img style="width:300px;display:inline;"  src="../../images/intest.png"></td></tr>
         
 
         </table>
