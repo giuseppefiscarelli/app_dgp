@@ -153,7 +153,7 @@ function getIstanzaUser($email, $tipo_istanza){
     $result = [];
     // $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and  istanza.eliminata!='2' and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
 
-      $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
+     // $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$email' = xml.pec and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') and xml.data_invio between '2020-10-01 10:00:00' and '2020-11-16 08:00:00'";
       $sql = "SELECT * FROM istanze_view where pec = '$email' and tipo_istanza = $tipo_istanza ";
       //echo $sql;
       $res = $conn->query($sql);
@@ -397,7 +397,7 @@ function getIstanze( array $params = []){
           while( $row = $res->fetch_assoc()) {
             $row['stato_des']='';
             if($row['data_invio_inizio']<date("Y-m-d H:i:s")){
-              if($row['aperta']){
+              if($row['aperta'] != null){
                   if($row['aperta']==1){
                     $row['stato'] = 'C';
                   }elseif($row['aperta']==0){
