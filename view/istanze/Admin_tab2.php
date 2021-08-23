@@ -402,7 +402,7 @@
                               $('#info_targa').html(data.targa)
                               $('#info_marca').html(data.marca)
                               $('#info_modello').html(data.modello)
-                              $('#info_note_admin').html(data.note_admin)
+                              $('#info_note_admin').html(data.note_admin??'')
                               $('#btn_istr').attr('onclick','infoVeiIstr('+data.id+')');
                               if(data.stato_admin=='A'||data.stato_admin==null){
                                     stato='<span class="badge badge-warning">In Lavorazione</span>';
