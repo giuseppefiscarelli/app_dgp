@@ -59,7 +59,7 @@
                         <div  class="btn-group btn-group-sm" role="group">
                         <button type="button" onclick="infoIstanza(<?=$i['id_RAM']?>);"class="btn btn-success btn-sm" title="Visualizza Info"><i class="fa fa-info" aria-hidden="true"></i> Info Istanza</button>
                    
-                        <a type="button" href="istanza.php"class="btn btn-primary" style="color:white;margin-left:5px;"> Vai a Istanza</a>
+                        <a type="button" href="istanza.php?type=<?=$i['tipo_istanza']?>"class="btn btn-primary" style="color:white;margin-left:5px;"> Vai a Istanza</a>
                            
 
                         </div>

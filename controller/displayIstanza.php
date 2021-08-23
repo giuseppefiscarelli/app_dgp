@@ -17,8 +17,11 @@
     }
   }else{
     $utente= $_SESSION['userData']['email'];
-    $i = getIstanzaUser($utente);
-   
+    $type_ist = getParam('type');
+
+    $res = getIstanzaUser($utente,$type_ist);
+    $i= getIstanza($res['id']);
+  // var_dump($i);
   }
   $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
   $tipiCom= getTipiComunicazione();
