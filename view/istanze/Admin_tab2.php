@@ -28,6 +28,7 @@
             <?php
                 foreach($veicoli as $v){
                     $tipo = getTipoVeicolo($v['tipo_veicolo']);
+                    //var_dump($tipo);
                     $categ = getCategoria($tipo['codice_categoria_incentivo']);
                     $countDocVeicolo=countDocVeicolo($v['tipo_veicolo']);
                 

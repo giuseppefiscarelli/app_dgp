@@ -892,7 +892,7 @@ function countCatVeiTipoac( $cat,$id_RAM,$progressivo){
       return $result;
 
 }
-function checkTipVei($codice){
+function checkTipVei($cat){
   /**
    * @var $conn mysqli
    */
@@ -2143,7 +2143,7 @@ function upIstruttoria($data){
 
   $id = $conn->escape_string($data['id']);
  
-  $stato_admin = $data['stato_admin']??'null';
+  $stato_admin = $data['stato_admin']??'A';
   $note_admin = $data['note_admin']??'null';
   $data_admin = date("Y/m/d H:i:s");
   $user_admin = $_SESSION['userData']['email'];
@@ -2184,7 +2184,7 @@ function upCostoIstr($data){
  
  
   $costo_istr = $data['costo_istr'];
-
+  $stato_admin = $data['stato_admin']??'';
   $result=0;
   $sql ='UPDATE veicolo SET ';
   $sql .= "stato_admin = '$stato_admin',costo_istr=$costo_istr";
