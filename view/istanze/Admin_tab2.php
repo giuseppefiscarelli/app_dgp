@@ -11,8 +11,6 @@
                 <th>Tipo Veicolo</th>
                 <th>Prog</th>
                 <th>Dati Veicolo</th>
-                
-                <th>Acquisizione</th>
                 <th>Importo</th>
                 <th>Stato</th>
                 <th>Action</th>
@@ -95,7 +93,6 @@
                                                     Marca <b><?=$v['marca']?></b><br>
                                                     Modello <b><?=$v['modello']?></b></td>
                 
-                <td style="vertical-align:middle;"><?=$v['tipo_acquisizione']=="01"?'<span class="badge badge-info"  style="width: -webkit-fill-available;">Acquisizione</span>':'<span class="badge badge-warning"  style="width: -webkit-fill-available;">Leasing</span>'?></td>
                 <td style="vertical-align:middle;"><?=$v['costo']?'€ '.number_format($v['costo'], 2, ',', '.'):'Non Presente'?></td>
                 <td style="vertical-align:middle;">
                 <div class="row">
@@ -109,7 +106,7 @@
                                 <?=$v['user_admin']?></td>
                          <?php
                            }else{?>
-                           <td> </td> <td id="user_istruttoria_<?=$v['id']?>">______ </td>
+                           <td> </td> <td id="user_istruttoria_<?=$v['id']?>"> </td>
 
                            <?php
                            }?>
