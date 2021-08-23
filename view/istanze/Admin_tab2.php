@@ -11,7 +11,7 @@
                 <th>Tipo Veicolo</th>
                 <th>Prog</th>
                 <th>Dati Veicolo</th>
-                <th>Importo</th>
+                <th style="min-width:150px;">Importo</th>
                 <th>Stato</th>
                 <th>Action</th>
             </tr>

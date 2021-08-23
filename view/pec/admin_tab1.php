@@ -116,7 +116,7 @@
     if($pecUnsend){ 
         foreach($pecUnsend as $pa){
                 $tipo = getInfoReport($pa['tipo_report']);
-                //var_dump($tipo);
+                var_dump($tipo);
                 $istanza = getIstanza($pa['id_RAM']);
                 $classUser=explode('@',$pa['user_ins']);
                 $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
@@ -289,6 +289,7 @@
                 Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
             },
             success: function(data){
+                console.log(data)
                         Swal.fire({
                             title:"Operazione Completata!",
                             html:"Allegato caricato correttamente.",
