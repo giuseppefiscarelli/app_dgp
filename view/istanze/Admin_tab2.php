@@ -441,13 +441,13 @@
                                         console.log(alle)
                                          $.each(alle, function (k,v){
                                                if(v.stato_admin=='A'){
-                                                stato='<span class="badge badge-warning">Da Accettare</span>';
+                                                stato='<span class="badge badge-warning">In Lavorazione</span>';
                                                }
                                                if(v.stato_admin=='B'){
                                                 stato='<span class="badge badge-success">Accettato</span>';
                                                }
                                                if(v.stato_admin=='C'){
-                                                stato='<span class="badge badge-danger">Respinto</span>';
+                                                stato='<span class="badge badge-danger">Rigettato</span>';
                                                }
                                                note_ad ='';
                                                if(v.note_admin){
@@ -494,8 +494,8 @@
             contr_up_pmi= $('#contr_up_pmi').val()
             contr_up_rete= $('#contr_up_rete').val()
             console.log(contr,up_contr)
-            console.log(pmi,contr_up_pmi)
-            console.log(rete,contr_up_rete)
+            console.log(pmi.toFixed(2),contr_up_pmi)
+            console.log(rete.toFixed(2),contr_up_rete)
             if(contr != up_contr||contr_up_pmi!=pmi||contr_up_rete!=rete){
                 Swal.fire({                  
                     title: "I valori calcolati sono differenti da quelli accordati",
