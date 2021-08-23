@@ -181,14 +181,11 @@ function getIstanzeUser(array $params = []){
       $records = [];
      
       $now=date("Y-m-d H:i:s");
-        $tipo= getTipoIstanza($search3);
-        $data_inizio = $tipo['data_invio_inizio'];
-        $data_fine = $tipo['data_invio_fine'];
-        $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
-        $data_rend_fine = $tipo['data_rendicontazione_fine'];
+      
         //    $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and  istanza.eliminata!='1' and xml.data_invio between '$data_inizio' and '$data_fine'";
 
-        $sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and istanza.eliminata !=1";
+        //$sql ="SELECT * FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and '$search1' = xml.pec and istanza.eliminata !=1";
+        $sql = "SELECT * FROM istanze_view where pec = '$search1' order by tipo_istanza DESC";
         //echo $sql;
         $res = $conn->query($sql);
         if($res) {
@@ -196,32 +193,32 @@ function getIstanzeUser(array $params = []){
           while( $row = $res->fetch_assoc()) {
 
 
-            $stato=checkRend($row['id_RAM']);
-            $tipo_ist = getTipoIstanza($row['tipo_istanza']);
+           // $stato=checkRend($row['id_RAM']);
+            //$tipo_ist = getTipoIstanza($row['tipo_istanza']);
            // var_dump($tipo_ist);
             $row['stato_des']='';
-            if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
-              if($stato){
-                  if($stato['aperta']==1){
+            if($row['data_invio_inizio']<date("Y-m-d H:i:s")){
+              if($row['aperta']){
+                  if($row['aperta']==1){
                     $row['stato'] = 'C';
-                  }elseif($stato['aperta']==0){
+                  }elseif($row['aperta']==0){
                     $row['stato'] = 'D';
-                    $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($stato['data_chiusura']));
+                    $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($row['data_chiusura']));
                   }
-                  if($stato['data_annullamento']){
+                  if($row['data_annullamento']){
                     $row['stato'] = 'B';
                     $row['stato_des'] ='<br>Annullata da impresa ';
                   }
-                  if(($tipo_ist['data_rendicontazione_fine']<$now&&$stato['aperta']==1)){
+                  if(($row['fine_edizione']<$now&&$row['aperta']==1)){
                     $row['stato'] = 'E';
-                    $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                    $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
                   } 
                 
               }else{
                 $row['stato'] = 'A';
-                if($tipo_ist['data_rendicontazione_fine']<$now){
+                if($row['fine_edizione']<$now){
                   $row['stato'] = 'E';
-                  $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                  $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
                 } 
               }
             
@@ -374,7 +371,6 @@ function getIstanze( array $params = []){
   
           }
           if ($search3){
-            //$sql .=" data_invio between '$data_inizio' and '$data_fine'";
             $sql .=" tipo_istanza = $search3 ";
             if( $search4 || $search5){
               $sql .=" AND";
@@ -390,31 +386,7 @@ function getIstanze( array $params = []){
           if($search5){
             $sql .= $parB;
           }
-       // $sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata = '2')";
-      /*
-        if ($search1){
-          $sql .=" AND xml.pec LIKE '%$search1%' ";
-          
-        }
-        if ($search2){
-            $sql .=" AND istanza.id_RAM LIKE '%$search2%' ";
-            
-          }
-          if ($search3){
-            $sql .=" and xml.data_invio between '$data_inizio' and '$data_fine'";
-            $sql .=" AND istanza.tipo_istanza = $search3 ";
-            
-          }
-          if($search4){
-            $sql .= $parA;
-          }
-          if($search5){
-            $sql .= $parB;
-          }
-          */
-
-
-      //  $sql .= " ORDER BY istanza.$orderBy  $orderDir LIMIT $start, $limit";
+    
       $sql .= " ORDER BY $orderBy  $orderDir LIMIT $start, $limit";
      //echo $sql;
 
@@ -422,47 +394,36 @@ function getIstanze( array $params = []){
         if($res) {
           
           while( $row = $res->fetch_assoc()) {
-
-
-            $stato=checkRend($row['id_RAM']);
-            $tipo_ist = getTipoIstanza($row['tipo_istanza']);
-            //var_dump($tipo_ist);
             $row['stato_des']='';
-            if($tipo_ist['data_invio_inizio']<date("Y-m-d H:i:s")){
-              if($stato){
-                  if($stato['aperta']==1){
+            if($row['data_invio_inizio']<date("Y-m-d H:i:s")){
+              if($row['aperta']){
+                  if($row['aperta']==1){
                     $row['stato'] = 'C';
-                  }elseif($stato['aperta']==0){
+                  }elseif($row['aperta']==0){
                     $row['stato'] = 'D';
-                    $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($stato['data_chiusura']));
+                    $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($row['data_chiusura']));
                   }
-                  if($stato['data_annullamento']){
+                  if($row['data_annullamento']){
                     $row['stato'] = 'B';
                     $row['stato_des'] ='<br>Annullata da impresa ';
                   }
-                  if(($tipo_ist['data_rendicontazione_fine']<$now&&$stato['aperta']==1)){
+                  if(($row['fine_edizione']<$now&&$row['aperta']==1)){
                     $row['stato'] = 'E';
-                    $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                    $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
                   } 
                 
               }else{
                 $row['stato'] = 'A';
-                if($tipo_ist['data_rendicontazione_fine']<$now){
+                if($row['fine_edizione']<$now){
                  
                   $row['stato'] = 'E';
-                  $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($tipo_ist['data_rendicontazione_fine']));
+                  $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
                 } 
               }
             
             }
-           
-           
-              $records[] = $row;
-           
-              
-              
+              $records[] = $row;   
           }
-
         }
 
     return $records;
@@ -558,32 +519,8 @@ function countIstanze( array $params = []){
           }
         }
         
-        
-        
-       // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and  istanza.eliminata !='1' ";
-      // $sql ="SELECT count(*) as totalUser FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id  ";
        $sql = "SELECT count(*) as totalUser FROM istanze_view";
-       //$sql ="SELECT count(*) as totalUser, istanza.id_RAM FROM istanza INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id and (istanza.eliminata is null or trim(eliminata) = '' or istanza.eliminata='2') ";
-      // $sql .=" and istanza.eliminata != '1'"; 
-      /* if ($search1){
-          $sql .=" AND xml.pec LIKE '%$search1%' ";
-          
-        }
-        if ($search2){
-            $sql .=" AND istanza.id_RAM LIKE '%$search2%' ";
-            
-          }
-          if ($search3){
-            $sql .=" and xml.data_invio between '$data_inizio' and '$data_fine'";
-            $sql .=" AND istanza.tipo_istanza = $search3 ";
-            
-          }
-          if($search4){
-            $sql .= $parA;
-          }
-          if($search5){
-            $sql .= $parB;
-          }*/
+      
           if($search1 || $search2 || $search3 || $search4 || $search5){
             $sql .=" WHERE";
           }
@@ -2196,8 +2133,6 @@ function getTipiComunicazione(){
 
 
 }
-
-
 function upIstruttoria($data){
   /**
    * @var $conn mysqli
@@ -2686,7 +2621,6 @@ function saveReport($data){
 
 
 }
-
 function delReport($id){
   /**
   * @var $conn mysqli
@@ -2848,7 +2782,7 @@ function calcolaContributo($data){
   //  echo json_encode($result);		// errore per istanza non trovata (impossibile)
  //   die;	
   }
-return $result;
+ return $result;
   //echo json_encode($result);
   
   //var_dump($result);
@@ -3075,7 +3009,6 @@ function annullaIstanza($data){
     return true;
   }
 }
-
 function infoannIstanza($id_RAM){
 
  /**

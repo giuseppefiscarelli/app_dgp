@@ -44,11 +44,15 @@ if(!empty($_SESSION['message'])){
             $params['search1'] =  $_SESSION['userData']['email'];
           
             $ist =[];
+
+            $ist = getIstanzeUser($params);
+/*
+
            foreach($tipi_istanze as $ti){
              
             $params['search3'] = $ti['id'];
             
-            $res = getIstanzeUser($params);
+           
             if($res){
               foreach($res as $r){
                 array_push($ist,$r);
@@ -57,7 +61,7 @@ if(!empty($_SESSION['message'])){
           
 
            }
-          
+          */
           
           //var_dump($istanze);
           require_once 'view/istanze/istanze_listUser.php';

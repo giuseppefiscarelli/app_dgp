@@ -10,13 +10,12 @@
   }
  
   if(!isUserUser()){
-  $id = getParam('id',0);
-  if($id){
-      $i = getIstanza($id);
-    
-  }
-  }else
-  {
+    $id = getParam('id',0);
+    if($id){
+        $i = getIstanza($id);
+      
+    }
+  }else{
     $utente= $_SESSION['userData']['email'];
     $i = getIstanzaUser($utente);
    

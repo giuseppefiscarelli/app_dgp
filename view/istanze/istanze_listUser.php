@@ -24,12 +24,14 @@
                // $ist=getIstanzeUser($_SESSION['userData']['email']);
                // var_dump($ist);
                     foreach($ist as $i){
-                      $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
+                      //var_dump($i);
+                      //$tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                       $stato_istanza = getStatoIstanza($i['stato']);
-                      $status=checkRend($i['id_RAM']);?>
+                      //$status=checkRend($i['id_RAM']);
+                      ?>
                     <tr>
-                    <td><?=$i['id_RAM']?>/<?=$tipo_istanza['anno']?><br></td>
-                    <td><b><?=$tipo_istanza['des']?></b></td>
+                    <td><?=$i['id_RAM']?>/<?=$i['anno_edizione']?><br></td>
+                    <td><b><?=$i['des_edizione']?></b></td>
                    
                     <td><span class="badge badge-pill badge-<?=$stato_istanza['style']?>"><?=$stato_istanza['des']?></span>
                                     <?=$i['stato_des']?>

@@ -141,15 +141,15 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                     foreach ($istanze as $i){
                                      
                                    
-                                      $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
+                                      //$tipo_istanza = getTipoIstanza($i['tipo_istanza']);
                                       $stato_istanza = getStatoIstanza($i['stato']);
-                                      $status=checkRend($i['id_RAM']);
+                                      //$status=checkRend($i['id_RAM']);
                                       $now=date("Y-m-d H:i:s");
                                       $status_istr= getStatusIstruttoria($i['id_RAM']);
                                       //var_dump($status_istr);
                                       ?>
                             <tr>
-                                <td><b><?=$tipo_istanza['des']?></b></td>      
+                                <td><b><?=$i['des_edizione']?></b></td>      
                                 <td><?=$i['id_RAM']?></td>
                                 <td><?=date("d/m/Y H:i",strtotime($i['data_invio']))?></td></td>
                                 <td><?=$i['ragione_sociale']?></td>
