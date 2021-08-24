@@ -20,7 +20,8 @@
     $type_ist = getParam('type');
 
     $res = getIstanzaUser($utente,$type_ist);
-    $i= getIstanza($res['id']);
+    
+    $i= getIstanza($res['id_RAM']);
   // var_dump($i);
   }
   $tipo_istanza = getTipoIstanza($i['tipo_istanza']);
