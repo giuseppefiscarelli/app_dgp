@@ -47,30 +47,13 @@ if(!empty($_SESSION['message'])){
             $ist = getIstanzeUser($params);
           require_once 'view/istanze/istanze_listUser.php';
          }else{
-         $last_page = basename($_SERVER['HTTP_REFERER']);
-        // var_dump($last_page);
-         if($last_page !=='istanze.php' && $_SESSION['envData']){
-          if($_SESSION['envData']['paramList']){
-           //var_dump($_SESSION['envData']['paramList']);
-           /* $search1 = $_SESSION['envData']['paramList']['search1']??$params['search1'];
-            $search2 = $_SESSION['envData']['paramList']['search2']??$params['search1'];
-            $search3 = $_SESSION['envData']['paramList']['search3']??$params['search1'];
-            $search4 = $_SESSION['envData']['paramList']['search4']??$params['search1'];
-            $search5 = $_SESSION['envData']['paramList']['search5']??$params['search1'];
-            $orderBy = $_SESSION['envData']['paramList']['orderBy']??$params['orderBy'];
-            $orderDir = $_SESSION['envData']['paramList']['orderDir']??$params['orderDir'];
-            $page = $_SESSION['envData']['paramList']['page']??$params['page'];
-            $params=$_SESSION['envData']['paramList'];*/
-          };
-         }else{
-          $_SESSION['envData']['paramList']='';
-         } 
+        
          
          // var_dump($params);
             $istanze = getIstanze($params);
             $totalUsers= countIstanze($params);
           $numPages= ceil($totalUsers/$recordsPerPage);
-          $_SESSION['envData']['paramList'] = $params;
+       
           //var_dump($_SESSION['envData']['paramList']);
           require_once 'view/istanze/istanze_list.php';
          }
