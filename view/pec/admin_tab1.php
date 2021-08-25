@@ -7,7 +7,7 @@
                     <nav class="navbar navbar-expand-lg has-megamenu">
                     <button class="custom-navbar-toggler" type="button" aria-controls="nav3" aria-expanded="false" aria-label="Toggle navigation" data-target="#nav3">
                         <svg class="icon">
-                        <use xlink:href="/bootstrap-italia/dist/svg/sprite.svg#it-burger"></use>
+                        <use xlink:href="svg/sprite.svg#it-burger"></use>
                         </svg>
                     </button>
                     <div class="navbar-collapsable" id="nav3" style="display: none;">
@@ -67,7 +67,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
                                     <span>Utente Inserimento</span>
                                     <svg class="icon icon-xs">
-                                    <use xlink:href="/bootstrap-italia/dist/svg/sprite.svg#it-expand"></use>
+                                    <use xlink:href="svg/sprite.svg#it-expand"></use>
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu">
@@ -141,7 +141,7 @@
                         <div class="col-2">
                             <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Componi Messaggio " onclick="msgModal(<?=$pa['id']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Componi Messaggio " onclick="msgModal(<?=$pa['id']?>,'<?=$tipo['report_dir']?>');"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                         </div>

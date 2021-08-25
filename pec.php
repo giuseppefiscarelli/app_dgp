@@ -32,6 +32,13 @@ require_once 'headerInclude.php';
     require_once 'view/template/footer.php';
 ?>
 <script>
+   $(document).ready(function(){
+      var currentTab = localStorage.getItem('currentTab');
+      console.log(currentTab); 
+      if (currentTab) {
+            $('a[href="' + currentTab + '"]').tab('show');
+      }
+   })
  function showTipo(tipo,des){
     $("[class*='tiporeport_']").hide();
      if(tipo ==0){

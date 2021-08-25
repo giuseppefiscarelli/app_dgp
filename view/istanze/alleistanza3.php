@@ -185,8 +185,9 @@ var_dump($checkAlle);*/
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php if(!$disable_istr){?>
                                                     <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'pec','Verifica Pec');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
-
+                                                    <?php } ?>
                                                     </td>
                                                 </tr>  
                                                 <tr>
@@ -210,8 +211,9 @@ var_dump($checkAlle);*/
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php if(!$disable_istr){?>
                                                     <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'firma','Verifica Firma Digitale');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
-
+                                                    <?php } ?>
                                                     </td>
                                                 </tr>  
                                                 <tr>
@@ -234,7 +236,9 @@ var_dump($checkAlle);*/
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php if(!$disable_istr){?>
                                                         <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'doc','Verifica Documento d\'Identità');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
+                                                        <?php } ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -257,8 +261,9 @@ var_dump($checkAlle);*/
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php if(!$disable_istr){?>
                                                         <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'contratto','Verifica Contratto con Firma Digitale');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
-
+                                                        <?php } ?>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -285,8 +290,9 @@ var_dump($checkAlle);*/
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php if(!$disable_istr){?>
                                                     <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'delega','Verifica Delega con Firma Digitale');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
-
+                                                    <?php } ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -309,7 +315,9 @@ var_dump($checkAlle);*/
                                                         <?php }?>
                                                         </td>
                                                     <td>
+                                                    <?php if(!$disable_istr){?>
                                                     <button type="button" onclick="infoCert(<?=$i['id_RAM']?>,'dim_impresa','Verifica Dimensioni Impresa');"class="btn btn-warning btn-xs" title="Aggiorna Stato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
+                                                    <?php } ?>
                                                     </td>
                                                 </tr>      
 

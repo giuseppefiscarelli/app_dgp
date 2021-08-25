@@ -125,8 +125,13 @@
                    
                 </div>    
                 </td>
-                <td><button type="button" onclick="infovei(<?=$v['id']?>,'<?=$categ['ctgi_categoria']?>','<?=$tipo['tpvc_descrizione_breve']?>');"class="btn btn-success btn-xs" title="Visualizza Info Veicolo"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
-    </td>
+                <td>
+                <?php
+               
+                if(!$disable_actions){?>
+                    <button type="button" onclick="infovei(<?=$v['id']?>,'<?=$categ['ctgi_categoria']?>','<?=$tipo['tpvc_descrizione_breve']?>');"class="btn btn-success btn-xs" title="Visualizza Info Veicolo"style="padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>
+                <?php }?>
+                </td>
 
             </tr>
 
@@ -422,12 +427,15 @@
                               $('#btn_istr').attr('onclick','infoVeiIstr('+data.id+')');
                               if(data.stato_admin=='A'||data.stato_admin==null){
                                     stato='<span class="badge badge-warning">In Lavorazione</span>';
+                                    stato_alle = false;
                               }
                               if(data.stato_admin=='B'){
                                     stato='<span class="badge badge-success">Accettata</span>';
+                                    stato_alle = true;
                               }
                               if(data.stato_admin=='C'){
                                    stato='<span class="badge badge-danger">Rigettata</span>';
+                                   stato_alle = true;
                               }
                               $('#info_stato_admin').html(stato);
                               v = formatter.format(data.costo);
@@ -455,6 +463,7 @@
                                     dataType: "json",
                                     success: function(alle){
                                         console.log(alle)
+                                        console.log('stato allegato '+stato_alle)
                                          $.each(alle, function (k,v){
                                                if(v.stato_admin=='A'){
                                                 stato='<span class="badge badge-warning">In Lavorazione</span>';
@@ -473,7 +482,7 @@
                                                 if(status_istanza){
                                                     buttonA='';
                                                 }else{
-                                                    buttonA='<button type="button" onclick="infoAlle('+v.id+');"class="btn btn-warning btn-xs" title="Visualizza Info Allegato"style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
+                                                    buttonA='<button type="button" onclick="infoAlle('+v.id+');"class="btn btn-warning btn-xs workbtn" title="Visualizza Info Allegato"style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-list" aria-hidden="true"></i></button>'
                                                 }
                                                 buttonB='<button type="button" onclick="window.open(\'allegato.php?id='+v.id+'\', \'_blank\')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;margin-right:10px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                                                 buttonC='<a type="button" href="download.php?id='+v.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
@@ -481,6 +490,9 @@
                                               
                                             row = '<tr><td>'+v.tdoc_descrizione+'</td><td data-toggle="tooltip" data-placement="right" title="'+v.note+'">'+note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'" data-toggle="tooltip" data-placement="right" title="'+v.note_admin+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
                                                 $('#doctab> tbody:last-child').append(row);
+                                                if(stato_alle){
+                                                    $('.workbtn').hide()
+                                                }
 
                                          })
                                           
@@ -702,18 +714,21 @@
                                                 icon: "info"
                                           });
                               $('#info_note_admin').html(note)
-                              if(stato=='A'){
-                                                stato='<span class="badge badge-warning">In Lavorazione</span>';
-                                               }
-                                               if(stato=='B'){
-                                                stato='<span class="badge badge-success">Accettata</span>';
-                                               }
-                                               if(stato=='C'){
-                                                stato='<span class="badge badge-danger">Rigettata</span>';
-                                               }
-                                               $('#info_stato_admin').html(stato)
-                                               $('#stato_istruttoria_'+id).html(stato)
-                                               $('#istruttoriaModal').modal('toggle');
+                                if(stato=='A'){
+                                    stato='<span class="badge badge-warning">In Lavorazione</span>';
+                                    $('.workbtn').show()
+                                }
+                                if(stato=='B'){
+                                    stato='<span class="badge badge-success">Accettata</span>';
+                                    $('.workbtn').hide()
+                                }
+                                if(stato=='C'){
+                                    stato='<span class="badge badge-danger">Rigettata</span>';
+                                    $('.workbtn').hide()
+                                }
+                                $('#info_stato_admin').html(stato)
+                                $('#stato_istruttoria_'+id).html(stato)
+                                $('#istruttoriaModal').modal('toggle');
                         }
             })
 

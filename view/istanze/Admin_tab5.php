@@ -4,7 +4,18 @@ $tipi_integrazione =getRichInt();
 $tipi_report = getTipoReport();
 $reports = getReportIdRam($i['id_RAM']);
 
+$ena_report = [];
+if($enable_status == 'D'){
+    array_push($ena_report, 1,2);
+}
+if($enable_status == 'B' || $enable_status == 'E'){
+    array_push($ena_report, 4);
+}
+if($disable_istr){
+    $ena_report = [];
+}
 
+//var_dump($ena_report);
 
 ?>
 <!-- Button trigger modal
@@ -29,11 +40,17 @@ $reports = getReportIdRam($i['id_RAM']);
                         <div class="bootstrap-select-wrapper " >
                             <label>Tipo Report</label>
                             <select title="Scegli una opzione" name="tipo_report" id="tipo_report">
+                            <option>Annulla</option>
                                 <?php
                                     foreach ($tipi_report as $tr ) {?>
-                                    <option value="<?=$tr['id']?>"><?=$tr['descrizione']?></option>
-                                    <?php    
-                                    }?>
+                                    <option value="<?=$tr['id']?>"
+                                    <?php if(!in_array($tr['id'], $ena_report)){
+                                        ?>
+                                        disabled
+                                    <?php }?>
+                                   
+                                    ><?=$tr['descrizione']?></option>
+                                   <?php } ?>
                     
                             </select>
                         </div>
@@ -42,6 +59,37 @@ $reports = getReportIdRam($i['id_RAM']);
             </div>  
         </div> 
     </div> 
+    <div class="col-12 col-lg-6">
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-body">
+                <div class="categoryicon-top">
+                    <svg class="icon">
+                    <use xlink:href="svg/sprite.svg#it-file"></use>
+                    </svg>
+                    <span class="text">Report<br>Disponibili</span>
+                </div>
+                
+                    <ul class="it-list" id="lista_report">
+                    <?php
+                        if($disable_istr){?>
+                            <li>Nessun Report Disponibile</li>
+                    <?php }else{
+                        foreach ($tipi_report as $tr ) {
+                            if(in_array($tr['id'], $ena_report)){?>
+                                <li><?=$tr['descrizione']?></li>
+                            <?php }
+                    
+                        
+                            }
+                        }?> 
+                    </ul>
+                
+
+                </div>
+            </div>
+        </div>       
+    </div>
 </div> 
 
 <div class="row">
@@ -101,6 +149,18 @@ $reports = getReportIdRam($i['id_RAM']);
                                     <?php
                                     }else{?>
                                     Non ci sono documenti generati
+                                    <table class="table table-striped" id="reportTable" style="display:none;">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Data/user Creazione</th>
+                                                    <th scope="col">Tipo Richiesta</th>
+                                                    <th scope="col">Stato Invio</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                    </table>
                                     <?php
                                     }
                                     ?>

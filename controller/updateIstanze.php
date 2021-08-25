@@ -232,9 +232,22 @@ switch ($action){
       }
       
       $contr= calcolaContributo($res);
-      $res['val_contributo']=$contr[0]['contributo'];
-      $res['val_pmi']=$contr[0]['pmi']?$contr[0]['pmi']:'0.00';
-      $res['val_rete']=$contr[0]['rete']?$contr[0]['rete']:0.00;
+      
+      if($contr === '{"result":"KO"}'){
+        $contr = false;
+      }
+      //var_dump($contr);
+      if(!$contr){
+        $res['val_contributo']=0;
+        $res['val_pmi']=0;
+        $res['val_rete']=0;
+      }else{
+        $res['val_contributo']=$contr[0]['contributo'];
+        $res['val_pmi']=$contr[0]['pmi']?$contr[0]['pmi']:'0.00';
+        $res['val_rete']=$contr[0]['rete']?$contr[0]['rete']:0.00;
+      }
+     
+
       $res['check_istruttoria'] = $c_iCheck;
 
       

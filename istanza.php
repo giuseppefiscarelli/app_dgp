@@ -300,6 +300,7 @@ $(document).ready(function() {
                                 
                                 html= '<tr><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
                                 $("#reportTable > tbody").append(html);
+                                $("#reportTable").show();
                             }
                 }) 
 

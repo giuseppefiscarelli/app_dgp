@@ -37,8 +37,10 @@ if(date("Y-m-d",strtotime($tipo_istanza['data_rendicontazione_fine']))<date("Y-m
 }
 */
 $activeIst = true;
+$disable_istr=false;
 $status= checkRend($i['id_RAM']);
-
+$disable_actions = false;
+$enable_status = 'A';
 if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
  
   if($status){
@@ -50,17 +52,21 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
       $stato= getStatoIstanza('D');
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Rendicondazione chiusa il '.date("d/m/Y",strtotime($status['data_chiusura']));
       $activeIst = false;
+      $enable_status = 'D';
     }
     if($status['data_annullamento']){
       $stato= getStatoIstanza('B');
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Annullata da Impresa ';
-  
+      $disable_actions = true;
       $activeIst = false;
+      $enable_status = 'B';
     }
     if(($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d H:i:s")&&$status['aperta']==1)){
       $stato= getStatoIstanza('E');
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Termini di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
       $activeIst = false;
+      $disable_actions = true;
+      $enable_status = 'E';
     }
   }
 }else{
@@ -73,17 +79,21 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
       $stato= getStatoIstanza('D');
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Rendicondazione chiusa il '.date("d/m/Y",strtotime($status['data_chiusura']));
       $activeIst = false;
+      $enable_status = 'D';
     }
     if($status['data_annullamento']){
       $stato= getStatoIstanza('B');
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Annullata da Impresa ';
-  
+      $disable_actions = true;
       $activeIst = false;
+      $enable_status = 'B';
     }
     if(($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d H:i:s")&&$status['aperta']==1)){
       $stato= getStatoIstanza('E');
       $span='<span class="badge badge-'.$stato['style'].'">'.$stato['des'].'</span><br>Termini di rendicontazione scaduti il '.date("d/m/Y",strtotime($tipo_istanza['data_rendicontazione_fine']));
       $activeIst = false;
+      $disable_actions = true;
+      $enable_status = 'E';
     }
   }else{
     $status['data_annullamento']= false;
@@ -91,11 +101,41 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
     $activeIst = true;
   }
 }
+$status_istr= getStatusIstruttoria($i['id_RAM']);
+//var_dump($status_istr);
+if($status_istr && $status_istr['id']){
+  $add_span='';
 
-
-
+  if($status_istr['tipo_report'] === '1'){
+      $text_istr = 'Integrazione';
+      $type_istr = 'warning';
+      $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
+      $add_span = '<br>Ricezione documentazione entro e non oltre il '.$date_scad;
+  }
+  if($status_istr['tipo_report'] === '3'){
+    $text_istr = 'Ammessa';
+    $type_istr = 'success';
+    $disable_istr=true;
+    //$disable_actions = true;
+   
+  }
+  if($status_istr['tipo_report'] === '2'){
+    $text_istr = 'Preavviso di rigetto';
+    $type_istr = 'warning';
+  }
+  if($status_istr['tipo_report'] === '4'){
+    $text_istr = 'Rigettata';
+    $type_istr = 'danger';
+    $disable_istr=true;
+   
+    //$disable_actions = true;
+  }
+  $span_istr='<span class="badge badge-'.$type_istr.'">'.$text_istr.'</span><br>Pec inviata il '.date("d/m/Y",strtotime($status_istr['data_invio'])).$add_span;
+   }
+  // var_dump($disable_istr);
+   ?>
  
-?>
+
 
 <div class="row" >
   <div class="col-lg-8 col-12">
@@ -112,8 +152,12 @@ if(!$status['data_annullamento']&&$activeIst){?>
 </button>
   </div>
 
-<?php } ?>
-  
+<?php } 
+ if($status_istr){?>
+  <div class="col-lg-2 col-12">
+    Stato Istruttoria <?=$span_istr?>
+  </div>
+  <?php }?>
 
 
 </div>

@@ -7,7 +7,7 @@
                     <nav class="navbar navbar-expand-lg has-megamenu">
                     <button class="custom-navbar-toggler" type="button" aria-controls="nav3" aria-expanded="false" aria-label="Toggle navigation" data-target="#nav3">
                         <svg class="icon">
-                        <use xlink:href="/bootstrap-italia/dist/svg/sprite.svg#it-burger"></use>
+                        <use xlink:href="svg/sprite.svg#it-burger"></use>
                         </svg>
                     </button>
                     <div class="navbar-collapsable" id="nav3" style="display: none;">
@@ -44,7 +44,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
                                     <span>Utente Inserimento</span>
                                     <svg class="icon icon-xs">
-                                    <use xlink:href="/bootstrap-italia/dist/svg/sprite.svg#it-expand"></use>
+                                    <use xlink:href="svg/sprite.svg#it-expand"></use>
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu">
@@ -97,7 +97,7 @@
             $classUser=explode('@',$pa['user_ins']);
             $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
             ?>
-                <li class="tiporeport_<?=$pa['tipo_report']?> userins_<?=$classUser[0]?>">
+                <li id="tosend_<?=$pa['id']?>"class="tiporeport_<?=$pa['tipo_report']?> userins_<?=$classUser[0]?>">
                     <a class="it-has-checkbox" href="#">
                         <div class="form-check">
                             <input id="<?=$pa['id']?>" class="unsend"type="checkbox" >
@@ -147,7 +147,7 @@ function msgModalPec(id, idRAM){
             dataType: "json",
             success: function(data){
                 console.log(data)
-              
+                localStorage.setItem('currentTab','nav-vertical-tab-bg3');
             }
         });
     }
