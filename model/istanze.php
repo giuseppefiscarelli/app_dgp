@@ -191,16 +191,11 @@ function getIstanzeUser(array $params = []){
         //echo $sql;
         $res = $conn->query($sql);
         if($res) {
-
+          
           while( $row = $res->fetch_assoc()) {
-
-
-           // $stato=checkRend($row['id_RAM']);
-            //$tipo_ist = getTipoIstanza($row['tipo_istanza']);
-           // var_dump($tipo_ist);
             $row['stato_des']='';
             if($row['data_invio_inizio']<date("Y-m-d H:i:s")){
-              if($row['aperta']){
+              if($row['aperta'] != null){
                   if($row['aperta']==1){
                     $row['stato'] = 'C';
                   }elseif($row['aperta']==0){
@@ -213,26 +208,21 @@ function getIstanzeUser(array $params = []){
                   }
                   if(($row['fine_edizione']<$now&&$row['aperta']==1)){
                     $row['stato'] = 'E';
-                    $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
+                    $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
                   } 
                 
               }else{
                 $row['stato'] = 'A';
                 if($row['fine_edizione']<$now){
+                 
                   $row['stato'] = 'E';
-                  $row['stato_des'] ='<br>Tempi di rendicontazione scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
+                  $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
                 } 
               }
             
             }
-           
-           
-              $records[] = $row;
-           
-              
-              
+              $records[] = $row;   
           }
-
         }
 
     return $records;
