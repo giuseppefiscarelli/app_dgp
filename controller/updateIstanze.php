@@ -220,13 +220,22 @@ switch ($action){
       echo json_encode($res);
     break;  
 
-    case 'getInfoVei':
+    case 'getInfoVei': 
       $id=$_REQUEST['id'];
       $res =getInfoVei($id);
+      $c_i = checkIstanza($res['id_RAM']);
+      $c_iCheck = false;
+      if($c_i){
+        if($c_i['pec']&&$c_i['firma']&&$c_i['doc']&&$c_i['contratto']&&$c_i['delega']&&$c_i['dim_impresa']){
+            $c_iCheck = true;
+        }
+      }
+      
       $contr= calcolaContributo($res);
       $res['val_contributo']=$contr[0]['contributo'];
       $res['val_pmi']=$contr[0]['pmi']?$contr[0]['pmi']:'0.00';
       $res['val_rete']=$contr[0]['rete']?$contr[0]['rete']:0.00;
+      $res['check_istruttoria'] = $c_iCheck;
 
       
       echo json_encode($res);

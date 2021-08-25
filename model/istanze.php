@@ -35,6 +35,7 @@ function getIstanza(int $id){
   
   
 }
+
 function getStatoIstanza($stato){
   
   /**
@@ -1172,6 +1173,35 @@ function getAllegatiR($id_RAM,$tipo_veicolo,$progressivo){
 
 
 }
+function getAllegatiCheck($id_RAM){
+  /**
+  * @var $conn mysqli
+  */
+
+  $conn = $GLOBALS['mysqli'];
+  
+  $sql = 'SELECT * FROM allegato  WHERE allegato.id_ram ='.$id_RAM.' and allegato.attivo="s" and allegato.stato_admin="C" ';
+  //echo $sql;
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+    
+    while( $row = $res->fetch_assoc()) {
+     
+        $records[] = $row;
+     
+    }
+
+  }
+  
+  
+
+  return $records;
+
+
+
+}
 function upVeicolo($data){
   /**
    * @var $conn mysqli
@@ -2144,7 +2174,7 @@ function upIstruttoria($data){
   $id = $conn->escape_string($data['id']);
  
   $stato_admin = $data['stato_admin']??'A';
-  $note_admin = $data['note_admin']??'null';
+  $note_admin = $data['note_admin']??'';
   $data_admin = date("Y/m/d H:i:s");
   $user_admin = $_SESSION['userData']['email'];
  

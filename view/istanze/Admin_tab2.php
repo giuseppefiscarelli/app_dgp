@@ -138,7 +138,22 @@
         </tbody>
     </table>
 </div>    
-
+<style>
+  .blink {
+      animation: blink 2s steps(5, start) infinite;
+      -webkit-animation: blink 1s steps(5, start) infinite;
+    }
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+    @-webkit-keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+</style>
 <!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalinfovei" data-backdrop="static" data-keyboard="false" style="max-height:fit-content;overflow: auto;">
    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="max-width:80%;">
@@ -148,7 +163,7 @@
             </h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                <svg class="icon">
-                  <use xlink:href="/bootstrap-italia/dist/svg/sprite.svg#it-close"></use>
+                  <use xlink:href="svg/sprite.svg#it-close"></use>
                </svg>
             </button>
          </div>
@@ -174,80 +189,77 @@
                 <div class="col-12 col-lg-6">
 
                 <h5 style="font-weight: bold;">Dati Istruttoria</h5>
-                    <div class="row">
+                    <div class="row" id="istr_table" style="display:none;">
                     
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        
-                    </table>
-                    <table class="table table-sm">
-                        <input type="hidden" id="info_contr" value="">
-                        <input type="hidden" id="info_contr_pmi" value="">
-                        <input type="hidden" id="info_contr_rete" value="">
-                        
+                   
+                        <table class="table table-sm">
+                            <input type="hidden" id="info_contr" value="">
+                            <input type="hidden" id="info_contr_pmi" value="">
+                            <input type="hidden" id="info_contr_rete" value="">
                             
-                        
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Calcolato</th>
-                                <th>Accordato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="vertical-align:middle;">Costo Veicolo</td>
-                                <td style="vertical-align:middle;"id="info_costo_istr"></td>
-                                <td><span class="input-number input-number-currency">
-                                    <input type="number" id="costo_istr" name="costo_istr" value="0.00" min="0">
-                                    </span></td>
+                                
+                            
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Calcolato</th>
+                                    <th>Accordato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align:middle;">Costo Veicolo</td>
+                                    <td style="vertical-align:middle;"id="info_costo_istr"></td>
+                                    <td><span class="input-number input-number-currency">
+                                        <input type="number" id="costo_istr" name="costo_istr" value="0" min="0">
+                                        </span></td>
 
-                            </tr>
-                          
-                            <tr>
-                                <td style="vertical-align:middle;">Valore Contributo</td>
-                                <td style="vertical-align:middle;"id="contributo"></td>
-                                <td ><span class="input-number input-number-currency">
-                                    <input type="number" id="contr_up" name="contr_up" value="0.00" min="0">
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align:middle;">Maggiorazione PMI</td>
-                                <td style="vertical-align:middle;" id="contr_pmi"></td>
-                                <td> <span class="input-number input-number-currency">
-                                    <input type="number" id="contr_up_pmi" name="contr_up_pmi" value="0.00" min="0">
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align:middle;">Maggiorazione RETE</td>
-                                <td style="vertical-align:middle;" id="contr_rete"></td>
-                                <td><span class="input-number input-number-currency">
-                                    <input type="number" id="contr_up_rete" name="contr_up_rete" value="0.00" min="0">
-                                    </span></td></tr>
-                            <tr><td>Note</td>
-                                <td  colspan="2"> <div class="form-group">
-                                            <textarea id="info_note_admin" rows="3"></textarea>
-                                         
-                                            </div></td></tr>
-                            <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td><td></td></tr>
-                        </tbody>
-                        <tfoot>
-                            <tr><td colspan="3"><button type="button" id="btn_calc_contr"class="btn btn-primary" style="float:left;" onclick="calcolaContr();">
-                                    Calcola Contributo
-                            </button>
-                            <button type="button" id="btn_istr"class="btn btn-primary" style="float:right;" onclick="infoVeiIstr();">
-                                    Aggiorna dati
-                            </button></td></tr>
-                        </tfoot>
-                    </table>
+                                </tr>
+                            
+                                <tr>
+                                    <td style="vertical-align:middle;">Valore Contributo</td>
+                                    <td style="vertical-align:middle;"id="contributo"></td>
+                                    <td ><span class="input-number input-number-currency">
+                                        <input type="number" id="contr_up" name="contr_up" value="0" min="0">
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align:middle;">Maggiorazione PMI</td>
+                                    <td style="vertical-align:middle;" id="contr_pmi"></td>
+                                    <td> <span class="input-number input-number-currency">
+                                        <input type="number" id="contr_up_pmi" name="contr_up_pmi" value="0" min="0">
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align:middle;">Maggiorazione RETE</td>
+                                    <td style="vertical-align:middle;" id="contr_rete"></td>
+                                    <td><span class="input-number input-number-currency">
+                                        <input type="number" id="contr_up_rete" name="contr_up_rete" value="0" min="0">
+                                        </span></td></tr>
+                                <tr><td>Note</td>
+                                    <td  colspan="2"> <div class="form-group">
+                                                <textarea id="info_note_admin" rows="3"></textarea>
+                                            
+                                                </div></td></tr>
+                                <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td><td></td></tr>
+                            </tbody>
+                            <tfoot>
+                                <tr><td colspan="3">
+                                <!--<button type="button" id="btn_calc_contr"class="btn btn-primary" style="float:left;" onclick="calcolaContr();">
+                                        Calcola Contributo
+                                </button>-->
+                                <button type="button" id="btn_istr"class="btn btn-primary" style="float:right;" onclick="infoVeiIstr();">
+                                        Aggiorna dati
+                                </button></td></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row" id="alert_istr" style="display:none;">
+                    <i class="fa fa-3x fa-exclamation-circle blink"></i>
+                     <br>inserire messaggiio operatore...
+                     <br>Allegati dichiarazioni e certificazioni non completi
                     </div>
                 </div>
             </div>
@@ -378,6 +390,13 @@
                         dataType: "json",
                         success: function(data){
                             console.log(data)
+                            if(data.check_istruttoria){
+                                $('#istr_table').show()
+                                $('#alert_istr').hide()
+                            }else{
+                                $('#istr_table').hide()
+                                $('#alert_istr').show()
+                            }
                               $('#id_veicolo').val(data.id)
                               contr = parseFloat(data.val_contributo).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                               val_pmi = parseFloat(data.val_pmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
@@ -386,14 +405,14 @@
                               $('#info_contr_pmi').val(data.val_pmi)
                               $('#info_contr_rete').val(data.val_rete)
                               $('#contributo').html(contr)
-                              contr_up = data.valore_contr??'0.00'
+                              contr_up = data.valore_contr??0
                               $('#contr_up').val(contr_up)
                               $('#contr_pmi').html(val_pmi)
-                              pmi_istr = data.pmi_istr??'0.00';
+                              pmi_istr = data.pmi_istr??0;
                               $('#contr_up_pmi').val(pmi_istr)
                              
                               $('#contr_rete').html(val_rete)
-                              rete_istr = data.rete_istr??'0.00'
+                              rete_istr = data.rete_istr??0
                               $('#contr_up_rete').val(rete_istr)
 
                               $('#info_targa').html(data.targa)
@@ -460,7 +479,7 @@
                                                 buttonC='<a type="button" href="download.php?id='+v.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
                                                
                                               
-                                        row = '<tr><td>'+v.tdoc_descrizione+'</td><td data-toggle="tooltip" data-placement="right" title="'+v.note+'">'+note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'" data-toggle="tooltip" data-placement="right" title="'+v.note_admin+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
+                                            row = '<tr><td>'+v.tdoc_descrizione+'</td><td data-toggle="tooltip" data-placement="right" title="'+v.note+'">'+note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'" data-toggle="tooltip" data-placement="right" title="'+v.note_admin+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
                                                 $('#doctab> tbody:last-child').append(row);
 
                                          })
@@ -490,9 +509,16 @@
             up_contr =$('#contr_up').val()
             contr_up_pmi= $('#contr_up_pmi').val()
             contr_up_rete= $('#contr_up_rete').val()
+
+            contr = parseFloat(contr).toFixed(2);
+            pmi = parseFloat(pmi).toFixed(2);
+            rete = parseFloat(rete).toFixed(2);
+            up_contr = parseFloat(up_contr).toFixed(2);
+            contr_up_pmi = parseFloat(contr_up_pmi).toFixed(2);
+            contr_up_rete = parseFloat(contr_up_rete).toFixed(2);
             console.log(contr,up_contr)
-            console.log(pmi.toFixed(2),contr_up_pmi)
-            console.log(rete.toFixed(2),contr_up_rete)
+            console.log(pmi,contr_up_pmi)
+            console.log(rete,contr_up_rete)
             if(contr != up_contr||contr_up_pmi!=pmi||contr_up_rete!=rete){
                 Swal.fire({                  
                     title: "I valori calcolati sono differenti da quelli accordati",
@@ -607,6 +633,13 @@
                                          ok= data.accettati;
                                          no= data.respinti;
                                          tot= data.totali;
+                                         totIstr = false;
+                                         difftot = tot - no - ok;
+                                         if( difftot == 0){
+                                            totIstr = true;
+                                            alert ('ok');
+                                         }
+                                         console.log(totIstr,difftot)
                                          if(ok==tot){     
                                                badgeA=' <span style="width: -webkit-fill-available;"class="badge badge-success">'+data.accettati+' di '+data.totali+'</span>';                                              
                                          }else{
@@ -711,15 +744,15 @@
                                     $('#info_contr_rete').val(data.val_rete)
 
                                     $('#contributo').html(contr)
-                                    contr_up = data.valore_contr??'0.00'
+                                    contr_up = data.valore_contr??0
                                     $('#contr_up').val(contr_up)
 
                                     $('#contr_pmi').html(val_pmi)
-                                    pmi_istr = data.pmi_istr??'0.00';
+                                    pmi_istr = data.pmi_istr??0;
                                     $('#contr_up_pmi').val(pmi_istr)
                                     
                                     $('#contr_rete').html(val_rete)
-                                    rete_istr = data.rete_istr??'0.00'
+                                    rete_istr = data.rete_istr??0
                                     $('#contr_up_rete').val(rete_istr)
                                 }
 

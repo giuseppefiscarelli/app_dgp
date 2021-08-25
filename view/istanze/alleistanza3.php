@@ -21,8 +21,16 @@ $calcContributo=calcolaContributo($testData);
 //var_dump($allepmi);
 //var_dump($allerete);
 //var_dump($alleampl);
-
-
+$c_iCheck = false;
+$c_i = checkIstanza($i['id_RAM']);
+/*$checkAlle = getAllegatiCheck($i['id_RAM']);
+if($c_i){
+    if($c_i['pec']&&$c_i['firma']&&$c_i['doc']&&$c_i['contratto']&&$c_i['delega']&&$c_i['dim_impresa']){
+        $c_iCheck = true;
+    }
+}
+/*var_dump($c_iCheck);
+var_dump($checkAlle);*/
 ?>
         <div class="row"  style="margin-bottom:10px;">
             <div class="col-12">
@@ -123,7 +131,7 @@ $calcContributo=calcolaContributo($testData);
                                         </table>
                                         <?php
 
-                                                    $c_i = checkIstanza($i['id_RAM']);
+                                                    
                                                     
                                                     if(!$c_i){
                                                       $c_i = [

@@ -67,7 +67,7 @@ $reports = getReportIdRam($i['id_RAM']);
                                                         <?=$rep['stato']=="C"?'Pec inviata':''?></td>
                                                     <td>
                                                     <div class="row">
-                                                       <button type="button" onclick="newMail(<?=$rep['id']?>);"class="btn btn-warning btn-xs" title="componi pec" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                                                       <!--<button type="button" onclick="newMail(<?=$rep['id']?>);"class="btn btn-warning btn-xs" title="componi pec" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-envelope" aria-hidden="true"></i></button>-->
                                                         <?php if($rep['tipo_report']==1){?>
                                                         <button type="button" onclick="prevRep(<?=$rep['id']?>);"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                                                         <button type="button" onclick="downRep(<?=$rep['id']?>);"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>
@@ -77,11 +77,17 @@ $reports = getReportIdRam($i['id_RAM']);
                                                         <button type="button" onclick="downRep2(<?=$rep['id']?>);"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>
 
                                                         <?php }elseif($rep['tipo_report']==3){?>
+                                                        <button type="button" onclick="prevRep3(<?=$rep['id']?>);"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+                                                        <button type="button" onclick="downRep3(<?=$rep['id']?>);"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>
 
                                                         <?php }elseif($rep['tipo_report']==4){?>
+                                                        <button type="button" onclick="prevRep4(<?=$rep['id']?>);"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+                                                        <button type="button" onclick="downRep4(<?=$rep['id']?>);"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>
 
                                                         <?php }?>
+                                                        <?php if($rep['stato'] !=='C'){?>    
                                                         <button type="button" onclick="delRep(<?=$rep['id']?>);"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                        <?php }?>
                                                     </div>
 
 
@@ -149,7 +155,7 @@ $reports = getReportIdRam($i['id_RAM']);
         window.open(url,"Stampa");
     }
     function downRep4(id){
-        var url = 'report/inammissibilita/inammissibilita.php?id='+id+'&tipo=D';s
+        var url = 'report/inammissibilita/inammissibilita.php?id='+id+'&tipo=D';
         window.open(url,"Stampa");
     }
     function delRep(id){
@@ -309,7 +315,7 @@ $reports = getReportIdRam($i['id_RAM']);
         <input type="hidden" name="id_report" id="id_report" value="">
         <div class="row">
             <div class="col-6">
-                <div class="bootstrap-select-wrapper " >
+                <div class=" col-12 bootstrap-select-wrapper " >
                     <label>Tipo Richiesta</label>
                     <select title="Scegli una opzione" name="tipo_integrazione" id="tipo_integrazione">
                     <?php
@@ -319,17 +325,24 @@ $reports = getReportIdRam($i['id_RAM']);
                         }?>
                         
                     </select>
+                   
                 </div>
-                <div class="form-group" style="margin-top:30px;">
-                    <input type="text" class="form-control" name="prot_RAM" id="prot_RAM" placeholder="se disponibile, inserire numero protocollo documento" value="">
-                    <label for="prot_RAM">Protocollo Documento</label>
-                </div>
-                <div class="it-datepicker-wrapper">
-                    <div class="form-group">
-                        <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot" name="data_prot" type="text" value="" placeholder="inserisci la data in formato gg/mm/aaaa">
-                        <label for="data_prot">Data Documento</label>
+                <div class="row">
+                    <div class=" col-12 col-lg-6 form-group" style="margin-top:50px;">
+                        <input type="text" class="form-control" name="prot_RAM" id="prot_RAM" placeholder="numero protocollo" value="">
+                        <label for="prot_RAM">Protocollo Documento</label>
+                        <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
+                    </div>
+                    <div class="col-12 col-lg-6 it-datepicker-wrapper">
+                        <div class="form-group">
+                            <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa">
+                            <label for="data_prot">Data Documento</label>
+                            <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+
+                        </div>
                     </div>
                 </div>
+               
             </div>
             <div class="col-6" id="veiNonConf" style="display:none;">
             <label>Veicoli con elementi non accettati</label>
@@ -389,7 +402,7 @@ $reports = getReportIdRam($i['id_RAM']);
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="reportModal3">
-  <div class="modal-dialog modal-lg" role="document" style="max-width:80%">
+  <div class="modal-dialog modal-lg" role="document" style="max-width:90%">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Chiusura del procedimento con ammissione al finanaziamento
@@ -398,38 +411,48 @@ $reports = getReportIdRam($i['id_RAM']);
         <div class="modal-body">
         <input type="hidden" name="id_report3" id="id_report3" value="">
             <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="num_prot"  name="num_prot"placeholder="Inserire Numero protocollo Domanda Ammissione" value="">
+                   
+                        <div class="col-12 col-lg-3 form-group">
+                            <input type="text" class="form-control" id="num_prot"  name="num_prot"placeholder="numero protocollo" value="">
                             <label for="num_prot">Numero protocollo Domanda Ammissione</label>
+                            <small class="form-text text-muted">se disponibile, inserire numero protocollo Domanda Ammissione</small>
+
+                            
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control it-date-datepicker" id="dat_prot"  name="dat_prot" placeholder="inserisci la data in formato gg/mm/aaaa" value="">
+                        <div class="col-12 col-lg-2 form-group">
+                            <input type="text" class="form-control it-date-datepicker" id="dat_prot"  name="dat_prot" placeholder="gg/mm/aaaa" value="">
                             <label for="dat_prot">Data protocollo Domanda Ammissione</label>
+                            <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control it-date-datepicker" id="data_verbale"  name="data_verbale" placeholder="inserisci la data in formato gg/mm/aaaa" value="">
+                        <div class="col-12 col-lg-2 form-group">
+                            <input type="text" class="form-control it-date-datepicker" id="data_verbale"  name="data_verbale" placeholder="gg/mm/aaaa" value="">
                             <label for="data_verbale">Data verbale</label>
+                            <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+
                         </div>
-                        <button type="button" id="btn_add_int3" onclick="addInt3()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
 
-                    </div>
-                    <div class="col-6">
+                   
 
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="prot_RAM3" id="prot_RAM3" placeholder="se disponibile, inserire numero protocollo documento" value="">
+                        <div class="col-12 col-lg-3 form-group">
+                            <input type="text" class="form-control" name="prot_RAM3" id="prot_RAM3" placeholder="numero protocollo" value="">
                             <label for="prot_RAM">Protocollo Documento</label>
+                            <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
+
                         </div>
-                        <div class="it-datepicker-wrapper">
-                            <div class="form-group">
-                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot3" name="data_prot3" type="text" value="" placeholder="inserisci la data in formato gg/mm/aaaa">
+                      
+                        <div class="col-12 col-lg-2 form-group">
+                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot3" name="data_prot3" type="text" value="" placeholder="gg/mm/aaaa">
                                 <label for="data_prot3">Data Documento</label>
-                            </div>
+                                <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+
                         </div>
 
-                    </div>
+                   
             
             
+            </div>
+            <div class="row">
+                <button type="button" id="btn_add_int3" onclick="addInt3()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
             </div>
             <div class="row" id="div_tab_int3"  style="display:none;">
                 <table class="table" id="tab_int3">
@@ -462,72 +485,83 @@ $reports = getReportIdRam($i['id_RAM']);
         <div class="modal-body">
         <input type="hidden" name="id_report4" id="id_report4" value="">
             <div class="row">
-                    <div class="col-6">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="num_prot_in"  name="num_prot_in"placeholder="Ins N. prot Domanda Ammissione" value="">
-                                <label for="num_prot_in">Numero protocollo Domanda Ammissione</label>
-                            </div>
-                            
-                            <div class="form-group col-md-6">
-                            <div class="it-datepicker-wrapper" style="margin-top:0px;">
-                                <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57" class="form-control it-date-datepicker" id="dat_prot_in"  name="dat_prot_in" placeholder=" formato gg/mm/aaaa" value="">
-                                <label for="dat_prot_in">Data protocollo Domanda Ammissione</label>
-                                </div>
-                            </div>
-                        </div>   
-                        <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="it-datepicker-wrapper" style="margin-top:0px;">
-                                <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="data_verbale_in"  name="data_verbale_in" placeholder="formato gg/mm/aaaa" value="">
-                                <label for="data_verbale_in">Data verbale</label>
-                                </div>
-                            </div>
-                        </div>   
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="num_prot_rig"  name="num_prot_rig"placeholder="Ins N. prot  Preavviso di rigetto" value="">
-                                <label for="num_prot_rig">Numero protocollo Preavviso di rigetto</label>
-                            </div>
-                            <div class="form-group col-md-6">
-                            <div class="it-datepicker-wrapper" style="margin-top:0px;">
-                                <input type="text"onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_rig"  name="dat_prot_rig" placeholder=" formato gg/mm/aaaa" value="">
-                                <label for="dat_prot_rig">Data protocollo Preavviso di rigetto</label>
-                                </div>
-                            </div>
-                        </div>   
-                        <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="it-datepicker-wrapper" style="margin-top:0px;">
-                            <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_pre"  name="dat_prot_pre" placeholder="formato gg/mm/aaaa" value="">
-                            <label for="dat_prot_pre">Data nota Preavviso</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6 ">
-                                <input type="text" class="form-control" id="mot_ina"  name="mot_ina"placeholder="Scrivi motivazione inammissibilità" value="">
-                                <label for="mot_ina">Motivazione di Inassibilità</label>
-                            </div>
+                    
+                       
+                <div class="col-12 col-lg-4 form-group ">
+                    <input type="text" class="form-control" id="num_prot_in"  name="num_prot_in"placeholder="numero protocollo" value="">
+                    <label for="num_prot_in">Numero protocollo Domanda Ammissione</label>
+                    <small class="form-text text-muted">inserisci numero protocollo Domanda di Ammissione</small>
 
-                            </div>
-                        <button type="button" id="btn_add_int4" onclick="addInt4()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
+                </div>
+                
+                <div class="col-12 col-lg-3 form-group ">
+                   
+                        <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57" class="form-control it-date-datepicker" id="dat_prot_in"  name="dat_prot_in" placeholder=" formato gg/mm/aaaa" value="">
+                        <label for="dat_prot_in">Data protocollo Domanda Ammissione</label>
+                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                        
+                   
+                </div>
+                        
+                     
+                <div class="form-group col-12 col-lg-3">
+                    
+                        <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="data_verbale_in"  name="data_verbale_in" placeholder="formato gg/mm/aaaa" value="">
+                        <label for="data_verbale_in">Data verbale</label>
+                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                    
+                </div>
+            </div>   
+            <div class="row" style="margin-top:10px;">           
+                <div class="form-group col-12 col-lg-4">
+                    <input type="text" class="form-control" id="num_prot_rig"  name="num_prot_rig"placeholder="numero protocollo" value="">
+                    <label for="num_prot_rig">Numero protocollo Preavviso di rigetto</label>
+                    <small class="form-text text-muted">inserisci numero protocollo Preavviso di rigetto</small>
+                    
+                </div>
+                <div class="form-group col-12 col-lg-3">
+                
+                    <input type="text"onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_rig"  name="dat_prot_rig" placeholder=" formato gg/mm/aaaa" value="">
+                    <label for="dat_prot_rig">Data protocollo Preavviso di rigetto</label>
+                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                    
+                </div>
+                        
+                       
+                <div class="form-group col-12 col-lg-3">
+                    
+                    <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_pre"  name="dat_prot_pre" placeholder="formato gg/mm/aaaa" value="">
+                    <label for="dat_prot_pre">Data nota Preavviso</label>
+                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                    
+                </div>
+            </div>   
+            <div class="row" style="margin-top:10px;"> 
+                <div class="form-group col-12 col-lg-6 ">
+                        <input type="text" class="form-control" id="mot_ina"  name="mot_ina"placeholder="Motivazione inammissibilità" value="">
+                        <label for="mot_ina">Motivazione di Inassibilità</label>
+                        <small class="form-text text-muted">Scrivi motivazione inammissibilità</small>
+                </div>
 
-                    </div>
-                    <div class="col-6">
-
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="prot_RAM4" id="prot_RAM4" placeholder="se disponibile, inserire numero protocollo documento" value="">
-                            <label for="prot_RAM">Protocollo Documento</label>
-                        </div>
-                        <div class="it-datepicker-wrapper">
-                            <div class="form-group">
-                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot4" name="data_prot4" type="text" value="" placeholder="inserisci la data in formato gg/mm/aaaa">
-                                <label for="data_prot4">Data Documento</label>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="form-group col-12 col-lg-3">
+                    <input type="text" class="form-control" name="prot_RAM4" id="prot_RAM4" placeholder="numero protocollo" value="">
+                    <label for="prot_RAM">Protocollo Documento</label>
+                    <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
+                </div>
+                
+                <div class="form-group col-12 col-lg-3">
+                    <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot4" name="data_prot4" type="text" value="" placeholder="formato gg/mm/aaaa">
+                    <label for="data_prot4">Data Documento</label>
+                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                </div>
+                       
+                    
             
             
+            </div>
+            <div class="row">
+            <button type="button" id="btn_add_int4" onclick="addInt4()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
+
             </div>
             <div class="row" id="div_tab_int4"  style="display:none;">
                 <table class="table" id="tab_int4">
@@ -560,30 +594,36 @@ $reports = getReportIdRam($i['id_RAM']);
         <div class="modal-body">
             <input type="hidden" name="id_report2" id="id_report2" value="">
             <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
+                    
+                        <div class="col-12 col-lg-6 form-group">
                             <input type="text" class="form-control" id="motivazione"  name="motivazione"placeholder="Scrivere motivazione" value="">
                             <label for="prot_RAM">Motivazione rigetto</label>
                         </div>
-                        <button type="button" id="btn_add_int2" onclick="addInt2()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci motivazione</button>
 
-                    </div>
-                    <div class="col-6">
+                    
 
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="prot_RAM2" id="prot_RAM2" placeholder="se disponibile, inserire numero protocollo documento" value="">
+                        <div class="col-12 col-lg-3 form-group">
+                            <input type="text" class="form-control" name="prot_RAM2" id="prot_RAM2" placeholder="numero protocollo" value="">
                             <label for="prot_RAM">Protocollo Documento</label>
+                            <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
+
                         </div>
-                        <div class="it-datepicker-wrapper">
+                        <div class="col-12 col-lg-3 it-datepicker-wrapper" style="margin-top: 0px;">
                             <div class="form-group">
-                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot2" name="data_prot2" type="text" value="" placeholder="inserisci la data in formato gg/mm/aaaa">
+                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot2" name="data_prot2" type="text" value="" placeholder="gg/mm/aaaa">
                                 <label for="data_prot2">Data Documento</label>
+                                <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+
                             </div>
                         </div>
 
-                    </div>
+                    
             
             
+            </div>
+            <div class="row">
+            <button type="button" id="btn_add_int2" onclick="addInt2()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci motivazione</button>
+
             </div>
             <div class="row" id="div_tab_int2"  style="display:none;">
                 <table class="table" id="tab_int2">

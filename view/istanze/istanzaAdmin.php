@@ -96,7 +96,8 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
 
  
 ?>
-<div class="row">
+
+<div class="row" >
   <div class="col-lg-8 col-12">
     <h3 class="card-title">Istanza n° <?=$i['id_RAM']?>/<?=$tipo_istanza['anno']?>  <span style="font-size:17px;"><?=$i['ragione_sociale']?></span></h3>
   </div>
@@ -145,8 +146,15 @@ if(!$status['data_annullamento']&&$activeIst){?>
     </div>
   </div>
 </div>
-
-  <div class="row">
+<div id="loadSpin">
+          <div class="d-flex justify-content-center" >
+              <p style="position:absolute;"><strong>Caricamento in corso...</strong></p>
+                <div class="progress-spinner progress-spinner-active" style="margin-top:30px;">
+                <span class="sr-only">Caricamento...</span>
+                </div>
+            </div>
+</div>
+  <div class="row" id="istanza_container" style="display: none;">
     <div class="col-5 col-md-4 col-lg-2">
       <div class="nav nav-tabs nav-tabs-vertical" id="nav-admin" role="tablist" aria-orientation="vertical">
         <a class="nav-link active" id="nav-1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Dati Impresa</a>
@@ -170,3 +178,11 @@ if(!$status['data_annullamento']&&$activeIst){?>
     </div>
   </div>
                                              
+<script>
+$(document).ready(function() { 
+
+  $('#loadSpin').fadeOut();
+  $('#istanza_container').fadeIn();
+
+});
+</script>

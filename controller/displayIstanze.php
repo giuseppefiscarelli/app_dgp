@@ -31,6 +31,7 @@ if(!empty($_SESSION['message'])){
           unset($orderByParams['orderDir']);
           unset($orderByNavigatorParams['page']);
           $orderByQueryString = http_build_query($orderByParams,'&amp;');
+          //var_dump(http_build_query($params,'&amp;'));
           $navOrderByQueryString = http_build_query($orderByNavigatorParams,'&amp;');
           $tipi_istanze = getTipiIstanza();
           $stati_istanze = getStatiIstanza();
@@ -47,19 +48,25 @@ if(!empty($_SESSION['message'])){
           require_once 'view/istanze/istanze_listUser.php';
          }else{
          $last_page = basename($_SERVER['HTTP_REFERER']);
-         if($last_page !=='istanze.php'){
+        // var_dump($last_page);
+         if($last_page !=='istanze.php' && $_SESSION['envData']){
           if($_SESSION['envData']['paramList']){
-            $params=$_SESSION['envData']['paramList'];
-            $search1 = $params['search1'];
-            $search2 = $params['search2'];
-            $search3 = $params['search3'];
-            $search4 = $params['search4'];
-            $search5 = $params['search5'];
-            
+           //var_dump($_SESSION['envData']['paramList']);
+           /* $search1 = $_SESSION['envData']['paramList']['search1']??$params['search1'];
+            $search2 = $_SESSION['envData']['paramList']['search2']??$params['search1'];
+            $search3 = $_SESSION['envData']['paramList']['search3']??$params['search1'];
+            $search4 = $_SESSION['envData']['paramList']['search4']??$params['search1'];
+            $search5 = $_SESSION['envData']['paramList']['search5']??$params['search1'];
+            $orderBy = $_SESSION['envData']['paramList']['orderBy']??$params['orderBy'];
+            $orderDir = $_SESSION['envData']['paramList']['orderDir']??$params['orderDir'];
+            $page = $_SESSION['envData']['paramList']['page']??$params['page'];
+            $params=$_SESSION['envData']['paramList'];*/
           };
+         }else{
+          $_SESSION['envData']['paramList']='';
          } 
          
-          //var_dump($params);
+         // var_dump($params);
             $istanze = getIstanze($params);
             $totalUsers= countIstanze($params);
           $numPages= ceil($totalUsers/$recordsPerPage);

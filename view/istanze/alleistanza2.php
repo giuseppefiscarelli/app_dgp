@@ -1,7 +1,7 @@
 
 <?php
 
-//$alleMag = getAllegati($i['id_RAM'],0,0);
+$alleMag = getAllegati($i['id_RAM'],0,0);
 $pmi=90;
 $rete=91;
 $ampl=92;
