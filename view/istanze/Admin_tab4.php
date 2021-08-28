@@ -64,8 +64,10 @@
                                      
                                 
                                     }
-                                }
+                                }else{
                                 ?>
+<li>Nessuna richiesta presente</li>
+                                <?php }?>
   </ul>
 </div>
 
