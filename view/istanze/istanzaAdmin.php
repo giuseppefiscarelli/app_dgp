@@ -101,8 +101,18 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
     $activeIst = true;
   }
 }
-$status_istr= getStatusIstruttoria($i['id_RAM']);
+$status_istr= getStatusIstruttoria_test($i['id_RAM']);
+$check_stato_istruttoria= getStatusIstruttoria($i['id_RAM']);
+//var_dump($check_stato_istruttoria);
 //var_dump($status_istr);
+if($status_istr && $check_stato_istruttoria){
+  if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
+    $status_istr = $check_stato_istruttoria;
+  }
+}elseif($check_stato_istruttoria){
+  $status_istr = $check_stato_istruttoria;
+}
+$report_status = '';
 if($status_istr && $status_istr['id']){
   $add_span='';
 
@@ -111,26 +121,33 @@ if($status_istr && $status_istr['id']){
       $type_istr = 'warning';
       $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
       $add_span = '<br>Ricezione documentazione entro e non oltre il '.$date_scad;
+      $report_status = 'A';
   }
   if($status_istr['tipo_report'] === '3'){
     $text_istr = 'Ammessa';
     $type_istr = 'success';
     $disable_istr=true;
+    $report_status = 'B';
     //$disable_actions = true;
    
   }
   if($status_istr['tipo_report'] === '2'){
     $text_istr = 'Preavviso di rigetto';
     $type_istr = 'warning';
+    $report_status = 'C';
   }
   if($status_istr['tipo_report'] === '4'){
     $text_istr = 'Rigettata';
     $type_istr = 'danger';
     $disable_istr=true;
+    $report_status = 'B';
    
     //$disable_actions = true;
   }
-  $span_istr='<span class="badge badge-'.$type_istr.'">'.$text_istr.'</span><br>Pec inviata il '.date("d/m/Y",strtotime($status_istr['data_invio'])).$add_span;
+  $span_istr='<span class="badge badge-'.$type_istr.'">'.$text_istr.'</span>';
+  if($status_istr['data_invio']){
+    $span_istr .= '<br>Pec inviata il '.date("d/m/Y",strtotime($status_istr['data_invio'])).$add_span;
+  }
    }
   // var_dump($disable_istr);
    ?>
@@ -154,8 +171,8 @@ if(!$status['data_annullamento']&&$activeIst){?>
 
 <?php } 
  if($status_istr){?>
-  <div class="col-lg-2 col-12">
-    Stato Istruttoria <?=$span_istr?>
+  <div class="col-lg-2 col-12" id="status_istruttoria">
+   Stato Istruttoria <?=$span_istr?>
   </div>
   <?php }?>
 
@@ -203,7 +220,7 @@ if(!$status['data_annullamento']&&$activeIst){?>
       <div class="nav nav-tabs nav-tabs-vertical" id="nav-admin" role="tablist" aria-orientation="vertical">
         <a class="nav-link active" id="nav-1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Dati Impresa</a>
         <a class="nav-link" id="nav-2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Dati Veicoli </a>
-        <!--<a class="nav-link" id="nav-3" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Riepilogo </a>-->
+        <a class="nav-link" id="nav-3" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Riepilogo </a>
         <a class="nav-link" id="nav-4" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">Help Desk </a>
         <a class="nav-link" id="nav-5" data-toggle="tab" href="#tab-5" role="tab" aria-controls="tab-5" aria-selected="false">Comunicazioni </a>
 
@@ -214,7 +231,7 @@ if(!$status['data_annullamento']&&$activeIst){?>
       <div class="tab-content" id="nav-tab-admin">
         <div class="tab-pane p-3 fade show active" id="tab-1" role="tabpanel" aria-labelledby="nav-1"><?php require_once 'Admin_tab1.php'; ?> </div>
         <div class="tab-pane p-3 fade" id="tab-2" role="tabpanel" aria-labelledby="nav-2"><?php require_once 'Admin_tab2.php'; ?></div>
-       <!-- <div class="tab-pane p-3 fade" id="tab-3" role="tabpanel" aria-labelledby="nav-3"><?php //require_once 'Admin_tab3.php'; ?></div>-->
+        <div class="tab-pane p-3 fade" id="tab-3" role="tabpanel" aria-labelledby="nav-3"><?php require_once 'Admin_tab3.php'; ?></div>
         <div class="tab-pane p-3 fade" id="tab-4" role="tabpanel" aria-labelledby="nav-4"><?php require_once 'Admin_tab4.php'; ?></div>
         <div class="tab-pane p-3 fade" id="tab-5" role="tabpanel" aria-labelledby="nav-5"><?php require_once 'Admin_tab5.php'; ?></div>
       

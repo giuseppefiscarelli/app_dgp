@@ -16,7 +16,8 @@ require_once  '../../functions.php';
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
-
+$veicoli = getVeicoli($rep['id_RAM']);
+$var = array();
 
 $tipo = $_GET['tipo'];
 /*
@@ -50,7 +51,7 @@ try {
     $content = ob_get_clean();
     $path = $pathReport;
     $html2pdf->writeHTML($content);
-   //$filename = $rep['id']."_".$rep['id_RAM']."_".time();
+    $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
     //$html2pdf->output($path.$filename.".pdf",'FI');
     if($tipo =="P"){

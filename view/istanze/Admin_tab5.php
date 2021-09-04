@@ -14,8 +14,32 @@ if($enable_status == 'B' || $enable_status == 'E'){
 if($disable_istr){
     $ena_report = [];
 }
-
+if($report_status){
+    $ena_report = [];
+    if($report_status == 'A'){
+        array_push($ena_report, 2);
+    }
+    
+    if($report_status == 'C'){
+        array_push($ena_report, 4);  
+    }
+}
+$check_ammissione = 0;
+foreach($veicoli as $v){
+   
+    if($v['stato_admin']=='A'||$v['stato_admin']==null){
+        $check_ammissione++;
+    }
+    
+    
+}
+if($check_ammissione==0){
+    array_push($ena_report, 3);
+}
+//var_dump($check_ammissione);
 //var_dump($ena_report);
+
+//var_dump($enable_status);
 
 ?>
 <!-- Button trigger modal
@@ -40,7 +64,7 @@ if($disable_istr){
                         <div class="bootstrap-select-wrapper " >
                             <label>Tipo Report</label>
                             <select title="Scegli una opzione" name="tipo_report" id="tipo_report">
-                            <option>Annulla</option>
+                            <option>Chiudi finestra</option>
                                 <?php
                                     foreach ($tipi_report as $tr ) {?>
                                     <option value="<?=$tr['id']?>"
@@ -134,7 +158,7 @@ if($disable_istr){
 
                                                         <?php }?>
                                                         <?php if($rep['stato'] !=='C'){?>    
-                                                        <button type="button" onclick="delRep(<?=$rep['id']?>);"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                        <button type="button" onclick="delRep(<?=$rep['id']?>,<?=$rep['id_RAM']?>);"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                                         <?php }?>
                                                     </div>
 
@@ -218,7 +242,7 @@ if($disable_istr){
         var url = 'report/inammissibilita/inammissibilita.php?id='+id+'&tipo=D';
         window.open(url,"Stampa");
     }
-    function delRep(id){
+    function delRep(id, id_RAM){
         
         Swal.fire({
                   title: 'Vuoi eliminare il report?',
@@ -234,11 +258,11 @@ if($disable_istr){
                             $.ajax({
                                 type: "POST",
                                 url: "controller/updateIstanze.php?action=delReport",
-                                data: {id:id},
+                                data: {id:id,id_RAM:id_RAM},
                                 dataType: "json",
                                 success: function(results){
                                          
-                                          if(results)
+                                          if(results.res)
                                           {
                                             $('#row_'+id).remove();
                                                 Swal.fire(
@@ -246,6 +270,49 @@ if($disable_istr){
                                                       'il Report è stato eliminato correttamente.',
                                                       'success'
                                                 )
+                                          }
+
+                                          if(results.status){
+                                                $("#tipo_report option[value='1']").attr('disabled', true);
+                                                $("#tipo_report option[value='2']").attr('disabled', true);
+                                                $("#tipo_report option[value='3']").attr('disabled', true);
+                                                $("#tipo_report option[value='4']").attr('disabled', true);  
+                                                $('#lista_report > li').remove();
+                                              if(results.status.tipo_report == 1){
+                                                text_istr = 'Integrazione';
+                                                type_istr = 'warning';
+                                                $("#tipo_report option[value='2']").attr('disabled', false);
+                                                $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                                                $("#tipo_report option[value='3']").attr('disabled', false);
+                                                $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
+
+                                              }
+                                              if(results.status.tipo_report == 2){
+                                                text_istr = 'Preavviso di rigetto';
+                                                type_istr = 'warning';
+                                               
+                                                $("#tipo_report option[value='4']").attr('disabled', false);
+                                                $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');
+
+                                              }
+                                              if(results.status.tipo_report == 3){
+                                                text_istr = 'Ammessa';
+                                                type_istr = 'success'; 
+                                                $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+  
+                                               
+                                              }
+                                              if(results.status.tipo_report == 4){
+                                                text_istr = 'Rigettata';
+                                                type_istr = 'danger'; 
+                                                $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                                                  
+                                              }
+                                              span_istr = '<span class="badge badge-'+type_istr+'">'+text_istr+'</span>';
+                                                //console.log(span_istr);
+                                                $('#status_istruttoria').html('Stato istruttoria '+span_istr)
+                                                $('#tipo_report').selectpicker('refresh')
                                           }
                                          
                                 }
@@ -304,7 +371,126 @@ if($disable_istr){
        
       
     }
-  
+    function saveReport(id){
+                prot_RAM=$('input[name="prot_RAM"]').val();
+                data_prot=$('input[name="data_prot"]').val();
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=saveReport",
+                            data: {id:id,prot_RAM:prot_RAM,data_prot:data_prot},
+                            dataType: "json",
+                            success: function(data){
+                                //console.log(data)
+                                Swal.fire("Operazione Completata!", "Pec da convalidare", "info");
+                                $('div[id^="reportModal"]').modal('hide');
+                                td1=data.data_inserimento+'<br>'+data.user_ins;
+                                td2=data.descrizione;
+                                td3='Richiesta non inviata';
+                                $("#tipo_report option[value='1']").attr('disabled', true);
+                                $("#tipo_report option[value='2']").attr('disabled', true);
+                                $("#tipo_report option[value='3']").attr('disabled', true);
+                                $("#tipo_report option[value='4']").attr('disabled', true);
+                                $('#lista_report > li').remove();
+                                if(data.tipo_report==1){
+                                    td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Integrazione';
+                                    type_istr = 'warning';
+                                    $("#tipo_report option[value='2']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                                    $("#tipo_report option[value='3']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
+
+
+                                }else if(data.tipo_report==2){
+                                    td4='<button type="button" onclick="prevRep2('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Preavviso di rigetto';
+                                    type_istr = 'warning';
+                                    $("#tipo_report option[value='4']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');
+
+                              }else if(data.tipo_report==3){
+                                    td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Ammessa';
+                                    type_istr = 'success';
+                                    $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                              }else if(data.tipo_report==4){
+                                    td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Rigettata';
+                                    type_istr = 'danger';
+                                    $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                              }
+                              td4+='<button type="button" onclick="delRep('+data.id+', '+data.id_RAM+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                                
+                                
+                                
+                                
+                                html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
+                                span_istr = '<span class="badge badge-'+type_istr+'">'+text_istr+'</span>';
+                                //console.log(span_istr);
+                                $('#status_istruttoria').html('Stato istruttoria '+span_istr)
+                                $("#reportTable > tbody").prepend(html);
+                                $("#reportTable").show();
+                                $('#tipo_report').selectpicker('refresh')
+                            }
+                }) 
+
+    }
+    
+    $('#tipo_report').change(function(){
+      $('#veiNonConf').hide()
+      $('#tabVeiNonConf >tbody').empty()
+        tipo=$('#tipo_report option:selected').val()
+        
+        //console.log(tipo);
+        if(tipo ==1){
+                $('#reportModal').modal('toggle');
+                newInt(tipo);
+                id_RAM = <?=$i['id_RAM']?>;
+                  $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=getDocR",
+                    data: {id_RAM:id_RAM},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data)
+                            $.each(data , function (k,v){
+                                 targa= v.targa
+                                 tdoc= v.tipo_documento
+                                 badge='<span class="badge badge-primary">'+targa+'</span><br>'
+                                 tr='<tr><td>'+badge+'</td><td>'+tdoc+'</td></tr>'
+                                 $('#veiNonConf').show()
+                                 $('#tabVeiNonConf >tbody').append(tr)
+
+                            })
+                          
+
+                    }
+                  })         
+        }
+        if(tipo ==2){
+                $('#reportModal2').modal('toggle');
+                newRig(tipo);
+        }
+        if(tipo ==3){
+                $('#reportModal3').modal('toggle');
+                newVer(tipo);
+               
+        }
+        if(tipo ==4){
+                $('#reportModal4').modal('toggle');
+                $("#tab_int4 > tbody").empty();
+                newIna(tipo);
+        }
+        $('#tipo_report').val("")
+        $('.bootstrap-select-wrapper select').selectpicker('refresh');
+
+    });
    
 </script>
 

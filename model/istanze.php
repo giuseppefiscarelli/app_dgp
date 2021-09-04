@@ -3091,3 +3091,25 @@ function getStatusIstruttoria($id_RAM){
   
   
 }
+
+function getStatusIstruttoria_test($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato = 'B' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato = 'B' and attivo = 1)" ;
+      
+     // echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
+  
+  
+}

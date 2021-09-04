@@ -79,17 +79,18 @@ $cat=getCatInc();//var_dump(count($cat));
 -->
 <div class="row">
     <div class="col-12">
-        <table class="table">
+        <table class="table" id="tab_riepilogo_amm">
         <h4>Riepilogo veicoli ammessi</h4>
             <thead>
                 <tr>
-                    <th colspan="4"></th>
+                    <th colspan="6"></th>
                     <th colspan="2" style="background-color: #06c6;text-align:center;">Maggiorazione</th>
                     <th></th>
                 </tr>    
                 <tr>
+                    <th>Categoria</th>
                     <th>Tipologia</th>
-                   
+                    <th>Prog</th>
                     <th>Targa</th>
                     <th>Costo</th>
                     <th>Contributo</th>
@@ -99,95 +100,91 @@ $cat=getCatInc();//var_dump(count($cat));
                 </tr>
             </thead>
             <tbody>
-            <?php
-             $veiRiep = getVeicoli($i['id_RAM']);
-             $totcosto=0;
-             $totcontr =0;
-             $totpmi = 0;
-             $totrete = 0;
-             $tottotale=0;
-
-             foreach($veiRiep as $v){
-                 if($v['stato_admin']=='B'){
-                $tipo = getTipoVeicolo($v['tipo_veicolo']);
-                $categ = getCategoria($tipo['codice_categoria_incentivo']);
-                $cont = calcolaContributo($v);
-                $contr = $cont[0];
-                $totale = $contr['contributo']+$contr['pmi']+$contr['rete'];
-
-                $totcosto += $v['costo'];
-                $totcontr  +=  $contr['contributo'];
-                $totpmi +=$contr['pmi'];
-                $totrete +=$contr['rete'];
-                $tottotale += $totale;
-                //var_dump($cont);
-                ?>
-                <tr id="riep_">
-                    <td><span class="badge badge-secondary" style="font-size:20px;width: -webkit-fill-available;"><?=$tipo['tpvc_descrizione_breve']?></span></td>
-                   
-                    <td><span class="badge badge-primary" style="font-size:20px;"><?=$v['targa']?></span></td>
-                    <td style="text-align:right;"><?=$v['costo']?'€ '.number_format($v['costo'], 2, ',', '.'):'Non Presente'?></td>
-                    <td style="text-align:right;"><?=$contr['contributo']?'€ '.number_format($contr['contributo'], 2, ',', '.'):'€ 0,00'?></td>
-                    <td style="background-color: #bfd4ea;text-align:right;"><?=$contr['pmi']?'€ '.number_format($contr['pmi'], 2, ',', '.'):'€ 0,00'?></td>
-                    <td style="background-color: #bfd4ea;text-align:right;"><?=$contr['rete']?'€ '.number_format($contr['rete'], 2, ',', '.'):'€ 0,00'?></td>
-                    <td style="background-color: ##d6dce338;text-align:right;"><?=$totale?'€ '.number_format($totale, 2, ',', '.'):'€ 0,00'?></td>
-                </tr>
-             <?php }
-             }
-             ?>
+           
             
             </tbody>
             <tfoot>
-             <tr><td colspan="2" style="text-align:right;"> Totale</td>
-                <td style="text-align:right;"><?='€ '.number_format($totcosto, 2, ',', '.')?></td>
-                <td style="text-align:right;"><?='€ '.number_format($totcontr, 2, ',', '.')?></td>
-                <td style="text-align:right;background-color: #bfd4ea;"><?='€ '.number_format($totpmi, 2, ',', '.')?></td>
-                <td style="text-align:right;background-color: #bfd4ea;"><?='€ '.number_format($totrete, 2, ',', '.')?></td>
-                <td style="text-align:right;background-color: ##d6dce338;"><?='€ '.number_format($tottotale, 2, ',', '.')?></td>
-            </tr>
+                
             </tfoot>
         </table>
         </div>
 </div>
 <div class="row">
     <div class="col-12">
-        <table class="table">
+        <table class="table" id="tab_riepilogo_resp">
         <h4>Riepilogo veicoli in lavorazione / non ammessi</h4>
             <thead>
             <tr>
-                    <th style="width:15%;">Tipologia</th>
-                   
-                    <th style="width:15%;">Targa</th>
-                    <th style="width:15%;">Costo</th>
-                    <th style="width:55%;">Note</th>
+                    <th >Categoria</th>
+                    <th >Tipologia</th>
+                    <th>Prog</th>
+                    <th >Targa</th>
+                    <th >Costo</th>
+                    <th >Note</th>
                    
                 </tr>
             </thead>
             <tbody>
-            <?php
-             $veiRiep = getVeicoli($i['id_RAM']);
-             foreach($veiRiep as $v){
-                 if($v['stato_admin']!=='B'){
-                $tipo = getTipoVeicolo($v['tipo_veicolo']);
-                $categ = getCategoria($tipo['codice_categoria_incentivo']);
-                $cont = calcolaContributo($v);
-                $contr = $cont[0];
-                $totale = $contr['contributo']+$contr['pmi']+$contr['rete'];
-                //var_dump($cont);
-                ?>
-                <tr>
-                    <td><span class="badge badge-<?=$v['stato_admin']=='A'||$v['stato_admin']==null?'warning':'danger'?>" style="font-size:20px;width: -webkit-fill-available;"><?=$tipo['tpvc_descrizione_breve']?></span></td>
-                   
-                    <td><span class="badge badge-primary" style="font-size:20px;"><?=$v['targa']?></span></td>
-                    <td style="text-align:right;"><?=$v['costo']?'€ '.number_format($v['costo'], 2, ',', '.'):'Non Presente'?></td>
-                    
-                    <td ><?=$v['note_admin']?></td>
-                </tr>
-             <?php }
-             }
-             ?>
-            
             </tbody>
         </table>
     </div>
-</div>            
+</div>     
+<script>       
+    $('#nav-3').on('shown.bs.tab', function (e) {
+        //var target = $(e.target).attr("href") // activated tab
+        //alert(target);
+        $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=getRiepilogo",
+            data: {idRAM:<?=$i['id_RAM']?>},
+            dataType: "json",
+            success: function(data){
+                $('#tab_riepilogo_amm > tbody').empty()
+                $('#tab_riepilogo_amm > tfoot').empty()
+                $('#tab_riepilogo_resp > tbody').empty()
+                    //console.log(data.datavei);
+                    $.each(data.datavei, function (k,v){
+                        categoria = '<td><span class="badge badge-danger" style="font-size:20px;">'+v.categoria+'</span></td>'
+                        tipologia = '<td><span class="badge badge-secondary" style="font-size:20px;width: -webkit-fill-available;">'+v.tipologia+'</span></td>'
+                        targa = '<td><span class="badge badge-primary" style="font-size:20px;width: -webkit-fill-available;">'+v.targa+'</span></td>'
+                        prog =  '<td><span class="badge badge-success" style="font-size:20px;">'+v.prog+'</span></td>'
+                        costoeuro = parseFloat(v.costo).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                        costo = '<td style="text-align:right;">'+costoeuro+'</td>'
+                        contributoeuro = parseFloat(v.contributo).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                        contributo = '<td style="text-align:right;">'+contributoeuro+'</td>'
+                        pmieuro = parseFloat(v.pmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                        pmi = '<td style="background-color: #bfd4ea;text-align:right;">'+pmieuro+'</td>'
+                        reteeuro = parseFloat(v.rete).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                        rete ='<td style="background-color: #bfd4ea;text-align:right;">'+reteeuro+'</td>'
+                        totaleeuro = parseFloat(v.totale).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                        totale ='<td style="background-color: #d6dce338;text-align:right;">'+totaleeuro+'</td>'
+                        note = '<td>'+v.note+'</td>'
+                        if(v.stato_admin == 'B'){
+                           
+                            tr ='<tr>'+categoria+tipologia+prog+targa+costo+contributo+pmi+rete+totale+'</tr>';
+                            $('#tab_riepilogo_amm > tbody').append(tr)
+                           
+                        }else{
+                            tr = '<tr>'+categoria+tipologia+prog+targa+costo+note+'</tr>'
+                            $('#tab_riepilogo_resp > tbody').append(tr)
+
+                        }
+                        
+                    })
+                    totcontr=parseFloat(data.totcontr).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                    totcosto=parseFloat(data.totcosto).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                    totpmi=parseFloat(data.totpmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                    totrete=parseFloat(data.totrete).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                    tottotale=parseFloat(data.tottotale).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                    foot='<tr style="font-weight:bold;"><td colspan="4" style="text-align:right;"> Totale</td>'
+                    foot+='<td style="text-align:right;">'+totcosto+'</td>'
+                    foot+='<td style="text-align:right;">'+totcontr+'</td>'
+                    foot+='<td style="background-color: #06c6;text-align:right;">'+totpmi+'</td>'
+                    foot+='<td style="background-color: #06c6;text-align:right;">'+totrete+'</td>'
+                    foot+='<td style="background-color: #d6dce3;text-align:right;">'+tottotale+'</td>'
+                    foot+='</tr>'
+                    $('#tab_riepilogo_amm > tfoot').append(foot)
+            }
+        })
+    });
+</script>

@@ -137,8 +137,9 @@ $data_verb='01/01/2020';
         <th style="width:22mm; border: 1px solid black;">Importo Totale Contributo (€)</th>
 
        </tr>
+
        <tr >
-        <td style=" border: 1px solid black;padding:10px;" rowspan="3">Art.1, comma 4, lett a)</td>
+        <td style=" border: 1px solid black;padding:10px;" rowspan="4">Art.1, comma 5, lett a)</td>
         <td style=" border: 1px solid black;padding:10px;">Art.3, comma 2, lett a)</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
@@ -158,13 +159,20 @@ $data_verb='01/01/2020';
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
+       </tr>  
+       <tr>
+        <td style=" border: 1px solid black;border-left: 0px ;padding:10px;" >Art.3, comma 2, lett d)</td>
+        <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
+        <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
+        <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
+        <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
        </tr>              
     
 
 
 
        <tr >
-        <td style=" border: 1px solid black;padding:10px;" >Art.1, comma 4, lett b) -a)</td>
+        <td style=" border: 1px solid black;padding:10px;" >Art.1, comma 5, lett b) -1)</td>
         <td style=" border: 1px solid black;padding:10px;">Art.3, comma 3</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
@@ -177,7 +185,7 @@ $data_verb='01/01/2020';
 
 
        <tr >
-        <td style=" border: 1px solid black;padding:10px;" >Art.1, comma 4, lett b) -b)</td>
+        <td style=" border: 1px solid black;padding:10px;" >Art.1, comma 5, lett b) -2)</td>
         <td style=" border: 1px solid black;padding:10px;">Art.3, comma 4</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
@@ -190,7 +198,7 @@ $data_verb='01/01/2020';
 
 
        <tr >
-        <td style=" border: 1px solid black;padding:10px;" rowspan="3">Art.1, comma 4, lett c)</td>
+        <td style=" border: 1px solid black;padding:10px;" rowspan="3">Art.1, comma 5, lett c)</td>
         <td style=" border: 1px solid black;padding:10px;">Art.3, comma 5, lett a)</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
@@ -205,7 +213,7 @@ $data_verb='01/01/2020';
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
        </tr> 
        <tr>
-        <td style=" border: 1px solid black;border-left: 0px ;padding:10px;" >Art.3, comma 5, lett b)</td>
+        <td style=" border: 1px solid black;border-left: 0px ;padding:10px;" >Art.3, comma 5, lett c)</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
@@ -214,7 +222,7 @@ $data_verb='01/01/2020';
 
        
        <tr >
-        <td style=" border: 1px solid black;padding:10px;" >Art.1, comma 4, lett d)</td>
+        <td style=" border: 1px solid black;padding:10px;" >Art.1, comma 5, lett d)</td>
         <td style=" border: 1px solid black;padding:10px;">Art.3, comma 7</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0</td>
         <td style="text-align:right; border: 1px solid black;padding:10px;">0,00</td>

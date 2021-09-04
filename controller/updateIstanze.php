@@ -288,6 +288,8 @@ switch ($action){
       $data=$_REQUEST;
       $res =getAllegati($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
       
+      
+      
       //$tipo = getTipDoc($res['tipo_documento']);
       //var_dump($res);
       if($res){
@@ -300,7 +302,31 @@ switch ($action){
         
      // echo json_encode($res);
      // echo json_encode($res);
-    break;    
+    break;
+    case 'getAllegatiCheck':
+      $data=$_REQUEST;
+      $res =getAllegati($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
+      $alleok = getAlleOk($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
+      $alleno = getAlleNo($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
+      $countAlle = countAlle($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
+      $ok = ($alleok + $alleno) == $countAlle??false;
+      $json = array(
+        'res' => $res,
+        'ok' => $ok
+      );
+      //$tipo = getTipDoc($res['tipo_documento']);
+      //var_dump($res);
+      if($res){
+       
+        
+        echo json_encode($json); 
+      }
+       // var_dump($res);
+       // var_dump($res);
+        
+     // echo json_encode($res);
+     // echo json_encode($res);
+    break;      
     case 'getInfoCampo':
       $cod=$_REQUEST['cod'];
       $res = getInfoCampo($cod);
@@ -436,7 +462,22 @@ switch ($action){
     case 'delReport': 
       $data = $_REQUEST;
       $res= delReport($data['id']);
-      echo json_encode($res);
+      $status_istr= getStatusIstruttoria_test($data['id_RAM']);
+      $check_stato_istruttoria= getStatusIstruttoria($data['id_RAM']);
+      if($status_istr && $check_stato_istruttoria){
+        if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
+          $status_istr = $check_stato_istruttoria;
+        }
+      }elseif($check_stato_istruttoria){
+        $status_istr = $check_stato_istruttoria;
+      }
+     
+      $json = array(
+        'res' => $res,
+        'status' => $status_istr
+      );
+
+      echo json_encode($json);
     break;
     case 'getReport': 
       $id = $_REQUEST['id'];
@@ -617,5 +658,53 @@ switch ($action){
 
       $res=infoannIstanza($id_RAM);
       echo json_encode($res);
+      break;
+    case 'getRiepilogo':
+      $id_RAM = $_REQUEST['idRAM'];
+      $veiRiep = getVeicoli($id_RAM);
+      $datavei = array();
+      $totcosto=0;
+      $totcontr =0;
+      $totpmi = 0;
+      $totrete = 0;
+      $tottotale=0;
+      foreach($veiRiep as $v){
+       
+            $tipo = getTipoVeicolo($v['tipo_veicolo']);
+            $categ = getCategoria($tipo['codice_categoria_incentivo']);
+            if($v['stato_admin'] == 'B'){
+                $totale = $v['valore_contr']+$v['pmi_istr']+$v['rete_istr'];
+                $totcosto += $v['costo_istr'];
+                $totcontr  +=  $v['valore_contr'];
+                $totpmi +=$v['pmi_istr'];
+                $totrete +=$v['rete_istr'];
+                $tottotale += $totale;
+              }
+
+            $veicolo = array(
+              'stato_admin' =>$v['stato_admin'],
+              'categoria' => $categ['ctgi_categoria'],
+              'tipologia' =>$tipo['tpvc_descrizione_breve'],
+              'prog' => $v['progressivo'],
+              'targa' => $v['targa'],
+              'costo' => $v['costo_istr'],
+              'contributo' => $v['valore_contr'],
+              'pmi' => $v['pmi_istr'],
+              'rete' =>$v['rete_istr'],
+              'totale' =>$v['valore_contr']+$v['pmi_istr']+$v['rete_istr'],
+              'note' => $v['note_admin']??'' 
+            );
+            array_push($datavei,$veicolo); 
+      }
+     
+      $json= array(
+        'datavei' => $datavei,
+        'totcosto' => $totcosto,
+        'totcontr'=> $totcontr,
+        'totpmi' => $totpmi,
+        'totrete' => $totrete,
+        'tottotale' => $tottotale
+      );
+     echo json_encode($json);
       break;
     }

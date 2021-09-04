@@ -251,10 +251,11 @@
                                 <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td><td></td></tr>
                             </tbody>
                             <tfoot>
-                                <tr><td colspan="3">
+                                <tr><td colspan="2" id="info_aggiorna_dati"></td>
                                 <!--<button type="button" id="btn_calc_contr"class="btn btn-primary" style="float:left;" onclick="calcolaContr();">
                                         Calcola Contributo
                                 </button>-->
+                                <td >
                                 <button type="button" id="btn_istr"class="btn btn-primary" style="float:right;" onclick="infoVeiIstr();">
                                         Aggiorna dati
                                 </button></td></tr>
@@ -353,7 +354,9 @@
           <div class="bootstrap-select-wrapper">
             <label>Stato Lavorazione</label>
                 <select title="Seleziona Stato" name="stato_istruttoria" id="stato_istruttoria">
-                     <option value="A">In Lavorazione</option><option value="B">Accettata</option><option value="C">Rigettata</option>
+                     <option value="A">In Lavorazione</option>
+                     <option value="B">Accettata</option>
+                     <option value="C">Rigettata</option>
                 </select>
           </div>      
         </form>
@@ -374,7 +377,9 @@
         }
         function infovei(id,cat,tipo){
              status_istanza = <?=$status['aperta']?> ;
-             
+             $('#info_aggiorna_dati').html('')
+            $("#stato_istruttoria option[value='B']").attr('disabled', false);
+            $('#stato_istruttoria').selectpicker('refresh')
             const formatter = new Intl.NumberFormat('it-IT', {
                   style: 'currency',
                   currency: 'EUR',
@@ -458,11 +463,19 @@
                             
                              $.ajax({
                                     type: "POST",
-                                    url: "controller/updateIstanze.php?action=getAllegati",
+                                    url: "controller/updateIstanze.php?action=getAllegatiCheck",
                                     data: {id_RAM:data.id_RAM,tipo_veicolo:data.tipo_veicolo,progressivo:data.progressivo},
                                     dataType: "json",
-                                    success: function(alle){
+                                    success: function(response){
+                                        alle = response.res
+                                        validalle =response.ok
+                                        if(validalle == false){
+                                            $('#info_aggiorna_dati').html('Verificare Documentazione veicolo<br>Accettazione istruttoria disabilitata')
+                                            $("#stato_istruttoria option[value='B']").attr('disabled', true);
+                                            $('#stato_istruttoria').selectpicker('refresh')
+                                        }
                                         console.log(alle)
+                                        console.log(validalle)
                                         console.log('stato allegato '+stato_alle)
                                          $.each(alle, function (k,v){
                                                if(v.stato_admin=='A'){
@@ -528,9 +541,9 @@
             up_contr = parseFloat(up_contr).toFixed(2);
             contr_up_pmi = parseFloat(contr_up_pmi).toFixed(2);
             contr_up_rete = parseFloat(contr_up_rete).toFixed(2);
-            console.log(contr,up_contr)
-            console.log(pmi,contr_up_pmi)
-            console.log(rete,contr_up_rete)
+            //console.log(contr,up_contr)
+            //console.log(pmi,contr_up_pmi)
+            //console.log(rete,contr_up_rete)
             if(contr != up_contr||contr_up_pmi!=pmi||contr_up_rete!=rete){
                 Swal.fire({                  
                     title: "I valori calcolati sono differenti da quelli accordati",
@@ -553,7 +566,7 @@
                             }
                             
 
-                            console.log(stato);
+                            //console.log(stato);
                         
                             $('#stato_istruttoria').val(stato);
                             $('.bootstrap-select-wrapper select').selectpicker('refresh');
@@ -581,7 +594,7 @@
                             }
                             
 
-                            console.log(stato);
+                            //console.log(stato);
                         
                             $('#stato_istruttoria').val(stato);
                             $('.bootstrap-select-wrapper select').selectpicker('refresh');
@@ -649,7 +662,14 @@
                                          difftot = tot - no - ok;
                                          if( difftot == 0){
                                             totIstr = true;
-                                            alert ('ok');
+                                            //alert ('ok');
+                                            $('#info_aggiorna_dati').html('')
+                                            $("#stato_istruttoria option[value='B']").attr('disabled', false);
+                                            $('#stato_istruttoria').selectpicker('refresh')
+                                         }else{
+                                            $('#info_aggiorna_dati').html('Verificare Documentazione veicolo<br>Accettazione istruttoria disabilitata')
+                                            $("#stato_istruttoria option[value='B']").attr('disabled', true);
+                                            $('#stato_istruttoria').selectpicker('refresh')
                                          }
                                          console.log(totIstr,difftot)
                                          if(ok==tot){     
@@ -710,7 +730,7 @@
                         success: function(data){
                               Swal.fire({ 
                                                 
-                                                title: "Dati Veicolo Aggiornati",
+                                                title: "Dati Contributo Veicolo Aggiornati",
                                                 icon: "info"
                                           });
                               $('#info_note_admin').html(note)

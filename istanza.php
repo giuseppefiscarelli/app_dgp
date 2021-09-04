@@ -263,98 +263,7 @@ $(document).ready(function() {
                 }) 
             
     }
-    function saveReport(id){
-                prot_RAM=$('input[name="prot_RAM"]').val();
-                data_prot=$('input[name="data_prot"]').val();
-                $.ajax({
-                            type: "POST",
-                            url: "controller/updateIstanze.php?action=saveReport",
-                            data: {id:id,prot_RAM:prot_RAM,data_prot:data_prot},
-                            dataType: "json",
-                            success: function(data){
-                                
-                                Swal.fire("Operazione Completata!", "Report Salvato", "info");
-                                $('div[id^="reportModal"]').modal('hide');
-                                td1=data.data_inserimento+'<br>'+data.user_ins;
-                                td2=data.descrizione;
-                                td3='Richiesta non inviata';
-                                if(data.tipo_report==1){
-                                    td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
-                                    td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
-                                }else if(data.tipo_report==2){
-                                    td4='<button type="button" onclick="prevRep2('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
-                                    td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
-                              }else if(data.tipo_report==3){
-                                    td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
-                                    td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
-
-                              }else if(data.tipo_report==4){
-                                    td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
-                                    td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
-
-                              }
-                              td4+='<button type="button" onclick="delRep('+data.id+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
-                                
-                                
-                                
-                                
-                                html= '<tr><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
-                                $("#reportTable > tbody").append(html);
-                                $("#reportTable").show();
-                            }
-                }) 
-
-    }
     
-    $('#tipo_report').change(function(){
-      $('#veiNonConf').hide()
-      $('#tabVeiNonConf >tbody').empty()
-        tipo=$('#tipo_report option:selected').val()
-        
-        //console.log(tipo);
-        if(tipo ==1){
-                $('#reportModal').modal('toggle');
-                newInt(tipo);
-                id_RAM = <?=$i['id_RAM']?>;
-                  $.ajax({
-                    type: "POST",
-                    url: "controller/updateIstanze.php?action=getDocR",
-                    data: {id_RAM:id_RAM},
-                    dataType: "json",
-                    success: function(data){
-                            console.log(data)
-                            $.each(data , function (k,v){
-                                 targa= v.targa
-                                 tdoc= v.tipo_documento
-                                 badge='<span class="badge badge-primary">'+targa+'</span><br>'
-                                 tr='<tr><td>'+badge+'</td><td>'+tdoc+'</td></tr>'
-                                 $('#veiNonConf').show()
-                                 $('#tabVeiNonConf >tbody').append(tr)
-
-                            })
-                          
-
-                    }
-                  })         
-        }
-        if(tipo ==2){
-                $('#reportModal2').modal('toggle');
-                newRig(tipo);
-        }
-        if(tipo ==3){
-                $('#reportModal3').modal('toggle');
-                newVer(tipo);
-               
-        }
-        if(tipo ==4){
-                $('#reportModal4').modal('toggle');
-                $("#tab_int4 > tbody").empty();
-                newIna(tipo);
-        }
-        $('#tipo_report').val("")
-        $('.bootstrap-select-wrapper select').selectpicker('refresh');
-
-    });
     $('#tipo_integrazione').change(function(){
         tipo=$('#tipo_integrazione option:selected').val()
         $.ajax({
@@ -996,10 +905,7 @@ $(document).ready(function() {
             $('.modal-backdrop').css('z-index',1040);
             
       })  
-      $('#nav-3').on('shown.bs.tab', function (e) {
-            var target = $(e.target).attr("href") // activated tab
-                  alert(target);
-      });
+  
       $('#annForm').on('submit',function(e){
             e.preventDefault();
             formData = $(this).serialize();
