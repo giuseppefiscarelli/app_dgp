@@ -2,20 +2,20 @@
   $pathReport= "/inv2020/report/";
   require "Mail.php";
   require_once "Mail/mime.php";
-  $host    = "smtp.gmail.com";
-  $port    = "587";
-  $user    = "fiscarelli.giu@gmail.com";
-  $pass    = "01735583";
+  $host    = "ssl://smtps.pec.aruba.it";
+    $port    = "465";
+    $user    = "n.salvatore@pec.it";
+    $pass    = "NicPec2014";
   $smtp    = @Mail::factory("smtp", array("host"=>$host, "port"=>$port, "auth"=> true, "username"=>$user, "password"=>$pass));
-  $from    = "\"Test mail\" <fiscarelli.giu@gmail.com>";
+  $from    = "n.salvatore@pec.it";
 
 
  //par
-  $to = 'giuseppe.fiscarelli@setec.it';
+  $to = 'n.salvatore@gmail.com';
   $file =  $pathReport."193__1627461928.pdf";
   //tab
   $subject = "Invio test";
-  $body    = "\n\n<html><body><h1>Email contents here from HMR</h1></body></html>";
+  $body    = "\n\n<html><body><h1>Email contents here from test</h1></body></html>";
   $mime = new Mail_mime();
     if ($mime->addAttachment($file,'application/pdf')){
         echo "attached successfully! </br>";

@@ -58,7 +58,7 @@ try {
     }
     if($tipo =="S"){
         $html2pdf->output($path.$filename.".pdf",'F');
-        echo json_encode($filename.".pdf");
+        echo $filename.".pdf";
     }
     
    

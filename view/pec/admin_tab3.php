@@ -92,6 +92,7 @@
 
     if($pecConv){
         foreach($pecConv as $pa){
+            //var_dump($pa);
             $tipo = getInfoReport($pa['tipo_report']);
             $istanza = getIstanza($pa['id_RAM']);
             $classUser=explode('@',$pa['user_ins']);
@@ -115,7 +116,8 @@
                                 <span class="text" style="font-size: 0.7em;"><em style="display:inline;">Convalidata da:</em> <?=$pa['user_conv']?> <?=date("d/m/Y", strtotime($pa['data_conv']))?></span>
                             </div>
                             <div class="col-2">
-                                <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
                                 <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec " onclick="msgModalPec(<?=$pa['id']?>, <?=$pa['id_RAM']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                                 <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
@@ -148,6 +150,14 @@ function msgModalPec(id, idRAM){
             success: function(data){
                 console.log(data)
                 localStorage.setItem('currentTab','nav-vertical-tab-bg3');
+                Swal.fire({
+                            title:"Operazione Completata!",
+                            html:"Pec inviata correttamente.",
+                            icon:"success"}).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                                    location.reload()
+                                                        }
+                                                        });
             }
         });
     }

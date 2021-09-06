@@ -50,7 +50,8 @@ switch ($action){
         'To'=> $istanza['pec_impr'],
         'file' =>  $pathReport.$report['nome_file'],
         'Subject' =>$tipo_report['object'].' - rif#'.$time,
-        'body' => $bodymod
+        'body' => $bodymod,
+        'envProd' => $envProd
       );
       $res = sendMail($data);
      if($res){

@@ -444,6 +444,12 @@ switch ($action){
       echo json_encode($res);
 
     break;
+
+    case 'delIntDett': 
+      $data = $_REQUEST['id_report'];
+      $res = delIntDett($data);
+      echo json_encode($res);
+      break;
     case 'saveReport':
       $data = $_REQUEST;
       //var_dump($data);die;
@@ -462,15 +468,16 @@ switch ($action){
     case 'delReport': 
       $data = $_REQUEST;
       $res= delReport($data['id']);
-      $status_istr= getStatusIstruttoria_test($data['id_RAM']);
-      $check_stato_istruttoria= getStatusIstruttoria($data['id_RAM']);
+      $status_istr= getStatusIstruttoria($data['id_RAM']);
+      $check_stato_istruttoria= getStatusIstruttoria_test($data['id_RAM']);
       if($status_istr && $check_stato_istruttoria){
-        if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
+        //if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
           $status_istr = $check_stato_istruttoria;
-        }
-      }elseif($check_stato_istruttoria){
-        $status_istr = $check_stato_istruttoria;
+        //}
       }
+      /*elseif($check_stato_istruttoria){
+        $status_istr = $check_stato_istruttoria;
+      }*/
      
       $json = array(
         'res' => $res,

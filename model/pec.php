@@ -346,25 +346,27 @@ function sendMail($data){
 
   include 'Mail.php';
   include 'Mail/mime.php' ;
+ 
+    $from    = "n.salvatore@pec.it";
+    $text = 'Text version of email';
+    $html = '<html><body>'.$data['body'].'</body></html>';
+    $file =  $data['file'];
+    $to = "n.salvatore@gmail.com, fiscarelli.giu@gmail.com";
+     
+    $crlf = "\n";
+    $hdrs = array(
+        'From' => $from,
+        'Subject' => $data['Subject'],
+        "To"=>$to
+    );
+    
+    
+    $host    = "ssl://smtps.pec.aruba.it";
+    $port    = "465";
+    $user    = "n.salvatore@pec.it";
+    $pass    = "NicPec2014";
   
-  $from    = "\"Test mail\" <fiscarelli.giu@gmail.com>";
-  $text = 'Text version of email';
-  $html = '<html><body>'.$data['body'].'</body></html>';
-  $file =  $data['file'];
-  $to = "giuseppe.fiscarelli@setec.it";
-   
-  $crlf = "\n";
-  $hdrs = array(
-      'From' => $from,
-      'Subject' => $data['Subject'],
-      "To"=>$to
-  );
-  
-  
-  $host    = "smtp.gmail.com";
-  $port    = "587";
-  $user    = "fiscarelli.giu@gmail.com";
-  $pass    = "01735583";
+ 
   
   $mime = new Mail_mime(array('eol' => $crlf));
   $mime->setTXTBody($text);
@@ -372,7 +374,9 @@ function sendMail($data){
   $mime->addAttachment($file, 'application/pdf');
   $body = $mime->get();
   $attachmentheaders  = $mime->headers($hdrs);
-  
+  //var_dump($attachmentheaders);
+  //var_dump($file);
+
   $smtp    = @Mail::factory("smtp", array("host"=>$host, "port"=>$port, "auth"=> true, "username"=>$user, "password"=>$pass));
   $mail = $smtp->send($to, $attachmentheaders , $body);
 

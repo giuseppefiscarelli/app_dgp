@@ -2603,6 +2603,23 @@ function newIntDett($data){
 
 
 }
+function delIntDett($id_report){
+ 
+ /**
+     * @var $conn mysqli
+     */
+
+    $conn = $GLOBALS['mysqli'];
+
+    $sql ='DELETE FROM dettaglio_report WHERE id_report = '.$id_report;
+
+    $res = $conn->query($sql);
+    
+    return $res && $conn->affected_rows;
+
+
+
+}
 function saveReport($data){
   /**
   * @var $conn mysqli
@@ -3100,7 +3117,7 @@ function getStatusIstruttoria_test($id_RAM){
 
     $conn = $GLOBALS['mysqli'];
       $result=[];
-      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato = 'B' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato = 'B' and attivo = 1)" ;
+      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato = 'B' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato = 'B' and attivo = true)" ;
       
      // echo $sql;
       $res = $conn->query($sql);
@@ -3112,4 +3129,28 @@ function getStatusIstruttoria_test($id_RAM){
     return $result;
   
   
+}
+function reportAmmissione($id_RAM){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $records=[];
+  $sql ="select  art_dm,count(art_dm) as qta, sum(valore_contr) as contributo, sum(pmi_istr) as pmi_contr, sum(rete_istr) as rete_contr from veicolo inner join tipo_veicolo on tipo_veicolo = tpvc_codice where id_ram = $id_RAM and stato_admin = 'B' group by art_dm order by art_dm";
+  //echo $sql;
+  $res = $conn->query($sql);
+        
+       
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
 }

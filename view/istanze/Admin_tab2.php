@@ -80,6 +80,7 @@
                     }
                     if($v['stato_admin']=='B'){
                         $stato_admin = '<span class="badge badge-success" style="width: -webkit-fill-available;">Accettata</span>';
+                        
                     }
                     if($v['stato_admin']=='C'){
                         $stato_admin = '<span class="badge badge-danger" style="width: -webkit-fill-available;">Rigettata</span>';
@@ -245,12 +246,12 @@
                                         </span></td></tr>
                                 <tr><td>Note</td>
                                     <td  colspan="2"> <div class="form-group">
-                                                <textarea id="info_note_admin" rows="3"></textarea>
+                                                <textarea id="info_note_admin" rows="3" readonly></textarea>
                                             
                                                 </div></td></tr>
                                 <tr><td>Stato Lavorazione</td><td id="info_stato_admin"></td><td></td></tr>
                             </tbody>
-                            <tfoot>
+                            <tfoot id="istruttoria_btn" style="<?=$disableIstruttoriafoot?'display:none;':''?>">
                                 <tr><td colspan="2" id="info_aggiorna_dati"></td>
                                 <!--<button type="button" id="btn_calc_contr"class="btn btn-primary" style="float:left;" onclick="calcolaContr();">
                                         Calcola Contributo
@@ -437,9 +438,11 @@
                               if(data.stato_admin=='B'){
                                     stato='<span class="badge badge-success">Accettata</span>';
                                     stato_alle = true;
+                                    $('#costo_istr,#contr_up,#contr_up_pmi,#contr_up_rete').prop('disabled', true)
                               }
                               if(data.stato_admin=='C'){
                                    stato='<span class="badge badge-danger">Rigettata</span>';
+                                   $('#costo_istr,#contr_up,#contr_up_pmi,#contr_up_rete').prop('disabled', true)
                                    stato_alle = true;
                               }
                               $('#info_stato_admin').html(stato);
@@ -737,14 +740,18 @@
                                 if(stato=='A'){
                                     stato='<span class="badge badge-warning">In Lavorazione</span>';
                                     $('.workbtn').show()
+                                    $('#costo_istr,#contr_up,#contr_up_pmi,#contr_up_rete').prop('disabled', false)
+
                                 }
                                 if(stato=='B'){
                                     stato='<span class="badge badge-success">Accettata</span>';
+                                    $('#costo_istr,#contr_up,#contr_up_pmi,#contr_up_rete').prop('disabled', true)
                                     $('.workbtn').hide()
                                 }
                                 if(stato=='C'){
                                     stato='<span class="badge badge-danger">Rigettata</span>';
                                     $('.workbtn').hide()
+                                    $('#costo_istr,#contr_up,#contr_up_pmi,#contr_up_rete').prop('disabled', true)
                                 }
                                 $('#info_stato_admin').html(stato)
                                 $('#stato_istruttoria_'+id).html(stato)

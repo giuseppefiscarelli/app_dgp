@@ -18,6 +18,9 @@ if($report_status){
     $ena_report = [];
     if($report_status == 'A'){
         array_push($ena_report, 2);
+        if($enable_int_report){
+            array_push($ena_report, 1);
+        }
     }
     
     if($report_status == 'C'){
@@ -431,7 +434,7 @@ if($check_ammissione==0){
                                 
                                 
                                 html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
-                                span_istr = '<span class="badge badge-'+type_istr+'">'+text_istr+'</span>';
+                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
                                 //console.log(span_istr);
                                 $('#status_istruttoria').html('Stato istruttoria '+span_istr)
                                 $("#reportTable > tbody").prepend(html);
@@ -441,7 +444,342 @@ if($check_ammissione==0){
                 }) 
 
     }
+    progtr=1;
+    function addInt(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report').val();
+        tipo = $('#tipo_integrazione option:selected').text()
+        tipocod = $('#tipo_integrazione option:selected').val()
+        //desc =  $('#descrizione_integrazione').html();
+        desc =  $('#descrizione_integrazione').val();
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+        html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+        $("#tab_int > tbody").append(html);
+        
+        $("#div_tab_int").show();
+        $('#des_int,#div_btn_add_int').hide();
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:tipocod,descrizione:desc},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data)
+                            
+
+                    }
+        })  
+        $("#div_tab_int").show();
+        $('#des_int,#div_btn_add_int').hide();
+        progtr++;    
+        
+        //alert(desc);
+    }
+    progtr2=1;
+    function addInt2(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report2').val();
+        tipo = 'Preavviso al Rigetto'
+        tipocod = 2
+        //desc =  $('#descrizione_integrazione').html();
+        desc =  $('#motivazione').val();
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+        html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr2+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+        $("#tab_int2 > tbody").append(html);
+        
+        $("#div_tab_int2").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:tipocod,descrizione:desc},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data)
+                            $('#motivazione').val("");
+
+                    }
+        })  
+        //$("#div_tab_int").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        progtr2++;    
+        
+        //alert(desc);
+    }
+    progtr3=1;
+    function addInt3(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report3').val();
+        
+        tipocod = 3
+        //desc =  $('#descrizione_integrazione').html();
+        //desc =  $('#motivazione').val();
+        num_prot=$('#num_prot3').val()
+        dat_prot=$('#dat_prot3').val()
+        data_verbale=$('#data_verbale3').val()
+        prot = $('#prot_RAM3').val()
+        data_doc = $('#data_prot3').val()
+
+       
+       
+        
+        $("#div_tab_int3").show();
+        $("#tab_int3").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:1,descrizione:num_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#num_prot3').val("");
+                            tipo = 'Numero protocollo Domanda Ammissione'
+                            html= '<tr><td>'+tipo+'</td><td id="desc3_1">'+num_prot+'</td></tr>'
+                              $("#tab_int3 > tbody").append(html);
+                              
+                              
+                              progtr3++;  
+                    }
+        })
+        
+        $.ajax({
+              
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:2,descrizione:dat_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#dat_prot3').val("");
+                            tipo='Data protocollo Domanda Ammissione';
+                            html= '<tr><td>'+tipo+'</td><td id="desc3_2">'+dat_prot+'</td></tr>'
+                              $("#tab_int3 > tbody").append(html);
+                              progtr3++; 
+                    }
+        }) 
+        
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:3,descrizione:data_verbale},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data verbale'
+                            $('#data_verbale3').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc3_3">'+data_verbale+'</td></tr>'
+                            $("#tab_int3 > tbody").append(html);
+                            progtr3++;
+                    }
+        }) 
+        
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:4,descrizione:prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Protocollo RAM'
+                            $('#prot_RAM3').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc3_4">'+prot+'</td></tr>'
+                            $("#tab_int3 > tbody").append(html);
+                            progtr3++;
+                    }
+        }) 
     
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:5,descrizione:data_doc},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data documento'
+                            $('#data_prot3').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc3_5">'+data_doc+'</td></tr>'
+                            $("#tab_int3 > tbody").append(html);
+                            progtr3++; 
+                    }
+        }) 
+        
+
+
+        $('#btn_add_int3,#dati_report_3').hide();
+        $('#btn_up_int3').attr('onclick','modInt3('+id_report+')');
+        $('#btn_up_int3').show();
+
+
+
+
+
+
+        //$("#div_tab_int").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        
+        
+        //alert(desc);
+    }
+    progtr4=1;
+    function addInt4(){
+        id_RAM= <?=$i['id_RAM']?>;
+        id_report= $('#id_report4').val();
+        
+        tipocod = 4
+        //desc =  $('#descrizione_integrazione').html();
+        //desc =  $('#motivazione').val();
+
+        
+       
+       
+
+      
+        
+        
+
+
+        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
+        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+       
+        
+        $("#div_tab_int4").show();
+        //$('#des_int,#div_btn_add_int').hide();
+        num_prot=$('#num_prot_in').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:1,descrizione:num_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#num_prot_in').val("");
+                            tipo = 'Numero protocollo Domanda Ammissione'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+                              
+
+                    }
+        })
+        progtr4++;  
+        dat_prot=$('#dat_prot_in').val()
+        $.ajax({
+              
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:2,descrizione:dat_prot},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#dat_prot_in').val("");
+                            tipo='Data protocollo Domanda Ammissione';
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+dat_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+        data_verbale=$('#data_verbale_in').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:3,descrizione:data_verbale},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data verbale'
+                            $('#data_verbale_in').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_verbale+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++;
+        num_prot_rig = $('#num_prot_rig').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:4,descrizione:num_prot_rig},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#num_prot_rig').val("");
+                            tipo = 'Numero protocollo Preavviso di rigetto'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot_rig+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+                              
+
+                    }
+        })
+        progtr4++;  
+        data_prot_rig = $('#dat_prot_rig').val()
+        $.ajax({
+              
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:5,descrizione:data_prot_rig},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            $('#dat_prot_rig').val("");
+                            tipo='Data protocollo Preavviso di rigetto';
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_rig+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                              $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+        data_prot_pre = $('#dat_prot_pre').val()
+        
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:6,descrizione:data_prot_pre},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Data nota Preavviso'
+                            $('#dat_prot_pre').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_pre+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+        mot_ina=$('#mot_ina').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=newIntDett",
+                    data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:7,descrizione:mot_ina},
+                    dataType: "json",
+                    success: function(data){
+                            //console.log(data)
+                            tipo='Motivazione di Inassibilità'
+                            $('#mot_ina').val("");
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+mot_ina+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            $("#tab_int4 > tbody").append(html);
+
+                    }
+        }) 
+        progtr4++; 
+
+
+
+
+
+
+
+
+        //$("#div_tab_int").show();
+        //$('#des_int,#div_btn_add_int').hide();
+       
+        
+        //alert(desc);
+    }
     $('#tipo_report').change(function(){
       $('#veiNonConf').hide()
       $('#tabVeiNonConf >tbody').empty()
@@ -491,7 +829,36 @@ if($check_ammissione==0){
         $('.bootstrap-select-wrapper select').selectpicker('refresh');
 
     });
-   
+    function modInt3(idreport){
+        num_prot = $('#desc3_1').text()
+        dat_prot=$('#desc3_2').text()
+        data_verbale=$('#desc3_3').text()
+        prot = $('#desc3_4').text()
+        data_doc = $('#desc3_5').text()
+       
+       
+
+
+        $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=delIntDett",
+            data: {id_report:idreport},
+            dataType: "json",
+            success: function(data){
+                    console.log(data)
+                    $('#num_prot3').val(num_prot)
+                    $('#dat_prot3').val(dat_prot)
+                    $('#data_verbale3').val(data_verbale)
+                    $('#prot_RAM3').val(prot)
+                    $('#data_prot3').val(data_doc)
+                    $("#tab_int3 > tbody").empty();
+                    $("#tab_int3").hide();
+                    $('#btn_add_int3,#dati_report_3').show();
+                    $('#btn_up_int3').attr('onclick','modInt3()');
+                    $('#btn_up_int3').hide();
+            }
+        })
+    }
 </script>
 
 
@@ -656,23 +1023,23 @@ if($check_ammissione==0){
         </div>
         <div class="modal-body">
         <input type="hidden" name="id_report3" id="id_report3" value="">
-            <div class="row">
+            <div class="row" id="dati_report_3">
                    
                         <div class="col-12 col-lg-3 form-group">
-                            <input type="text" class="form-control" id="num_prot"  name="num_prot"placeholder="numero protocollo" value="">
+                            <input type="text" class="form-control" id="num_prot3"  name="num_prot"placeholder="numero protocollo" value="">
                             <label for="num_prot">Numero protocollo Domanda Ammissione</label>
                             <small class="form-text text-muted">se disponibile, inserire numero protocollo Domanda Ammissione</small>
 
                             
                         </div>
                         <div class="col-12 col-lg-2 form-group">
-                            <input type="text" class="form-control it-date-datepicker" id="dat_prot"  name="dat_prot" placeholder="gg/mm/aaaa" value="">
-                            <label for="dat_prot">Data protocollo Domanda Ammissione</label>
+                            <input type="text" class="form-control it-date-datepicker" id="dat_prot3"  name="dat_prot3" placeholder="gg/mm/aaaa" value="">
+                            <label for="dat_prot3">Data protocollo Domanda Ammissione</label>
                             <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
                         </div>
                         <div class="col-12 col-lg-2 form-group">
-                            <input type="text" class="form-control it-date-datepicker" id="data_verbale"  name="data_verbale" placeholder="gg/mm/aaaa" value="">
-                            <label for="data_verbale">Data verbale</label>
+                            <input type="text" class="form-control it-date-datepicker" id="data_verbale3"  name="data_verbale3" placeholder="gg/mm/aaaa" value="">
+                            <label for="data_verbale3">Data verbale</label>
                             <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
 
                         </div>
@@ -699,13 +1066,14 @@ if($check_ammissione==0){
             </div>
             <div class="row">
                 <button type="button" id="btn_add_int3" onclick="addInt3()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
+                <button type="button" id="btn_up_int3" onclick="modInt3()"class="btn btn-warning" style="display:none;"> <i class="fa fa-edit" aria-hidden="true"></i> Modifica dati al documento</button>
             </div>
             <div class="row" id="div_tab_int3"  style="display:none;">
                 <table class="table" id="tab_int3">
                     <thead>
                         <tr><td>Tipo</td>
                             <td>Descrizione</td>
-                            <td>Action</td>
+                           
                         </tr>
                     </thead>
                     <tbody>

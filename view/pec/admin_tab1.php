@@ -115,8 +115,9 @@
 
     if($pecUnsend){ 
         foreach($pecUnsend as $pa){
+            var_dump($pa);
                 $tipo = getInfoReport($pa['tipo_report']);
-                var_dump($tipo);
+                //var_dump($tipo);
                 $istanza = getIstanza($pa['id_RAM']);
                 $classUser=explode('@',$pa['user_ins']);
                 $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
@@ -141,7 +142,7 @@
                         <div class="col-2">
                             <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Componi Messaggio " onclick="msgModal(<?=$pa['id']?>,'<?=$tipo['report_dir']?>');"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Componi Messaggio " onclick="msgModal(<?=$pa['id']?>,<?=$pa['tipo_report']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                         </div>
@@ -190,6 +191,7 @@
                 <form method="post"  id="form_allegato_pec"  enctype="multipart/form-data">
                     <input type="hidden" id="id_pec" name="id" value="">
                     <input type="hidden" id=" id_ram_pec" name=" id_ram" value="">
+                    <input type="hidden" id="tipo" value="">
                    
                     <input type="file" name="upload1" id="upload1" class="upload" onchange="checkDoc();" />
                         <label for="upload1">
@@ -221,7 +223,7 @@
   </div>
 </div>
 <script>
-    function msgModal(id){     
+    function msgModal(id,tipo){     
         $.ajax({
             type: "POST",
             url: "controller/updateReport.php?action=getReportId",
@@ -233,7 +235,7 @@
                 $('#id_ram_pec').val(data.data.id_RAM)
                 $('#pec_dest').val(data.istanza.pec_impr)
                 $('#pec_object').val(data.type.object)
-                
+                $('#tipo').val(tipo)
                 html=data.type.body.replaceAll('%*', '\n').replace('%ragSoc%', data.istanza.ragione_sociale)
                 $('#pec_body').html(html)
                 $('#msgModal').modal('toggle')
@@ -275,6 +277,11 @@
         var f = fa.files[0]
         console.log(f)
         formData = new FormData(this);
+        tipo = $('#tipo').val()
+        if(tipo == 1 ){reportDir = 'report/integrazione/integrazione.php'} 
+        if(tipo == 2 ){reportDir = 'report/rigetto/rigetto.php'} 
+        if(tipo == 3 ){reportDir = 'report/ammissione/ammissione.php'} 
+        if(tipo == 4 ){reportDir = 'report/inammissibilita/inammissibilita.php'}  
         console.log(formData.get('id'))
         if(f){
         $.ajax({
@@ -302,7 +309,8 @@
         })
         }else{
             $.ajax({
-            url: "report/integrazione/integrazione.php?id="+formData.get('id')+"&tipo=S",
+              
+            url: reportDir+"?id="+formData.get('id')+"&tipo=S",
             type:"POST",
             success: function(filename){
                 formData.append('nome_file',filename)

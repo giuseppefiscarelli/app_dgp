@@ -1,3 +1,46 @@
+<style type="text/css">
+
+/* @group Blink */
+.blink {
+ -webkit-animation: blink .75s linear infinite;
+ -moz-animation: blink .75s linear infinite;
+ -ms-animation: blink .75s linear infinite;
+ -o-animation: blink .75s linear infinite;
+ animation: blink .75s linear infinite;
+}
+@-webkit-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@-moz-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@-ms-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@-o-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+/* @end */
+
+</style>
 <?php
 //var_dump($tipo_istanza);
 /*
@@ -101,27 +144,32 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
     $activeIst = true;
   }
 }
-$status_istr= getStatusIstruttoria_test($i['id_RAM']);
-$check_stato_istruttoria= getStatusIstruttoria($i['id_RAM']);
-//var_dump($check_stato_istruttoria);
+$status_istr= getStatusIstruttoria($i['id_RAM']);
+$check_stato_istruttoria= getStatusIstruttoria_test($i['id_RAM']);
 //var_dump($status_istr);
+//var_dump($check_stato_istruttoria);
+
 if($status_istr && $check_stato_istruttoria){
-  if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
+  //if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
     $status_istr = $check_stato_istruttoria;
-  }
-}elseif($check_stato_istruttoria){
-  $status_istr = $check_stato_istruttoria;
+    //echo 'qui';
+  //}
 }
+//var_dump($status_istr);
 $report_status = '';
+$disableIstruttoriafoot = false;
 if($status_istr && $status_istr['id']){
   $add_span='';
-
+  $enable_int_report = false;
   if($status_istr['tipo_report'] === '1'){
       $text_istr = 'Integrazione';
       $type_istr = 'warning';
       $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
       $add_span = '<br>Ricezione documentazione entro e non oltre il '.$date_scad;
       $report_status = 'A';
+      if($status_istr['data_invio']){
+        $enable_int_report = true;
+      }
   }
   if($status_istr['tipo_report'] === '3'){
     $text_istr = 'Ammessa';
@@ -129,6 +177,7 @@ if($status_istr && $status_istr['id']){
     $disable_istr=true;
     $report_status = 'B';
     //$disable_actions = true;
+    $disableIstruttoriafoot = true;
    
   }
   if($status_istr['tipo_report'] === '2'){
@@ -147,6 +196,10 @@ if($status_istr && $status_istr['id']){
   $span_istr='<span class="badge badge-'.$type_istr.'">'.$text_istr.'</span>';
   if($status_istr['data_invio']){
     $span_istr .= '<br>Pec inviata il '.date("d/m/Y",strtotime($status_istr['data_invio'])).$add_span;
+    
+  }else{
+    $span_istr='<span class="badge badge-'.$type_istr.' blink">'.$text_istr.'</span>';
+    $span_istr .= '<br><b class="blink">Pec da inviare</b> '; 
   }
    }
   // var_dump($disable_istr);
@@ -168,7 +221,7 @@ if(!$status['data_annullamento']&&$activeIst){?>
   Annulla Istanza
 </button>
   </div>
-
+ 
 <?php } 
  if($status_istr){?>
   <div class="col-lg-2 col-12" id="status_istruttoria">
