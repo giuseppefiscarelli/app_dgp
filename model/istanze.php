@@ -2169,6 +2169,10 @@ function upIstruttoria($data){
   $user_admin = $_SESSION['userData']['email'];
  
   $costo_istr = $data['costo_istr']??'null';
+  //var_dump(strlen($costo_istr));
+  if(strlen($costo_istr)==0){
+    $costo_istr= 0;
+  }
   $valore_contr = $data['valore_contr']??'null';
   $pmi_istr = $data['pmi_istr']??'null';
   $rete_istr = $data['rete_istr']??'null';
@@ -2178,7 +2182,7 @@ function upIstruttoria($data){
   $sql .= "stato_admin = '$stato_admin', note_admin = '$note_admin', data_admin = '$data_admin',user_admin ='$user_admin',costo_istr=$costo_istr,valore_contr=$valore_contr,pmi_istr=$pmi_istr,rete_istr=$rete_istr,note_istr='$note_istr'";
   $sql .=' WHERE id = '.$id;
   //print_r($data);
-  //echo $sql;die;
+ // echo $sql;die;
   $res = $conn->query($sql);
   
   if($res ){

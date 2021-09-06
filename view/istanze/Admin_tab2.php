@@ -265,7 +265,7 @@
                     </div>
                     <div class="row" id="alert_istr" style="display:none;">
                     <i class="fa fa-3x fa-exclamation-circle blink"></i>
-                     <br>inserire messaggiio operatore...
+                     
                      <br>Allegati dichiarazioni e certificazioni non completi
                     </div>
                 </div>
