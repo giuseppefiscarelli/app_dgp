@@ -3,7 +3,8 @@
 
     <page_header> 
         <table width="75%" style="margin:30px;">
-          
+        <tr><td><img style="width:180px;display:inline;"  src="../../images/RAM_nuovo_logo.png"></td></tr>
+
             <tr><td style="text-align:center;">Direttore Operativo</td>
             </tr>
 
