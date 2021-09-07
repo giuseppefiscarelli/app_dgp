@@ -1,9 +1,9 @@
 <?php
 
 require_once  '../../vendor/autoload.php';
-//require_once  '../../model/istanze.php';
-//require_once  '../../functions.php';
-
+require_once  '../../model/istanze.php';
+require_once  '../../functions.php';
+var_dump($_GLOBALS);die;
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
