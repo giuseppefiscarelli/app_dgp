@@ -1,5 +1,5 @@
 <?php
-session_start();
+ 
 /**
  * Html2Pdf Library - example
  *
@@ -10,7 +10,7 @@ session_start();
  * @author    Laurent MINGUET <webmaster@html2pdf.fr>
  * @copyright 2017 Laurent MINGUET
  */
-require_once  '../../vendor/autoload.php';
+require_once  '../../vendor/autoload.php'; 
 require_once  '../../model/istanze.php';
 /*
 require_once  '../../functions.php';
