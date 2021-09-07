@@ -64,7 +64,9 @@
                                 </div>
                             </li>
                             <li class="nav-item "><a class="nav-link " id="selAll"onclick="unsendCkAll();"><span>Seleziona Tutti </span></a></li>
+                            <?php  if(getEnablePec()){?>
                             <li class="nav-item"><a class="nav-link" href="#"><span>Invia Pec Selezionate</span></a></li>
+                                <?php } ?>
                             <li class="nav-item"><a class="nav-link" href="#"><span>Elimina richieste Selezionate </span></a></li>
                             
                             
@@ -118,7 +120,9 @@
                             <div class="col-2">
                             <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
+<?php  if(getEnablePec()){?>
                                 <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec " onclick="msgModalPec(<?=$pa['id']?>, <?=$pa['id_RAM']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+<?php } ?>
                                 <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                             </div>

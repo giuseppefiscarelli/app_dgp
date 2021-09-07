@@ -33,7 +33,7 @@ switch ($action){
     
     case 'store':
         $data = $_POST;
-        var_dump($data);//die;
+        //var_dump($data);die;
         $id = getParam('id',0);
         $res = storeUser($data,$id); 
         $message = $res ? 'Record Aggiornato' : 'Errore Aggiornamento Record!';

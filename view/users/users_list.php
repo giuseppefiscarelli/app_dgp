@@ -203,6 +203,18 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                     <input type="text" placeholder="nome" value="" class="form-control" id="nome" name="nome" required>
                   
                 </div>
+                <div class="form-group">
+                  <label for="pec_enable" >Abilitazione Pec</label>
+                 
+                    <input type="checkbox"  class="form-control" id="pec_enable" name="pec_enable" >
+                  
+                </div>
+                <div class="form-group">
+                  <label for="network" >Accesso Ip</label>
+                 
+                    <input type="text"  placeholder="accesso ip" value="" class="form-control" id="network" name="network" >
+                    <small id="formGroupExampleInputWithHelpDescription" class="form-text text-muted">inserire IP separati da una virgola</small>
+                </div>
 
              
 
@@ -251,6 +263,14 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                         $('#usr_email').val(json.email)
                         
                         $('#id').val(json.id)
+                        if(json.pec_enable == 1){
+                            $("#pec_enable").prop( "checked", true );
+                        }else{
+                            $("#pec_enable").prop( "checked", false );
+                        }
+                       
+                        
+                        $('#network').val(json.network)
                        
                            													
                         }       

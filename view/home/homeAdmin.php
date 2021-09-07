@@ -294,7 +294,7 @@
     $IstrAmmessa =countIstanze($params);
     $params['search5']='D';
     $IstrRigettata =countIstanze($params);
-    
+   
     ?>
   <div class="row">
     <div class="col-12 ">

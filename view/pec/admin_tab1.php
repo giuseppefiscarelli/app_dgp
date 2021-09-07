@@ -115,7 +115,7 @@
 
     if($pecUnsend){ 
         foreach($pecUnsend as $pa){
-            var_dump($pa);
+            //var_dump($pa);
                 $tipo = getInfoReport($pa['tipo_report']);
                 //var_dump($tipo);
                 $istanza = getIstanza($pa['id_RAM']);

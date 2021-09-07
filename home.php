@@ -2,11 +2,16 @@
 session_start();
 require_once 'functions.php';
 
+
+
+
 if(!isUserLoggedin()){
 
   header('Location:index.php');
   exit;
 }
+
+
 /*
 require_once 'model/user.php';
 $updateUrl = 'userUpdate.php';
