@@ -119,7 +119,7 @@ $cat=getCatInc();//var_dump(count($cat));
                     <th >Tipologia</th>
                     <th>Prog</th>
                     <th >Targa</th>
-                    <th >Costo</th>
+                     
                     <th >Note</th>
                    
                 </tr>
@@ -165,7 +165,7 @@ $cat=getCatInc();//var_dump(count($cat));
                             $('#tab_riepilogo_amm > tbody').append(tr)
                            
                         }else{
-                            tr = '<tr>'+categoria+tipologia+prog+targa+costo+note+'</tr>'
+                            tr = '<tr>'+categoria+tipologia+prog+targa+note+'</tr>'
                             $('#tab_riepilogo_resp > tbody').append(tr)
 
                         }
