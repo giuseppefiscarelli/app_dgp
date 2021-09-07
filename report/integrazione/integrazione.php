@@ -35,7 +35,7 @@ try {
     $html2pdf->pdf->SetProtection(array('print','copy'));
     
     
-    //$html2pdf->setDefaultFont('times', 'serif');
+    $html2pdf->setDefaultFont('times', 'serif');
     ob_start();
     include dirname(__FILE__).'/res/integrazione.php';
     
