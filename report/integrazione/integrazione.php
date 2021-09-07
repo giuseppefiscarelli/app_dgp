@@ -43,9 +43,11 @@ try {
     //$html2pdf->writeHTML($content);
     $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
-    var_dump($filename);die;
+    $html2pdf->output($filename.".pdf",'I');
+    //var_dump($filename);die;
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
     //var_dump($html2pdf); die;
+    /*
     if($tipo =="P"){
         $html2pdf->output($filename.".pdf",'I');
     }
@@ -55,7 +57,7 @@ try {
     if($tipo =="S"){
         $html2pdf->output($path.$filename.".pdf",'F');
         echo $filename.".pdf";
-    }
+    }*/
     
    
 } catch (Html2PdfException $e) {
