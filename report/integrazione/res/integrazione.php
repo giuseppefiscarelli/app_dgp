@@ -6,7 +6,7 @@
     <page_header> 
         <table width="75%" style="margin:30px;">
            
-            <tr><td>Direttore Operativo</td>
+            <tr><td style="font-family: 'Times New Roman', Times, serif;text-align:center;">Direttore Operativo</td>
             </tr>
 
         </table>
