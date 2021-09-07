@@ -12,8 +12,8 @@ session_start();
  */
 require_once  '../../vendor/autoload.php';
 require_once  '../../model/istanze.php';
-//require_once  '../../functions.php';
-var_dump($_SESSION);die;
+require_once  '../../functions.php';
+
 /*
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
