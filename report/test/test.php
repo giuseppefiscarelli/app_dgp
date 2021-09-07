@@ -1,6 +1,6 @@
 <?php
 require_once  '../../vendor/autoload.php';
-//require_once  '../../model/istanze.php';
+require_once  '../../model/istanze.php';
 //require_once  '../../functions.php';
 
 use Spipu\Html2Pdf\Html2Pdf;
