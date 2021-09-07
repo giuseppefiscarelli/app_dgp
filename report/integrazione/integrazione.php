@@ -38,7 +38,7 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 
 try {
     $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5, 5, 5, 2),true);
-    $html2pdf->pdf->SetDisplayMode('fullpage');
+    //$html2pdf->pdf->SetDisplayMode('fullpage');
     //$html2pdf->pdf->SetProtection(array('print','copy'));
     //$html2pdf->setDefaultFont('times', 'serif');
     ob_start();
