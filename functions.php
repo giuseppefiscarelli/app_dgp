@@ -76,6 +76,9 @@
   function getUserRole(){
     return $_SESSION['userData']['roletype'] ?? '';
   } 
+  function getEnablePec(){
+    return $_SESSION['userData']['pec_enable'] ?? '';
+  }
   function isUserAdmin(){
     return getUserRole() === 'admin';
   }
