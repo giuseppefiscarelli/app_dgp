@@ -12,26 +12,13 @@
  */
 require_once  '../../vendor/autoload.php';
 require_once  '../../model/istanze.php';
-require_once  '../../functions.php';
+//require_once  '../../functions.php';
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
 $tipo = $_GET['tipo'];
 //var_dump($rep);die; 
-/*
-//$contrId = intval($data['id_contratto']);
-$contrId = intval($_GET['id']);
-//var_dump($contrId);die;
-$contr = getContratto($contrId);
 
-$cliId = $contr['id_cliente'];
-$motoId = $contr['id_veicolo'];
-$cli= getClientecf($cliId);
-$m=getMotosel($motoId);
-$acc=getAccessori($contrId);
-//$quest = getValutazione($trId);
-//var_dump($tr);die;
-*/
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
