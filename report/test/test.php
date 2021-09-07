@@ -1,5 +1,5 @@
 <?php
-var_dump($GLOBALS['mysqli']);die;
+
 require_once  '../../vendor/autoload.php';
 //require_once  '../../model/istanze.php';
 //require_once  '../../functions.php';
