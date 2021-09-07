@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Html2Pdf Library - example
  *
