@@ -17,7 +17,6 @@ $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
 $tipo = $_GET['tipo'];
-var_dump($rep);die;
 /*
 //$contrId = intval($data['id_contratto']);
 $contrId = intval($_GET['id']);
