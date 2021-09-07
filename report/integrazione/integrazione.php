@@ -12,6 +12,7 @@
  */
 require_once  '../../vendor/autoload.php'; 
 require_once  '../../model/istanze.php';
+var_dump($_GET); die;
 /*
 require_once  '../../functions.php';
 
