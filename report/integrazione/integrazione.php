@@ -33,12 +33,12 @@ try {
     //$html2pdf->pdf->SetDisplayMode('fullpage');
     //$html2pdf->pdf->SetProtection(array('print','copy'));
     //$html2pdf->setDefaultFont('times', 'serif');
-    ob_start();
+    //ob_start();
     //include dirname(__FILE__).'/res/integrazione.php';
     
      
     $pathReport= "/inv2020/report/";
-    $content = ob_get_clean();
+    //$content = ob_get_clean();
     $path = $pathReport;
     //$html2pdf->writeHTML($content);
     $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
