@@ -13,10 +13,14 @@
 require_once  '../../vendor/autoload.php';
 require_once  '../../model/istanze.php';
 //require_once  '../../functions.php';
+/*
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
+*/
 $tipo = $_GET['tipo'];
+
+
 //var_dump($rep);die; 
 
 use Spipu\Html2Pdf\Html2Pdf;
