@@ -36,7 +36,7 @@ try {
     //include dirname(__FILE__).'/res/integrazione.php';
     
      
-    
+    $pathReport= "/inv2020/report/";
     $content = ob_get_clean();
     $path = $pathReport;
     //$html2pdf->writeHTML($content);
