@@ -43,7 +43,7 @@
     background-color: #DDDDFF; 
     border-bottom: solid 1mm #AAAADD; 
     padding: 2mm ;
-    font-family: 'Times New Roman', Times, serif;
+   
     }
     table.page_footer {
 					width: 91%;
