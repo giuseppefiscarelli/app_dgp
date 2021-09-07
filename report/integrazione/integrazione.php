@@ -51,7 +51,7 @@ try {
     $html2pdf->writeHTML($content);
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
-    var_dump($html2pdf); die;
+    //var_dump($html2pdf); die;
     if($tipo =="P"){
         $html2pdf->output($filename.".pdf",'I');
     }
