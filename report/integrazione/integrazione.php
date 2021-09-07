@@ -41,8 +41,7 @@ try {
     $pathReport= "/inv2020/report/";
     $content = ob_get_clean();
     $path = $pathReport;
-    //$html2pdf->writeHTML($content);
-    $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
+    $html2pdf->writeHTML($content);
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     $html2pdf->output();
     //var_dump($filename);die;
