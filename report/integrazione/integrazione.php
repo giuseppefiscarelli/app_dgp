@@ -33,6 +33,9 @@ try {
     $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5, 5, 5, 2),true);
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->pdf->SetProtection(array('print','copy'));
+    $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
+    $html2pdf->output();
+    /*
     //$html2pdf->setDefaultFont('times', 'serif');
     ob_start();
     include dirname(__FILE__).'/res/integrazione.php';
@@ -44,9 +47,7 @@ try {
     $html2pdf->writeHTML($content);
     $filename = $rep['id']."_".$rep['id_RAM']."_".time();
     $html2pdf->output();
-    //var_dump($filename);die;
-    //$html2pdf->createIndex('Sommaire', 30, 12, false, true, 2, null, '10mm');
-    //var_dump($html2pdf); die;
+    
     
     if($tipo =="P"){
         $html2pdf->output($filename.".pdf",'I');
@@ -58,7 +59,7 @@ try {
         $html2pdf->output($path.$filename.".pdf",'F');
         echo $filename.".pdf";
     }
-    
+    */
    
 } catch (Html2PdfException $e) {
     $html2pdf->clean();
