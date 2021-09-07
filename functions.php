@@ -69,10 +69,10 @@
   }
   function getUserLoggedInFullname(){
     return $_SESSION['userData']['username'] ?? '';
-  }/*
+  }
   function getEnablePec(){
     return $_SESSION['userData']['pec_enable'] ?? '';
-  }*/
+  }
   function getUserLoggedInId(){
     return $_SESSION['userData']['id'] ?? '';
   }
