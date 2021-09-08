@@ -478,10 +478,20 @@ switch ($action){
       /*elseif($check_stato_istruttoria){
         $status_istr = $check_stato_istruttoria;
       }*/
-     
+      $veicoli=getVeicoli($data['id_RAM']);
+      $check_ammissione = 0;
+      foreach($veicoli as $v){
+        
+          if($v['stato_admin']=='A'||$v['stato_admin']==null){
+              $check_ammissione++ ;
+          }
+          
+          
+      }
       $json = array(
         'res' => $res,
-        'status' => $status_istr
+        'status' => $status_istr,
+        'check'=> $check_ammissione
       );
 
       echo json_encode($json);

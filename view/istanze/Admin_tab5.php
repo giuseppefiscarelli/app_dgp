@@ -39,6 +39,10 @@ foreach($veicoli as $v){
 if($check_ammissione==0){
     array_push($ena_report, 3);
 }
+if($check_stato_istruttoria){
+    $ena_report = [];
+    $disable_istr  = true;
+}
 //var_dump($check_ammissione);
 //var_dump($ena_report);
 
@@ -50,7 +54,6 @@ if($check_ammissione==0){
  <i class="fa fa-plus" aria-hidden="true"> </i> Nuova Richiesta di Integrazione
 </button>
  -->
-
 <div class="row">
     <div class="col-12 col-lg-6">
     <!--start card-->
@@ -284,10 +287,16 @@ if($check_ammissione==0){
                                               if(results.status.tipo_report == 1){
                                                 text_istr = 'Integrazione';
                                                 type_istr = 'warning';
+                                                if(results.status.data_invio){
+                                                $("#tipo_report option[value='1']").attr('disabled', false);
+                                                $("#lista_report").append('<li>Richiesta di integrazione</li>');
+                                                }
                                                 $("#tipo_report option[value='2']").attr('disabled', false);
                                                 $("#lista_report").append('<li>Preavviso al Rigetto</li>');
-                                                $("#tipo_report option[value='3']").attr('disabled', false);
-                                                $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
+                                                if(result.check == 0 ){
+                                                    $("#tipo_report option[value='3']").attr('disabled', false);
+                                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
+                                                }
 
                                               }
                                               if(results.status.tipo_report == 2){
@@ -370,10 +379,6 @@ if($check_ammissione==0){
                 }) 
         $('#reportMail').modal('toggle');
     }
-    function saveMail(event){
-       
-      
-    }
     function saveReport(id){
                 prot_RAM=$('input[name="prot_RAM"]').val();
                 data_prot=$('input[name="data_prot"]').val();
@@ -393,16 +398,18 @@ if($check_ammissione==0){
                                 $("#tipo_report option[value='2']").attr('disabled', true);
                                 $("#tipo_report option[value='3']").attr('disabled', true);
                                 $("#tipo_report option[value='4']").attr('disabled', true);
+                               
                                 $('#lista_report > li').remove();
+                                $("#lista_report").append('<li>Nessun Report Disponibile</li>');
                                 if(data.tipo_report==1){
                                     td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                                     td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
                                     text_istr = 'Integrazione';
                                     type_istr = 'warning';
-                                    $("#tipo_report option[value='2']").attr('disabled', false);
+                                    /*$("#tipo_report option[value='2']").attr('disabled', false);
                                     $("#lista_report").append('<li>Preavviso al Rigetto</li>');
                                     $("#tipo_report option[value='3']").attr('disabled', false);
-                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
+                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');*/
 
 
                                 }else if(data.tipo_report==2){
@@ -410,22 +417,22 @@ if($check_ammissione==0){
                                     td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
                                     text_istr = 'Preavviso di rigetto';
                                     type_istr = 'warning';
-                                    $("#tipo_report option[value='4']").attr('disabled', false);
-                                    $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');
+                                   /* $("#tipo_report option[value='4']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');*/
 
                               }else if(data.tipo_report==3){
                                     td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                                     td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
                                     text_istr = 'Ammessa';
                                     type_istr = 'success';
-                                    $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                                    //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
 
                               }else if(data.tipo_report==4){
                                     td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                                     td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
                                     text_istr = 'Rigettata';
                                     type_istr = 'danger';
-                                    $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                                    //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
 
                               }
                               td4+='<button type="button" onclick="delRep('+data.id+', '+data.id_RAM+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'

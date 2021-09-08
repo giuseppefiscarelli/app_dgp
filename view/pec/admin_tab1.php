@@ -143,7 +143,7 @@
                             <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Componi Messaggio " onclick="msgModal(<?=$pa['id']?>,<?=$pa['tipo_report']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec" onclick="delRep(<?=$pa['id']?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                         </div>
 
@@ -351,5 +351,44 @@
         $('#name_alle').html(f.name)
         $('#btnSubmitPec').prop('disabled', false);
     })
+    function delRep(id){
+        
+        Swal.fire({
+                  title: 'Vuoi eliminare il report?',
+                  text: "Non potrai più recuperarlo",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'SI Eliminalo!',
+                  cancelButtonText: 'NO, Annulla!'
+                  }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "POST",
+                                url: "controller/updatePec.php?action=delReport",
+                                data: {id:id},
+                                dataType: "json",
+                                success: function(results){
+                                    Swal.fire({
+                                        title: 'Report eliminato correttamente',
+                                        text: "Non potrai più recuperarlo",
+                                        icon: 'success',
+                                        
+                                        }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                                    location.reload()
+                                                        }
+                                                        });     
+                                       
+                                         
+                                }
+
+                            })
+
+
+                        }
+                  })
+    }
    
 </script>

@@ -68,4 +68,9 @@ switch ($action){
      }
       echo json_encode($res2);
     break;
+    case 'delReport': 
+      $data = $_REQUEST;
+      $res= delReport($data['id']);
+      echo json_encode($res);
+    break;
 }

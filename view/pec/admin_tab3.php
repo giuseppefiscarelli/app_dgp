@@ -123,7 +123,7 @@
 <?php  if(getEnablePec()){?>
                                 <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec " onclick="msgModalPec(<?=$pa['id']?>, <?=$pa['id_RAM']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
 <?php } ?>
-                                <button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec"><i class="fa fa-trash" aria-hidden="true"></i></button>
+<button type="button" class="btn btn-danger btn-sm" style="padding: 5px 12px;"title="Elimina Pec" onclick="delRep(<?=$pa['id']?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
                             </div>
 
@@ -145,24 +145,41 @@
 </div>
 <script>
 
-function msgModalPec(id, idRAM){     
-        $.ajax({
-            type: "POST",
-            url: "controller/updatePec.php?action=testSendMail",
-            data: {id:id, id_RAM:idRAM},
-            dataType: "json",
-            success: function(data){
-                console.log(data)
-                localStorage.setItem('currentTab','nav-vertical-tab-bg3');
-                Swal.fire({
-                            title:"Operazione Completata!",
-                            html:"Pec inviata correttamente.",
-                            icon:"success"}).then((result) => {
-                                                        if (result.isConfirmed) {
-                                                                    location.reload()
-                                                        }
-                                                        });
-            }
-        });
-    }
+function msgModalPec(id, idRAM){    
+    
+    Swal.fire({
+                  title: 'Invio Pec',
+                  text: "Vuoi inviare la comunicazione?",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'SI Inviala!',
+                  cancelButtonText: 'NO, Annulla!'
+                  }).then((result) => {
+                        if (result.isConfirmed) {
+  
+
+
+                        $.ajax({
+                            type: "POST",
+                            url: "controller/updatePec.php?action=testSendMail",
+                            data: {id:id, id_RAM:idRAM},
+                            dataType: "json",
+                            success: function(data){
+                                console.log(data)
+                                localStorage.setItem('currentTab','nav-vertical-tab-bg3');
+                                Swal.fire({
+                                            title:"Operazione Completata!",
+                                            html:"Pec inviata correttamente.",
+                                            icon:"success"}).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                                    location.reload()
+                                                                        }
+                                                                        });
+                            }
+                        });
+                        }
+                  })
+}
 </script>

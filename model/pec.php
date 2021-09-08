@@ -413,3 +413,32 @@ function upReportSendMail($data){
   return $result;
 
 }
+function delReport($id){
+  /**
+  * @var $conn mysqli
+  */
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+ 
+  
+
+
+  $sql ='UPDATE report SET ';
+  $sql .= "attivo = 0 ";
+  
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+
+
+}
