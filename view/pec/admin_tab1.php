@@ -312,6 +312,9 @@
               
             url: reportDir+"?id="+formData.get('id')+"&tipo=S",
             type:"POST",
+            error:function(){ 
+                Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
+            },
             success: function(filename){
                 formData.append('nome_file',filename)
                

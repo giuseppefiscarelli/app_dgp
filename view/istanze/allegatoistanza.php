@@ -34,11 +34,10 @@
                                                             
                                                             <button id="open_<?=$tipo?>"type="button" onclick="window.open('allegato.php?id=<?=$alle['id']?>', '_blank')"class="btn btn-primary btn-xs" title="Visualizza Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-archive-o" aria-hidden="true"></i></button>
                                                             <a d="down_<?=$tipo?>"type="button" href="download.php?id=<?=$alle['id']?>" download class="btn btn-success btn-xs" title="Download Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                                            <?php
+                                                            <?php 
                                                                    if(!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true){?>
                                                             <button id="del_<?=$tipo?>" type="button" onclick="delAlle(<?=$alle['id']?>,this);"class="btn btn-danger btn-xs" title="Elimina Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                                            <?php
-                                                        }?>
+                                                            <?php }?>
                                                         </div>
 
                                                     </td>

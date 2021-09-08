@@ -88,7 +88,7 @@
     </page_footer>
     <page_header> 
         <table width="75%" style="margin:30px;">
-            <tr><td><img style="width:180px;display:inline;"  src="../../images/RAM nuovo logo.png"></td></tr>
+            <tr><td><img style="width:180px;display:inline;"  src="../../images/ram_nuovo_logo.png"></td></tr>
             <tr><td style="font-family: 'Times New Roman', Times, serif;text-align:center;">Direttore Operativo</td>
             </tr>
 
@@ -170,7 +170,7 @@ Cordiali saluti</td></tr>
     </table>
     <table style="margin-left:400px;margin-top:30px;">
     
-    <tr><td><img style="width:180px;display:inline;"  src="../../images/firma_FB.png"></td></tr>
+    <tr><td><img style="width:180px;display:inline;"  src="../../images/firma_fb.png"></td></tr>
 
     </table>
 </div>    

@@ -263,7 +263,7 @@ identità del legale rappresentante dell’impresa)</b>, tramite posta elettroni
 
     <table style="margin-left:400px;margin-top:10px;">
     
-    <tr><td><img style="width:75%;display:inline;"  src="../../images/Firma_resp.png"></td></tr>
+    <tr><td><img style="width:75%;display:inline;"  src="../../images/firma_resp.png"></td></tr>
 
     </table>
     </page>
