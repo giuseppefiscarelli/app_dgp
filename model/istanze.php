@@ -1288,12 +1288,14 @@ function upAlleAdmin($data){
   $note_admin= $data['note_admin'];
   $stato_admin= $data['stato_admin'];
   $data_admin= date("Y/m/d H:i:s");
+  $user_admin = $_SESSION['userData']['email'];
   $result=0;
   
   $sql ='UPDATE allegato SET ';
   $sql .= "note_admin = '$note_admin'";
   $sql .= ", stato_admin = '$stato_admin'";
   $sql .= ", data_admin = '$data_admin'";
+  $sql .= ", user_admin = '$user_admin'";
   $sql .=' WHERE id = '.$id;
   //print_r($data);
  // echo $sql;die;
@@ -2950,6 +2952,7 @@ function  upCert($data){
  
    $conn = $GLOBALS['mysqli'];
    $result=0;
+   $user_mod = $_SESSION['userData']['email'];
    $id_ram = $data['id_ram'];
    $tipo = $data['tipo'];
    $note = $data['note'];
@@ -2970,7 +2973,7 @@ function  upCert($data){
     }
    
    $sql ='UPDATE istanza_check SET ';
-   $sql .= "$tipo = $select, $campo_note = '$note' ";
+   $sql .= "$tipo = $select, $campo_note = '$note', user_mod = '$user_mod' ";
    $sql .=' WHERE id_ram = '.$id_ram;
    //print_r($data);
    //echo $sql;//die;
