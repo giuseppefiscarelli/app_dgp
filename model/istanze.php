@@ -3121,7 +3121,7 @@ function getStatusIstruttoria_test($id_RAM){
 
     $conn = $GLOBALS['mysqli'];
       $result=[];
-      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato = 'B' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato = 'B' and attivo = true)" ;
+      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato != 'C' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato != '' and attivo = true)" ;
       
      // echo $sql;
       $res = $conn->query($sql);
