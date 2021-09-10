@@ -148,8 +148,8 @@ foreach ($data as $d){
     if ($d['art_dm'] =='5A'){
         $qnt5A = $d['qta'];
         $contr5A = $d['contributo'];
-        $pmi5A = $d['pmi_contr']?10:0;
-        $rete5A = $d['rete_contr']?10:0;
+        $pmi5A = $d['pmi_contr']==true?10:0;
+        $rete5A = $d['rete_contr']==true?10:0;
         $tot5A = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
     if ($d['art_dm'] =='5B'){

@@ -340,7 +340,7 @@ if($status_istr && $status_istr['id']){
            <?php
             require "inforend.php";
 
-            
+            //var_dump($activeIst);   
 
             require "alleistanza2.php";
             ?>

@@ -23,6 +23,7 @@ $calcContributo=calcolaContributo($testData);
 //var_dump($alleampl);
 $c_iCheck = false;
 $c_i = checkIstanza($i['id_RAM']);
+
 /*$checkAlle = getAllegatiCheck($i['id_RAM']);
 if($c_i){
     if($c_i['pec']&&$c_i['firma']&&$c_i['doc']&&$c_i['contratto']&&$c_i['delega']&&$c_i['dim_impresa']){
@@ -431,7 +432,7 @@ var_dump($checkAlle);*/
 
 <script>
     function infoCert(idRam,tipo,title){
-        $('#note_check_cert').html('');
+        $('#note_check_cert').val('');
                 if(tipo == 'dim_impresa'){
                     $('#select_dim_impresa').show();
                     $('#select_all').hide()

@@ -275,7 +275,10 @@ function getIstanze( array $params = []){
           $orderDir = 'ASC';
         }
         $records = [];
-
+        $data_inizio = '';
+        $data_fine = '';
+        $data_rend_inizio = '';
+        $data_rend_fine = '';
         if ($search3){
           $tipo= getTipoIstanza($search3);
           $data_inizio = $tipo['data_invio_inizio'];
@@ -447,6 +450,10 @@ function countIstanze( array $params = []){
         }
         $now=date("Y-m-d H:i:s");
         $totalUser = 0;
+        $data_inizio = '';
+        $data_fine = '';
+        $data_rend_inizio = '';
+        $data_rend_fine = '';
         if ($search3){
           $tipo= getTipoIstanza($search3);
           $data_inizio = $tipo['data_invio_inizio'];
@@ -2958,6 +2965,7 @@ function  upCert($data){
    $note = $data['note'];
    $campo_note = 'note_'.$tipo;
    $check = $data['tipo'];
+   $data_mod= date("Y-m-d H:i:s");
    if($tipo == 'dim_impresa'){
      $select = $data['select'];
    }else{
@@ -2973,7 +2981,7 @@ function  upCert($data){
     }
    
    $sql ='UPDATE istanza_check SET ';
-   $sql .= "$tipo = $select, $campo_note = '$note', user_mod = '$user_mod' ";
+   $sql .= "$tipo = $select, $campo_note = '$note', user_mod = '$user_mod', data_mod = '$data_mod' ";
    $sql .=' WHERE id_ram = '.$id_ram;
    //print_r($data);
    //echo $sql;//die;
