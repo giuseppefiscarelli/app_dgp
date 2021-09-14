@@ -690,6 +690,7 @@ switch ($action){
       break;
     case 'getRiepilogo':
       $id_RAM = $_REQUEST['idRAM'];
+
       $veiRiep = getVeicoli($id_RAM);
       $datavei = array();
       $totcosto=0;
@@ -697,11 +698,23 @@ switch ($action){
       $totpmi = 0;
       $totrete = 0;
       $tottotale=0;
+      $check_rottamazione = false;
+      $check_rottamazione = checkMaggRottamazione($id_RAM);
       foreach($veiRiep as $v){
        
             $tipo = getTipoVeicolo($v['tipo_veicolo']);
             $categ = getCategoria($tipo['codice_categoria_incentivo']);
             if($v['stato_admin'] == 'B'){
+              /*
+              $check_rott = checkRott($id_RAM,$v['tipo_veicolo']);
+        
+              if($check_rott){
+                $checkveirott = checkVeiRott($id_RAM,$v['tipo_veicolo'],$v['progressivo']);
+                if($checkveirott){
+                  $check_rottamazione = true;
+                }
+               
+              }*/
                 $totale = $v['valore_contr']+$v['pmi_istr']+$v['rete_istr'];
                 $totcosto += $v['costo_istr'];
                 $totcontr  +=  $v['valore_contr'];
@@ -725,6 +738,7 @@ switch ($action){
             );
             array_push($datavei,$veicolo); 
       }
+      
      
       $json= array(
         'datavei' => $datavei,
@@ -732,7 +746,8 @@ switch ($action){
         'totcontr'=> $totcontr,
         'totpmi' => $totpmi,
         'totrete' => $totrete,
-        'tottotale' => $tottotale
+        'tottotale' => $tottotale,
+        'rottamazione' => $check_rottamazione?true:false
       );
      echo json_encode($json);
       break;

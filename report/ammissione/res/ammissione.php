@@ -124,7 +124,7 @@
        </tr>
 
        <tr >
-        <td style=" border: 1px solid black;padding:3px;" rowspan="4">Art.1, comma 5, lett a)</td>
+        <td style=" border: 1px solid black;padding:3px;" rowspan="5">Art.1, comma 5, lett a)</td>
         <td style=" border: 1px solid black;padding:3px;">Art.3, comma 2, lett a)</td>
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=$qnt2A?></td>
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($contr2A, 2, ',', '.').' €' ?></td>
@@ -151,6 +151,11 @@
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($contr2D, 2, ',', '.').' €' ?></td>
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=$pmi2D+$rete2D?> %</td>
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($tot2D, 2, ',', '.').' €' ?></td>
+       </tr>
+       <tr>
+       <td style=" border: 1px solid black;border-left: 0px ;padding:3px;text-align:right;" colspan="4">Maggiorazione Rottamazione</td>
+       
+        <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($contr_rottamazione, 2, ',', '.').' €' ?></td>
        </tr>              
     
 

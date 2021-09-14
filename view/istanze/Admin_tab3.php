@@ -89,14 +89,14 @@ $cat=getCatInc();//var_dump(count($cat));
                 </tr>    
                 <tr>
                     <th>Categoria</th>
-                    <th>Tipologia</th>
+                    <th  style="text-align:center;">Tipologia</th>
                     <th>Prog</th>
-                    <th>Targa</th>
-                    <th>Costo</th>
-                    <th>Contributo</th>
+                    <th  style="text-align:center;">Targa</th>
+                    <th  style="text-align:center;">Costo</th>
+                    <th style="text-align:center;">Contributo</th>
                     <th style="background-color: #06c6;text-align:center;">PMI</th>
                     <th style="background-color: #06c6;text-align:center;">Rete Imprese</th>
-                    <th style="background-color: #d6dce3;">Totale</th>
+                    <th style="background-color: #d6dce3;text-align:right;">Totale</th>
                 </tr>
             </thead>
             <tbody>
@@ -171,6 +171,14 @@ $cat=getCatInc();//var_dump(count($cat));
                         }
                         
                     })
+                    if(data.rottamazione== true){
+                        data.tottotale += 2000;
+                        rottamazione = parseFloat(2000).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
+                        foot='<tr style="font-weight:bold;"><td colspan="6" style="text-align:right;"> Maggiorazione Rottamazione</td><td colspan="2" style="background-color: #bfd4ea;"></td>';
+                        foot +='<td style="background-color: #d6dce338;text-align:right;">'+rottamazione+'</td>'
+                        foot+='</tr>'
+                        $('#tab_riepilogo_amm > tfoot').append(foot)
+                    }
                     totcontr=parseFloat(data.totcontr).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                     totcosto=parseFloat(data.totcosto).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                     totpmi=parseFloat(data.totpmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});

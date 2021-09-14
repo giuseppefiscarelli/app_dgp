@@ -3194,6 +3194,49 @@ function checkRott($id_RAM,$tv){
   
   
 }
+function checkVeiRott($id_RAM,$tipo_veicolo,$progressivo){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ="SELECT * FROM allegato WHERE id_RAM = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and tipo_documento = 14 and stato_admin = 'B'" ;
+      //echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
+  
+  
+}
+function checkMaggRottamazione($id_RAM){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $rott=0;
+  $sql ="SELECT COUNT(*) as rottamazione FROM veicolo  JOIN allegato ON  veicolo.id_RAM = allegato.id_ram AND veicolo.tipo_veicolo = allegato.tipo_veicolo AND veicolo.progressivo = allegato.progressivo WHERE allegato.tipo_documento = 14 AND allegato.stato_admin = 'B' AND allegato.id_RAM = $id_RAM AND allegato.stato_admin ='B' AND allegato.tipo_veicolo < 12" ;
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+   
+  $res = $conn->query($sql);
+  if($res) {
+
+   $row = $res->fetch_assoc();
+   $rott = $row['rottamazione'];
+  }
+
+return $rott;
+
+
+}
 function getStatusIstruttoria($id_RAM){
 
   /**

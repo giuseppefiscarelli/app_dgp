@@ -109,6 +109,6 @@ $tipiReport=getTipireport();
 $userIns= getUserIns();
 $edizioni = getTipiIstanza();
 //var_dump($userIns);
-var_dump($envProd);
+//var_dump($envProd);
 require_once 'view/pec/pecAdmin.php';
 ?>

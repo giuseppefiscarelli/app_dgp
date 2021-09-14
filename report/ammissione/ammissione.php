@@ -18,7 +18,11 @@ $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
 $data_RAM = getistanzaView($rep['id_RAM']);
 $tipo_istanza= getTipoIstanza($user['tipo_istanza']);
-
+$contr_rottamazione = 0;
+$check_rottamazione = checkMaggRottamazione($rep['id_RAM']);
+if($check_rottamazione){
+    $contr_rottamazione = 2000;
+}
 $prot=0;
 $data_prot='';
 $data_verb='';
@@ -171,7 +175,7 @@ foreach ($data as $d){
 }
 //var_dump($data); die;
 
-$totFin = $tot2A+$tot2B+$tot2C+$tot3+$tot4+$tot5A+$tot5B+$tot5B+$tot5C+$tot7;
+$totFin = $tot2A+$tot2B+$tot2C+$tot3+$tot4+$tot5A+$tot5B+$tot5B+$tot5C+$tot7+$contr_rottamazione;
 $tipo = $_GET['tipo'];
 
 use Spipu\Html2Pdf\Html2Pdf;

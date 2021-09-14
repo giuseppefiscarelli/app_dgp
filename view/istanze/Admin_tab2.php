@@ -543,8 +543,14 @@
                                                 if(stato_alle){
                                                     $('.workbtn').hide()
                                                 }
+                                                if(v.tipo_documento == 14 && v.stato_admin=='A'){
+                                                        $('#contr_rottamazione').text('Prevista')
+                                                }
                                                 if(v.tipo_documento == 14 && v.stato_admin=='B'){
                                                         $('#contr_rottamazione').text('Calcolata')
+                                                }
+                                                if(v.tipo_documento == 14 && v.stato_admin=='C'){
+                                                        $('#contr_rottamazione').text('Non Calcolata')
                                                 }
 
                                          })
