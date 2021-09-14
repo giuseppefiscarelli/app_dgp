@@ -29,14 +29,16 @@
                     $tipo = getTipoVeicolo($v['tipo_veicolo']);
                     //var_dump($v['tipo_veicolo']);
                     //var_dump($tipo);
-                    $rottamazione = false;
+                    $checkRott = checkRott($i['id_RAM'],$v['tipo_veicolo']);
+                   // var_dump($checkRott);
+                    /*$rottamazione = false;
                     if($tipo['tpvc_codice'] == 1){
                         $check_string_rottamazione = 'rott'.$v['tipo_veicolo'];
                         if($i[$check_string_rottamazione]){
                            $rottamazione = true;
                         }
                     }
-                    var_dump($rottamazione);
+                    var_dump($rottamazione);*/
                     $categ = getCategoria($tipo['codice_categoria_incentivo']);
                     $countDocVeicolo=countDocVeicolo($v['tipo_veicolo']);
                 
@@ -65,6 +67,14 @@
                     //var_dump($alleok);var_dump($alleno);var_dump($countAlle);
                     $countDocVeicolo = intval($countDocVeicolo);
                     $countDocVeicoloInfo = intval($countDocVeicoloInfo);
+                    if($checkRott){
+                                                       
+                        $countDocVeicoloRottInfo=countDocVeicoloRottInfo($v['id_RAM'],$v['tipo_veicolo'],$v['progressivo']);
+                       // var_dump($countDocVeicoloRottInfo);
+                        $countDocVeicolo = $countDocVeicolo +$countDocVeicoloRottInfo;
+                        //$countDocVeicoloInfo=$countDocVeicoloInfo-$countDocVeicoloRottInfo;
+                        //$countDocVeicoloInfo<0?$countDocVeicoloInfo=0:$countDocVeicoloInfo;
+                    }
                 // var_dump($countDocVeicolo);
                     //var_dump($countDocVeicoloInfo);
                     if($alleok==$countAlle){
@@ -253,7 +263,13 @@
                                     <td style="vertical-align:middle;" id="contr_rete"></td>
                                     <td><span class="input-number input-number-currency">
                                         <input type="number" id="contr_up_rete" name="contr_up_rete" value="0" min="0">
-                                        </span></td></tr>
+                                        </span></td>
+                                </tr>
+                                <tr id="tr_contr_rottamazione" style="display:none;">
+                                    <td style="vertical-align:middle;">Maggiorazione Rottamazione</td>
+                                    <td style="vertical-align:middle;" colspan="2" id="contr_rottamazione"></td>
+                                    
+                                </tr>
                                 <tr><td>Note</td>
                                     <td  colspan="2"> <div class="form-group">
                                                 <textarea id="info_note_admin" rows="3" readonly></textarea>
@@ -418,6 +434,14 @@
                                 $('#istr_table').hide()
                                 $('#alert_istr').show()
                             }
+                            if(data.check_rottamazione){
+                                $('#tr_contr_rottamazione').show();
+                                 $('#contr_rottamazione').text('Prevista')
+
+                            }else{
+                                $('#tr_contr_rottamazione').hide();
+                                 $('#contr_rottamazione').text('')
+                            }
                               $('#id_veicolo').val(data.id)
                               contr = parseFloat(data.val_contributo).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                               val_pmi = parseFloat(data.val_pmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
@@ -487,9 +511,9 @@
                                             $("#stato_istruttoria option[value='B']").attr('disabled', true);
                                             $('#stato_istruttoria').selectpicker('refresh')
                                         }
-                                        console.log(alle)
-                                        console.log(validalle)
-                                        console.log('stato allegato '+stato_alle)
+                                        //console.log(alle)
+                                        //console.log(validalle)
+                                        //console.log('stato allegato '+stato_alle)
                                          $.each(alle, function (k,v){
                                                if(v.stato_admin=='A'){
                                                 stato='<span class="badge badge-warning">In Lavorazione</span>';
@@ -518,6 +542,9 @@
                                                 $('#doctab> tbody:last-child').append(row);
                                                 if(stato_alle){
                                                     $('.workbtn').hide()
+                                                }
+                                                if(v.tipo_documento == 14 && v.stato_admin=='B'){
+                                                        $('#contr_rottamazione').text('Calcolata')
                                                 }
 
                                          })
@@ -661,6 +688,18 @@
                                               }
                                               if(stato_ad=='C'){
                                                stato='<span class="badge badge-danger">Respinto</span>';
+                                              }
+                                              if(data.tipo_documento == 14){
+                                                if(stato_ad=='A'){
+                                                    $('#contr_rottamazione').text('Prevista')
+                                              }
+                                              if(stato_ad=='B'){
+                                                $('#contr_rottamazione').text('Calcolata')
+                                              }
+                                              if(stato_ad=='C'){
+                                                $('#contr_rottamazione').text('Non Calcolata')
+                                              }
+
                                               }
                                               newstato= '#stato_admin_'+id;
                                          $('#stato_admin_'+id).html(stato);

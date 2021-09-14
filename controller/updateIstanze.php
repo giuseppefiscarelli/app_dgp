@@ -136,7 +136,8 @@ switch ($action){
               'accettati' =>  intVal($alleok),
               'respinti' => intVal($alleno),
               'totali' => intVal($countAlle),
-              'id_veicolo'=> $vei['id']
+              'id_veicolo'=> $vei['id'],
+              'tipo_documento'=> $v['tipo_documento']
       );
               //var_dump($res);
 
@@ -223,6 +224,12 @@ switch ($action){
     case 'getInfoVei': 
       $id=$_REQUEST['id'];
       $res =getInfoVei($id);
+      $check_rottamazione = checkRott($res['id_RAM'],$res['tipo_veicolo']);
+      if($check_rottamazione){
+        $res['check_rottamazione'] = true;
+      }else{
+        $res['check_rottamazione'] = false;
+      }
       $c_i = checkIstanza($res['id_RAM']);
       $c_iCheck = false;
       if($c_i){
