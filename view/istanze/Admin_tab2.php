@@ -20,13 +20,23 @@
         <?php
         $veicoli = getVeicoli($i['id_RAM']);
         //var_dump($veicoli);
-        ?>
-            
-
-            <?php
+       
+            $check_ammissione = 0;
                 foreach($veicoli as $v){
+                    if($v['stato_admin']=='A'||$v['stato_admin']==null){
+                        $check_ammissione++;
+                    }
                     $tipo = getTipoVeicolo($v['tipo_veicolo']);
+                    //var_dump($v['tipo_veicolo']);
                     //var_dump($tipo);
+                    $rottamazione = false;
+                    if($tipo['tpvc_codice'] == 1){
+                        $check_string_rottamazione = 'rott'.$v['tipo_veicolo'];
+                        if($i[$check_string_rottamazione]){
+                           $rottamazione = true;
+                        }
+                    }
+                    var_dump($rottamazione);
                     $categ = getCategoria($tipo['codice_categoria_incentivo']);
                     $countDocVeicolo=countDocVeicolo($v['tipo_veicolo']);
                 

@@ -450,6 +450,11 @@ switch ($action){
       $res = delIntDett($data);
       echo json_encode($res);
       break;
+      case 'delIntDettId': 
+        $data = $_REQUEST['id'];
+        $res = delIntDettId($data);
+        echo json_encode($res);
+        break;
     case 'saveReport':
       $data = $_REQUEST;
       //var_dump($data);die;

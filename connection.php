@@ -11,6 +11,7 @@ $mysqli = new mysqli(
     $config['mysql_db']
 );
 $mysqli -> set_charset("utf8");
+//var_dump($config);
  unset($config);
 
  if($mysqli->connect_error){

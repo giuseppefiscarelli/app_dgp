@@ -16,6 +16,8 @@ require_once  '../../functions.php';
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
+$data_RAM = getistanzaView($rep['id_RAM']);
+$tipo_istanza= getTipoIstanza($user['tipo_istanza']);
 
 $prot=0;
 $data_prot='';
@@ -43,7 +45,7 @@ $data_doc='';
     }
     
 $data = reportAmmissione($rep['id_RAM']);
-
+//var_dump($data); die;
 $qnt2A=0;
 $contr2A = 0;
 $pmi2A = 0;
@@ -111,59 +113,59 @@ foreach ($data as $d){
     if ($d['art_dm'] =='2A'){
         $qnt2A = $d['qta'];
         $contr2A = $d['contributo'];
-        $pmi2A = $d['pmi_contr']?10:0;
-        $rete2A = $d['rete_contr']?10:0;
+        $pmi2A = floatval($d['pmi_contr'])?10:0;
+        $rete2A =  floatval($d['rete_contr'])?10:0;
         $tot2A = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
     if ($d['art_dm'] =='2B'){
         $qnt2B = $d['qta'];
         $contr2B = $d['contributo'];
-        $pmi2B = $d['pmi_contr']?10:0;
-        $rete2B = $d['rete_contr']?10:0;
+        $pmi2B =  floatval($d['pmi_contr'])?10:0;
+        $rete2B =  floatval($d['rete_contr'])?10:0;
         $tot2B = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
         
     }
     if ($d['art_dm'] =='2C'){
         $qnt2C = $d['qta'];
         $contr2C = $d['contributo'];
-        $pmi2C = $d['pmi_contr']?10:0;
-        $rete2C = $d['rete_contr']?10:0;
+        $pmi2C =  floatval($d['pmi_contr'])?10:0;
+        $rete2C =  floatval($d['rete_contr'])?10:0;
         $tot2C = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
         
     }
     if ($d['art_dm'] =='3'){
         $qnt3 = $d['qta'];
         $contr3 = $d['contributo'];
-        $pmi3 = $d['pmi_contr']?10:0;
-        $rete3 = $d['rete_contr']?10:0;
+        $pmi3 =  floatval($d['pmi_contr'])?10:0;
+        $rete3 =  floatval($d['rete_contr'])?10:0;
         $tot3 = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
     if ($d['art_dm'] =='4'){
         $qnt4 = $d['qta'];
         $contr4 = $d['contributo'];
-        $pmi4 = $d['pmi_contr']?10:0;
-        $rete4 = $d['rete_contr']?10:0;
+        $pmi4 =  floatval($d['pmi_contr'])?10:0;
+        $rete4 =  floatval($d['rete_contr'])?10:0;
         $tot4 = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
     if ($d['art_dm'] =='5A'){
         $qnt5A = $d['qta'];
         $contr5A = $d['contributo'];
-        $pmi5A = $d['pmi_contr']==true?10:0;
-        $rete5A = $d['rete_contr']==true?10:0;
+        $pmi5A =  floatval($d['pmi_contr'])?10:0;
+        $rete5A =  floatval($d['rete_contr'])?10:0;
         $tot5A = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
     if ($d['art_dm'] =='5B'){
         $qnt5B = $d['qta'];
         $contr5B = $d['contributo'];
-        $pmi25B = $d['pmi_contr']?10:0;
-        $rete5B = $d['rete_contr']?10:0;
+        $pmi25B =  floatval($d['pmi_contr'])?10:0;
+        $rete5B =  floatval($d['rete_contr'])?10:0;
         $tot5B = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
     if ($d['art_dm'] =='7'){
         $qnt7 = $d['qta'];
         $contr7 = $d['contributo'];
-        $pmi7 = $d['pmi_contr']?10:0;
-        $rete7 = $d['rete_contr']?10:0;
+        $pmi7 =  floatval($d['pmi_contr'])?10:0;
+        $rete7 =  floatval($d['rete_contr'])?10:0;
         $tot7 = $d['contributo']+$d['pmi_contr']+$d['rete_contr'];
     }
 }

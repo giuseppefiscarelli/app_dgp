@@ -4,7 +4,49 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
 
 ?>
 
+<style type="text/css">
 
+/* @group Blink */
+.blink {
+ -webkit-animation: blink .75s linear infinite;
+ -moz-animation: blink .75s linear infinite;
+ -ms-animation: blink .75s linear infinite;
+ -o-animation: blink .75s linear infinite;
+ animation: blink .75s linear infinite;
+}
+@-webkit-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@-moz-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@-ms-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@-o-keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+@keyframes blink {
+ 0% { opacity: 1; }
+ 50% { opacity: 1; }
+ 50.01% { opacity: 0; }
+ 100% { opacity: 0; }
+}
+/* @end */
+
+</style>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -146,6 +188,19 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                       //$status=checkRend($i['id_RAM']);
                                       $now=date("Y-m-d H:i:s");
                                       $status_istr= getStatusIstruttoria($i['id_RAM']);
+                                      $check_stato_istruttoria= getStatusIstruttoria_test($i['id_RAM']);
+                                        //var_dump($status_istr);
+                                        //var_dump($check_stato_istruttoria);
+                                     
+                                        if($status_istr && $check_stato_istruttoria){
+                                          //if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
+                                            $status_istr = $check_stato_istruttoria;
+                                            //echo 'qui';
+                                          //}
+                                        }elseif($check_stato_istruttoria){
+                                          $status_istr = $check_stato_istruttoria;
+                                        }
+                                        
                                       //var_dump($status_istr);
                                       ?>
                             <tr>
@@ -160,8 +215,30 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                       
                                 </td>
                                 <td>
-                                <?php
-                                        if($status_istr){
+                                <?php 
+                                      if ($i['stato_report']&&$i['tipo_report']){
+                                        $tipo_report = getTipoRepFull($i['tipo_report']);
+                                        
+                                        $text_istr = $tipo_report['badge_text'];
+                                        $type_istr = $tipo_report['style'];
+                                        if($i['stato_report']=='B'){
+                                       
+                                          if($i['data_ins_report']){
+                                            $span_istr = '<b class="blink">Pec da convalidare</b>';
+                                          }
+                                          if($i['data_conv_report']){
+                                            $span_istr = '<b class="blink">Pec da inviare</b>';
+                                          }
+                                        }
+                                        if($i['stato_report']=='C'){
+                                            $span_istr = 'Pec inviata il '.date("d/m/Y",strtotime($i['data_invio_report']));
+                                        }?>
+ <span class="badge badge-pill badge-<?=$type_istr?>"><?=$text_istr?></span><br>
+                                            <?=$span_istr?>
+                                        <?php
+                                      }
+                                     
+                                        /*if($status_istr){
                                             if($status_istr['tipo_report'] === '1'){
                                                 $text_istr = 'Integrazione';
                                                 $type_istr = 'warning';
@@ -177,10 +254,20 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                             if($status_istr['tipo_report'] === '4'){
                                               $text_istr = 'Rigettata';
                                               $type_istr = 'danger';
-                                            }?>
+                                            }
+                                            if($status_istr['data_invio']){
+                                              $span_istr = 'Pec inviata il '.date("d/m/Y",strtotime($status_istr['data_invio']));
+                                              
+                                            }else{
+                                              //$span_istr='<span class="badge badge-'.$type_istr.' blink">'.$text_istr.'</span>';
+                                              $span_istr = '<b class="blink">Pec da inviare</b> '; 
+                                            }
+                                           
+                                            ?>
                                              <span class="badge badge-pill badge-<?=$type_istr?>"><?=$text_istr?></span><br>
-                                             Pec inviata il <?=date("d/m/Y H:i:s", strtotime($status_istr['data_invio']))?>
-                                      <?php   }?>
+                                            <?=$span_istr?>
+                                      <?php   }*/?>
+                                     
                                 </td>
                                
                                 <td>

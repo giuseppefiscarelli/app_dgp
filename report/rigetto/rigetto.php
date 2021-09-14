@@ -15,6 +15,10 @@ require_once  '../../model/istanze.php';
 require_once  '../../functions.php';
 $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
+$data_RAM = getistanzaView($rep['id_RAM']);
+$tipo_istanza= getTipoIstanza($user['tipo_istanza']);
+
+//var_dump($user);die;
 $dettagli = getDettReport($_GET['id']);
 $tipo = $_GET['tipo'];
 //var_dump($user);die;

@@ -42,6 +42,7 @@ if(!empty($_POST)){
         $result['user']['status'] = 'online';
         if(!isUserUser()){
             $enableAccess = isset($_SESSION['userData']['network']);
+            //var_dump($enableAccess);die;
             if($enableAccess){
               
                 $ip_abilitati = explode(",", $_SESSION['userData']['network']);

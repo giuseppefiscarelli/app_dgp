@@ -292,6 +292,7 @@
     $IstrPreavviso =countIstanze($params);
     $params['search5']='C';
     $IstrAmmessa =countIstanze($params);
+    $params['search4']='';
     $params['search5']='D';
     $IstrRigettata =countIstanze($params);
    

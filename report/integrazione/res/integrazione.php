@@ -1,4 +1,4 @@
-<page pagegroup="new"  style="font-size:14px" backtop="40mm" backleft="15mm" backright="15mm" backbottom="10mm">
+<page pagegroup="new"  style="font-size:14px" backtop="30mm" backleft="15mm" backright="15mm" backbottom="10mm">
 	
 <style>
 	.testoParagrafo {
@@ -87,7 +87,7 @@
         </table>
     </page_footer>
     <page_header> 
-        <table width="75%" style="margin:30px;">
+        <table width="75%" style="margin-top:30px;margin-left:30px;">
             <tr><td><img style="width:180px;display:inline;"  src="../../images/ram_nuovo_logo.png"></td></tr>
             <tr><td style="font-family: 'Times New Roman', Times, serif;text-align:center;">Direttore Operativo</td>
             </tr>
@@ -106,23 +106,23 @@
         <tr><td></td><td colspan="2" style="width:100mm;justify-content:left;"><?=$user['indirizzo_impr']?>, <?=$user['civico_impr']?></td></tr>
         <tr><td></td><td colspan="2" style="width:100mm;justify-content:left;"><?=$user['cap_impr']?> - <?=$user['comune_impr']?> (<?=$user['prov_impr']?>)</td></tr>
     </table>
-    <table style="margin-top:45px;">
-        <tr><td style="text-align:right;">Prot n°</td><td  style="font-weight:bold;"> <?=$rep['prot_RAM']?></td></tr>
+    <table style="margin-top:30px;"><tr><td style="text-align:left;">Prot n°</td><td  style="font-weight:bold;"><?=$rep['prot_RAM']?></td></tr></table>
+    <table>    
         <tr><td style="text-align:right;">Raccomandata via pec all&#39;indirizzo: </td><td  style="font-weight:bold;"> <?=$user['pec_impr']?></td></tr>
     </table>
 
     <table style="width:70%;margin-right:50mm">
         <tr><td style="font-weight:bold;text-align:justify;vertical-align:top;">Oggetto:</td><td style="width:150mm;font-weight:bold;text-align:justify;">Contributi ai sensi del D.D. 7 agosto 2020 n.145 per le finalità di cui al D.M.
-                                                                        12 maggio 2020 n. 203 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;..</td></tr>
+                                                                        12 maggio 2020 n. 203 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.</td></tr>
     </table>
     <table>
-        <tr><td style="text-align:justify;"> In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e dei Trasporti,
+        <tr><td style="text-align:justify;"> In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili
             della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche
-            effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.A. In / 2020 abbiamo
+            effettuate, per poter istruire la Vostra istanza <b>prot. R.A.M. S.p.a. In <?=$rep['id_RAM']?>/<?=$tipo_istanza['anno']?></b> abbiamo
             necessità di ricevere i seguenti chiarimenti e/o documenti:</td></tr>
     </table>
 
-    <div class="row"style="max-height:200px;margin-top:20px;">               
+             
     <table>
         <?php
         //var_dump($dettagli);
@@ -133,17 +133,16 @@
     
     
     </table>
-                
-    </div> 
+   
 
 
     
     <div style="margin-top:10px;">
     <table >
-        <tr><td style="text-align:justify;">Pertanto, ai sensi e per gli effetti dell&#39;art. 10, comma 3 del 11 ottobre 2019,
-Vi invitiamo a fornirci la suddetta documentazione entro e non oltre il termine perentorio di
-quindici giorni decorrenti dalla data di ricezione della presente, accedendo al gestionale
-dedicato sul Portale dell&#39;Automobilista, già utilizzato per la compilazione della domanda.
+        <tr><td style="text-align:justify;">Pertanto, ai sensi e per gli effetti dell&#39;art. 12, comma 4 del D.D 7 agosto 2020 n.145,
+Vi invitiamo a fornirci la suddetta documentazione <b>entro e non oltre il termine perentorio di
+quindici giorni</b> decorrenti dalla data di ricezione della presente, accedendo al gestionale
+dedicato sul Portale, già utilizzato per la rendicondazione della domanda.
 Il Portale sarà abilitato alla modifica dei dati e, all&#39;interno della Sezione &quot;Richieste
 integrazioni&quot;, al caricamento dei documenti contenenti le integrazioni richieste.</td></tr>               
 </table >

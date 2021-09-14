@@ -39,6 +39,7 @@ switch ($action){
         $message = $res ? 'Record Aggiornato' : 'Errore Aggiornamento Record!';
         $_SESSION['message'] = $message;
         $_SESSION['success'] = $res;
+        
         header('Location:../users.php?'.$queryString);
     break; 
     case 'getUser';

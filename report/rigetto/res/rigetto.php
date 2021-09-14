@@ -1,4 +1,4 @@
-<page pagegroup="new"  style="font-size:14px" backtop="30mm" backleft="15mm" backright="15mm" backbottom="9mm">
+<page pagegroup="new"  style="font-size:14px" backtop="55mm" backleft="15mm" backright="15mm" backbottom="9mm">
 	
 <style>
 	.testoParagrafo {
@@ -64,42 +64,42 @@
         
 	</page_header>
 
-    <table style="margin-left:400px;">
-         <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_ins']))?></td></tr>
-    </table>
+    
 
+    
+    <table style="margin-top:45px;">
+    <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_ins']))?></td></tr>
+        <tr><td>Prot n°</td><td  style="font-weight:bold;"> <?=$rep['prot_RAM']?></td></tr></table>
+        
     <table style="margin-left:400px;">
-        <tr><td>Spett.le</td><td ></td><td></td></tr>
-        <tr><td></td><td colspan="2" style="width:50mm;justify-content:left;font-weight:bold;"><?=$user['ragione_sociale']?></td></tr>
-        <tr><td></td><td colspan="2" style="width:50mm;justify-content:left;"><?=$user['indirizzo_impr']?>, <?=$user['civico_impr']?></td></tr>
-        <tr><td></td><td colspan="2" style="width:50mm;justify-content:left;"><?=$user['cap_impr']?> - <?=$user['comune_impr']?> (<?=$user['prov_impr']?>)</td></tr>
+        <tr><td>All'impresa</td><td ></td><td></td></tr>
+        <tr><td colspan="2" style="width:50mm;justify-content:left;font-weight:bold;"><?=$user['ragione_sociale']?></td></tr>
+        <tr><td colspan="2" style="width:50mm;justify-content:left;"><?=$user['indirizzo_impr']?>, <?=$user['civico_impr']?></td></tr>
+        <tr><td colspan="2" style="width:50mm;justify-content:left;"><?=$user['cap_impr']?> - <?=$user['comune_impr']?> (<?=$user['prov_impr']?>)</td></tr>
         
     </table>
-    <table style="margin-top:45px;">
-        <tr><td style="text-align:right;">Prot n°</td><td  style="font-weight:bold;"> <?=$rep['prot_RAM']?></td></tr>
+    <table>
         <tr><td style="text-align:right;">Raccomandata via pec all&#39;indirizzo: </td><td  style="font-weight:bold;"> <?=$user['pec_impr']?></td></tr>
     </table>
-    <hr style="height:0.1px;">
-
-    <table style="width:70%;margin-right:50mm">
+     <table style="width:70%;margin-right:50mm">
         <tr><td style="font-weight:bold;text-align:justify;vertical-align:top;">Oggetto:</td>
         <td style="width:150mm;font-weight:bold;text-align:justify;">Contributi ai sensi del D.D. 7 agosto 2020 n.145 per le finalità di cui al D.M.
                                                                         12 maggio 2020 n. 203 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.<br>
-Protocollo Istanza In <?=$rep['prot_RAM']?>/2020 Informativa ai sensi dell'art.10-bis legge 241/90</td>
+Protocollo Istanza In <?=$user['id_RAM']?>/<?=$tipo_istanza['anno']?> Informativa ai sensi dell'art.10-bis legge 241/90</td>
 </tr>
 
     </table>
     <table>
         <tr><td style="text-align:justify;">In riferimento alla domanda di ammissione agli incentivi di cui al D.M.
-                                                                        12 maggio 2020 n. 203 acquisita in data ../../.. con prot. n......... si comunica che, sulla base delle risultanze
+                                                                        12 maggio 2020 n. 203 acquisita in data <?=date("d/m/Y", strtotime($data_RAM['data_invio']))?> con prot. n.<?=$user['id_RAM']?>/<?=$tipo_istanza['anno']?> si comunica che, sulla base delle risultanze
         dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del
-        22 luglio 2019 n.336, destinato alle imprese di autotrasporti merci, è risultata</td></tr>
+        12 maggio 2020 n.203, destinato alle imprese di autotrasporti merci, è risultata</td></tr>
     </table>
     <h5 style="text-align:center">INAMMISSIBILE</h5>
     <table style="margin-left:50px;">
                     <tr><td >Per la/le seguente/i motivazione/i:</td></tr>
     </table>                
-    <div class="row"style="height:280px;margin-top:20px;margin-left:50px;">               
+    <div class="row"style="height:250px;margin-top:20px;margin-left:50px;">               
     <table>
         <?php
         //var_dump($dettagli);
@@ -123,7 +123,7 @@ Protocollo Istanza In <?=$rep['prot_RAM']?>/2020 Informativa ai sensi dell'art.1
     </table>
     
     
-    <table style="margin-left:400px;margin-top:50px;text-align:center">
+    <table style="margin-left:400px;margin-top:20px;text-align:center">
         <tr><td>Il Presidente</td></tr>
         <tr><td>(Dott.ssa Monica Macioce)</td></tr>
 

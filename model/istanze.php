@@ -35,6 +35,26 @@ function getIstanza(int $id){
   
   
 }
+function getIstanzaView(int $id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ='SELECT * FROM istanze_view WHERE id_RAM = '.$id_RAM;
+      //echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
+  
+  
+}
 
 function getStatoIstanza($stato){
   
@@ -324,7 +344,7 @@ function getIstanze( array $params = []){
 
 
         }
-
+/*
         if($search5){
           if($search5 === 'A'){
             $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=1 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
@@ -339,6 +359,24 @@ function getIstanze( array $params = []){
           }
           if($search5 === 'D'){
             $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=4 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
+
+          }
+        }
+       */
+        if($search5){
+          if($search5 === 'A'){
+            $parB = " tipo_report = 1";
+          }
+          if($search5 === 'B'){
+            $parB = " tipo_report = 2";
+
+          }
+          if($search5 === 'C'){
+            $parB = " tipo_report = 3";
+
+          }
+          if($search5 === 'D'){
+            $parB = " tipo_report = 4";
 
           }
         }
@@ -500,6 +538,7 @@ function countIstanze( array $params = []){
 
 
         }
+        /*
         if($search5){
           if($search5 === 'A'){
             $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=1 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
@@ -517,7 +556,24 @@ function countIstanze( array $params = []){
 
           }
         }
-        
+       */
+        if($search5){
+          if($search5 === 'A'){
+            $parB = " tipo_report = 1";
+          }
+          if($search5 === 'B'){
+            $parB = " tipo_report = 2";
+
+          }
+          if($search5 === 'C'){
+            $parB = " tipo_report = 3";
+
+          }
+          if($search5 === 'D'){
+            $parB = " tipo_report = 4";
+
+          }
+        }
        $sql = "SELECT count(*) as totalUser FROM istanze_view";
       
           if($search1 || $search2 || $search3 || $search4 || $search5){
@@ -2502,6 +2558,25 @@ function getTipoRep($id){
       }
       return $des;
 }
+function getTipoRepFull($id){
+  
+  /**
+  * @var $conn mysqli
+  */
+
+ $conn = $GLOBALS['mysqli'];
+
+ $sql = 'SELECT * FROM tipo_report where id='.$id;
+ //echo $sql;
+ $result = [];
+
+ $res = $conn->query($sql);
+ if($res && $res->num_rows){
+   $result = $res->fetch_assoc();
+   
+ }
+ return $result;
+}
 function getTipoInt($id){
   
   /**
@@ -2633,6 +2708,23 @@ function delIntDett($id_report){
 
 
 }
+function delIntDettId($id){
+ 
+  /**
+      * @var $conn mysqli
+      */
+ 
+     $conn = $GLOBALS['mysqli'];
+ 
+     $sql ='DELETE FROM dettaglio_report WHERE id = '.$id;
+ 
+     $res = $conn->query($sql);
+     
+     return $res && $conn->affected_rows;
+ 
+ 
+ 
+ }
 function saveReport($data){
   /**
   * @var $conn mysqli
@@ -3132,7 +3224,7 @@ function getStatusIstruttoria_test($id_RAM){
 
     $conn = $GLOBALS['mysqli'];
       $result=[];
-      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato != 'C' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato != '' and attivo = true)" ;
+      $sql ="SELECT id, tipo_report, data_ins, data_invio FROM report WHERE id_RAM = $id_RAM and stato != 'C' and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and stato != 'C' and attivo = true)" ;
       
      // echo $sql;
       $res = $conn->query($sql);
@@ -3142,8 +3234,25 @@ function getStatusIstruttoria_test($id_RAM){
         
       }
     return $result;
-  
-  
+}
+function getStatusIstruttoria_full($id_RAM){
+
+  /**
+   * @var $conn mysqli
+   */
+
+    $conn = $GLOBALS['mysqli'];
+      $result=[];
+      $sql ="SELECT * FROM report WHERE id_RAM = $id_RAM  and data_ins = (select max(data_ins)  FROM report WHERE id_RAM = $id_RAM and attivo = 1)" ;
+      
+     // echo $sql;
+      $res = $conn->query($sql);
+      
+      if($res && $res->num_rows){
+        $result = $res->fetch_assoc();
+        
+      }
+    return $result;
 }
 function reportAmmissione($id_RAM){
   
@@ -3166,6 +3275,5 @@ function reportAmmissione($id_RAM){
     }
 
   }
-
   return $records;
 }

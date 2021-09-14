@@ -21,7 +21,7 @@ switch ($action){
            
                 $res = convMail($data); 
    
-         }
+         } 
       }else{
         $res = convMail($data); 
       }
@@ -54,6 +54,7 @@ switch ($action){
         'envProd' => $envProd
       );
       $res = sendMail($data);
+      var_dump($res);die;
      if($res){
        $data = array(
          'id' => $id,
@@ -66,6 +67,7 @@ switch ($action){
      }else{
        $response = 'bad pec';
      }
+     var_dump($res2);die;
       echo json_encode($res2);
     break;
     case 'delReport': 

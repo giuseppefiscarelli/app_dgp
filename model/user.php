@@ -71,13 +71,18 @@ function storeUser(array $data, int $id){
    */
 
     $conn = $GLOBALS['mysqli'];
+      //$pec_enable=false;
       $username = $conn->escape_string($data['username']);
       $cognome = $conn->escape_string($data['cognome']);
       $nome = $conn->escape_string($data['nome']);
       $email = $conn->escape_string($data['email']);
-      $pec_enable = $conn->escape_string($data['pec_enable']);
+     // var_dump($data['pec_enable']);
+      $pec_enable = in_array('pec_enable', $data)?1:0;
+      
       $network = $conn->escape_string($data['network']);
-      $pec_enable == 'on'?$pec_enable=true:$pec_enable=false;
+      //$pec_enable == 'on'?$pec_enable=1:$pec_enable=0;
+     
+      //var_dump($pec_enable);die;
       
      
       
@@ -86,7 +91,7 @@ function storeUser(array $data, int $id){
       $roletype = in_array($data['roletype'], getConfig('roletype',[]))? $data['roletype']:'user';
       $result=0;
       $sql ='UPDATE users SET ';
-      $sql .= "username = '$username', cognome = '$cognome', nome = '$nome', email = '$email', pec_enable = $pec_enable, network = '$network'";
+      $sql .= "username = '$username', cognome = '$cognome', nome = '$nome', email = '$email', network = '$network'";
       if($data['password']){
         $data['password']=$data['password']?? 'password';
         
@@ -100,7 +105,7 @@ function storeUser(array $data, int $id){
       
       $sql .=' WHERE id = '.$id;
       //print_r($data);
-      //cho $sql;die;
+      //echo $sql;die;
       $res = $conn->query($sql);
       
       if($res ){

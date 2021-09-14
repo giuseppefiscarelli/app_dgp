@@ -342,6 +342,24 @@ function convMail($data){
 
 
 }
+function getPecData(){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $sql ='SELECT * FROM pec_indirizzo WHERE env = 1';
+  //echo $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
+    
+  }
+  return $result;
+}
 function sendMail($data){
 
   include 'Mail.php';
@@ -351,7 +369,7 @@ function sendMail($data){
     $text = 'Text version of email';
     $html = '<html><body>'.$data['body'].'</body></html>';
     $file =  $data['file'];
-    $to = "n.salvatore@gmail.com, fiscarelli.giu@gmail.com";
+    $to = "fiscarelli.giu@gmail.com";
      
     $crlf = "\n";
     $hdrs = array(

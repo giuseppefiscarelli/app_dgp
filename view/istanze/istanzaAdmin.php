@@ -146,19 +146,64 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
 }
 $status_istr= getStatusIstruttoria($i['id_RAM']);
 $check_stato_istruttoria= getStatusIstruttoria_test($i['id_RAM']);
-//var_dump($status_istr);
-//var_dump($check_stato_istruttoria);
+
+$ena_report = [];
+$disableIstruttoriafoot = false;
+$new_stato_istruttoria = getStatusIstruttoria_full($i['id_RAM']);
+//var_dump($new_stato_istruttoria);
+if($new_stato_istruttoria){
+  $new_tipo_report = getTipoRepFull($new_stato_istruttoria['tipo_report']);
+  // var_dump($new_tipo_report);
+  $text_istr = $new_tipo_report['badge_text'];
+  $type_istr = $new_tipo_report['style'];
+  if($new_stato_istruttoria['stato']=='B'){                                 
+    if($new_stato_istruttoria['data_ins']){
+      $span_istr = '<b class="blink">Pec da convalidare</b>';
+      $ena_report = [];
+    }
+    if($new_stato_istruttoria['data_conv']){
+      $span_istr = '<b class="blink">Pec da inviare</b>';
+      $ena_report = [];
+    }
+  }
+  if($new_stato_istruttoria['stato']=='C'){
+    $span_istr = 'Pec inviata il '.date("d/m/Y",strtotime($new_stato_istruttoria['data_invio']));
+    if($new_stato_istruttoria['tipo_report'] == 1){
+      array_push($ena_report, 1,2);
+      $date_scad =  date("d/m/Y", strtotime($new_stato_istruttoria['data_invio'].' + '.$daysOpenRend.' days'));
+      $span_istr .= '<br>Ricezione documentazione entro e non oltre il '.$date_scad;
+    }
+    if($new_stato_istruttoria['tipo_report'] == 2){
+      array_push($ena_report, 4);  
+    }
+    if($new_stato_istruttoria['tipo_report'] == 3){
+      $ena_report = [];
+      $disableIstruttoriafoot = true;
+      $disable_istr=true;
+    }
+    if($new_stato_istruttoria['tipo_report'] == 4){
+      $ena_report = [];
+      $disable_istr=true;
+    }
+  }
+
+  
+  //var_dump($ena_report);//ok
+}
+//
 
 if($status_istr && $check_stato_istruttoria){
   //if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
     $status_istr = $check_stato_istruttoria;
     //echo 'qui';
   //}
+}elseif($check_stato_istruttoria){
+  $status_istr = $check_stato_istruttoria;
 }
 //var_dump($status_istr);
-$report_status = '';
-$disableIstruttoriafoot = false;
-if($status_istr && $status_istr['id']){
+//$report_status = '';
+//$disableIstruttoriafoot = false;
+/*if($status_istr && $status_istr['id']){
   $add_span='';
   $enable_int_report = false;
   if($status_istr['tipo_report'] === '1'){
@@ -201,7 +246,7 @@ if($status_istr && $status_istr['id']){
     $span_istr='<span class="badge badge-'.$type_istr.' blink">'.$text_istr.'</span>';
     $span_istr .= '<br><b class="blink">Pec da inviare</b> '; 
   }
-   }
+   }*/
   // var_dump($disable_istr);
    ?>
  
@@ -223,12 +268,19 @@ if(!$status['data_annullamento']&&$activeIst){?>
   </div>
  
 <?php } 
- if($status_istr){?>
-  <div class="col-lg-2 col-12" id="status_istruttoria">
+ //if($status_istr){?>
+  <!--<div class="col-lg-2 col-12" id="status_istruttoria">
    Stato Istruttoria <?=$span_istr?>
-  </div>
-  <?php }?>
+  </div>-->
+  <?php //}?>
 
+
+<?php if($new_stato_istruttoria){ ?>
+  <div class="col-lg-2 col-12" id="status_istruttoria">
+   Stato Istruttoria <span class="badge badge-<?=$type_istr?>"><?=$text_istr?></span><br><?=$span_istr?>
+  </div>
+
+<?php } ?>
 
 </div>
 

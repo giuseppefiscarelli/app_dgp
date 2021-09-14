@@ -67,8 +67,9 @@
 	
 
     <table>
-    <tr><td>Prot n°</td><td  style="font-weight:bold;"> <?=$prot?></td></tr>
     <tr><td>Roma li,</td><td><?=$data_doc?></td></tr>
+    <tr><td>Prot n°</td><td  style="font-weight:bold;"> <?=$prot?></td></tr>
+
     </table>
 
     <table style="margin-left:400px;">
@@ -80,13 +81,13 @@
     </table>
     <table style="margin-top:60px;">
       
-        <tr><td style="text-align:right;">Raccomandata via pec all&#39;indirizzo: </td><td  style="font-weight:bold;"> <?=$user['pec_impr']?></td></tr>
+        <tr><td style="text-align:right;">Raccomandata via pec all&#39;indirizzo: </td><td  style="font-weight:bold;"> <?=$data_RAM['pec_impr']?></td></tr>
     </table>
     <table style="width:70%;margin-right:50mm">
         <tr><td style="font-weight:bold;text-align:justify;vertical-align:top;">Oggetto:</td>
         <td style="width:150mm;font-weight:bold;text-align:justify;"> Contributi ai sensi del D.D. 7 agosto 2020 n.145 per le finalità di cui al D.M.
                                                                         12 maggio 2020 n. 203 - &quot;Incentivi agli investimenti nel settore dell&#39;autotrasporto&quot;.<br>
-                                                                        Protocollo Istanza In <?=$rep['id_RAM']?>/2020 Informativa ai sensi dell'art.10-bis legge 241/90</td>
+                                                                        Protocollo Istanza In <?=$rep['id_RAM']?>/<?=$tipo_istanza['anno']?> Informativa ai sensi dell'art.10-bis legge 241/90</td>
 </tr>
 
     </table>
@@ -96,7 +97,7 @@
     <table>
       
       
-        <tr><td style="text-align:justify;">- VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n <?=$prot_amm?> del <?=$data_prot?>;</td></tr>
+        <tr><td style="text-align:justify;">- VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n <?=$rep['id_RAM']?>/<?=$tipo_istanza['anno']?> del <?=date("d/m/Y", strtotime($data_RAM['data_invio']))?>;</td></tr>
         <tr><td style="text-align:justify;">- VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, del D.D. 7 agosto 2020 n.145 , tenutasi il giorno <?=$data_verb?>;</td></tr>
                     
     
@@ -105,9 +106,9 @@
     <table>
         <tr><td style="text-align:justify;">ferma restando la permanenza dei requisiti da ammissibilità richiesti dalla normativa vigente, dispone per l'istanza di finanziamento dagli investimenti da Codesta impresa la relativa</td></tr>
     </table>
-    <h5 style="text-align:center">IL DIRETTORE GENERALE</h5>
+    <h5 style="text-align:center">AMMISSIONE</h5>
     <table>
-        <tr><td style="text-align:justify;">per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 1 e 2 D.M. 22 luglio 2019 n. 336:</td></tr>
+        <tr><td style="text-align:justify;">per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 1 e 2 D.M. 12 maggio 2020 n. 203:</td></tr>
     </table>
 
 
@@ -229,9 +230,9 @@
     </p>
     <p style="text-align:justify;"><b>AVVERTENZE:</b>
     <br>
-    Si ricorda che a norma dell’<b>Art. 1 co. 8 del DM 336/2019 i mezzi oggetti di contributo non possono essere alienati,
+    Si ricorda che a norma dell’<b>Art. 1 co. 9 del DM 203/2020 i mezzi oggetti di contributo non possono essere alienati,
 concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario</b> del contributo fino a tutto
-il 31 dicembre 2022, pena la revoca del contributo erogato. Non si procede all'erogazione del contributo anche nel
+il 31 dicembre 2023, pena la revoca del contributo erogato. Non si procede all'erogazione del contributo anche nel
 caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di
 presentazione della domanda e la data di pagamento del beneficio.
     </p>

@@ -17,6 +17,9 @@ $rep = getReportId($_GET['id']);
 $user = getistanza($rep['id_RAM']);
 $dettagli = getDettReport($_GET['id']);
 $tipo = $_GET['tipo'];
+$data_RAM = getistanzaView($rep['id_RAM']);
+$tipo_istanza= getTipoIstanza($user['tipo_istanza']);
+
 /*
 //$contrId = intval($data['id_contratto']);
 $contrId = intval($_GET['id']);
@@ -39,7 +42,7 @@ try {
     $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5, 5, 5, 2),true);
     $html2pdf->pdf->SetDisplayMode('fullpage');
     $html2pdf->pdf->SetProtection(array('print','copy'));
-   
+    $html2pdf->setDefaultFont('Times', 'Serif');
     //$html2pdf->setDefaultFont('roboto');
     ob_start();
     include dirname(__FILE__).'/res/inammissibilita.php';

@@ -3,7 +3,12 @@
 $tipi_integrazione =getRichInt();
 $tipi_report = getTipoReport();
 $reports = getReportIdRam($i['id_RAM']);
+if($check_ammissione==0 && $new_stato_istruttoria['stato']=='C'){
+    array_push($ena_report, 3);
+}
+//var_dump($disable_istr);
 
+/*
 $ena_report = [];
 if($enable_status == 'D'){
     array_push($ena_report, 1,2);
@@ -47,7 +52,7 @@ if($check_stato_istruttoria){
 //var_dump($ena_report);
 
 //var_dump($enable_status);
-
+*/
 ?>
 <!-- Button trigger modal
 <button type="button" class="btn btn-primary" onclick="newInt();">
@@ -451,6 +456,315 @@ if($check_stato_istruttoria){
                 }) 
 
     }
+    function saveReport2(id){
+     
+                prot_RAM=$('input[name="prot_RAM2"]').val();
+                data_prot=$('input[name="data_prot2"]').val();
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=saveReport",
+                            data: {id:id,prot_RAM:prot_RAM,data_prot:data_prot},
+                            dataType: "json",
+                            success: function(data){
+                                console.log(data)
+                                Swal.fire("Operazione Completata!", "Pec da convalidare", "info");
+                                $('div[id^="reportModal"]').modal('hide');
+                                td1=data.data_inserimento+'<br>'+data.user_ins;
+                                td2=data.descrizione;
+                                td3='Richiesta non inviata';
+                                $("#tipo_report option[value='1']").attr('disabled', true);
+                                $("#tipo_report option[value='2']").attr('disabled', true);
+                                $("#tipo_report option[value='3']").attr('disabled', true);
+                                $("#tipo_report option[value='4']").attr('disabled', true);
+                               
+                                $('#lista_report > li').remove();
+                                $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                                if(data.tipo_report==1){
+                                    td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Integrazione';
+                                    type_istr = 'warning';
+                                    /*$("#tipo_report option[value='2']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                                    $("#tipo_report option[value='3']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');*/
+
+
+                                }else if(data.tipo_report==2){
+                                    td4='<button type="button" onclick="prevRep2('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Preavviso di rigetto';
+                                    type_istr = 'warning';
+                                   /* $("#tipo_report option[value='4']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');*/
+
+                              }else if(data.tipo_report==3){
+                                    td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Ammessa';
+                                    type_istr = 'success';
+                                    //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                              }else if(data.tipo_report==4){
+                                    td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Rigettata';
+                                    type_istr = 'danger';
+                                    //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                              }
+                              td4+='<button type="button" onclick="delRep('+data.id+', '+data.id_RAM+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                                
+                                
+                                
+                                
+                                html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
+                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
+                                //console.log(span_istr);
+                                $('#status_istruttoria').html('Stato istruttoria '+span_istr)
+                                $("#reportTable > tbody").prepend(html);
+                                $("#reportTable").show();
+                                $('#tipo_report').selectpicker('refresh')
+                            }
+                }) 
+
+    }
+    function saveReport3(id){
+     
+     prot_RAM=$('input[name="prot_RAM3"]').val();
+     data_prot=$('input[name="data_prot3"]').val();
+     data_verbale=$('input[name="data_verbale3"]').val();
+     $.ajax({
+                 type: "POST",
+                 url: "controller/updateIstanze.php?action=saveReport",
+                 data: {id:id,prot_RAM:prot_RAM,data_prot:data_prot, data_verbale:data_verbale},
+                 dataType: "json",
+                 success: function(data){
+                     console.log(data)
+                     Swal.fire("Operazione Completata!", "Pec da convalidare", "info");
+                     $('div[id^="reportModal"]').modal('hide');
+                     td1=data.data_inserimento+'<br>'+data.user_ins;
+                     td2=data.descrizione;
+                     td3='Richiesta non inviata';
+                     $("#tipo_report option[value='1']").attr('disabled', true);
+                     $("#tipo_report option[value='2']").attr('disabled', true);
+                     $("#tipo_report option[value='3']").attr('disabled', true);
+                     $("#tipo_report option[value='4']").attr('disabled', true);
+                    
+                     $('#lista_report > li').remove();
+                     $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                     if(data.tipo_report==1){
+                         td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                         td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                         text_istr = 'Integrazione';
+                         type_istr = 'warning';
+                         /*$("#tipo_report option[value='2']").attr('disabled', false);
+                         $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                         $("#tipo_report option[value='3']").attr('disabled', false);
+                         $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');*/
+
+
+                     }else if(data.tipo_report==2){
+                         td4='<button type="button" onclick="prevRep2('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                         td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                         text_istr = 'Preavviso di rigetto';
+                         type_istr = 'warning';
+                        /* $("#tipo_report option[value='4']").attr('disabled', false);
+                         $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');*/
+
+                   }else if(data.tipo_report==3){
+                         td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                         td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                         text_istr = 'Ammessa';
+                         type_istr = 'success';
+                         //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                   }else if(data.tipo_report==4){
+                         td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                         td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                         text_istr = 'Rigettata';
+                         type_istr = 'danger';
+                         //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                   }
+                   td4+='<button type="button" onclick="delRep('+data.id+', '+data.id_RAM+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                     
+                     
+                     
+                     
+                     html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
+                     span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
+                     //console.log(span_istr);
+                     $('#status_istruttoria').html('Stato istruttoria '+span_istr)
+                     $("#reportTable > tbody").prepend(html);
+                     $("#reportTable").show();
+                     $('#tipo_report').selectpicker('refresh')
+                 }
+     }) 
+
+    }
+    function saveReport4(id){
+                prot_RAM=$('input[name="prot_RAM4"]').val();
+                data_prot=$('input[name="data_prot4"]').val();
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=saveReport",
+                            data: {id:id,prot_RAM:prot_RAM,data_prot:data_prot},
+                            dataType: "json",
+                            success: function(data){
+                                //console.log(data)
+                                Swal.fire("Operazione Completata!", "Pec da convalidare", "info");
+                                $('div[id^="reportModal"]').modal('hide');
+                                td1=data.data_inserimento+'<br>'+data.user_ins;
+                                td2=data.descrizione;
+                                td3='Richiesta non inviata';
+                                $("#tipo_report option[value='1']").attr('disabled', true);
+                                $("#tipo_report option[value='2']").attr('disabled', true);
+                                $("#tipo_report option[value='3']").attr('disabled', true);
+                                $("#tipo_report option[value='4']").attr('disabled', true);
+                               
+                                $('#lista_report > li').remove();
+                                $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                                if(data.tipo_report==1){
+                                    td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Integrazione';
+                                    type_istr = 'warning';
+                                    /*$("#tipo_report option[value='2']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                                    $("#tipo_report option[value='3']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');*/
+
+
+                                }else if(data.tipo_report==2){
+                                    td4='<button type="button" onclick="prevRep2('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep2('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Preavviso di rigetto';
+                                    type_istr = 'warning';
+                                   /* $("#tipo_report option[value='4']").attr('disabled', false);
+                                    $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');*/
+
+                              }else if(data.tipo_report==3){
+                                    td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Ammessa';
+                                    type_istr = 'success';
+                                    //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                              }else if(data.tipo_report==4){
+                                    td4='<button type="button" onclick="prevRep4('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="downRep4('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
+                                    text_istr = 'Rigettata';
+                                    type_istr = 'danger';
+                                    //$("#lista_report").append('<li>Nessun Report Disponibile</li>');
+
+                              }
+                              td4+='<button type="button" onclick="delRep('+data.id+', '+data.id_RAM+');"class="btn btn-danger btn-xs" title="Elimina documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                                
+                                
+                                
+                                
+                                html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
+                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
+                                //console.log(span_istr);
+                                $('#status_istruttoria').html('Stato istruttoria '+span_istr)
+                                $("#reportTable > tbody").prepend(html);
+                                $("#reportTable").show();
+                                $('#tipo_report').selectpicker('refresh')
+                            }
+                }) 
+
+    }
+    function newInt(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report').val(id);
+                                $('#prev_btn').attr('onclick','prevRep('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    
+    function newRig(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report2').val(id);
+                                $('#prev_btn2').attr('onclick','prevRep2('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport2('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    function newVer(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report3').val(id);
+                                $('#prev_btn3').attr('onclick','prevRep3('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport3('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    function newIna(tipo){
+                
+                id_RAM = <?=$i['id_RAM']?>;
+                $.ajax({
+                            type: "POST",
+                            url: "controller/updateIstanze.php?action=newInt",
+                            data: {id_RAM:id_RAM,tipo:tipo},
+                            dataType: "json",
+                            success: function(id){
+                                $('#id_report4').val(id);
+                                $('#prev_btn4').attr('onclick','prevRep4('+id+');');
+                                btn = 'saveRepBtn'+tipo;
+                                $('#'+btn).attr('onclick','saveReport4('+id+');');
+                                
+
+                            }
+                }) 
+            
+    }
+    function delInt(id){
+        $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=delIntDettId",
+            data: {id:id},
+            dataType: "json",
+            success: function(data){
+                    console.log(data)
+                    $('table#tab_int tr#row_dett_1_'+id).remove();
+            }
+        })
+    }
+   
     progtr=1;
     function addInt(){
         id_RAM= <?=$i['id_RAM']?>;
@@ -460,11 +774,7 @@ if($check_stato_istruttoria){
         //desc =  $('#descrizione_integrazione').html();
         desc =  $('#descrizione_integrazione').val();
 
-        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
-        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
-        html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
-        $("#tab_int > tbody").append(html);
-        
+      
         $("#div_tab_int").show();
         $('#des_int,#div_btn_add_int').hide();
         $.ajax({
@@ -474,7 +784,10 @@ if($check_stato_istruttoria){
                     dataType: "json",
                     success: function(data){
                             console.log(data)
-                            
+                           
+                            btn_del = '<button type="button" class="btn btn-danger btn-sm" onclick="delInt('+data+')"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+                            html= '<tr id="row_dett_1_'+data+'"><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_del+'</td></tr>'
+                            $("#tab_int > tbody").append(html);
 
                     }
         })  
@@ -525,8 +838,8 @@ if($check_stato_istruttoria){
         tipocod = 3
         //desc =  $('#descrizione_integrazione').html();
         //desc =  $('#motivazione').val();
-        num_prot=$('#num_prot3').val()
-        dat_prot=$('#dat_prot3').val()
+        //num_prot=$('#num_prot3').val()
+        //=$('#dat_prot3').val()
         data_verbale=$('#data_verbale3').val()
         prot = $('#prot_RAM3').val()
         data_doc = $('#data_prot3').val()
@@ -537,7 +850,7 @@ if($check_stato_istruttoria){
         $("#div_tab_int3").show();
         $("#tab_int3").show();
         //$('#des_int,#div_btn_add_int').hide();
-        $.ajax({
+       /* $.ajax({
                     type: "POST",
                     url: "controller/updateIstanze.php?action=newIntDett",
                     data: {id_RAM:id_RAM,id_report:id_report,prog:progtr,tipo:1,descrizione:num_prot},
@@ -569,7 +882,7 @@ if($check_stato_istruttoria){
                               progtr3++; 
                     }
         }) 
-        
+        */
         $.ajax({
                     type: "POST",
                     url: "controller/updateIstanze.php?action=newIntDett",
@@ -642,20 +955,9 @@ if($check_stato_istruttoria){
         //desc =  $('#motivazione').val();
 
         
-       
-       
-
-      
-        
-        
-
-
-        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
-        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
-       
-        
         $("#div_tab_int4").show();
         //$('#des_int,#div_btn_add_int').hide();
+        /*
         num_prot=$('#num_prot_in').val()
         $.ajax({
                     type: "POST",
@@ -666,7 +968,7 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             $('#num_prot_in').val("");
                             tipo = 'Numero protocollo Domanda Ammissione'
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot+'</td></tr>'
                               $("#tab_int4 > tbody").append(html);
                               
 
@@ -684,12 +986,13 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             $('#dat_prot_in').val("");
                             tipo='Data protocollo Domanda Ammissione';
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+dat_prot+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+dat_prot+'</td></tr>'
                               $("#tab_int4 > tbody").append(html);
 
                     }
         }) 
         progtr4++; 
+        */
         data_verbale=$('#data_verbale_in').val()
         $.ajax({
                     type: "POST",
@@ -700,7 +1003,7 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             tipo='Data verbale'
                             $('#data_verbale_in').val("");
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_verbale+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_verbale+'</td></tr>'
                             $("#tab_int4 > tbody").append(html);
 
                     }
@@ -716,7 +1019,7 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             $('#num_prot_rig').val("");
                             tipo = 'Numero protocollo Preavviso di rigetto'
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot_rig+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot_rig+'</td></tr>'
                               $("#tab_int4 > tbody").append(html);
                               
 
@@ -734,7 +1037,7 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             $('#dat_prot_rig').val("");
                             tipo='Data protocollo Preavviso di rigetto';
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_rig+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_rig+'</td></tr>'
                               $("#tab_int4 > tbody").append(html);
 
                     }
@@ -751,12 +1054,13 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             tipo='Data nota Preavviso'
                             $('#dat_prot_pre').val("");
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_pre+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_pre+'</td></tr>'
                             $("#tab_int4 > tbody").append(html);
 
                     }
         }) 
         progtr4++; 
+        
         mot_ina=$('#mot_ina').val()
         $.ajax({
                     type: "POST",
@@ -767,7 +1071,7 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             tipo='Motivazione di Inassibilità'
                             $('#mot_ina').val("");
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+mot_ina+'</td><td>'+btn_edit+btn_del+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+mot_ina+'</td></tr>'
                             $("#tab_int4 > tbody").append(html);
 
                     }
@@ -792,7 +1096,7 @@ if($check_stato_istruttoria){
       $('#tabVeiNonConf >tbody').empty()
         tipo=$('#tipo_report option:selected').val()
         
-        //console.log(tipo);
+        console.log(tipo);
         if(tipo ==1){
                 $('#reportModal').modal('toggle');
                 newInt(tipo);
@@ -1031,7 +1335,7 @@ if($check_stato_istruttoria){
         <div class="modal-body">
         <input type="hidden" name="id_report3" id="id_report3" value="">
             <div class="row" id="dati_report_3">
-                   
+                   <!--
                         <div class="col-12 col-lg-3 form-group">
                             <input type="text" class="form-control" id="num_prot3"  name="num_prot"placeholder="numero protocollo" value="">
                             <label for="num_prot">Numero protocollo Domanda Ammissione</label>
@@ -1044,6 +1348,7 @@ if($check_stato_istruttoria){
                             <label for="dat_prot3">Data protocollo Domanda Ammissione</label>
                             <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
                         </div>
+                    -->
                         <div class="col-12 col-lg-2 form-group">
                             <input type="text" class="form-control it-date-datepicker" id="data_verbale3"  name="data_verbale3" placeholder="gg/mm/aaaa" value="">
                             <label for="data_verbale3">Data verbale</label>
@@ -1107,7 +1412,7 @@ if($check_stato_istruttoria){
         <input type="hidden" name="id_report4" id="id_report4" value="">
             <div class="row">
                     
-                       
+                     <!--  
                 <div class="col-12 col-lg-4 form-group ">
                     <input type="text" class="form-control" id="num_prot_in"  name="num_prot_in"placeholder="numero protocollo" value="">
                     <label for="num_prot_in">Numero protocollo Domanda Ammissione</label>
@@ -1124,7 +1429,7 @@ if($check_stato_istruttoria){
                    
                 </div>
                         
-                     
+                    -->   
                 <div class="form-group col-12 col-lg-3">
                     
                         <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="data_verbale_in"  name="data_verbale_in" placeholder="formato gg/mm/aaaa" value="">
@@ -1158,12 +1463,13 @@ if($check_stato_istruttoria){
                 </div>
             </div>   
             <div class="row" style="margin-top:10px;"> 
+            
                 <div class="form-group col-12 col-lg-6 ">
-                        <input type="text" class="form-control" id="mot_ina"  name="mot_ina"placeholder="Motivazione inammissibilità" value="">
+                        <textarea type="text" class="form-control" maxlength="500" id="mot_ina"  name="mot_ina"placeholder="Motivazione inammissibilità" value=""></textarea>
                         <label for="mot_ina">Motivazione di Inassibilità</label>
                         <small class="form-text text-muted">Scrivi motivazione inammissibilità</small>
                 </div>
-
+                    
                 <div class="form-group col-12 col-lg-3">
                     <input type="text" class="form-control" name="prot_RAM4" id="prot_RAM4" placeholder="numero protocollo" value="">
                     <label for="prot_RAM">Protocollo Documento</label>
@@ -1189,7 +1495,7 @@ if($check_stato_istruttoria){
                     <thead>
                         <tr><td>Tipo</td>
                             <td>Descrizione</td>
-                            <td>Action</td>
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -1269,3 +1575,25 @@ if($check_stato_istruttoria){
 </div>
 
 
+<script>
+
+$('#tipo_integrazione').change(function(){
+        $('#descrizione_integrazione').val('')
+        tipo=$('#tipo_integrazione option:selected').val()
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=getTipoInt",
+                    data: {tipo:tipo},
+                    dataType: "json",
+                    success: function(data){
+                            console.log(data.frase)
+                            $('#descrizione_integrazione').val(data.frase);
+                            
+                            $('#lab_des').addClass("active");
+                            $('#lab_des').css("width","auto");
+                            $('#des_int,#div_btn_add_int').show();
+
+                    }
+        })          
+    });
+</script>
