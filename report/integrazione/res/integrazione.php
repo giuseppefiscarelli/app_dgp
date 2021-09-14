@@ -97,6 +97,7 @@
 	</page_header>
 
     <table style="margin-left:300px;">
+         <tr><td>Prot n° </td><td  style="font-weight:bold;"><?=$rep['prot_RAM']?></td></tr>
          <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_ins']))?></td></tr>
     </table>
 
@@ -106,8 +107,7 @@
         <tr><td></td><td colspan="2" style="width:100mm;justify-content:left;"><?=$user['indirizzo_impr']?>, <?=$user['civico_impr']?></td></tr>
         <tr><td></td><td colspan="2" style="width:100mm;justify-content:left;"><?=$user['cap_impr']?> - <?=$user['comune_impr']?> (<?=$user['prov_impr']?>)</td></tr>
     </table>
-    <table style="margin-top:30px;"><tr><td style="text-align:left;">Prot n°</td><td  style="font-weight:bold;"><?=$rep['prot_RAM']?></td></tr></table>
-    <table>    
+    <table>   
         <tr><td style="text-align:right;">Raccomandata via pec all&#39;indirizzo: </td><td  style="font-weight:bold;"> <?=$user['pec_impr']?></td></tr>
     </table>
 
