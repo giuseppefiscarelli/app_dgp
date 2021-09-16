@@ -3,8 +3,8 @@
 $tipi_integrazione =getRichInt();
 $tipi_report = getTipoReport();
 $reports = getReportIdRam($i['id_RAM']);
-if($check_ammissione==0 && $new_stato_istruttoria['stato']=='C'){
-    array_push($ena_report, 3);
+if($check_ammissione==0){ // && $new_stato_istruttoria['stato']=='C'
+    array_push($ena_report, 3); 
 }
 //var_dump($disable_istr);
 

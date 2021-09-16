@@ -2864,7 +2864,9 @@ function calcolaContributo($data){
     $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. "  order by veicolo.id_RAM, tipo_veicolo, progressivo";
   }
   //echo $sql;die;
+ 
   $rs = mysqli_query($conn, $sql);
+ 
   if (!$rs){
     $result = array("result" => "KO");
   
@@ -2873,6 +2875,7 @@ function calcolaContributo($data){
   }
   $i = 0;
   while ($row = mysqli_fetch_array($rs)) {
+   // var_dump($row);die;
     $i ++;
     if ($i == 1){
       $pmi = $row['pmi_check'];
@@ -2957,7 +2960,7 @@ function findCheckIstanza($id_ram){
   return $result['id'];
 
 }
-function  upCheckIstanza($id_ram,$tipo_impresa,$tipo){
+function  upCheckIstanza($id_ram,$tipo_impresa,$tipo,$stato){
  /**
    * @var $conn mysqli
    */
@@ -2966,7 +2969,7 @@ function  upCheckIstanza($id_ram,$tipo_impresa,$tipo){
   $result=0;
   
   $sql ='UPDATE istanza_check SET ';
-  $sql .= "$tipo = 1 ";
+  $sql .= "$tipo = $stato ";
   $sql .=' WHERE id_ram = '.$id_ram;
   //print_r($data);
   //echo $sql;die;
@@ -2980,7 +2983,7 @@ function  upCheckIstanza($id_ram,$tipo_impresa,$tipo){
   }
   return $result;
 }
-function  newCheckIstanza($id_ram,$tipo_impresa,$tipo){
+function  newCheckIstanza($id_ram,$tipo_impresa,$tipo,$stato){
   /**
    * @var $conn mysqli
    */
@@ -2988,7 +2991,7 @@ function  newCheckIstanza($id_ram,$tipo_impresa,$tipo){
   $conn = $GLOBALS['mysqli'];
   $result=0;
   $sql ="INSERT INTO istanza_check (id,id_ram,$tipo) ";
-  $sql .= "VALUES (NULL,$id_ram,1)  ";
+  $sql .= "VALUES (NULL,$id_ram,$stato)  ";
   
  // echo $sql;die;
   $res = $conn->query($sql);

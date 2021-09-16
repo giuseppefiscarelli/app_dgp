@@ -147,7 +147,7 @@ switch ($action){
     break;
     case 'upAlleAdminIstanza':
       $data=$_REQUEST;
-      //var_dump($data);
+      //var_dump($data);die;
       $id = $data['id'];
       $v =  getAllegatoID($id);
       $istanza = getIstanza($v['id_ram']);
@@ -161,10 +161,15 @@ switch ($action){
       if($res){
         $findInstanza = findCheckIstanza($v['id_ram']);
         $find = $findInstanza?$findInstanza:0;
-        if($find){
-          $res2 = upCheckIstanza($v['id_ram'],$tipo_impresa,$tipo_doc);
+        if ($data['stato_admin'] === 'B'){
+          $stato =1;
         }else{
-          $res2 = newCheckIstanza($v['id_ram'],$tipo_impresa,$tipo_doc);
+          $stato =0 ;
+        }
+        if($find){
+          $res2 = upCheckIstanza($v['id_ram'],$tipo_impresa,$tipo_doc,$stato);
+        }else{
+          $res2 = newCheckIstanza($v['id_ram'],$tipo_impresa,$tipo_doc,$stato);
         }
        
       }
@@ -233,11 +238,11 @@ switch ($action){
       $c_i = checkIstanza($res['id_RAM']);
       $c_iCheck = false;
       if($c_i){
-        if($c_i['pec']&&$c_i['firma']&&$c_i['doc']&&$c_i['contratto']&&$c_i['delega']&&$c_i['dim_impresa']){
+        if($c_i['pec']== true&&$c_i['firma']&&$c_i['doc']&&$c_i['contratto']&&$c_i['delega']&&$c_i['dim_impresa']){
             $c_iCheck = true;
         }
       }
-      
+      //var_dump($c_i);
       $contr= calcolaContributo($res);
       
       if($contr === '{"result":"KO"}'){
