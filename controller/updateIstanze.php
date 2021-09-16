@@ -161,9 +161,12 @@ switch ($action){
       if($res){
         $findInstanza = findCheckIstanza($v['id_ram']);
         $find = $findInstanza?$findInstanza:0;
-        if ($data['stato_admin'] === 'B'){
+        if ($data['stato_admin'] === 'A'){
+          $stato =null;
+        }
+        else if ($data['stato_admin'] === 'B'){
           $stato =1;
-        }else{
+        }else if ($data['stato_admin'] === 'C'){
           $stato =0 ;
         }
         if($find){
@@ -238,11 +241,11 @@ switch ($action){
       $c_i = checkIstanza($res['id_RAM']);
       $c_iCheck = false;
       if($c_i){
-        if($c_i['pec']== true&&$c_i['firma']&&$c_i['doc']&&$c_i['contratto']&&$c_i['delega']&&$c_i['dim_impresa']){
+        if(!is_null($c_i['pmi'])&&!is_null($c_i['rete'])&&!is_null($c_i['pec'])&&!is_null($c_i['firma'])&&!is_null($c_i['doc'])&&!is_null($c_i['contratto'])&&!is_null($c_i['delega'])&&!is_null($c_i['dim_impresa'])){
             $c_iCheck = true;
         }
       }
-      //var_dump($c_i);
+      // var_dump($c_i);die;
       $contr= calcolaContributo($res);
       
       if($contr === '{"result":"KO"}'){
@@ -612,7 +615,7 @@ switch ($action){
     case 'upCert':
       $data = $_REQUEST;
       $findInstanza = findCheckIstanza($data['id_ram']);
-      
+     
       $find = $findInstanza?$findInstanza:0;
         if($find){
           $res= upCert($data);

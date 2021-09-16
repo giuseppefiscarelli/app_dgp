@@ -1348,7 +1348,7 @@ function upAlleAdmin($data){
 
   $conn = $GLOBALS['mysqli'];
   $id = $data['id'];
-  $note_admin= $data['note_admin'];
+  $note_admin= $data['note_admin']?addslashes($data['note_admin']):'';
   $stato_admin= $data['stato_admin'];
   $data_admin= date("Y/m/d H:i:s");
   $user_admin = $_SESSION['userData']['email'];
@@ -2229,7 +2229,7 @@ function upIstruttoria($data){
   $id = $conn->escape_string($data['id']);
  
   $stato_admin = $data['stato_admin']??'A';
-  $note_admin = $data['note_admin']??'';
+  $note_admin = $data['note_admin']?addslashes($data['note_admin']):'';
   $data_admin = date("Y/m/d H:i:s");
   $user_admin = $_SESSION['userData']['email'];
  
@@ -2241,7 +2241,7 @@ function upIstruttoria($data){
   $valore_contr = $data['valore_contr']??'null';
   $pmi_istr = $data['pmi_istr']??'null';
   $rete_istr = $data['rete_istr']??'null';
-  $note_istr = $data['note_istr']??null;
+  $note_istr = $data['note_istr']?addslashes($data['note_istr']):null;
   $result=0;
   $sql ='UPDATE veicolo SET ';
   $sql .= "stato_admin = '$stato_admin', note_admin = '$note_admin', data_admin = '$data_admin',user_admin ='$user_admin',costo_istr=$costo_istr,valore_contr=$valore_contr,pmi_istr=$pmi_istr,rete_istr=$rete_istr,note_istr='$note_istr'";
@@ -2967,7 +2967,8 @@ function  upCheckIstanza($id_ram,$tipo_impresa,$tipo,$stato){
 
   $conn = $GLOBALS['mysqli'];
   $result=0;
-  
+  //var_dump($stato);
+  is_null($stato)? $stato = 'NULL': $stato; 
   $sql ='UPDATE istanza_check SET ';
   $sql .= "$tipo = $stato ";
   $sql .=' WHERE id_ram = '.$id_ram;
@@ -3057,7 +3058,7 @@ function  upCert($data){
    $user_mod = $_SESSION['userData']['email'];
    $id_ram = $data['id_ram'];
    $tipo = $data['tipo'];
-   $note = $data['note'];
+   $note = $data['note']?addslashes($data['note']):'';
    $campo_note = 'note_'.$tipo;
    $check = $data['tipo'];
    $data_mod= date("Y-m-d H:i:s");
@@ -3065,7 +3066,7 @@ function  upCert($data){
      $select = $data['select'];
    }else{
     if($data['select']=="A"){
-      $select = 'null';
+      $select = 'NULL';
     }
     if($data['select']=="B"){
       $select = 1;
@@ -3079,7 +3080,7 @@ function  upCert($data){
    $sql .= "$tipo = $select, $campo_note = '$note', user_mod = '$user_mod', data_mod = '$data_mod' ";
    $sql .=' WHERE id_ram = '.$id_ram;
    //print_r($data);
-   //echo $sql;//die;
+   //echo $sql;die;
    $res = $conn->query($sql);
    
    if($res ){
@@ -3121,7 +3122,7 @@ function annullaIstanza($data){
 
   $conn = $GLOBALS['mysqli'];
   $id_RAM = $data['id_RAM'];
-  $note = $data['note_annullamento'];
+  $note = $data['note_annullamento']?addslashes($data['note_annullamento']):'';
   $check = checkRend($id_RAM);
   $today = date("Y-m-d H:i:s");
   if($check){
