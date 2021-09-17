@@ -369,7 +369,7 @@ function sendMail($data){
     $text = 'Text version of email';
     $html = '<html><body>'.$data['body'].'</body></html>';
     $file =  $data['file'];
-    $to = "fiscarelli.giu@gmail.com";
+    $to = "fiscarelli.giu@gmail.com, n.salvatore@gmail.com";
      
     $crlf = "\n";
     $hdrs = array(
