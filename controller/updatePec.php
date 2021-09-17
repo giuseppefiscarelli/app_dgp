@@ -53,8 +53,8 @@ switch ($action){
         'body' => $bodymod,
         'envProd' => $envProd
       );
-      $res = sendMail($data);
-      
+      $res = sendMail2($data);
+     // var_dump($res);
      if($res){
        $data = array(
          'id' => $id,

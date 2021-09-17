@@ -200,7 +200,7 @@ function msgModalPec(id, idRAM){
                                             html:"Pec inviata correttamente.",
                                             icon:"success"}).then((result) => {
                                                                         if (result.isConfirmed) {
-                                                                                    location.reload()
+                                                                                  //  location.reload()
                                                                         }
                                                                         });
                             }

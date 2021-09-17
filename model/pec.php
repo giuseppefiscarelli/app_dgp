@@ -365,11 +365,11 @@ function sendMail($data){
   include 'Mail.php';
   include 'Mail/mime.php' ;
  
-    $from    = "n.salvatore@pec.it";
+    $from    = "<n.salvatore@pec.it>";
     $text = 'Text version of email';
     $html = '<html><body>'.$data['body'].'</body></html>';
     $file =  $data['file'];
-    $to = "fiscarelli.giu@gmail.com, n.salvatore@gmail.com";
+    $to = "<fiscarelli.giu@gmail.com, n.salvatore@gmail.com>";
      
     $crlf = "\n";
     $hdrs = array(
@@ -398,9 +398,47 @@ function sendMail($data){
   $smtp    = @Mail::factory("smtp", array("host"=>$host, "port"=>$port, "auth"=> true, "username"=>$user, "password"=>$pass));
   $mail = $smtp->send($to, $attachmentheaders , $body);
 
-  return $mail;
+  echo json_encode($mail);
 
   
+}
+function sendMail2($data){
+  require "Mail.php";
+  require_once "Mail/mime.php";
+  $host    = "ssl://smtps.pec.aruba.it";
+    $port    = "465";
+    $user    = "n.salvatore@pec.it";
+    $pass    = "NicAruba@1959";
+  $smtp    = @Mail::factory("smtp", array(
+                                          "host"=>$host, 
+                                          "port"=>$port, 
+                                          "auth"=> true, 
+                                          "username"=>$user, 
+                                          "password"=>$pass));
+  $from    = "<n.salvatore@pec.it>";
+
+
+ 
+  $to = '<fiscarelli.giu@gmail.com>';
+  $file =  $data['file'];
+  $subject = $data['Subject'];
+  $body = '<html><body>'.$data['body'].'</body></html>';
+  
+  
+  $mime = new Mail_mime();
+  $mime->addAttachment($file,'application/pdf');
+
+  $headers = array(
+                    "From"=> $from,
+                    "To"=>$to,
+                    "Subject"=>$subject,
+                    //"MIME-Version"=>"1.0",
+                   // "Content-Type"=>"text/html; charset=ISO-8859-1"
+                );
+  
+  $mail =@$smtp->send($to, $headers, $body);
+  echo json_encode($mail);
+
 }
 function upReportSendMail($data){
   /*
