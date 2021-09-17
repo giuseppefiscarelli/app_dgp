@@ -78,13 +78,10 @@ if($check_stato_istruttoria){
                             <label>Tipo Report</label>
                             <select title="Scegli una opzione" name="tipo_report" id="tipo_report">
                             <option>Chiudi finestra</option>
-                                <?php
+                            <?php
                                     foreach ($tipi_report as $tr ) {?>
                                     <option value="<?=$tr['id']?>"
-                                    <?php if(!in_array($tr['id'], $ena_report)){
-                                        ?>
-                                        disabled
-                                    <?php }?>
+                                    
                                    
                                     ><?=$tr['descrizione']?></option>
                                    <?php } ?>
@@ -108,18 +105,7 @@ if($check_stato_istruttoria){
                 </div>
                 
                     <ul class="it-list" id="lista_report">
-                    <?php
-                        if($disable_istr){?>
-                            <li>Nessun Report Disponibile</li>
-                    <?php }else{
-                        foreach ($tipi_report as $tr ) {
-                            if(in_array($tr['id'], $ena_report)){?>
-                                <li><?=$tr['descrizione']?></li>
-                            <?php }
-                    
-                        
-                            }
-                        }?> 
+                   
                     </ul>
                 
 
@@ -241,6 +227,34 @@ if($check_stato_istruttoria){
                             $("#tipo_report option[value='4']").attr('disabled', true);  
                             $('#lista_report > li').remove();
                             $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                        }else{
+                            if(data.stato_istruttoria.tipo_report==1){
+
+                            }
+                            if(data.stato_istruttoria.tipo_report==2){
+                                $("#tipo_report option[value='1']").attr('disabled', true);
+                                $("#tipo_report option[value='2']").attr('disabled', true);
+                                $("#tipo_report option[value='3']").attr('disabled', true);
+                                $("#tipo_report option[value='4']").attr('disabled', false); 
+                                $('#lista_report > li').remove();
+                            $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');
+                            }
+                            if(data.stato_istruttoria.tipo_report==3){
+                             $("#tipo_report option[value='1']").attr('disabled', true);
+                            $("#tipo_report option[value='2']").attr('disabled', true);
+                            $("#tipo_report option[value='3']").attr('disabled', true);
+                            $("#tipo_report option[value='4']").attr('disabled', true);  
+                            $('#lista_report > li').remove();
+                            $("#lista_report").append('<li>Nessun Report Disponibile</li>')
+                            }
+                            if(data.stato_istruttoria.tipo_report==4){
+                                $("#tipo_report option[value='1']").attr('disabled', true);
+                            $("#tipo_report option[value='2']").attr('disabled', true);
+                            $("#tipo_report option[value='3']").attr('disabled', true);
+                            $("#tipo_report option[value='4']").attr('disabled', true);  
+                            $('#lista_report > li').remove();
+                            $("#lista_report").append('<li>Nessun Report Disponibile</li>')
+                            }
                         }
                        
                     }
@@ -332,6 +346,8 @@ if($check_stato_istruttoria){
                                           }
                                           console.log(results.status.length)
                                           if(results.status){
+                                            text_data = ''
+                                                
                                                 $("#tipo_report option[value='1']").attr('disabled', true);
                                                 $("#tipo_report option[value='2']").attr('disabled', true);
                                                 $("#tipo_report option[value='3']").attr('disabled', true);
@@ -341,12 +357,15 @@ if($check_stato_istruttoria){
                                                 text_istr = 'Integrazione';
                                                 type_istr = 'warning';
                                                 if(results.status.data_invio){
+                                                    var d = new Date( results.status.data_invio)
+                                                    data_invio= d.toLocaleDateString("it-IT")
+                                                    text_data = '<br>Pec inviata il '+ data_invio
                                                     $("#tipo_report option[value='1']").attr('disabled', false);
                                                     $("#lista_report").append('<li>Richiesta di integrazione</li>');
                                                 }
                                                 $("#tipo_report option[value='2']").attr('disabled', false);
                                                 $("#lista_report").append('<li>Preavviso al Rigetto</li>');
-                                                if(result.check == 0 ){
+                                                if(results.check == 0 ){
                                                     $("#tipo_report option[value='3']").attr('disabled', false);
                                                     $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
                                                 }
@@ -354,7 +373,14 @@ if($check_stato_istruttoria){
                                               }
                                               if(results.status.tipo_report == 2){
                                                 text_istr = 'Preavviso di rigetto';
-                                                type_istr = 'warning';
+                                                type_istr = 'danger';
+                                                if(results.status.data_invio){
+                                                    
+                                                    
+                                                   var d = new Date( results.status.data_invio)
+                                                    data_invio= d.toLocaleDateString("it-IT")
+                                                    text_data = '<br>Pec inviata il '+ data_invio
+                                                }
                                                
                                                 $("#tipo_report option[value='4']").attr('disabled', false);
                                                 $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');
@@ -374,7 +400,7 @@ if($check_stato_istruttoria){
 
                                                   
                                               }
-                                              span_istr = '<span class="badge badge-'+type_istr+'">'+text_istr+'</span>';
+                                              span_istr = '<span class="badge badge-'+type_istr+'">'+text_istr+'</span>'+text_data;
                                                 //console.log(span_istr);
                                                 $('#status_istruttoria').html('Stato istruttoria '+span_istr)
                                                 $('#tipo_report').selectpicker('refresh')
@@ -660,7 +686,7 @@ if($check_stato_istruttoria){
                      
                      
                      html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
-                     span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
+                     span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da convalidare</b>';
                      //console.log(span_istr);
                      $('#status_istruttoria').html('Stato istruttoria '+span_istr)
                      $("#reportTable > tbody").prepend(html);
@@ -732,7 +758,7 @@ if($check_stato_istruttoria){
                                 
                                 
                                 html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
-                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
+                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da convalidare</b>';
                                 //console.log(span_istr);
                                 $('#status_istruttoria').html('Stato istruttoria '+span_istr)
                                 $("#reportTable > tbody").prepend(html);
@@ -753,8 +779,8 @@ if($check_stato_istruttoria){
                             success: function(id){
                                 $('#id_report').val(id);
                                 $('#prev_btn').attr('onclick','prevRep('+id+');');
-                                btn = 'saveRepBtn'+tipo;
-                                $('#'+btn).attr('onclick','saveReport('+id+');');
+                                //btn = 'saveRepBtn'+tipo;
+                                //$('#'+btn).attr('onclick','saveReport('+id+');');
                                 
 
                             }
@@ -831,6 +857,27 @@ if($check_stato_istruttoria){
             }
         })
     }
+    function delInt2(id){
+        $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=delIntDettId",
+            data: {id:id},
+            dataType: "json",
+            success: function(data){
+                    console.log(data)
+                    $('table#tab_int2 tr#row_dett_2_'+id).remove();
+                    var rowCount = $("#myTable > tbody").children.length
+                    console.log(rowCount)
+                                
+                    if(rowCount == 0){
+                        $("#div_tab_int2").show();
+                            $("#saveRepBtn2,#prev_btn2").prop('disabled', true)
+                    }
+                   
+            }
+        })
+        
+    }
    
     progtr=1;
     function addInt(){
@@ -855,6 +902,7 @@ if($check_stato_istruttoria){
                             btn_del = '<button type="button" class="btn btn-danger btn-sm" onclick="delInt('+data+')"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
                             html= '<tr id="row_dett_1_'+data+'"><td>'+tipo+'</td><td id="desc_'+progtr+'">'+desc+'</td><td>'+btn_del+'</td></tr>'
                             $("#tab_int > tbody").append(html);
+                            $('#saveRepBtn1,#prev_btn').prop('disabled',false)
 
                     }
         })  
@@ -873,12 +921,8 @@ if($check_stato_istruttoria){
         //desc =  $('#descrizione_integrazione').html();
         desc =  $('#motivazione').val();
 
-        btn_edit='<button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> </button>'
-        btn_del = '<button type="button" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
-        html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr2+'">'+desc+'</td><td>'+btn_edit+btn_del+'</td></tr>'
-        $("#tab_int2 > tbody").append(html);
         
-        $("#div_tab_int2").show();
+       
         //$('#des_int,#div_btn_add_int').hide();
         $.ajax({
                     type: "POST",
@@ -888,6 +932,12 @@ if($check_stato_istruttoria){
                     success: function(data){
                             console.log(data)
                             $('#motivazione').val("");
+                            btn_del = '<button type="button" class="btn btn-danger btn-sm" onclick="delInt2('+data+');"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+                            html= '<tr id="row_dett_2_'+data+'"><td>'+tipo+'</td><td id="desc_'+progtr2+'">'+desc+'</td><td>'+btn_del+'</td></tr>'
+                            $("#tab_int2 > tbody").append(html);
+                            
+                            $("#div_tab_int2").show();
+                            $("#saveRepBtn2,#prev_btn2").prop('disabled', false)
 
                     }
         })  
@@ -996,7 +1046,7 @@ if($check_stato_istruttoria){
         }) 
         
 
-
+        $('#saveRepBtn3,#prev_btn3').prop('disabled', false)
         $('#btn_add_int3,#dati_report_3').hide();
         $('#btn_up_int3').attr('onclick','modInt3('+id_report+')');
         $('#btn_up_int3').show();
@@ -1213,7 +1263,7 @@ if($check_stato_istruttoria){
         data_verbale=$('#desc3_3').text()
         prot = $('#desc3_4').text()
         data_doc = $('#desc3_5').text()
-       
+        $('#saveRepBtn3,#prev_btn3').prop('disabled', true)
        
 
 
@@ -1304,60 +1354,62 @@ if($check_stato_istruttoria){
       </div>
       <div class="modal-body">
         <input type="hidden" name="id_report" id="id_report" value="">
-        <div class="row">
-            <div class="col-6">
-                <div class=" col-12 bootstrap-select-wrapper " >
-                    <label>Tipo Richiesta</label>
-                    <select title="Scegli una opzione" name="tipo_integrazione" id="tipo_integrazione">
-                    <?php
-                        foreach ($tipi_integrazione as $ti ) {?>
-                        <option value="<?=$ti['id']?>"><?=$ti['descrizione']?></option>
-                        <?php    
-                        }?>
-                        
-                    </select>
-                   
-                </div>
-                <div class="row">
-                    <div class=" col-12 col-lg-6 form-group" style="margin-top:50px;">
-                        <input type="text" class="form-control" name="prot_RAM" id="prot_RAM" placeholder="numero protocollo" value="">
-                        <label for="prot_RAM">Protocollo Documento</label>
-                        <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
+        <form id="modal1">
+            <div class="row">
+                <div class="col-6">
+                    <div class=" col-12 bootstrap-select-wrapper " >
+                        <label>Tipo Richiesta</label>
+                        <select title="Scegli una opzione" name="tipo_integrazione" id="tipo_integrazione">
+                        <?php
+                            foreach ($tipi_integrazione as $ti ) {?>
+                            <option value="<?=$ti['id']?>"><?=$ti['descrizione']?></option>
+                            <?php    
+                            }?>
+                            
+                        </select>
+                    
                     </div>
-                    <div class="col-12 col-lg-6 it-datepicker-wrapper">
-                        <div class="form-group">
-                            <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa">
-                            <label for="data_prot">Data Documento</label>
-                            <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                    <div class="row">
+                        <div class=" col-12 col-lg-6 form-group" style="margin-top:50px;">
+                            <input type="text" class="form-control" name="prot_RAM" id="prot_RAM" placeholder="numero protocollo" value="" required>
+                            <label for="prot_RAM">Protocollo Documento</label>
+                            <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
+                        </div>
+                        <div class="col-12 col-lg-6 it-datepicker-wrapper">
+                            <div class="form-group">
+                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa" required>
+                                <label for="data_prot">Data Documento</label>
+                                <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
 
+                            </div>
                         </div>
                     </div>
+                
                 </div>
-               
-            </div>
-            <div class="col-6" id="veiNonConf" style="display:none;">
-            <label>Veicoli con elementi non accettati</label>
-            <div >
-                <table class="table table-sm" id="tabVeiNonConf">
-                        <thead>
-                            <tr>
-                                <th>Targa</th>
-                                <th>Tipo documento</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                </table>            
-            </div>   
-               
+                <div class="col-6" id="veiNonConf" style="display:none;">
+                <label>Veicoli con elementi non accettati</label>
+                <div >
+                    <table class="table table-sm" id="tabVeiNonConf">
+                            <thead>
+                                <tr>
+                                    <th>Targa</th>
+                                    <th>Tipo documento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                    </table>            
+                </div>   
+                
 
+                </div>
+                <div class="col-6">
+                    <table class="table table-responsive table-borderless" id="docRtable">
+                            
+                    </table>
+                </div>
             </div>
-            <div class="col-6">
-                <table class="table table-responsive table-borderless" id="docRtable">
-                        
-                </table>
-            </div>
-        </div>
+        </form>
         <div style="margin-top:45px;display:none;" id="des_int" >
             <div class="form-group">
             <label id="lab_des"for="descrizione_integrazione"  class="active" style="width: auto;">Descrizione</label>
@@ -1385,8 +1437,8 @@ if($check_stato_istruttoria){
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
-        <button class="btn btn-primary btn-sm" id="saveRepBtn1" onclick="saveReport();" type="button">Salva</button>
-        <button class="btn btn-success btn-sm" id="prev_btn"onclick="prevRep();" type="button">Anteprima</button>
+        <button class="btn btn-primary btn-sm" id="saveRepBtn1"  type="submit" form="modal1" disabled>Salva</button>
+        <button class="btn btn-success btn-sm" id="prev_btn"onclick="prevRep();" type="button" disabled>Anteprima</button>
       </div>
     </div>
   </div>
@@ -1401,7 +1453,9 @@ if($check_stato_istruttoria){
         </div>
         <div class="modal-body">
         <input type="hidden" name="id_report3" id="id_report3" value="">
+        <form id="modal3">
             <div class="row" id="dati_report_3">
+           
                    <!--
                         <div class="col-12 col-lg-3 form-group">
                             <input type="text" class="form-control" id="num_prot3"  name="num_prot"placeholder="numero protocollo" value="">
@@ -1417,7 +1471,7 @@ if($check_stato_istruttoria){
                         </div>
                     -->
                         <div class="col-12 col-lg-2 form-group">
-                            <input type="text" class="form-control it-date-datepicker" id="data_verbale3"  name="data_verbale3" placeholder="gg/mm/aaaa" value="">
+                            <input type="text" class="form-control it-date-datepicker" id="data_verbale3"  name="data_verbale3" placeholder="gg/mm/aaaa" value="" required>
                             <label for="data_verbale3">Data verbale</label>
                             <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
 
@@ -1426,26 +1480,28 @@ if($check_stato_istruttoria){
                    
 
                         <div class="col-12 col-lg-3 form-group">
-                            <input type="text" class="form-control" name="prot_RAM3" id="prot_RAM3" placeholder="numero protocollo" value="">
+                            <input type="text" class="form-control" name="prot_RAM3" id="prot_RAM3" placeholder="numero protocollo" value="" required>
                             <label for="prot_RAM">Protocollo Documento</label>
                             <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
 
                         </div>
                       
                         <div class="col-12 col-lg-2 form-group">
-                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot3" name="data_prot3" type="text" value="" placeholder="gg/mm/aaaa">
+                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot3" name="data_prot3" type="text" value="" placeholder="gg/mm/aaaa" required>
                                 <label for="data_prot3">Data Documento</label>
                                 <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
 
                         </div>
-
+                       
                    
             
-            
+                       
             </div>
+            </form>
             <div class="row">
-                <button type="button" id="btn_add_int3" onclick="addInt3()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
-                <button type="button" id="btn_up_int3" onclick="modInt3()"class="btn btn-warning" style="display:none;"> <i class="fa fa-edit" aria-hidden="true"></i> Modifica dati al documento</button>
+               
+                <button type="submit" form="modal3" id="btn_add_int3" class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
+                <button type="button" id="btn_up_int3" onclick="modInt3()"class="btn btn-warning" style="display:none;"> <i class="fa fa-edit" aria-hidden="true" ></i> Modifica dati al documento</button>
             </div>
             <div class="row" id="div_tab_int3"  style="display:none;">
                 <table class="table" id="tab_int3">
@@ -1462,8 +1518,8 @@ if($check_stato_istruttoria){
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
-            <button class="btn btn-primary btn-sm" id="saveRepBtn3" onclick="saveReport3();" type="button">Salva</button>
-            <button class="btn btn-success btn-sm" id="prev_btn3"onclick="prevRep3();" type="button">Anteprima</button>
+            <button class="btn btn-primary btn-sm" id="saveRepBtn3" onclick="saveReport3();" type="button" disabled>Salva</button>
+            <button class="btn btn-success btn-sm" id="prev_btn3"onclick="prevRep3();" type="button" disabled>Anteprima</button>
         </div>
     </div>
   </div>
@@ -1590,21 +1646,21 @@ if($check_stato_istruttoria){
             <div class="row">
                     
                         <div class="col-12 col-lg-6 form-group">
-                            <input type="text" class="form-control" id="motivazione"  name="motivazione"placeholder="Scrivere motivazione" value="">
+                            <input type="text" class="form-control" id="motivazione"  name="motivazione"placeholder="Scrivere motivazione" value="" required>
                             <label for="prot_RAM">Motivazione rigetto</label>
                         </div>
 
                     
 
                         <div class="col-12 col-lg-3 form-group">
-                            <input type="text" class="form-control" name="prot_RAM2" id="prot_RAM2" placeholder="numero protocollo" value="">
+                            <input type="text" class="form-control" name="prot_RAM2" id="prot_RAM2" placeholder="numero protocollo" value="" required>
                             <label for="prot_RAM">Protocollo Documento</label>
                             <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
 
                         </div>
                         <div class="col-12 col-lg-3 it-datepicker-wrapper" style="margin-top: 0px;">
                             <div class="form-group">
-                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot2" name="data_prot2" type="text" value="" placeholder="gg/mm/aaaa">
+                                <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot2" name="data_prot2" type="text" value="" placeholder="gg/mm/aaaa" required>
                                 <label for="data_prot2">Data Documento</label>
                                 <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
 
@@ -1634,8 +1690,8 @@ if($check_stato_istruttoria){
         </div> 
         <div class="modal-footer">
             <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
-            <button class="btn btn-primary btn-sm" id="saveRepBtn2" onclick="saveReport2();" type="button">Salva</button>
-            <button class="btn btn-success btn-sm" id="prev_btn2"onclick="prevRep2();" type="button">Anteprima</button>
+            <button class="btn btn-primary btn-sm" id="saveRepBtn2" onclick="saveReport2();" type="button" disabled>Salva</button>
+            <button class="btn btn-success btn-sm" id="prev_btn2"onclick="prevRep2();" type="button" disabled>Anteprima</button>
         </div>
     </div>
   </div>
@@ -1643,6 +1699,21 @@ if($check_stato_istruttoria){
 
 
 <script>
+     $("#modal3").on('submit', function( event ) {
+        event.preventDefault();
+  
+        addInt3()
+     })
+     $("#modal1").on('submit', function( event ) {
+        event.preventDefault();
+        id=$('#id_report').val()
+        saveReport(id)
+     })
+     $("#modal2").on('submit', function( event ) {
+        event.preventDefault();
+        id=$('#id_report2').val()
+        saveReport2(id)
+     })
 
 $('#tipo_integrazione').change(function(){
         $('#descrizione_integrazione').val('')
