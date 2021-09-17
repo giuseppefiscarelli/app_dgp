@@ -331,7 +331,7 @@ if($check_stato_istruttoria){
                                                 )
                                           }
                                           console.log(results.status.length)
-                                          if(results.status.length > 0){
+                                          if(results.status){
                                                 $("#tipo_report option[value='1']").attr('disabled', true);
                                                 $("#tipo_report option[value='2']").attr('disabled', true);
                                                 $("#tipo_report option[value='3']").attr('disabled', true);
@@ -341,8 +341,8 @@ if($check_stato_istruttoria){
                                                 text_istr = 'Integrazione';
                                                 type_istr = 'warning';
                                                 if(results.status.data_invio){
-                                                $("#tipo_report option[value='1']").attr('disabled', false);
-                                                $("#lista_report").append('<li>Richiesta di integrazione</li>');
+                                                    $("#tipo_report option[value='1']").attr('disabled', false);
+                                                    $("#lista_report").append('<li>Richiesta di integrazione</li>');
                                                 }
                                                 $("#tipo_report option[value='2']").attr('disabled', false);
                                                 $("#lista_report").append('<li>Preavviso al Rigetto</li>');
