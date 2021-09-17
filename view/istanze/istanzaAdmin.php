@@ -156,6 +156,12 @@ if($new_stato_istruttoria){
   // var_dump($new_tipo_report);
   $text_istr = $new_tipo_report['badge_text'];
   $type_istr = $new_tipo_report['style'];
+  if($new_stato_istruttoria['stato']=='A'){                                 
+   
+      $span_istr = '<b class="blink">Pec da inviare</b>';
+      $ena_report = [];
+    
+  }
   if($new_stato_istruttoria['stato']=='B'){                                 
     if($new_stato_istruttoria['data_ins']){
       $span_istr = '<b class="blink">Pec da convalidare</b>';
@@ -280,7 +286,12 @@ if(!$status['data_annullamento']&&$activeIst){?>
    Stato Istruttoria <span class="badge badge-<?=$type_istr?>"><?=$text_istr?></span><br><?=$span_istr?>
   </div>
 
-<?php } ?>
+<?php }else{ ?>
+  <div class="col-lg-2 col-12" id="status_istruttoria" style="display:none;">
+  
+  </div>
+<?php
+} ?>
 
 </div>
 

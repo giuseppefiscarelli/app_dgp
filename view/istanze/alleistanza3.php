@@ -48,6 +48,9 @@ var_dump($checkAlle);*/
                             <div class="collapse-body">
                                 <div class="row">
                                     <div class=" col-12">
+                                        <?php
+                                         if($i['pmi']=="Yes"||$i['rete']=="Yes"||$i['nr_1']>0||$i['nr_2']>0 ){
+                                        ?>
                                         <table class="table table-borderless table-sm">
                                             <thead>
                                                 <tr>
@@ -131,7 +134,7 @@ var_dump($checkAlle);*/
 
                                         </table>
                                         <?php
-
+                                         }
                                                     
                                                     
                                                     if(!$c_i){

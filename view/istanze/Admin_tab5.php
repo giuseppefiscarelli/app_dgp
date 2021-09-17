@@ -4,7 +4,9 @@ $tipi_integrazione =getRichInt();
 $tipi_report = getTipoReport();
 $reports = getReportIdRam($i['id_RAM']);
 if($check_ammissione==0){ // && $new_stato_istruttoria['stato']=='C'
-    array_push($ena_report, 3); 
+    array_push($ena_report,1,2,3); 
+}else{
+    array_push($ena_report,1,2); 
 }
 //var_dump($disable_istr);
 
@@ -202,7 +204,53 @@ if($check_stato_istruttoria){
 </div>
 
 <script>
+ $('#nav-5').on('shown.bs.tab', function (e) {
+    
+     $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=getComunicazioni",
+            data: {id_RAM:<?=$i['id_RAM']?>},
+            dataType: "json",
+            success: function(data){
+                console.log(data)
+                    console.log(data.check_ammissione)
+                    $("#tipo_report option[value='1']").attr('disabled', true);
+                    $("#tipo_report option[value='2']").attr('disabled', true);
+                    $("#tipo_report option[value='3']").attr('disabled', true);
+                    $("#tipo_report option[value='4']").attr('disabled', true);  
+                    $('#lista_report > li').remove();
+                    if(data.check_ammissione == 0 ){
+                        $("#tipo_report option[value='1']").attr('disabled', false);
+                        $("#lista_report").append('<li>Richiesta Integrazioni</li>');
+                        $("#tipo_report option[value='2']").attr('disabled', false);
+                        $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                        $("#tipo_report option[value='3']").attr('disabled', false);
+                        $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
 
+                    }else if (data.check_ammissione > 0){
+                        $("#tipo_report option[value='1']").attr('disabled', false);
+                        $("#lista_report").append('<li>Richiesta Integrazioni</li>');
+                        $("#tipo_report option[value='2']").attr('disabled', false);
+                        $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                    }
+                    if(data.stato_istruttoria){
+                        if(data.stato_istruttoria.stato !='C'){
+                            $("#tipo_report option[value='1']").attr('disabled', true);
+                            $("#tipo_report option[value='2']").attr('disabled', true);
+                            $("#tipo_report option[value='3']").attr('disabled', true);
+                            $("#tipo_report option[value='4']").attr('disabled', true);  
+                            $('#lista_report > li').remove();
+                            $("#lista_report").append('<li>Nessun Report Disponibile</li>');
+                        }
+                       
+                    }
+
+
+                    $('#tipo_report').selectpicker('refresh')
+                   
+            }
+        })
+ })
     function showRep(id){
         alert(id)
     }
@@ -282,8 +330,8 @@ if($check_stato_istruttoria){
                                                       'success'
                                                 )
                                           }
-
-                                          if(results.status){
+                                          console.log(results.status.length)
+                                          if(results.status.length > 0){
                                                 $("#tipo_report option[value='1']").attr('disabled', true);
                                                 $("#tipo_report option[value='2']").attr('disabled', true);
                                                 $("#tipo_report option[value='3']").attr('disabled', true);
@@ -330,6 +378,24 @@ if($check_stato_istruttoria){
                                                 //console.log(span_istr);
                                                 $('#status_istruttoria').html('Stato istruttoria '+span_istr)
                                                 $('#tipo_report').selectpicker('refresh')
+                                          }else{
+                                            $("#tipo_report option[value='4']").attr('disabled', true);  
+                                                $('#lista_report > li').remove();
+                                            $("#tipo_report option[value='1']").attr('disabled', false);
+                                                $("#lista_report").append('<li>Richiesta Integrazioni</li>');
+                                                
+                                                $("#tipo_report option[value='2']").attr('disabled', false);
+                                                $("#lista_report").append('<li>Preavviso al Rigetto</li>');
+                                                if(results.check_ammissione == 0){
+                                                    $("#tipo_report option[value='3']").attr('disabled', false);
+                                                    $("#lista_report").append('<li>Chiusura del procedimento con ammissione al finanziamento</li>');
+                                                }else{
+                                                    $("#tipo_report option[value='3']").attr('disabled', true);  
+                                                }
+                                                   
+                                                    $('#tipo_report').selectpicker('refresh')
+                                                    $('#status_istruttoria').html('')
+                                                
                                           }
                                          
                                 }
@@ -519,9 +585,10 @@ if($check_stato_istruttoria){
                                 
                                 
                                 html= '<tr id="row_'+data.id+'"><td>'+td1+'</td><td>'+td2+'</td><td>'+td3+'</td><td>'+td4+'</td></tr>'
-                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
+                                span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da convalidare</b>';
                                 //console.log(span_istr);
                                 $('#status_istruttoria').html('Stato istruttoria '+span_istr)
+                                $('#status_istruttoria').show()
                                 $("#reportTable > tbody").prepend(html);
                                 $("#reportTable").show();
                                 $('#tipo_report').selectpicker('refresh')

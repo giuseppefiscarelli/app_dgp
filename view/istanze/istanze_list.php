@@ -218,9 +218,12 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                 <?php 
                                       if ($i['stato_report']&&$i['tipo_report']){
                                         $tipo_report = getTipoRepFull($i['tipo_report']);
-                                        
+                                        //var_dump($i['stato_report']);
                                         $text_istr = $tipo_report['badge_text'];
                                         $type_istr = $tipo_report['style'];
+                                        if($i['stato_report']=='A'){
+                                          $span_istr = '<b class="blink">Pec da inviare</b>';
+                                        }
                                         if($i['stato_report']=='B'){
                                        
                                           if($i['data_ins_report']){
@@ -233,7 +236,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                                         if($i['stato_report']=='C'){
                                             $span_istr = 'Pec inviata il '.date("d/m/Y",strtotime($i['data_invio_report']));
                                         }?>
- <span class="badge badge-pill badge-<?=$type_istr?>"><?=$text_istr?></span><br>
+                                        <span class="badge badge-pill badge-<?=$type_istr?>"><?=$text_istr?></span><br>
                                             <?=$span_istr?>
                                         <?php
                                       }

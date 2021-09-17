@@ -426,6 +426,7 @@ switch ($action){
     case 'upIstruttoria':
       $data=$_REQUEST;
       $res =upIstruttoria($data);
+      
       echo json_encode($res);
 
 
@@ -488,13 +489,15 @@ switch ($action){
     case 'delReport': 
       $data = $_REQUEST;
       $res= delReport($data['id']);
+      /*
       $status_istr= getStatusIstruttoria($data['id_RAM']);
       $check_stato_istruttoria= getStatusIstruttoria_test($data['id_RAM']);
       if($status_istr && $check_stato_istruttoria){
         //if($check_stato_istruttoria['tipo_report'] == $status_istr['tipo_report']){
           $status_istr = $check_stato_istruttoria;
         //}
-      }
+      }*/
+      $status_istr= getStatusIstruttoria_full($data['id_RAM']);
       /*elseif($check_stato_istruttoria){
         $status_istr = $check_stato_istruttoria;
       }*/
@@ -690,6 +693,28 @@ switch ($action){
 
     break;
 
+    case 'getComunicazioni':
+      $id_RAM = $_REQUEST['id_RAM'];
+      $stato_istruttoria = getStatusIstruttoria_full($id_RAM);
+     if(!$stato_istruttoria){
+       $stato_istruttoria = 0;
+     }
+      $check_ammissione = 0;
+      
+      $veicoli = getVeicoli($id_RAM);
+      foreach($veicoli as $v){
+        if($v['stato_admin']=='A'||$v['stato_admin']==null){
+            $check_ammissione++;
+        }
+      }
+      //var_dump($check_ammissione);
+      //var_dump($stato_istruttoria);
+      $json = [
+        'check_ammissione' =>$check_ammissione,
+        'stato_istruttoria'=>$stato_istruttoria
+      ];
+      echo json_encode($json);
+      break;
     case 'annInfoIstanza':
       $id_RAM = $_REQUEST['id'];
 

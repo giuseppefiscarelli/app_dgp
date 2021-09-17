@@ -378,13 +378,16 @@ function sendMail($data){
         "To"=>$to
     );
     
-    
+    /*
     $host    = "ssl://smtps.pec.aruba.it";
     $port    = "465";
     $user    = "n.salvatore@pec.it";
     $pass    = "NicPec2014";
-  
- 
+  */
+  $host    = "smtp.gmail.com";
+  $port    = "587";
+  $user    = "fiscarelli.giu@gmail.com";
+  $pass    = "01735583";
   
   $mime = new Mail_mime(array('eol' => $crlf));
   $mime->setTXTBody($text);
