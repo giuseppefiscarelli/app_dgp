@@ -5,7 +5,7 @@
   $host    = "ssl://smtps.pec.aruba.it";
     $port    = "465";
     $user    = "n.salvatore@pec.it";
-    $pass    = "NicPec2014";
+    $pass    = "NicAruba@1959";
   $smtp    = @Mail::factory("smtp", array(
                                           "host"=>$host, 
                                           "port"=>$port, 
