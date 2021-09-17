@@ -384,7 +384,7 @@ function sendMail($data){
     $user    = "n.salvatore@pec.it";
     $pass    = "NicAruba@1959";
   
-  
+   
   
   $mime = new Mail_mime(array('eol' => $crlf));
   $mime->setTXTBody($text);
