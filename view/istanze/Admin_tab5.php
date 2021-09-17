@@ -799,8 +799,8 @@ if($check_stato_istruttoria){
                             success: function(id){
                                 $('#id_report2').val(id);
                                 $('#prev_btn2').attr('onclick','prevRep2('+id+');');
-                                btn = 'saveRepBtn'+tipo;
-                                $('#'+btn).attr('onclick','saveReport2('+id+');');
+                               // btn = 'saveRepBtn'+tipo;
+                                //$('#'+btn).attr('onclick','saveReport2('+id+');');
                                 
 
                             }
@@ -837,8 +837,8 @@ if($check_stato_istruttoria){
                             success: function(id){
                                 $('#id_report4').val(id);
                                 $('#prev_btn4').attr('onclick','prevRep4('+id+');');
-                                btn = 'saveRepBtn'+tipo;
-                                $('#'+btn).attr('onclick','saveReport4('+id+');');
+                                //btn = 'saveRepBtn'+tipo;
+                                //$('#'+btn).attr('onclick','saveReport4('+id+');');
                                 
 
                             }
@@ -852,7 +852,7 @@ if($check_stato_istruttoria){
             data: {id:id},
             dataType: "json",
             success: function(data){
-                    console.log(data)
+             
                     $('table#tab_int tr#row_dett_1_'+id).remove();
             }
         })
@@ -864,13 +864,12 @@ if($check_stato_istruttoria){
             data: {id:id},
             dataType: "json",
             success: function(data){
-                    console.log(data)
+                  
                     $('table#tab_int2 tr#row_dett_2_'+id).remove();
-                    var rowCount = $("#myTable > tbody").children.length
-                    console.log(rowCount)
-                                
+                    var rowCount = $("#tab_int2 tr").length -1
+                              
                     if(rowCount == 0){
-                        $("#div_tab_int2").show();
+                        $("#div_tab_int2").hide();
                             $("#saveRepBtn2,#prev_btn2").prop('disabled', true)
                     }
                    
@@ -947,8 +946,9 @@ if($check_stato_istruttoria){
         
         //alert(desc);
     }
-    progtr3=1;
+    
     function addInt3(){
+        progtr3=1;
         id_RAM= <?=$i['id_RAM']?>;
         id_report= $('#id_report3').val();
         
@@ -1062,8 +1062,9 @@ if($check_stato_istruttoria){
         
         //alert(desc);
     }
-    progtr4=1;
+   
     function addInt4(){
+        progtr4=1;
         id_RAM= <?=$i['id_RAM']?>;
         id_report= $('#id_report4').val();
         
@@ -1120,12 +1121,13 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             tipo='Data verbale'
                             $('#data_verbale_in').val("");
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_verbale+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_4_'+progtr4+'">'+data_verbale+'</td></tr>'
                             $("#tab_int4 > tbody").append(html);
+                            progtr4++;
 
                     }
         }) 
-        progtr4++;
+       
         num_prot_rig = $('#num_prot_rig').val()
         $.ajax({
                     type: "POST",
@@ -1136,13 +1138,14 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             $('#num_prot_rig').val("");
                             tipo = 'Numero protocollo Preavviso di rigetto'
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+num_prot_rig+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_4_'+progtr4+'">'+num_prot_rig+'</td></tr>'
                               $("#tab_int4 > tbody").append(html);
+                              progtr4++;
                               
 
                     }
         })
-        progtr4++;  
+        
         data_prot_rig = $('#dat_prot_rig').val()
         $.ajax({
               
@@ -1154,12 +1157,13 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             $('#dat_prot_rig').val("");
                             tipo='Data protocollo Preavviso di rigetto';
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_rig+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_4_'+progtr4+'">'+data_prot_rig+'</td></tr>'
                               $("#tab_int4 > tbody").append(html);
+                              progtr4++;
 
                     }
         }) 
-        progtr4++; 
+        
         data_prot_pre = $('#dat_prot_pre').val()
         
         $.ajax({
@@ -1171,12 +1175,13 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             tipo='Data nota Preavviso'
                             $('#dat_prot_pre').val("");
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr4+'">'+data_prot_pre+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_4_'+progtr4+'">'+data_prot_pre+'</td></tr>'
                             $("#tab_int4 > tbody").append(html);
+                            progtr4++;
 
                     }
         }) 
-        progtr4++; 
+       
         
         mot_ina=$('#mot_ina').val()
         $.ajax({
@@ -1188,15 +1193,17 @@ if($check_stato_istruttoria){
                             //console.log(data)
                             tipo='Motivazione di Inassibilità'
                             $('#mot_ina').val("");
-                            html= '<tr><td>'+tipo+'</td><td id="desc_'+progtr3+'">'+mot_ina+'</td></tr>'
+                            html= '<tr><td>'+tipo+'</td><td id="desc_4_'+progtr4+'">'+mot_ina+'</td></tr>'
                             $("#tab_int4 > tbody").append(html);
+                            progtr4++;
 
                     }
         }) 
-        progtr4++; 
-
-
-
+        
+        $('#btn_up_int4').attr('onclick','modInt4('+id_report+')');
+        $('#btn_up_int4').show()
+        $('#dati_report_4,#btn_add_int4').hide()
+        $('#saveRepBtn4,#prev_btn4').prop('disabled', false)
 
 
 
@@ -1284,6 +1291,36 @@ if($check_stato_istruttoria){
                     $('#btn_add_int3,#dati_report_3').show();
                     $('#btn_up_int3').attr('onclick','modInt3()');
                     $('#btn_up_int3').hide();
+            }
+        })
+    }
+    function modInt4(idreport){
+        data_verbale_in = $('#desc_4_1').text()
+        num_prot_rig=$('#desc_4_2').text()
+        dat_prot_rig=$('#desc_4_3').text()
+        dat_prot_pre = $('#desc_4_4').text()
+        mot_ina = $('#desc_4_5').text()
+        $('#saveRepBtn4,#prev_btn4').prop('disabled', true)
+       
+
+
+        $.ajax({
+            type: "POST",
+            url: "controller/updateIstanze.php?action=delIntDett",
+            data: {id_report:idreport},
+            dataType: "json",
+            success: function(data){
+                    console.log(data)
+                    $('#data_verbale_in').val(data_verbale_in)
+                    $('#num_prot_rig').val(num_prot_rig)
+                    $('#dat_prot_rig').val(dat_prot_rig)
+                    $('#dat_prot_pre').val(dat_prot_pre)
+                    $('#mot_ina').val(mot_ina)
+                    $("#tab_int4 > tbody").empty();
+                    $("#div_tab_int4").hide();
+                    $('#btn_add_int4,#dati_report_4').show();
+                    $('#btn_up_int4').attr('onclick','modInt4('+idreport+')');
+                    $('#btn_up_int4').hide();
             }
         })
     }
@@ -1533,84 +1570,73 @@ if($check_stato_istruttoria){
         </div>
         <div class="modal-body">
         <input type="hidden" name="id_report4" id="id_report4" value="">
-            <div class="row">
-                    
-                     <!--  
-                <div class="col-12 col-lg-4 form-group ">
-                    <input type="text" class="form-control" id="num_prot_in"  name="num_prot_in"placeholder="numero protocollo" value="">
-                    <label for="num_prot_in">Numero protocollo Domanda Ammissione</label>
-                    <small class="form-text text-muted">inserisci numero protocollo Domanda di Ammissione</small>
-
-                </div>
-                
-                <div class="col-12 col-lg-3 form-group ">
-                   
-                        <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57" class="form-control it-date-datepicker" id="dat_prot_in"  name="dat_prot_in" placeholder=" formato gg/mm/aaaa" value="">
-                        <label for="dat_prot_in">Data protocollo Domanda Ammissione</label>
-                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
-                        
-                   
-                </div>
-                        
-                    -->   
+        <form id="modal4">
+        <div class="row">
                 <div class="form-group col-12 col-lg-3">
-                    
-                        <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="data_verbale_in"  name="data_verbale_in" placeholder="formato gg/mm/aaaa" value="">
-                        <label for="data_verbale_in">Data verbale</label>
-                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
-                    
-                </div>
-            </div>   
-            <div class="row" style="margin-top:10px;">           
-                <div class="form-group col-12 col-lg-4">
-                    <input type="text" class="form-control" id="num_prot_rig"  name="num_prot_rig"placeholder="numero protocollo" value="">
-                    <label for="num_prot_rig">Numero protocollo Preavviso di rigetto</label>
-                    <small class="form-text text-muted">inserisci numero protocollo Preavviso di rigetto</small>
-                    
-                </div>
-                <div class="form-group col-12 col-lg-3">
-                
-                    <input type="text"onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_rig"  name="dat_prot_rig" placeholder=" formato gg/mm/aaaa" value="">
-                    <label for="dat_prot_rig">Data protocollo Preavviso di rigetto</label>
-                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
-                    
-                </div>
-                        
-                       
-                <div class="form-group col-12 col-lg-3">
-                    
-                    <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_pre"  name="dat_prot_pre" placeholder="formato gg/mm/aaaa" value="">
-                    <label for="dat_prot_pre">Data nota Preavviso</label>
-                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
-                    
-                </div>
-            </div>   
-            <div class="row" style="margin-top:10px;"> 
-            
-                <div class="form-group col-12 col-lg-6 ">
-                        <textarea type="text" class="form-control" maxlength="500" id="mot_ina"  name="mot_ina"placeholder="Motivazione inammissibilità" value=""></textarea>
-                        <label for="mot_ina">Motivazione di Inassibilità</label>
-                        <small class="form-text text-muted">Scrivi motivazione inammissibilità</small>
-                </div>
-                    
-                <div class="form-group col-12 col-lg-3">
-                    <input type="text" class="form-control" name="prot_RAM4" id="prot_RAM4" placeholder="numero protocollo" value="">
+                    <input type="text" class="form-control" name="prot_RAM4" id="prot_RAM4" placeholder="numero protocollo" value="" required>
                     <label for="prot_RAM">Protocollo Documento</label>
                     <small class="form-text text-muted">se disponibile, inserire numero protocollo documento</small>
                 </div>
                 
                 <div class="form-group col-12 col-lg-3">
-                    <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot4" name="data_prot4" type="text" value="" placeholder="formato gg/mm/aaaa">
+                    <input class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot4" name="data_prot4" type="text" value="" placeholder="formato gg/mm/aaaa" required>
                     <label for="data_prot4">Data Documento</label>
                     <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
                 </div>
-                       
+        </div>
+        </form>
+        <div id="dati_report_4">
+            <form id="modal4b">   
+                <div class="row" style="margin-top:10px;"> 
+                    <div class="form-group col-12 col-lg-3">
+                        
+                            <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="data_verbale_in"  name="data_verbale_in" placeholder="formato gg/mm/aaaa" value="" required>
+                            <label for="data_verbale_in">Data verbale</label>
+                            <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                        
+                    </div>          
+                    <div class="form-group col-12 col-lg-3">
+                        <input type="text" class="form-control" id="num_prot_rig"  name="num_prot_rig"placeholder="numero protocollo" value="" required>
+                        <label for="num_prot_rig">Numero protocollo Preavviso di rigetto</label>
+                        <small class="form-text text-muted">inserisci numero protocollo Preavviso di rigetto</small>
+                        
+                    </div>
+                    <div class="form-group col-12 col-lg-3">
                     
-            
-            
-            </div>
+                        <input type="text"onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_rig"  name="dat_prot_rig" placeholder=" formato gg/mm/aaaa" value="" required>
+                        <label for="dat_prot_rig">Data protocollo Preavviso di rigetto</label>
+                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                        
+                    </div>
+                            
+                        
+                    <div class="form-group col-12 col-lg-3">
+                        
+                        <input type="text" onkeypress="return event.charCode >= 47 && event.charCode <= 57"class="form-control it-date-datepicker" id="dat_prot_pre"  name="dat_prot_pre" placeholder="formato gg/mm/aaaa" value="" required>
+                        <label for="dat_prot_pre">Data nota Preavviso</label>
+                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                        
+                    </div>
+                </div>   
+                <div class="row" style="margin-top:10px;"> 
+                
+                    <div class="form-group col-12 col-lg-6 ">
+                            <textarea type="text" class="form-control" maxlength="500" id="mot_ina"  name="mot_ina"placeholder="Motivazione inammissibilità" value="" required></textarea>
+                            <label for="mot_ina">Motivazione di Inassibilità</label>
+                            <small class="form-text text-muted">Scrivi motivazione inammissibilità</small>
+                    </div>
+                        
+                
+                        
+                        
+                
+                
+                </div>
+            </form> 
+        </div>
             <div class="row">
-            <button type="button" id="btn_add_int4" onclick="addInt4()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
+            <button type="button" id="btn_up_int4" onclick="modInt4()"class="btn btn-warning" style="display:none;"> <i class="fa fa-edit" aria-hidden="true" ></i> Modifica dati al documento</button>
+                <button type="submit"  form="modal4b"id="btn_add_int4"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci dati al documento</button>
 
             </div>
             <div class="row" id="div_tab_int4"  style="display:none;">
@@ -1628,8 +1654,8 @@ if($check_stato_istruttoria){
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
-            <button class="btn btn-primary btn-sm" id="saveRepBtn4" onclick="saveReport4();" type="button">Salva</button>
-            <button class="btn btn-success btn-sm" id="prev_btn4"onclick="prevRep4();" type="button">Anteprima</button>
+            <button class="btn btn-primary btn-sm" id="saveRepBtn4"  type="submit" form="modal4" disabled>Salva</button>
+            <button class="btn btn-success btn-sm" id="prev_btn4"onclick="prevRep4();" type="button" disabled>Anteprima</button>
         </div>
     </div>
   </div>
@@ -1643,10 +1669,11 @@ if($check_stato_istruttoria){
         </div>
         <div class="modal-body">
             <input type="hidden" name="id_report2" id="id_report2" value="">
+            <form id="modal2">
             <div class="row">
                     
                         <div class="col-12 col-lg-6 form-group">
-                            <input type="text" class="form-control" id="motivazione"  name="motivazione"placeholder="Scrivere motivazione" value="" required>
+                            <input type="text" class="form-control" id="motivazione"  name="motivazione"placeholder="Scrivere motivazione" value="" >
                             <label for="prot_RAM">Motivazione rigetto</label>
                         </div>
 
@@ -1666,11 +1693,13 @@ if($check_stato_istruttoria){
 
                             </div>
                         </div>
-
+            
                     
             
             
             </div>
+            </form>
+
             <div class="row">
             <button type="button" id="btn_add_int2" onclick="addInt2()"class="btn btn-success"> <i class="fa fa-plus" aria-hidden="true"></i> Inserisci motivazione</button>
 
@@ -1690,7 +1719,7 @@ if($check_stato_istruttoria){
         </div> 
         <div class="modal-footer">
             <button class="btn btn-secondary btn-sm" data-dismiss="modal" type="button">Annulla</button>
-            <button class="btn btn-primary btn-sm" id="saveRepBtn2" onclick="saveReport2();" type="button" disabled>Salva</button>
+            <button class="btn btn-primary btn-sm" id="saveRepBtn2"  type="submit" form="modal2" disabled>Salva</button>
             <button class="btn btn-success btn-sm" id="prev_btn2"onclick="prevRep2();" type="button" disabled>Anteprima</button>
         </div>
     </div>
@@ -1713,6 +1742,15 @@ if($check_stato_istruttoria){
         event.preventDefault();
         id=$('#id_report2').val()
         saveReport2(id)
+     })
+     $("#modal4").on('submit', function( event ) {
+        event.preventDefault();
+        id=$('#id_report4').val()
+        saveReport4(id)
+     })
+     $("#modal4b").on('submit', function( event ) {
+        event.preventDefault();
+        addInt4()
      })
 
 $('#tipo_integrazione').change(function(){

@@ -96,7 +96,7 @@
         
 	</page_header>
 
-    <table style="margin-left:300px;">
+    <table >
          <tr><td>Prot n° </td><td  style="font-weight:bold;"><?=$rep['prot_RAM']?></td></tr>
          <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_ins']))?></td></tr>
     </table>

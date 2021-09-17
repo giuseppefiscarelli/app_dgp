@@ -181,6 +181,7 @@ if($new_stato_istruttoria){
     }
     if($new_stato_istruttoria['tipo_report'] == 2){
       array_push($ena_report, 4);  
+      $disableIstruttoriafoot = true;
     }
     if($new_stato_istruttoria['tipo_report'] == 3){
       $ena_report = [];
@@ -189,6 +190,7 @@ if($new_stato_istruttoria){
     }
     if($new_stato_istruttoria['tipo_report'] == 4){
       $ena_report = [];
+      $disableIstruttoriafoot = true;
       $disable_istr=true;
     }
   }
