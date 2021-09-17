@@ -158,14 +158,40 @@ function msgModalPec(id, idRAM){
                   cancelButtonText: 'NO, Annulla!'
                   }).then((result) => {
                         if (result.isConfirmed) {
-  
+                            var htmltext='<div class="progress"><div class="progress-bar" role="progressbar" id="progress-bar2"style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>'
+                            Swal.fire({ 
+                                    html:true,
+                                    title: "Attendere completamento operazione",
+                                    html:htmltext,
+                                    icon: "info",
+                                    allowOutsideClick:false,
+                                    showConfirmButton:false
+                                });
 
 
                         $.ajax({
+                            xhr: function() {
+                              var xhr = new window.XMLHttpRequest();
+                              xhr.upload.addEventListener("progress", function(evt) {
+                                    if (evt.lengthComputable) {
+                                          var percentComplete = ((evt.loaded / evt.total) * 100);
+                                          $("#progress-bar2").width(percentComplete + '%');
+                                          
+                                    }
+                              }, false);
+                              return xhr;
+                        },
                             type: "POST",
                             url: "controller/updatePec.php?action=testSendMail",
                             data: {id:id, id_RAM:idRAM},
                             dataType: "json",
+                            beforeSend: function(){
+                                    $("#progress-bar").width('0%');
+                                    $('#uploadStatus').html('<img src="images/loading.gif"/>');
+                              },
+                              error:function(){ 
+                                    Swal.fire("Operazione Non Completata!", "Pec non inviata correttamente.", "warning");
+                                },
                             success: function(data){
                                 console.log(data)
                                 localStorage.setItem('currentTab','nav-vertical-tab-bg3');

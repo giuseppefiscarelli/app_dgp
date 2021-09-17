@@ -272,6 +272,15 @@
            
    }
     $('#form_allegato_pec').submit(function(event){
+        var htmltext='<div class="progress"><div class="progress-bar" role="progressbar" id="progress-bar"style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>'
+        Swal.fire({ 
+                  html:true,
+                  title: "Attendere completamento operazione",
+                  html:htmltext,
+                  icon: "info",
+                  allowOutsideClick:false,
+                  showConfirmButton:false
+            });
         event.preventDefault();
         var fa = document.getElementById("upload1");
         var f = fa.files[0]
@@ -285,6 +294,17 @@
         console.log(formData.get('id'))
         if(f){
         $.ajax({
+            xhr: function() {
+                              var xhr = new window.XMLHttpRequest();
+                              xhr.upload.addEventListener("progress", function(evt) {
+                                    if (evt.lengthComputable) {
+                                          var percentComplete = ((evt.loaded / evt.total) * 100);
+                                          $("#progress-bar").width(percentComplete + '%');
+                                          
+                                    }
+                              }, false);
+                              return xhr;
+                        },
             url: "controller/updatePec.php?action=newAllegatoPec",
             type:"POST",
             data: formData,
@@ -292,6 +312,10 @@
             contentType: false,
             cache: false,
             processData:false,
+            beforeSend: function(){
+                                    $("#progress-bar").width('0%');
+                                    $('#uploadStatus').html('<img src="images/loading.gif"/>');
+                              },
             error:function(){ 
                 Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
             },
