@@ -191,6 +191,15 @@ function msgModalPec(id, idRAM){
                               },
                               error:function(){ 
                                     Swal.fire("Operazione Non Completata!", "Pec non inviata correttamente.", "warning");
+                                    Swal.fire({
+                                            title:"Operazione Non Completata!",
+                                            html:"Pec non inviata correttamente.",
+                                            icon:"warning"}).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                                return false;
+                                                                        }
+                                                                        });
+
                                 },
                             success: function(data){
                                 console.log(data)
@@ -200,7 +209,7 @@ function msgModalPec(id, idRAM){
                                             html:"Pec inviata correttamente.",
                                             icon:"success"}).then((result) => {
                                                                         if (result.isConfirmed) {
-                                                                                  //  location.reload()
+                                                                                    location.reload()
                                                                         }
                                                                         });
                             }
