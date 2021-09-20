@@ -365,7 +365,7 @@ function sendMail($data){
   include 'Mail.php';
   include 'Mail/mime.php' ;
  
-    $from    = "n.salvatore@pec.it";
+    $from    = "ram.investimenti2020@legalmail.it";
     $text = 'Text version of email';
     $html = '<html><body>'.$data['body'].'</body></html>';
     $file =  $data['file'];
@@ -378,10 +378,11 @@ function sendMail($data){
         "To"=>$to
     );
     
-    
-    $host    = "ssl://smtps.pec.aruba.it";
+   
+  $host    = "ssl://sendm.cert.legalmail.it";
     $port    = "465";
-    $user    = "n.salvatore@pec.it";
+    $user    = "ram.investimenti2020@legalmail.it";
+    $pass    = "RII2020@atr";
     $pass    = "NicAruba@1959";
   
    

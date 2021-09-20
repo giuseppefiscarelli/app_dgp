@@ -53,7 +53,7 @@ switch ($action){
         'body' => $bodymod,
         'envProd' => $envProd
       );
-      var_dump($envProd);die;
+     
       $res = sendMail($data);
      // var_dump($res);
      if($res){
