@@ -53,7 +53,8 @@ switch ($action){
         'body' => $bodymod,
         'envProd' => $envProd
       );
-      $res = sendMail2($data);
+      var_dump($envProd);die;
+      $res = sendMail($data);
      // var_dump($res);
      if($res){
        $data = array(
@@ -65,7 +66,7 @@ switch ($action){
        );
        $res2 = upReportSendMail($data);
      }else{
-       $response = 'bad pec';
+       $res2 = false;
      }
      
       echo json_encode($res2);

@@ -365,11 +365,11 @@ function sendMail($data){
   include 'Mail.php';
   include 'Mail/mime.php' ;
  
-    $from    = "<n.salvatore@pec.it>";
+    $from    = "n.salvatore@pec.it";
     $text = 'Text version of email';
     $html = '<html><body>'.$data['body'].'</body></html>';
     $file =  $data['file'];
-    $to = "<fiscarelli.giu@gmail.com, n.salvatore@gmail.com>";
+    $to = "fiscarelli.giu@gmail.com, n.salvatore@gmail.com";
      
     $crlf = "\n";
     $hdrs = array(
@@ -432,8 +432,8 @@ function sendMail2($data){
                     "From"=> $from,
                     "To"=>$to,
                     "Subject"=>$subject,
-                    //"MIME-Version"=>"1.0",
-                   // "Content-Type"=>"text/html; charset=ISO-8859-1"
+                    "MIME-Version"=>"1.0",
+                   "Content-Type"=>"text/html; charset=ISO-8859-1"
                 );
   
   $mail =@$smtp->send($to, $headers, $body);
