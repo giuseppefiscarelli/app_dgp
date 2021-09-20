@@ -1,5 +1,5 @@
 <?php
-  $pathReport= "/inv2020/report/";
+  $pathReport= "/investimentivii/report/";
   require "Mail.php";
   require_once "Mail/mime.php";
   $host    = "ssl://sendm.cert.legalmail.it";
