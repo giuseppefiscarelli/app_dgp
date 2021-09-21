@@ -10,7 +10,7 @@
  * @copyright 2017 Laurent MINGUET
  */
 
-namespace Spipu\Html2Pdf\Tests\Image;
+namespace Spipu\Html2Pdf\Tests\Parsing;
 
 use Spipu\Html2Pdf\Tests\AbstractTest;
 

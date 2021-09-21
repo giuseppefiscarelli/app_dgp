@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '262c178cdb6a766878e8476007bb8ae5a9085a1b',
+    'reference' => '67f8bba3021b07aaed6bbbcece3442278226b1f5',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,25 +18,34 @@
       'aliases' => 
       array (
       ),
-      'reference' => '262c178cdb6a766878e8476007bb8ae5a9085a1b',
+      'reference' => '67f8bba3021b07aaed6bbbcece3442278226b1f5',
+    ),
+    'phpmailer/phpmailer' => 
+    array (
+      'pretty_version' => 'v6.5.1',
+      'version' => '6.5.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'dd803df5ad7492e1b40637f7ebd258fee5ca7355',
     ),
     'spipu/html2pdf' => 
     array (
-      'pretty_version' => 'v5.2.2',
-      'version' => '5.2.2.0',
+      'pretty_version' => 'v5.2.1',
+      'version' => '5.2.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e6d8ca22347b6691bb8c2652212b1be2c89b3eff',
+      'reference' => '7dca57b61fdb2d6920635ff2332dbc82d4be19f3',
     ),
     'tecnickcom/tcpdf' => 
     array (
-      'pretty_version' => '6.3.5',
-      'version' => '6.3.5.0',
+      'pretty_version' => '6.4.2',
+      'version' => '6.4.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '19a535eaa7fb1c1cac499109deeb1a7a201b4549',
+      'reference' => '172540dcbfdf8dc983bc2fe78feff48ff7ec1c76',
     ),
   ),
 );
