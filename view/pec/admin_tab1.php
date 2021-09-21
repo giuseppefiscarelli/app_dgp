@@ -86,9 +86,9 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item "><a class="nav-link " id="selAll"onclick="unsendCkAll();"><span>Seleziona Tutti </span></a></li>
+                             <!-- <li class="nav-item "><a class="nav-link " id="selAll"onclick="unsendCkAll();"><span>Seleziona Tutti </span></a></li>
                         
-                            <li class="nav-item"><a class="nav-link" href="#"><span>Elimina richieste Selezionate </span></a></li>
+                          <li class="nav-item"><a class="nav-link" href="#"><span>Elimina richieste Selezionate </span></a></li> -->
                             
                             
                             
