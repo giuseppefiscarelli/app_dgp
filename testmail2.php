@@ -21,8 +21,8 @@ try {
 
     //Recipients
     $mail->setFrom('n.salvatore@pec.it');
-    $mail->addAddress('fiscarelli.giu@gmail.com');     // Add a recipient
-    //$mail->addAddress('ellen@example.com');               // Name is optional
+    $mail->addAddress('n.salvatore@gmail.com');     // Add a recipient
+    $mail->addAddress('fiscarelli.giu@gmail.com');               // Name is optional
     //$mail->addReplyTo('info@example.com', 'Information');
    // $mail->addCC('cc@example.com');
     //$mail->addBCC('bcc@example.com');
