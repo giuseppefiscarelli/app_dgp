@@ -11,6 +11,7 @@ try {
     //Server settings
     //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
     $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'sendm.cert.legalmail.it';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
     $mail->Username = 'ram.investimenti2020@legalmail.it';                 // SMTP username
     $mail->Password = 'R4ns@2020_VII';                           // SMTP password
