@@ -1165,6 +1165,22 @@ function getAllegatoID($id){
 
 
 }
+function checkAllegatoMagIntegrazione($id_RAM){
+  $conn = $GLOBALS['mysqli'];
+
+$sql = "SELECT count(*) as total FROM allegato WHERE (tipo_documento = 90 OR tipo_documento = 91 OR tipo_documento = 92) and id_ram =$id_RAM and attivo ='s' and stato_admin != 'B'";
+//echo $sql;
+$total = 0;
+
+
+$res = $conn->query($sql);
+if($res) {
+
+ $row = $res->fetch_assoc();
+ $total = $row['total'];
+}
+return $total;
+}
 function delAllegatoID($id){
   /**
   * @var $conn mysqli

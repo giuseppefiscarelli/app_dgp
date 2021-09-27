@@ -11,7 +11,11 @@ $ampldoc =getTipDoc($ampl);
 $allepmi = getAllegato($pmi,$i['id_RAM'],0);
 $allerete = getAllegato($rete,$i['id_RAM'],0);
 $alleampl = getAllegato($ampl,$i['id_RAM'],0);
-
+$allegatimagint = 0;
+if($status_integrazione){
+    $allegatimagint = checkAllegatoMagIntegrazione($i['id_RAM']);
+   
+}
 $ckAllePmi = $i['pmi']=="Yes"||$i['nr_1']>0||$i['nr_2']>0??false;
 $ckAlleRete =$i['rete']=="Yes"??false;
 $ckAlleAmpl =$i['nr_1']>0||$i['nr_2']>0??false;
@@ -26,7 +30,11 @@ if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
                     <div id="accordionalle" class="collapse-div collapse-background-active" role="tablist">
                         <div class="collapse-header" id="headingAlle">
                             <button data-toggle="collapse" data-target="#accordionAllegati" aria-expanded="false" aria-controls="accordionAllegati">
-                            <i class="fa fa-paperclip" aria-hidden="true"></i>Allegati Dichiarazioni 
+                                <i class="fa fa-paperclip" aria-hidden="true"></i>Allegati Dichiarazioni 
+                           
+                            <?php if($allegatimagint){?>
+                               <badge class="badge badge-warning blink" style="margin-left:50px;">Abilitato per Integrazione</badge>
+                            <?php }?>
                             </button>
                         </div>
                         <div id="accordionAllegati" class="collapse" role="tabpanel" aria-labelledby="headingAlle" data-parent="#accordionalle">

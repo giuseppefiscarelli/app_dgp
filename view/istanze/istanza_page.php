@@ -517,6 +517,7 @@ if($status_istr && $status_istr['id'] && $status_istr['data_invio']){
             <input type="hidden" name="id_RAM" value="<?=$i['id_RAM']?>">
             <input type="hidden" name="tipo_doc_mag" id="tipo_doc_mag" value="">
             <input type="hidden" name="tipo_alle" id="tipo_alle" value="">
+            <input type="hidden" name="enableSost" id="enableSost" value="">
             <label>Tipo Allegato</label>
               <div class="form-group">
                 <textarea rows="3" style="text-align: justify;"class="form-control" type="text" id="tipo_documento_magg" name="tipo_documento" readonly></textarea>

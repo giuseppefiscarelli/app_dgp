@@ -106,6 +106,9 @@ switch ($action){
       if(file_exists($pathAlle.$docu_id_file_archivio)){
         $data['tipo_veicolo']=0;
         $data['progressivo']=0;
+        if($data['enableSost']){
+          $del = delAllegatoID($data['enableSost']);
+        }
        $res= newAllegato($data);
 
       }

@@ -511,8 +511,7 @@ $(document).ready(function() {
       $('#istruttoriaModal').on('hidden.bs.modal', function (e) {
             $('.modal-backdrop').css('z-index',1040);
             
-      })  
-  
+      })
       $('#annForm').on('submit',function(e){
             e.preventDefault();
             formData = $(this).serialize();
@@ -777,10 +776,11 @@ $(document).ready(function() {
             
 
       } 
-      function docmagmodal(id,tipodoc){
+      function docmagmodal(id,tipodoc,enableSost){
            
             $("#docMaggiorazione").modal("toggle");
             $("#tipo_doc_mag").val(tipodoc);
+            $("#enableSost").val(enableSost);
             $("#tipo_alle").val(id);
             tipo = $('#tipo_magg_'+id).text();
         

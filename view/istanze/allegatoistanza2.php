@@ -1,21 +1,35 @@
+<?php
+$badge_integrazione ='';
+    if($alle){
+        if($alle['data_agg'] > $status['data_chiusura']){
+            $badge_integrazione= ' <span class="badge badge-warning " >Integrazione</span>';
+        }
+    }
+
+?>
 <tr>
-                                                    <td id="tipo_magg_<?=$tipo?>"><?=$descrizione?></td>
+                                                    <td id="tipo_magg_<?=$tipo?>"><?=$descrizione?> <?=$badge_integrazione?></td>
                                                     <td id="data_<?=$tipo?>"><?=$alle?$data_alle:'Allegato non Caricato'?></td>
                                                     <td id="stato_<?=$tipo?>">
                                                       
                                                         <?php
                                                                 if($alle){
-                                                                if($alle['stato_admin']=='A'||$alle['stato_admin']==null){
-                                                                    $stato_admin = '<span class="badge badge-warning" style="width: -webkit-fill-available;">In Lavorazione</span>';
+                                                                    if($alle['stato_admin']=='A'||$alle['stato_admin']==null){
+                                                                        $stato_admin = '<span class="badge badge-warning" style="width: -webkit-fill-available;">In Lavorazione</span>';
+                                                                    }
+                                                                    if($alle['stato_admin']=='B'){
+                                                                        $stato_admin = '<span class="badge badge-success" style="width: -webkit-fill-available;">Accettato</span>';
+                                                                    }
+                                                                    if($alle['stato_admin']=='C'){
+                                                                        $stato_admin = '<span class="badge badge-danger" style="width: -webkit-fill-available;">Rigettato</span>';
+                                                                    }
+                                                                    ?> <?=$stato_admin?>
+                                                           <?php
+                                                                    if($alle['data_agg'] > $status['data_chiusura']){?>
+                                                                            <br> <span class="badge badge-warning blink" style="width: -webkit-fill-available;">Integrazione</span>
+                                                                <?php    }
+                                                                    
                                                                 }
-                                                                if($alle['stato_admin']=='B'){
-                                                                    $stato_admin = '<span class="badge badge-success" style="width: -webkit-fill-available;">Accettato</span>';
-                                                                }
-                                                                if($alle['stato_admin']=='C'){
-                                                                    $stato_admin = '<span class="badge badge-danger" style="width: -webkit-fill-available;">Rigettato</span>';
-                                                                }
-                                                                echo $stato_admin;
-                                                            }
                                                         ?>
                                                         
                                                         
