@@ -410,7 +410,7 @@ var_dump($checkAlle);*/
                         </select>
                     </div>
                     <div class="form-group" style="margin-top:30px;">
-                        <textarea rows="4" class="form-control" id="note_check_cert" nome="note_check_cert" maxlength="150" placeholder="inserire note"></textarea>
+                        <textarea rows="4" class="form-control" id="note_check_cert" nome="note_check_cert" maxlength="150" placeholder="inserire note" value=""></textarea>
                         <label for="note_check_cert" class="active">Note</label>
                     </div>
                 </div>
@@ -454,9 +454,9 @@ var_dump($checkAlle);*/
                     dataType: "json",
                     success: function(data){
 
-                            console.log(data);
+                            console.log(data.note);
                             $('#tipo_cert').val(tipo)
-                            $('#note_check_cert').text(data.note)
+                            $('textarea#note_check_cert').val(data.note)
                             if(tipo == 'dim_impresa'){
                                 $('#sel_dim_impresa').val(data.select);
                                 $('#sel_dim_impresa').selectpicker('render');

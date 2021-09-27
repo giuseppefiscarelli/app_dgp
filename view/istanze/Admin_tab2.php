@@ -26,6 +26,9 @@
                     if($v['stato_admin']=='A'||$v['stato_admin']==null){
                         $check_ammissione++;
                     }
+                    $allegatiIntegrazione =intval(getAllegatiIntegrazione($i['id_RAM'], $status['data_chiusura'],$v['tipo_veicolo'],$v['progressivo']));
+        
+                    // var_dump($allegatiIntegrazione);
                     $tipo = getTipoVeicolo($v['tipo_veicolo']);
                     //var_dump($v['tipo_veicolo']);
                     //var_dump($tipo);
@@ -133,10 +136,17 @@
                            }?>
                         </tr>
                     <tr>
-                        <td rowspan="2">Documenti Veicolo</td><td rowspan="2"><span style="width: -webkit-fill-available;"class="badge badge-<?=$countType?>"><?=$countDocVeicoloInfo?> di <?=$countDocVeicolo?></span></td>
-                            <td>Accettati</td><td id="accettati_<?=$v['id']?>"><span style="width: -webkit-fill-available;"class="badge badge-<?=$alleType?>"><?=$alleok?> di <?=$countAlle?></span></td>
+                        <?php if($allegatiIntegrazione){ ?>
+                            <td>Documenti Veicolo</td><td>
+                            <?php }else{ ?>
+                        <td rowspan="2">Documenti Veicolo</td> <td rowspan="2"><?php } ?>
+                                                                <span style="width: -webkit-fill-available;"class="badge badge-<?=$countType?>"><?=$countDocVeicoloInfo?> di <?=$countDocVeicolo?></span></td>
+                        <td>Accettati</td><td id="accettati_<?=$v['id']?>"><span style="width: -webkit-fill-available;"class="badge badge-<?=$alleType?>"><?=$alleok?> di <?=$countAlle?></span></td>
                     </tr>
                     <tr>
+                    <?php if($allegatiIntegrazione){ ?>
+                        <td>Doc Integrazione</td><td><span style="width: -webkit-fill-available;"class="badge badge-warning blink"><?=$allegatiIntegrazione?></span></td>
+                        <?php } ?>
                         <td>Respinti</td><td id="respinti_<?=$v['id']?>"><span style="width: -webkit-fill-available;"class="badge badge-<?=$allenoType?>"><?=$alleno?> di <?=$countAlle?></span></td>
                     </tr>
                     <tr>
@@ -504,6 +514,8 @@
                                     data: {id_RAM:data.id_RAM,tipo_veicolo:data.tipo_veicolo,progressivo:data.progressivo},
                                     dataType: "json",
                                     success: function(response){
+                                        date_rend = new Date(response.rend)
+                                        
                                         alle = response.res
                                         validalle =response.ok
                                         if(validalle == false){
@@ -515,8 +527,18 @@
                                         //console.log(validalle)
                                         //console.log('stato allegato '+stato_alle)
                                          $.each(alle, function (k,v){
+                                            integrazione = false
+                                             date_send = new Date(v.data_agg)
+                                             intbadge = ''
+                                             if(date_send > date_rend){
+                                                 integrazione = true
+                                                 intbadge=' <span class="badge badge-warning ">Integrazione</span>'
+                                             }
                                                if(v.stato_admin=='A'){
                                                 stato='<span class="badge badge-warning">In Lavorazione</span>';
+                                                if(integrazione){
+                                                    stato+='<br><span class="badge badge-warning blink">Integrazione</span>';
+                                                }
                                                }
                                                if(v.stato_admin=='B'){
                                                 stato='<span class="badge badge-success">Accettato</span>';
@@ -538,7 +560,7 @@
                                                 buttonC='<a type="button" href="download.php?id='+v.id+'" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>'
                                                
                                               
-                                            row = '<tr><td>'+v.tdoc_descrizione+'</td><td data-toggle="tooltip" data-placement="right" title="'+v.note+'">'+note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'" data-toggle="tooltip" data-placement="right" title="'+v.note_admin+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
+                                            row = '<tr><td>'+v.tdoc_descrizione+intbadge+'</td><td data-toggle="tooltip" data-placement="right" title="'+v.note+'">'+note+'</td><td id="stato_admin_'+v.id+'">'+stato+'</td><td id="note_admin_'+v.id+'" data-toggle="tooltip" data-placement="right" title="'+v.note_admin+'">'+note_ad+'</td><td>'+buttonA+''+buttonB+''+buttonC+'</td></tr>'            
                                                 $('#doctab> tbody:last-child').append(row);
                                                 if(stato_alle){
                                                     $('.workbtn').hide()

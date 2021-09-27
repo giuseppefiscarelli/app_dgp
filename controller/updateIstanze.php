@@ -320,14 +320,18 @@ switch ($action){
     break;
     case 'getAllegatiCheck':
       $data=$_REQUEST;
+      $status= checkRend($data['id_RAM']);
       $res =getAllegati($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
+
+     
       $alleok = getAlleOk($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
       $alleno = getAlleNo($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
       $countAlle = countAlle($data['id_RAM'],$data['tipo_veicolo'],$data['progressivo']);
       $ok = ($alleok + $alleno) == $countAlle??false;
       $json = array(
         'res' => $res,
-        'ok' => $ok
+        'ok' => $ok,
+        'rend' => $status['data_chiusura']
       );
       //$tipo = getTipDoc($res['tipo_documento']);
       //var_dump($res);

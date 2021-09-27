@@ -369,7 +369,7 @@ function sendMail($data){
     $text = 'Text version of email';
     $html = '<html><body>'.$data['body'].'</body></html>';
     $file =  $data['file'];
-    $to = "fiscarelli.giu@gmail.com, n.salvatore@gmail.com";
+    $to = "fiscarelli.giu@gmail.com";
      
     $crlf = "\n";
     $hdrs = array(
@@ -383,7 +383,7 @@ function sendMail($data){
     $port    = "465";
     $user    = "ram.investimenti2020@legalmail.it";
     $pass    = "RII2020@atr";
-    $pass    = "NicAruba@1959";
+    //$pass    = "NicAruba@1959";
   
    
   

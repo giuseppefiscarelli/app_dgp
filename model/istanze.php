@@ -1121,6 +1121,28 @@ function getAllegato($tipo_documento,$id_RAM,$id_veicolo){
 
 
 }
+function getAllegatiIntegrazione($id_RAM,$data,$tipo_veicolo,$progressivo){
+  /**
+  * @var $conn mysqli
+  */
+
+$conn = $GLOBALS['mysqli'];
+
+$sql = "SELECT count(*) as total FROM allegato WHERE id_ram =$id_RAM and attivo ='s' and data_agg > '$data' and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo";
+//echo $sql;
+$total = 0;
+
+
+$res = $conn->query($sql);
+if($res) {
+
+ $row = $res->fetch_assoc();
+ $total = $row['total'];
+}
+return $total;
+
+
+}
 function getAllegatoID($id){
   /**
   * @var $conn mysqli
@@ -1818,6 +1840,9 @@ function checkDocTipoVeicolo($tipo,$idRam){
 
 
 
+}
+function checkStatoVeicoli($id_RAM){
+  
 }
 function checkSelectTipoDoc($data){
    /**

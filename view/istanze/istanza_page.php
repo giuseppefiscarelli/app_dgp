@@ -97,24 +97,34 @@ if($tipo_istanza['data_rendicontazione_fine']<date("Y-m-d")){
     $activeIst = true;
   }
 }
-$status_istr= getStatusIstruttoria($i['id_RAM']);
+$status_integrazione=false;
+$status_istr= getStatusIstruttoria_full($i['id_RAM']);
 //var_dump($status_istr);
-if($status_istr && $status_istr['id']){
+if($status_istr && $status_istr['id'] && $status_istr['data_invio']){
   $add_span='';
   if($status_istr['tipo_report'] === '1'){
       $text_istr = 'Integrazione';
       $type_istr = 'warning';
-      $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + 20 days'));
+      $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
       $add_span = '<br>Inviare documentazione entro e non oltre il '.$date_scad;
+      $today = date("Y-m-d H:i:s");
+      $scad= date("Y-m-d H:i:s", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
+     
+      if($today < $scad){
+        $status_integrazione=true;
+      }
+     
   }
   if($status_istr['tipo_report'] === '3'){
     $text_istr = 'Ammessa';
     $type_istr = 'success';
+ 
    
   }
   if($status_istr['tipo_report'] === '2'){
     $text_istr = 'Preavviso di rigetto';
     $type_istr = 'warning';
+   
   }
   if($status_istr['tipo_report'] === '4'){
     $text_istr = 'Rigettata';
@@ -123,18 +133,26 @@ if($status_istr && $status_istr['id']){
   $span_istr='<span class="badge badge-'.$type_istr.'">'.$text_istr.'</span><br>Pec inviata il '.date("d/m/Y",strtotime($status_istr['data_invio'])).$add_span;
    }?>
 
-
-<h3 class="card-title">Istanza n° <?=$i['id_RAM']?>/<?=$tipo_istanza['anno']?> - <span style="font-size:17px;"><?=$i['ragione_sociale']?></span></h3>
-<div class="row">
-  <div class="col-lg-4 col-12">
-  Stato Istanza <?=$span?>
-  </div>
-  <?php if($status_istr){?>
-  <div class="col-lg-4 col-12">
-    Stato Istruttoria <?=$span_istr?>
-  </div>
-  <?php }?>
+<div id="loadSpin">
+  <div class="d-flex justify-content-center" >
+      <p style="position:absolute;"><strong>Caricamento in corso...</strong></p>
+        <div class="progress-spinner progress-spinner-active" style="margin-top:30px;">
+        <span class="sr-only">Caricamento...</span>
+        </div>
+  </div>  
 </div>
+<div id="istanza_container" style="display: none;">
+    <h3 class="card-title">Istanza n° <?=$i['id_RAM']?>/<?=$tipo_istanza['anno']?> - <span style="font-size:17px;"><?=$i['ragione_sociale']?></span></h3>
+    <div class="row">
+        <div class="col-lg-4 col-12">
+        Stato Istanza <?=$span?>
+        </div>
+      <?php if($status_istr['data_invio']){?>
+        <div class="col-lg-4 col-12">
+          Stato Istruttoria <?=$span_istr?>
+        </div>
+      <?php }?>
+    </div>
 
 
 
@@ -143,7 +161,7 @@ if($status_istr && $status_istr['id']){
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-tab1-tab" data-toggle="tab" href="#nav-tab1" role="tab" aria-controls="nav-tab1" aria-selected="true">Dati della Domanda</a>
       <a class="nav-item nav-link" id="nav-tab2-tab" data-toggle="tab" href="#nav-tab2" role="tab" aria-controls="nav-tab2" aria-selected="false">Investimento / Rendicontazione</a>
-  <!--   <a class="nav-item nav-link" id="nav-tab3-tab" data-toggle="tab" href="#nav-tab3" role="tab" aria-controls="nav-tab3" aria-selected="false">Comunicazioni-->
+    <!--   <a class="nav-item nav-link" id="nav-tab3-tab" data-toggle="tab" href="#nav-tab3" role="tab" aria-controls="nav-tab3" aria-selected="false">Comunicazioni-->
     <?php
       if($notifiche){
         if(count($notifiche)>1){
@@ -158,6 +176,8 @@ if($status_istr && $status_istr['id']){
     ?></a>
     </div>
   </nav>
+
+
   <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane p-4 fade show active" id="nav-tab1" role="tabpanel" aria-labelledby="nav-tab1-tab">
       <div class="row">
@@ -386,6 +406,8 @@ if($status_istr && $status_istr['id']){
     
     
   </div>
+</div>
+
   <!-- Modal -->
   <div class="modal fade" tabindex="-1" role="dialog" id="docModal">
     <div class="modal-dialog modal-lg" role="document">
@@ -553,4 +575,12 @@ if($status_istr && $status_istr['id']){
   </div>
   <!-- Modal -->
                                                 
-                                          
+                                              
+<script>
+$(document).ready(function() { 
+
+  $('#loadSpin').fadeOut();
+  $('#istanza_container').fadeIn();
+
+});
+</script>                                         
