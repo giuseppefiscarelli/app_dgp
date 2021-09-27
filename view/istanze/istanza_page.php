@@ -147,7 +147,7 @@ if($status_istr && $status_istr['id'] && $status_istr['data_invio']){
         <div class="col-lg-4 col-12">
         Stato Istanza <?=$span?>
         </div>
-      <?php if($status_istr['data_invio']){?>
+      <?php if($status_istr && $status_istr['data_invio']){?>
         <div class="col-lg-4 col-12">
           Stato Istruttoria <?=$span_istr?>
         </div>
