@@ -588,7 +588,7 @@ function countIstanze( array $params = []){
             
           }
           if ($search2){
-              $sql .="  id_RAM LIKE '%$search2%' ";
+            $sql .="  id_RAM = '$search2' ";
               if( $search3 || $search4 || $search5){
                 $sql .=" AND";
               }
