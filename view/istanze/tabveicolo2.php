@@ -4,7 +4,8 @@
                                                 foreach($veicolo as $rv ){
                                                     $checkRott = checkRott($i['id_RAM'],$rv['tipo_veicolo']);
                                                     //var_dump($checkRott);
-                                                   
+                                                    $allegatiIntegrazione =intval(getAllegatiIntegrazione($i['id_RAM'], $status['data_chiusura'],$rv['tipo_veicolo'],$rv['progressivo']));
+                                                    
                                                     $countDocVeicolo=countDocVeicolo($rv['tipo_veicolo']);
                                                     $countDocVeicolo= $countDocVeicolo?$countDocVeicolo:0;
                                                     $countDocVeicoloInfo=countDocVeicoloInfo($rv['id_RAM'],$rv['tipo_veicolo'],$rv['progressivo']);
@@ -59,7 +60,9 @@
                                                     di <b id="c_t_d_R_<?=$rv['tipo_veicolo'].'_'.$rv['progressivo']?>">2</b>
                                                 </small>
                                                 <?php }
-                                                
+                                                if($status_integrazione && $rv['stato_admin'] !== 'B'){?>
+                                                    <div><badge class="badge badge-warning blink" style="margin-left:100%;">Abilitato per Integrazione</badge></div>
+                                                <?php }
                                                 ?>            
                                               
                                             </div>
