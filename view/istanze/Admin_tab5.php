@@ -1752,6 +1752,12 @@ if($check_stato_istruttoria){
         event.preventDefault();
         addInt4()
      })
+     $('#reportModal').on('shown.bs.modal', function (e) {
+        $('#tipo_integrazione').val('').selectpicker("refresh");
+        $('#prot_RAM, #data_prot').val('');
+        $("#tab_int > tbody").html("");
+        $("#div_tab_int").hide();
+    })
 
 $('#tipo_integrazione').change(function(){
         $('#descrizione_integrazione').val('')
