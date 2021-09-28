@@ -1758,6 +1758,18 @@ if($check_stato_istruttoria){
         $("#tab_int > tbody").html("");
         $("#div_tab_int").hide();
     })
+    $('#reportModal2').on('shown.bs.modal', function (e) {
+        
+        $('#prot_RAM2,#motivazione, #data_prot2').val('');
+        $("#tab_int2 > tbody").html("");
+        $("#div_tab_int2").hide();
+    })
+    $('#reportModal3').on('shown.bs.modal', function (e) {
+        
+        $('#prot_RAM3,#data_verbale3, #data_prot3').val('');
+        $("#tab_int3 > tbody").html("");
+        $("#div_tab_int3").hide();
+    })
 
 $('#tipo_integrazione').change(function(){
         $('#descrizione_integrazione').val('')

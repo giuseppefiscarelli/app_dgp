@@ -142,40 +142,36 @@
 
     
     <div style="margin-top:10px;">
-    <table >
-        <tr><td style="text-align:justify;">Pertanto, ai sensi e per gli effetti dell&#39;art. 12, comma 4 del D.D 7 agosto 2020 n.145,
-Vi invitiamo a fornirci la suddetta documentazione <b>entro e non oltre il termine perentorio di
-quindici giorni</b> decorrenti dalla data di ricezione della presente, accedendo al gestionale
-dedicato sul Portale, già utilizzato per la rendicondazione della domanda.
-Il Portale sarà abilitato alla modifica dei dati e, all&#39;interno della Sezione &quot;Richieste
-integrazioni&quot;, al caricamento dei documenti contenenti le integrazioni richieste.</td></tr>               
-</table >
-<table >
-        <tr><td style="text-align:justify;">Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto
-previsto dal decreto in oggetto specificato, si invita quest&#39;ultima a tenere presenti le
-seguenti inderogabili disposizioni:</td></tr>
-</table >
-<table style="margin-left:10px; margin-top:20px;" >
-   
-    <tr ><td style="text-align:justify;">
-            1. la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e
-di forma richiesti;</td>
-    </tr>
-    <tr><td style="text-align:justify;"> 2. decorso il termine perentorio suindicato, l&#39;istruttoria verrà conclusa sulla sola base
-della documentazione valida disponibile, senza che possa in alcun modo avviarsi
-qualsiasi, ulteriore fase di interlocuzione.</td>
-    </tr>
-    </table >
-<table style="margin-top:20px;" >
-    <tr><td style="text-align:justify;">
-    Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi (e-mail:incentivoinvestimenti@ramspa.it).
-    Cordiali saluti</td>
-    </tr>
-    </table>
-    <table style="margin-left:400px;margin-top:30px;">
-    
-    <tr><td><img style="width:180px;display:inline;"  src="../../images/firma_fb.png"></td></tr>
-
-    </table>
-</div>    
+        <table >
+            <tr><td style="text-align:justify;">Pertanto, ai sensi e per gli effetti dell&#39;art. 12, comma 4 del D.D 7 agosto 2020 n.145,
+            Vi invitiamo a fornirci la suddetta documentazione <b>entro e non oltre il termine perentorio di
+            quindici giorni</b> decorrenti dalla data di ricezione della presente, accedendo al gestionale
+            dedicato sul Portale, già utilizzato per la rendicondazione della domanda.
+            Il Portale sarà abilitato alla modifica dei dati e, all&#39;interno della Sezione &quot;Richieste
+            integrazioni&quot;, al caricamento dei documenti contenenti le integrazioni richieste.</td></tr>               
+        </table >
+        <table >
+            <tr><td style="text-align:justify;">Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto
+            previsto dal decreto in oggetto specificato, si invita quest&#39;ultima a tenere presenti le
+            seguenti inderogabili disposizioni:</td></tr>
+        </table >
+        <table style="margin-left:10px; margin-top:20px;" >
+            <tr ><td style="text-align:justify;">
+                    1. la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;</td>
+            </tr>
+            <tr><td style="text-align:justify;"> 2. decorso il termine perentorio suindicato, l&#39;istruttoria verrà conclusa sulla sola base
+                della documentazione valida disponibile, senza che possa in alcun modo avviarsi
+                qualsiasi, ulteriore fase di interlocuzione.</td>
+            </tr>
+        </table >
+        <table style="margin-top:20px;" >
+            <tr><td style="text-align:justify;">
+            Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi (e-mail:incentivoinvestimenti@ramspa.it).
+            Cordiali saluti</td>
+            </tr>
+        </table>
+        <table style="margin-left:400px;margin-top:30px;">
+            <tr><td><img style="width:180px;display:inline;"  src="../../images/firma_fb.png"></td></tr>
+        </table>
+    </div>    
 </page>
