@@ -71,9 +71,7 @@ $tipiveicolo = getTipiVeicolo();
                     <div class="dropdown-menu">
                         <div class="link-list-wrapper">
                             <ul class="link-list" style="width:max-content;">
-                                <li>
-                                    <h3 class="no_toc" id="heading-es-4">Tipo documento</h3>
-                                </li>
+                               
                                 <li><a class="list-item" onclick="showTipo(0, 'Tutti');"><span>Tutti</span></a></li>
                             <?php
                                 foreach($tipiveicolo as $tr){
