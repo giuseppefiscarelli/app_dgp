@@ -539,6 +539,7 @@ $tipiveicolo = getTipiVeicolo();
              $('#info_aggiorna_dati').html('')
             $("#stato_istruttoria option[value='B']").attr('disabled', false);
             $('#stato_istruttoria').selectpicker('refresh')
+            $('#costo_istr,#contr_up,#contr_up_pmi,#contr_up_rete').prop('disabled', false)
             const formatter = new Intl.NumberFormat('it-IT', {
                   style: 'currency',
                   currency: 'EUR',
