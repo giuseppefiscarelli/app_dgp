@@ -153,8 +153,7 @@
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($tot2D, 2, ',', '.').' €' ?></td>
        </tr>
        <tr>
-       <td style=" border: 1px solid black;border-left: 0px ;padding:3px;text-align:right;" colspan="4">Maggiorazione Rottamazione</td>
-       
+        <td style=" border: 1px solid black;border-left: 0px ;padding:3px;text-align:left;" colspan="4">Maggiorazione Rottamazione</td>
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($contr_rottamazione, 2, ',', '.').' €' ?></td>
        </tr>              
     

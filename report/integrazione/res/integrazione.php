@@ -34,6 +34,10 @@
             font-size:8px;
 
         }
+        ol {
+ 
+  font-family:  serif;
+}
 </style>
 <style type="text/css">
 
@@ -150,19 +154,19 @@ integrazioni&quot;, al caricamento dei documenti contenenti le integrazioni rich
         <tr><td style="text-align:justify;">Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto
 previsto dal decreto in oggetto specificato, si invita quest&#39;ultima a tenere presenti le
 seguenti inderogabili disposizioni:</td></tr>
-
+</table >
+<table style="margin-left:10px; margin-top:20px;" >
    
-    <tr>
-        <td style="text-align:justify;width:150mm">
-            <ol>
-                <li style="text-align:justify;">la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e
-di forma richiesti;</li>
-                <li style="text-align:justify;">decorso il termine perentorio suindicato, l&#39;istruttoria verrà conclusa sulla sola base
-della documentazione valida disponibile, senza che possa in alcun modo avviarsi
-qualsiasi, ulteriore fase di interlocuzione.</li>
-            </ol>
-        </td>
+    <tr ><td style="text-align:justify;">
+            1. la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e
+di forma richiesti;</td>
     </tr>
+    <tr><td style="text-align:justify;"> 2. decorso il termine perentorio suindicato, l&#39;istruttoria verrà conclusa sulla sola base
+della documentazione valida disponibile, senza che possa in alcun modo avviarsi
+qualsiasi, ulteriore fase di interlocuzione.</td>
+    </tr>
+    </table >
+<table style="margin-top:20px;" >
     <tr><td style="text-align:justify;">Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi (e-mail:
 incentivoinvestimenti@ramspa.it).
 Cordiali saluti</td></tr>

@@ -180,8 +180,19 @@
                 </div>
            
                 <div class="form-group">
-                    <input s type="text" id="pec_object" readonly placeholder=" ">
+                    <input  type="text" id="pec_object" readonly placeholder=" ">
                     <label >Oggetto</label>
+                </div>
+                <div class="form-group">
+                    <input  type="text" form="form_allegato_pec"id="protRam_object" name="prot_RAM" placeholder=" ">
+                    <label >Protocollo RAM</label>
+                </div>
+                <div class="it-datepicker-wrapper">
+                    <div class="form-group">
+                        <input form="form_allegato_pec" class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot_object" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa" >
+                        <label for="data_prot_object">Data Documento</label>
+                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                    </div>
                 </div>
             
                 <div class="form-group">
@@ -223,6 +234,15 @@
   </div>
 </div>
 <script>
+    $(document).ready(function() {
+      $('.it-date-datepicker').datepicker({
+            inputFormat: ["dd/MM/yyyy"],
+            outputFormat: 'dd/MM/yyyy',
+            
+      });
+
+
+}); 
     function msgModal(id,tipo){     
         $.ajax({
             type: "POST",
@@ -235,6 +255,12 @@
                 $('#id_ram_pec').val(data.data.id_RAM)
                 $('#pec_dest').val(data.istanza.pec_impr)
                 $('#pec_object').val(data.type.object)
+                const options = {  year: 'numeric', month: '2-digit', day: '2-digit' };
+                dataP = new Date(data.data.data_prot).toLocaleDateString('it-IT', options)
+                
+                data_prot= dataP;
+                $('#protRam_object').val(data.data.prot_RAM)
+                $('#data_prot_object').val(data_prot)
                 $('#tipo').val(tipo)
                 html=data.type.body.replaceAll('%*', '\n').replace('%ragSoc%', data.istanza.ragione_sociale)
                 $('#pec_body').html(html)
@@ -295,16 +321,16 @@
         if(f){
         $.ajax({
             xhr: function() {
-                              var xhr = new window.XMLHttpRequest();
-                              xhr.upload.addEventListener("progress", function(evt) {
-                                    if (evt.lengthComputable) {
-                                          var percentComplete = ((evt.loaded / evt.total) * 100);
-                                          $("#progress-bar").width(percentComplete + '%');
-                                          
-                                    }
-                              }, false);
-                              return xhr;
-                        },
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                                var percentComplete = ((evt.loaded / evt.total) * 100);
+                                $("#progress-bar").width(percentComplete + '%');
+                                
+                        }
+                    }, false);
+                    return xhr;
+            },
             url: "controller/updatePec.php?action=newAllegatoPec",
             type:"POST",
             data: formData,
@@ -321,15 +347,15 @@
             },
             success: function(data){
                 console.log(data)
-                        Swal.fire({
-                            title:"Operazione Completata!",
-                            html:"Allegato caricato correttamente.",
-                            icon:"success"}).then((result) => {
-                                                        if (result.isConfirmed) {
-                                                                    location.reload()
-                                                        }
-                                                        });
-                    }
+                Swal.fire({
+                    title:"Operazione Completata!",
+                    html:"Allegato caricato correttamente.",
+                    icon:"success"}).then((result) => {
+                        if (result.isConfirmed) {
+                                    location.reload()
+                        }
+                });
+            }
         })
         }else{
             $.ajax({

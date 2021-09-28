@@ -46,7 +46,7 @@ if($ckAllePmi||$ckAlleRete||$ckAlleAmpl){
                                                 <tr>
                                                     <th style="width:65%">Tipo</th>
                                                     <th style="width:10%">Data Caricamento</th>
-                                                    <th style="width:10%">Stato</th>
+                                                   <?php if(!isuserUser()){ ?> <th style="width:10%">Stato</th> <?php } ?>
                                                     <th style="width:15%"></th>
                                                 </tr>
                                             </thead>

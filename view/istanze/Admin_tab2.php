@@ -1,8 +1,107 @@
 <div class="row">
 <?php
  //   require "alleistanza2.php";
+ $distinctTipi = distinctTipoVeicolo($i['id_RAM']);
+ $enabletipi = array();
+ $enableCat =[];
+ //var_dump($distinctTipi);
+foreach($distinctTipi as $dt){
+
+    $tipoDis = getTipoVeicolo($dt['tipo_veicolo']);
+    array_push($enabletipi , $dt['tipo_veicolo']);
+   
+    
+    $categDis = getCategoria($tipoDis['codice_categoria_incentivo']);
+    //var_dump($categDis);
+    array_push($enableCat,$categDis['ctgi_categoria']);
+}
+$categorie = getCatInc();
+$tipiveicolo = getTipiVeicolo();
+
 ?>
 </div>
+
+<div class="row">
+    <div class="col-12">
+       
+        <nav class="navbar navbar-expand-lg has-megamenu">
+        <button class="custom-navbar-toggler" type="button" aria-controls="nav3" aria-expanded="false" aria-label="Toggle navigation" data-target="#nav3">
+            <svg class="icon">
+            <use xlink:href="svg/sprite.svg#it-burger"></use>
+            </svg>
+        </button>
+        <div class="navbar-collapsable" id="nav3" style="display: none;">
+            <div class="overlay" style="display: none;"></div>
+            <div class="close-div sr-only">
+            <button class="btn close-menu" type="button"><span class="it-close"></span>close</button>
+            </div>
+            <div class="menu-wrapper">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                        <span>Filtro Categoria</span>
+                        <svg class="icon icon-xs">
+                            <use xlink:href="svg/sprite.svg#it-expand"></use>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="link-list-wrapper">
+                            <ul class="link-list" style="width:max-content;">
+                               
+                                <li><a class="list-item" onclick="showCat(0, 'Tutte');"><span>Tutte</span></a></li>
+                            <?php
+                                foreach($categorie as $cat){
+                                    if (in_array($cat['ctgi_categoria'], $enableCat)) {?>
+                                <li><a class="list-item" onclick="showCat('<?=$cat['ctgi_categoria']?>');"><span><?=$cat['ctgi_categoria']?></span></a></li>
+                            <?php 
+                        }
+                        }?>
+                                            
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+                        <span>Filtro Tipo Veicolo</span>
+                        <svg class="icon icon-xs">
+                            <use xlink:href="svg/sprite.svg#it-expand"></use>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="link-list-wrapper">
+                            <ul class="link-list" style="width:max-content;">
+                                <li>
+                                    <h3 class="no_toc" id="heading-es-4">Tipo documento</h3>
+                                </li>
+                                <li><a class="list-item" onclick="showTipo(0, 'Tutti');"><span>Tutti</span></a></li>
+                            <?php
+                                foreach($tipiveicolo as $tr){
+                                    if (in_array($tr['tpvc_codice'], $enabletipi)) {?>
+                                <li><a class="list-item" onclick="showTipo(<?=$tr['tpvc_codice']?>,'<?=$tr['tpvc_descrizione_breve']?>');"><span><?=$tr['tpvc_descrizione_breve']?></span></a></li>
+                            <?php }
+                            }?>
+                                            
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+            </div>
+        </div>
+        </nav>
+    </div>
+</div>
+<div class="row">
+        <div class="col-3" style="margin-left:45px;">
+            <em>Categoria:</em> <small id="info_cat">Tutte</small>
+        </div>
+        <div class="col-3" >
+            <em>Tipo veicolo:</em> <small id="info_tipo">Tutti</small>
+        </div>                                                       
+        
+    </div>
 <div class="row">
     <table class="table">
         <thead>
@@ -20,7 +119,6 @@
         <?php
         $veicoli = getVeicoli($i['id_RAM']);
         //var_dump($veicoli);
-       
             $check_ammissione = 0;
                 foreach($veicoli as $v){
                     if($v['stato_admin']=='A'||$v['stato_admin']==null){
@@ -43,6 +141,7 @@
                     }
                     var_dump($rottamazione);*/
                     $categ = getCategoria($tipo['codice_categoria_incentivo']);
+                    //var_dump($tipo);
                     $countDocVeicolo=countDocVeicolo($v['tipo_veicolo']);
                 
                     if(!$v['targa']&&!$v['marca']&&!$v['modello']&&!$v['tipo_acquisizione']&&!$v['costo']){
@@ -109,7 +208,7 @@
                         $stato_admin = '<span class="badge badge-danger" style="width: -webkit-fill-available;">Rigettata</span>';
                     }
             ?>
-            <tr>
+            <tr class="cat_<?=$categ['ctgi_categoria']?> tipo_<?=$tipo['tpvc_codice']?>">
                 <td scope="row" style="vertical-align:middle;"><span class="badge badge-danger" style="font-size:20px;"><?=$categ['ctgi_categoria']?></span></td>
                 <td style="vertical-align:middle;"><span class="badge badge-secondary" style="font-size:20px;width: -webkit-fill-available;"><?=$tipo['tpvc_descrizione_breve']?></span></td>
                 <td style="vertical-align:middle;"><span class="badge badge-success" style="font-size:20px;"><?=$v['progressivo']?></span></td>
@@ -408,6 +507,29 @@
 
 
 <script>
+    function showCat(cat,des){
+        $("[class*='cat_']").hide();
+     if(cat ==0){
+        $("[class*='cat_']").show(); 
+        $('#info_cat').html(des)
+     }else{
+        showcat = 'cat_'+cat
+        $("."+showcat).show()
+        $('#info_cat').html(cat)
+     }
+
+    }
+    function showTipo(tipo,des){
+        $("[class*='tipo_']").hide();
+     if(tipo ==0){
+        $("[class*='tipo_']").show(); 
+        $('#info_tipo').html(des)
+     }else{
+        showtipo = 'tipo_'+tipo
+        $("."+showtipo).show()
+        $('#info_tipo').html(des)
+     }
+    }
 
         function getInfoVeicolo2(id,cat,tipvei){
 

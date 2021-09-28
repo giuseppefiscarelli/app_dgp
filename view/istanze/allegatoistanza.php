@@ -1,7 +1,7 @@
 <tr>
                                                     <td id="tipo_magg_<?=$tipo?>"><?=$descrizione?></td>
                                                     <td id="data_<?=$tipo?>"><?=$alle?$data_alle:'Allegato non Caricato'?></td>
-                                                    <td id="stato_<?=$tipo?>">
+                                                    <?php if(!isUserUser()){?><td id="stato_<?=$tipo?>">
                                                       
                                                         <?php
                                                                 if($alle){
@@ -19,7 +19,7 @@
                                                         ?>
                                                         
                                                         
-                                                    </td>
+                                                    </td><?php } ?>
                                                     <td>
                                                         <?php
                                                        // var_dump(!isUserAdmin());
@@ -34,7 +34,7 @@
                                                             <button type="button" onclick="docmagmodal('<?=$tipo?>',<?=$tipo_doc?>,<?=$enableSost?>);"class="btn btn-primary btn-xs" title="Carica Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-archive-o" aria-hidden="true"></i> Carica Allegato</button>
                                                         </div>
                                                         <?php
-                                                        }elseif ( $status_integrazione && $alle['stato_admin'] !=='B'){
+                                                        }elseif ( $status_integrazione && $alle['stato_admin'] !=='B' ){
                                                             if($alle){
                                                                 //var_dump($alle);
                                                                 

@@ -499,3 +499,31 @@ function delReport($id){
 
 
 }
+function upReportConfMail($data){
+  /*
+  * @var $conn mysqli
+  */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $id = $data['id'];
+  $prot_RAM = $data['prot_RAM'];
+  $data_prot = date("Y-m-d H:i:s", strtotime($data['data_prot']));
+  
+  
+  $sql ='UPDATE report SET ';
+  $sql .= "data_prot = '$data_prot', prot_RAM = '$prot_RAM' ";
+  $sql .=' WHERE id = '.$id;
+  //print_r($data);
+  //echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+}

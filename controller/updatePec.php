@@ -9,7 +9,8 @@ switch ($action){
       $file=$_FILES['upload1'];
       $data=$_POST;
       
-
+      $updatereport = upReportConfMail($data);
+      
       if ($file['size'] > 0) {
         $docu_nome_file_origine =  $file['name'];
         $path_parts = pathinfo($docu_nome_file_origine);
@@ -23,7 +24,8 @@ switch ($action){
    
          } 
       }else{
-        $res = convMail($data); 
+        $res = convMail($data);
+
       }
       echo json_encode($res);
     
@@ -32,7 +34,7 @@ switch ($action){
     break;
 
     case 'testSendMail':
-     
+    
       $id=$_POST['id'];
       $id_RAM = $_POST['id_RAM'];
       $istanza = getIstanza($id_RAM);

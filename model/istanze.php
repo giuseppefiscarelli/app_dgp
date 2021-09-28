@@ -745,6 +745,30 @@ function getTipoVei($cat){
 
 
 }
+function distinctTipoVeicolo($id_RAM){
+  /**
+     * @var $conn mysqli
+     */
+
+    $conn = $GLOBALS['mysqli'];
+
+    $sql = "SELECT distinct(tipo_veicolo) FROM veicolo where id_RAM = $id_RAM";
+    
+    
+    $records = [];
+
+    $res = $conn->query($sql);
+    if($res) {
+
+      while( $row = $res->fetch_assoc()) {
+          $records[] = $row;
+          
+      }
+
+    }
+
+   return $records;
+}
 function checkRend($idRam){
   /**
    * @var $conn mysqli
@@ -859,6 +883,34 @@ function getTipoVeicolo($tipo){
       }
     return $result;
 
+
+
+
+}
+function getTipiVeicolo(){
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+
+  $sql = 'SELECT * FROM tipo_veicolo' ;
+  
+  
+  
+  $records = [];
+
+  $res = $conn->query($sql);
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+ return $records;
 
 
 
