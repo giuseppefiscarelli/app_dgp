@@ -167,9 +167,10 @@ qualsiasi, ulteriore fase di interlocuzione.</td>
     </tr>
     </table >
 <table style="margin-top:20px;" >
-    <tr><td style="text-align:justify;">Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi (e-mail:
-incentivoinvestimenti@ramspa.it).
-Cordiali saluti</td></tr>
+    <tr><td style="text-align:justify;">
+    Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi (e-mail:incentivoinvestimenti@ramspa.it).
+    Cordiali saluti</td>
+    </tr>
     </table>
     <table style="margin-left:400px;margin-top:30px;">
     
