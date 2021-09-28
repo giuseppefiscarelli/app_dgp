@@ -36,7 +36,7 @@ require_once 'headerInclude.php';
 $(document).ready(function() {
 
 
-
+/*
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
   type: 'line',
@@ -75,7 +75,7 @@ var myChart = new Chart(ctx, {
   }
 });
 
-
+*/
 });
 </script>
   
