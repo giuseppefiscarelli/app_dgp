@@ -102,7 +102,7 @@
 
     <table >
          <tr><td>Prot n° </td><td  style="font-weight:bold;"><?=$rep['prot_RAM']?></td></tr>
-         <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_ins']))?></td></tr>
+         <tr><td>Roma li,</td><td><?=date("d/m/Y",strtotime($rep['data_prot']))?></td></tr>
     </table>
 
     <table style="margin-left:300px;">

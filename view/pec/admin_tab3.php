@@ -94,7 +94,7 @@
     <?php
 
     if($pecConv){
-        foreach($pecConv as $pa){
+        foreach($pecConv as $pa){ //var_dump($pa);
             //var_dump($pa);
             $tipo = getInfoReport($pa['tipo_report']);
             $istanza = getIstanza($pa['id_RAM']);
@@ -119,8 +119,8 @@
                                 <span class="text" style="font-size: 0.7em;"><em style="display:inline;">Convalidata da:</em> <?=$pa['user_conv']?> <?=date("d/m/Y", strtotime($pa['data_conv']))?></span>
                             </div>
                             <div class="col-2">
-                            <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"title="Anteprima Documento" onclick="prevRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-                            <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento" style="padding: 5px 12px;" onclick="downRep(<?=$pa['id']?>,'<?=$tipo['report_dir']?>')"><i class="fa fa-download" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-warning btn-sm" style="padding: 5px 12px;"onclick="window.open('allepec.php?id=<?=$pa['id']?>','_blank')"title="Anteprima Documento"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" title="Scarica Documento"  style="padding: 5px 12px;" onclick="window.open('downpec.php?id=<?=$pa['id']?>','_blank')"><i class="fa fa-download" aria-hidden="true"></i></button>
 <?php  if(getEnablePec()){?>
                                 <button type="button" class="btn btn-success btn-sm" style="padding: 5px 12px;"title="Invia Pec " onclick="msgModalPec(<?=$pa['id']?>, <?=$pa['id_RAM']?>);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
 <?php } ?>
