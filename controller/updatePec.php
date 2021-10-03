@@ -37,7 +37,8 @@ switch ($action){
     
       $id=$_POST['id'];
       $id_RAM = $_POST['id_RAM'];
-      $istanza = getIstanza($id_RAM);
+      $istanza = getInfoPecIstanza($id_RAM);
+     
       $report = getReportId($id);
       $tipo_report =  getInfoReport($report['tipo_report']);
       $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
@@ -49,14 +50,15 @@ switch ($action){
       $bodymod = str_replace($replace,$rag,$body);
       $bodymod = str_replace('%*', '<br>', $bodymod);
       $data = array(
-        'To'=> $istanza['pec_impr'],
+        'To'=> $istanza['pec'],
         'file' =>  $pathReport.$report['nome_file'],
         'Subject' =>$tipo_report['object'].' - rif#'.$time,
         'body' => $bodymod,
         'envProd' => $envProd
       );
-     
-      $res = sendMail($data);
+    
+
+      $res = sendMail2($data);
      // var_dump($res);
      if($res){
        $data = array(

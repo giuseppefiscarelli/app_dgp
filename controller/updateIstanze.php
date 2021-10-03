@@ -437,14 +437,14 @@ switch ($action){
       echo json_encode($res);
 
 
-    break;
+      break;
     case 'upCostoIstr':
       $data=$_REQUEST;
       $res =upIstruttoria($data);
       echo json_encode($res);
 
 
-    break;
+      break;
 
     case 'getTipoInt':
       $id=$_REQUEST['tipo'];
@@ -454,26 +454,26 @@ switch ($action){
       
       echo json_encode($res);
     
-    break;
+      break;
 
     case 'newInt':
       $data = $_REQUEST;
       $res = newInt($data);
       echo json_encode($res);
-    break;
+     break;
     case 'newIntDett': 
       $data = $_REQUEST;
       $res = newIntDett($data);
       echo json_encode($res);
 
-    break;
+      break;
 
     case 'delIntDett': 
       $data = $_REQUEST['id_report'];
       $res = delIntDett($data);
       echo json_encode($res);
       break;
-      case 'delIntDettId': 
+     case 'delIntDettId': 
         $data = $_REQUEST['id'];
         $res = delIntDettId($data);
         echo json_encode($res);
@@ -491,7 +491,7 @@ switch ($action){
       //var_dump($res2);
       //die;
       echo json_encode($res2);
-    break; 
+      break; 
       
     case 'delReport': 
       $data = $_REQUEST;
@@ -525,14 +525,14 @@ switch ($action){
       );
 
       echo json_encode($json);
-    break;
+      break;
     case 'getReport': 
       $id = $_REQUEST['id'];
       $res= getReportId($id);
       $res2 = getTipoRep($res['tipo_report']);
       $res['descrizione_rep'] = $res2;
       echo json_encode($res);
-    break;
+      break;
     case 'newMail':
         $file=$_FILES['file_allegato_mail']?$_FILES['file_allegato_mail']:'';
         $data=$_POST;
@@ -581,7 +581,7 @@ switch ($action){
         }
 
         echo json_encode($res);
-    break;
+      break;
 
     case 'checkCert':
       $data = $_REQUEST;
@@ -621,7 +621,7 @@ switch ($action){
       }
     
       echo json_encode($json);
-    break;  
+      break;  
     case 'upCert':
       $data = $_REQUEST;
       $findInstanza = findCheckIstanza($data['id_ram']);
@@ -662,7 +662,7 @@ switch ($action){
         echo json_encode($json);
       
      
-    break;  
+      break;  
 
     case 'getDocR':
       $id_RAM =$_REQUEST['id_RAM'];
@@ -690,7 +690,7 @@ switch ($action){
         }
      
       echo json_encode($arr);
-    break;
+     break;
 
     case 'annIstanza':
         $data = $_REQUEST;
@@ -698,7 +698,7 @@ switch ($action){
         $res=annullaIstanza($data);
         echo json_encode($res);
 
-    break;
+      break;
 
     case 'getComunicazioni':
       $id_RAM = $_REQUEST['id_RAM'];
@@ -790,5 +790,60 @@ switch ($action){
         'rottamazione' => $check_rottamazione?true:false
       );
      echo json_encode($json);
+      break;
+    case 'displayHome':
+      $tipi_istanze=getTipiIstanza();
+        $json = []; 
+        foreach ($tipi_istanze as $ti){
+          $tipo = $ti['id'];
+         
+          $title= $ti['des'];
+          $params['search4']='';
+          $params['search5']='';
+          $params['search3']=intval($ti['id']);
+          $totalIstanze= countIstanze($params);
+        
+          $params['search4']='A';
+          $istAttive =countIstanze($params);
+          $params['search4']='B';
+          $istAnnullate =countIstanze($params);
+          $params['search4']='C';
+          $istRend =countIstanze($params);
+          $params['search4']='D';
+          $istIstr =countIstanze($params);
+          $params['search4']='E';
+          $istScadute =countIstanze($params);
+
+          $params['search4']='D';
+          $params['search5']='A';
+          $IstrIntegrazione =countIstanze($params);
+          $params['search5']='B';
+          $IstrPreavviso =countIstanze($params);
+          $params['search5']='C';
+          $IstrAmmessa =countIstanze($params);
+          $params['search4']='';
+          $params['search5']='D';
+          $IstrRigettata =countIstanze($params);
+        
+
+          $js = array(
+            'tipo' => $ti['id'],
+            'titolo' => $ti['des'],
+            'totali' => $totalIstanze,
+            'attive' => $istAttive,
+            'annullate' => $istAnnullate,
+            'rendicontazione' => $istRend,
+            'istruttoria' => $istIstr,
+            'scadute' => $istScadute,
+            'integrazione' => $IstrIntegrazione,
+            'preavviso' => $IstrPreavviso,
+            'ammessa' => $IstrAmmessa,
+            'rigettata' => $IstrRigettata
+
+          );
+          array_push($json,$js);
+        }
+        echo json_encode($json);
+
       break;
     }

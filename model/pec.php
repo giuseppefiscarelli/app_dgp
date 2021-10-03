@@ -1,4 +1,9 @@
 <?php
+
+ use PHPMailer\PHPMailer\PHPMailer;
+ use PHPMailer\PHPMailer\Exception;
+
+
 function getReport(array $params = []){
 
     /**
@@ -360,86 +365,98 @@ function getPecData(){
   }
   return $result;
 }
-function sendMail($data){
-
-  include 'Mail.php';
-  include 'Mail/mime.php' ;
- 
-    $from    = "ram.investimenti2020@legalmail.it";
-    $text = 'Text version of email';
-    $html = '<html><body>'.$data['body'].'</body></html>';
-    $file =  $data['file'];
-    $to = "fiscarelli.giu@gmail.com";
-     
-    $crlf = "\n";
-    $hdrs = array(
-        'From' => $from,
-        'Subject' => $data['Subject'],
-        "To"=>$to
-    );
+function getInfoPecIstanza($id_RAM){
+  $conn = $GLOBALS['mysqli'];
+  $result=[];
+  $sql ="SELECT pec, tipo_istanza,ragione_sociale FROM istanze_view WHERE id_RAM  =$id_RAM";
+  //secho $sql;
+  $res = $conn->query($sql);
+  
+  if($res && $res->num_rows){
+    $result = $res->fetch_assoc();
     
-   
-  $host    = "ssl://sendm.cert.legalmail.it";
-    $port    = "465";
-    $user    = "ram.investimenti2020@legalmail.it";
-    $pass    = "RII2020@atr";
-    //$pass    = "NicAruba@1959";
-  
-   
-  
-  $mime = new Mail_mime(array('eol' => $crlf));
-  $mime->setTXTBody($text);
-  $mime->setHTMLBody($html);
-  $mime->addAttachment($file, 'application/pdf');
-  $body = $mime->get();
-  $attachmentheaders  = $mime->headers($hdrs);
-  //var_dump($attachmentheaders);
-  //var_dump($file);
+  }
+  return $result;
 
-  $smtp    = @Mail::factory("smtp", array("host"=>$host, "port"=>$port, "auth"=> true, "username"=>$user, "password"=>$pass));
-  $mail = $smtp->send($to, $attachmentheaders , $body);
+}
+function sendMail($data){
+  require '../vendor/autoload.php';
+  $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+  try {
+      //Server settings
+      //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
+      $mail->isSMTP();                                      // Set mailer to use SMTP
+      $mail->Host = 'sendm.cert.legalmail.it';  // Specify main and backup SMTP servers
+      $mail->SMTPAuth = true;                               // Enable SMTP authentication
+      $mail->Username = 'ram.investimenti2020@legalmail.it';                 // SMTP username
+      $mail->Password = 'R4ns@2020_VII';                           // SMTP password
+      $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+      $mail->Port = 465;                                    // TCP port to connect to
 
-  echo json_encode($mail);
+      //Recipients
+      $mail->setFrom('ram.investimenti2020@legalmail.it');
+      //$mail->addAddress($data['to']);
+      $mail->addAddress('n.salvatore@gmail.com');     // Add a recipient
+      $mail->addAddress('fiscarelli.giu@gmail.com');               // Name is optional
+    
 
-  
+      //Attachments
+      $mail->addAttachment($data['file']);         // Add attachments
+      
+      //Content
+      $mail->isHTML(true);                                  // Set email format to HTML
+      $mail->Subject = $data['Subject'];
+      $mail->Body    = $data['body'];
+      //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+      $mail->send();
+      echo true;
+  } catch (Exception $e) {
+      echo 'Message could not be sent.';
+      echo 'Mailer Error: ' . $mail->ErrorInfo;
+  }
+
+    
 }
 function sendMail2($data){
-  require "Mail.php";
-  require_once "Mail/mime.php";
-  $host    = "ssl://smtps.pec.aruba.it";
-    $port    = "465";
-    $user    = "n.salvatore@pec.it";
-    $pass    = "NicAruba@1959";
-  $smtp    = @Mail::factory("smtp", array(
-                                          "host"=>$host, 
-                                          "port"=>$port, 
-                                          "auth"=> true, 
-                                          "username"=>$user, 
-                                          "password"=>$pass));
-  $from    = "<n.salvatore@pec.it>";
+  require '../vendor/autoload.php';
+  $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+  try {
+      //Server settings
+      //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
+      $mail->isSMTP();                                      // Set mailer to use SMTP
+      $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+      $mail->SMTPAuth = true;                               // Enable SMTP authentication
+      $mail->Username = 'fiscarelli.giu@gmail.com';                 // SMTP username
+      $mail->Password = '01735583';                           // SMTP password
+      $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+      $mail->Port = 465;                                    // TCP port to connect to
 
+      //Recipients
+      $mail->setFrom('fiscarelli.giu@gmail.com');
+      //$mail->addAddress($data['to']);
+      $mail->addAddress('n.salvatore@gmail.com');     // Add a recipient
+      $mail->addAddress('fiscarelli.giu@gmail.com');               // Name is optional
+    
 
- 
-  $to = '<fiscarelli.giu@gmail.com>';
-  $file =  $data['file'];
-  $subject = $data['Subject'];
-  $body = '<html><body>'.$data['body'].'</body></html>';
-  
-  
-  $mime = new Mail_mime();
-  $mime->addAttachment($file,'application/pdf');
+      //Attachments
+      $mail->addAttachment($data['file']);         // Add attachments
+      
+      //Content
+      $mail->isHTML(true);                                  // Set email format to HTML
+      $mail->Subject = $data['Subject'];
+      $mail->Body    = $data['body'];
+      //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-  $headers = array(
-                    "From"=> $from,
-                    "To"=>$to,
-                    "Subject"=>$subject,
-                    "MIME-Version"=>"1.0",
-                   "Content-Type"=>"text/html; charset=ISO-8859-1"
-                );
-  
-  $mail =@$smtp->send($to, $headers, $body);
-  echo json_encode($mail);
+      $mail->send();
+      return true;
+  } catch (Exception $e) {
+     // echo 'Message could not be sent.';
+     // echo 'Mailer Error: ' . $mail->ErrorInfo;
+      return false;
+  }
 
+    
 }
 function upReportSendMail($data){
   /*

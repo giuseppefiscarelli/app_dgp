@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="it"> 
   <head>
+  <meta charset="utf-8">
   <title>RAM</title>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" /><link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,400italic,700,600italic,600,700italic' rel='stylesheet' type='text/css' />
