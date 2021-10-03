@@ -544,3 +544,27 @@ function upReportConfMail($data){
   return $result;
 
 }
+function getDettagliReport($id){
+  
+  /**
+   * @var $conn mysqli
+   */
+
+  $conn = $GLOBALS['mysqli'];
+  $records=[];
+  $sql ="SELECT * FROM dettaglio_report where id_report = $id";
+  //echo $sql;
+  $res = $conn->query($sql);
+        
+       
+  if($res) {
+
+    while( $row = $res->fetch_assoc()) {
+        $records[] = $row;
+        
+    }
+
+  }
+
+  return $records;
+}

@@ -14,11 +14,12 @@ switch ($action){
         if ($res){
             $tipo = getInfoReport($res['tipo_report']);
             $istanza = getIstanza($res['id_RAM']);
-    
+            $attr = getDettagliReport($id);
             $json = [
                 'data' => $res,
                 'type' => $tipo,
-                'istanza' => $istanza
+                'istanza' => $istanza,
+                'attr'=> $attr
             ];
             echo json_encode($json);
         }

@@ -165,65 +165,78 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="msgModal">
-  <div class="modal-dialog" role="document">
+<div class="modal-dialog modal-lg" role="document" style="max-width:80%">
     <div class="modal-content" >
       <div class="modal-header">
         <h5 class="modal-title">Anteprima Pec
         </h5>
       </div>
         <div class="modal-body">
-           
-                <div class="form-group">
-                    <label >Destinatario</label>
-                    <input  type="text" id="pec_dest" value=""readonly placeholder=" ">
-                   
-                </div>
-           
-                <div class="form-group">
-                    <input  type="text" id="pec_object" readonly placeholder=" ">
-                    <label >Oggetto</label>
-                </div>
-                <div class="form-group">
-                    <input  type="text" form="form_allegato_pec"id="protRam_object" name="prot_RAM" placeholder=" ">
-                    <label >Protocollo RAM</label>
-                </div>
-                <div class="it-datepicker-wrapper">
+            <div class="row" > 
+                <div class="col-lg-6 col-12">
                     <div class="form-group">
-                        <input form="form_allegato_pec" class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot_object" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa" >
-                        <label for="data_prot_object">Data Documento</label>
-                        <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                        <label >Destinatario</label>
+                        <input  type="text" id="pec_dest" value=""readonly placeholder=" ">
+                    
                     </div>
-                </div>
             
-                <div class="form-group">
-                    <textarea  type="text" rows="6" id="pec_body" readonly placeholder=" "></textarea>
-                    <label >Corpo Mail</label>
+                    <div class="form-group">
+                        <input  type="text" id="pec_object" readonly placeholder=" ">
+                        <label >Oggetto</label>
+                    </div>
+                    
+                
+                    <div class="form-group">
+                        <textarea  type="text" rows="6" id="pec_body" readonly placeholder=" "></textarea>
+                        <label >Corpo Mail</label>
+                    </div>
+                    <form method="post"  id="form_allegato_pec"  enctype="multipart/form-data">
+                        <input type="hidden" id="id_pec" name="id" value="">
+                        <input type="hidden" id=" id_ram_pec" name=" id_ram" value="">
+                        <input type="hidden" id="tipo" value="">
+                    
+                        <input type="file" name="upload1" id="upload1" class="upload" onchange="checkDoc();" />
+                            <label for="upload1">
+                                <svg class="icon icon-sm" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-upload"></use></svg>
+                                <span>Upload</span>
+                            </label>
+                            <ul class="upload-file-list">
+                                <li class="upload-file success">
+                                <svg class="icon icon-sm" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-file"></use></svg>
+                                <p>
+                                    <span class="sr-only">File caricato:</span>
+                                <span id="name_alle">Allegato</span>  <span class="upload-file-weight"></span>
+                                </p>
+                                <button disabled>
+                                    <span class="sr-only">Caricamento ultimato</span>
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-check"></use></svg>
+                                </button>
+                            
+                                </li>
+                            </ul>
+                    </form>
                 </div>
-                <form method="post"  id="form_allegato_pec"  enctype="multipart/form-data">
-                    <input type="hidden" id="id_pec" name="id" value="">
-                    <input type="hidden" id=" id_ram_pec" name=" id_ram" value="">
-                    <input type="hidden" id="tipo" value="">
+                <div class="col-lg-6 col-12" id="datiAllegato">
+                    <h5>Dati Allegato</h5>
+                        <div class="row" style="margin-top:30px;">
+                      
+                            <div class="form-group col-lg-6 col-12" >
+                                <input  type="text" form="form_allegato_pec" id="protRam_object" name="prot_RAM" placeholder=" ">
+                                <label >Protocollo RAM</label>
+                            </div>
+  
+                            <div class="it-datepicker-wrapper col-lg-6 col-12">
+                                <div class="form-group">
+                                    <input form="form_allegato_pec" class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot_object" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa" >
+                                    <label for="data_prot_object">Data Documento</label>
+                                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                                </div>
+                            </div>
+                        </div>
+                    
                    
-                    <input type="file" name="upload1" id="upload1" class="upload" onchange="checkDoc();" />
-                        <label for="upload1">
-                            <svg class="icon icon-sm" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-upload"></use></svg>
-                            <span>Upload</span>
-                        </label>
-                        <ul class="upload-file-list">
-                            <li class="upload-file success">
-                            <svg class="icon icon-sm" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-file"></use></svg>
-                            <p>
-                                <span class="sr-only">File caricato:</span>
-                               <span id="name_alle">Allegato</span>  <span class="upload-file-weight"></span>
-                            </p>
-                            <button disabled>
-                                <span class="sr-only">Caricamento ultimato</span>
-                                <svg class="icon" aria-hidden="true"><use xlink:href="svg/sprite.svg#it-check"></use></svg>
-                            </button>
-                           
-                            </li>
-                        </ul>
-                </form>
+                </div>    
+            </div> 
             
         </div>
       <div class="modal-footer">
