@@ -32,6 +32,17 @@ switch ($action){
        
 
     break;
+    case 'upAllegatoPec':
+      
+      $data=$_POST;
+      
+      $res = upReportConfMail($data);
+      
+      echo json_encode($res);
+    
+       
+
+    break;
 
     case 'testSendMail':
     

@@ -67,8 +67,8 @@
 	
 
     <table>
-    <tr><td>Roma li,</td><td><?=$data_doc?></td></tr>
-    <tr><td>Prot n°</td><td  style="font-weight:bold;"> <?=$prot?></td></tr>
+    <tr><td>Roma li,</td><td><?=date("d/m/Y", strtotime($rep['data_prot']))?></td></tr>
+    <tr><td>Prot n°</td><td  style="font-weight:bold;"> <?=$rep['prot_RAM']?></td></tr>
 
     </table>
 
@@ -154,7 +154,7 @@
        </tr>
        <tr>
         <td style=" border: 1px solid black;border-left: 0px ;padding:3px;text-align:left;" colspan="4">Maggiorazione Rottamazione</td>
-        <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($contr_rottamazione, 2, ',', '.').' €' ?></td>
+       <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($contr_rottamazione, 2, ',', '.').' €' ?></td>
        </tr>              
     
 

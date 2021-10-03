@@ -76,7 +76,14 @@
     font-size: 18px;
   }
  </style>      
-
+  <div id="loadSpin">
+        <div class="d-flex justify-content-center" >
+            <p style="position:absolute;"><strong>Caricamento in corso...</strong></p>
+            <div class="progress-spinner progress-spinner-active" style="margin-top:30px;">
+                <span class="sr-only">Caricamento...</span>
+            </div>
+        </div>
+    </div>
 
 <?php
 /*

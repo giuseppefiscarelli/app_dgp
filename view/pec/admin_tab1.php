@@ -358,18 +358,9 @@
             }
         })
         }else{
+
             $.ajax({
-              
-            url: reportDir+"?id="+formData.get('id')+"&tipo=S",
-            type:"POST",
-            error:function(){ 
-                Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
-            },
-            success: function(filename){
-                formData.append('nome_file',filename)
-               
-                $.ajax({
-                    url: "controller/updatePec.php?action=newAllegatoPec",
+                    url: "controller/updatePec.php?action=upAllegatoPec",
                     type:"POST",
                     data: formData,
                     dataType: 'json',
@@ -380,18 +371,46 @@
                         Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
                     },
                     success: function(data){
-                        Swal.fire({
-                            title:"Operazione Completata!",
-                            html:"Allegato caricato correttamente.",
-                            icon:"success"}).then((result) => {
-                                                        if (result.isConfirmed) {
-                                                                    location.reload()
-                                                        }
-                                                        });
-                    }
-                })
 
-            }
+                    $.ajax({
+                    
+                        url: reportDir+"?id="+formData.get('id')+"&tipo=S",
+                        type:"POST",
+                        error:function(){ 
+                            Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
+                        },
+                        success: function(filename){
+                            formData.append('nome_file',filename)
+                        
+                            $.ajax({
+                                url: "controller/updatePec.php?action=newAllegatoPec",
+                                type:"POST",
+                                data: formData,
+                                dataType: 'json',
+                                contentType: false,
+                                cache: false,
+                                processData:false,
+                                error:function(){ 
+                                    Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
+                                },
+                                success: function(data){
+                                    Swal.fire({
+                                        title:"Operazione Completata!",
+                                        html:"Allegato caricato correttamente.",
+                                        icon:"success"}).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                                location.reload()
+                                                                    }
+                                                                    });
+                                }
+                            })
+
+
+
+
+                        }
+                    })
+                }
             })
         }
     })
