@@ -5,6 +5,9 @@ require_once '../functions.php';
 $action = getParam('action','');
 require '../model/comunicazioni.php';
 $params = $_GET;
+if(!isUserLoggedin()){
+    exit;
+   }
 switch ($action){
 
     case 'newMsg':

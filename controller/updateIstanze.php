@@ -5,6 +5,10 @@ require_once '../functions.php';
 $action = getParam('action','');
 require '../model/istanze.php';
 $params = $_GET;
+if(!isUserLoggedin()){
+  
+ exit;
+}
 switch ($action){
     
     case 'store':
@@ -484,7 +488,16 @@ switch ($action){
       $res = saveReport($data);
       $res2 =getReportId($data['id']);
       $res3 = getTipoRep($res2['tipo_report']);
-     
+      if ($res3['id'] === 3){
+        $dett= array(
+          'id_RAM' => $res['id_RAM'],
+          'id_report'=> $data['id'],
+          'prog'=> '',
+          'tipo' => 3,
+          'descrizione' => $data['data_verbale']
+        );
+        $nt = newIntDett($dett);
+      }
       
       $res2['descrizione'] = $res3;
       $res2['data_inserimento'] = date("d/m/y H:i", strtotime($res2['data_ins']));

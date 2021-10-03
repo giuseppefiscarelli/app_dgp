@@ -4,6 +4,9 @@ require_once '../functions.php';
 $action = getParam('action','');
 require '../model/pec.php';
 $params = $_GET;
+if(!isUserLoggedin()){
+  exit;
+ }
 switch ($action){
     case 'newAllegatoPec':
       $file=$_FILES['upload1'];
