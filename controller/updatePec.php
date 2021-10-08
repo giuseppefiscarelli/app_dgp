@@ -63,17 +63,22 @@ switch ($action){
       $rag = $istanza['ragione_sociale'];
       $bodymod = str_replace($replace,$rag,$body);
       $bodymod = str_replace('%*', '<br>', $bodymod);
+      $pecEnv = $envProd?1:0;
+      $pecData = getPecData($pecEnv);
       $data = array(
         'To'=> $istanza['pec'],
         'file' =>  $pathReport.$report['nome_file'],
         'Subject' =>$tipo_report['object'].' - rif#'.$time,
         'body' => $bodymod,
-        'envProd' => $envProd
+        'pecData' => $pecData
       );
+     
+      if($envProd){
+        //$res = sendMail($data);
+      }else{
+        $res = sendMail2($data);
+      }
     
-
-      $res = sendMail2($data);
-     // var_dump($res);
      if($res){
        $data = array(
          'id' => $id,
@@ -94,4 +99,15 @@ switch ($action){
       $res= delReport($data['id']);
       echo json_encode($res);
     break;
+
+    case 'updateDataPec':
+      $data = $_POST;
+      //var_dump($data);die;
+      $res = updateDataPec($data); 
+      $message = $res ? 'Record Aggiornato' : 'Errore Aggiornamento Record!';
+      $_SESSION['message'] = $message;
+      $_SESSION['success'] = $res;
+      //die;
+      header('Location:../pec_config.php');
+      break;
 }

@@ -52,6 +52,7 @@ require_once 'model/menu.php';
                         <!--<li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='newsletter.php'?'active':''?>" href="newsletter.php"><span><i class="fa fa-paper-plane" aria-hidden="true"></i> Newsletter</span></a></li>
                           -->
                           <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='pec.php'?'active':''?>" href="pec.php"><span><i class="fa fa-envelope" aria-hidden="true"></i> Pec Comunicazioni </span></a></li>
+                          
 
                       </ul>
                     </div>

@@ -32,7 +32,8 @@
                         <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='users.php'?'active':''?>" href="users.php"><span><i class="fa fa-users" aria-hidden="true"></i> Gestione Utenti </span></a></li>
                         <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='istanze.php'?'active':''?>" href="istanze.php"><span><i class="fa fa-list" aria-hidden="true"></i> Istanze </span></a></li>
                         <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='comunicazioni.php'?'active':''?>" href="comunicazioni.php"><span><i class="fa fa-inbox" aria-hidden="true"></i> Help Desk</span></a></li>
-                        
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='pec_config.php'?'active':''?>" href="pec_config.php"><span><i class="fa fa-envelope" aria-hidden="true"></i> Configurazione pec </span></a></li>
+
                       </ul>
                     </div>
                   </div>

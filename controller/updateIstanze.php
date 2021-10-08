@@ -6,7 +6,6 @@ $action = getParam('action','');
 require '../model/istanze.php';
 $params = $_GET;
 if(!isUserLoggedin()){
-  
  exit;
 }
 switch ($action){

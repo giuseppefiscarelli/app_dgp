@@ -347,7 +347,7 @@ function convMail($data){
 
 
 }
-function getPecData(){
+function getPecData($env){
   
   /**
    * @var $conn mysqli
@@ -355,8 +355,8 @@ function getPecData(){
 
   $conn = $GLOBALS['mysqli'];
   $result=[];
-  $sql ='SELECT * FROM pec_indirizzo WHERE env = 1';
-  //echo $sql;
+  $sql ="SELECT * FROM pec_indirizzo WHERE env = $env";
+ // echo $sql;
   $res = $conn->query($sql);
   
   if($res && $res->num_rows){
@@ -386,29 +386,23 @@ function sendMail($data){
       //Server settings
       //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
       $mail->isSMTP();                                      // Set mailer to use SMTP
-      $mail->Host = 'sendm.cert.legalmail.it';  // Specify main and backup SMTP servers
+      $mail->Host = $data['pecData']['host'];  // Specify main and backup SMTP servers
       $mail->SMTPAuth = true;                               // Enable SMTP authentication
-      $mail->Username = 'ram.investimenti2020@legalmail.it';                 // SMTP username
-      $mail->Password = 'R4ns@2020_VII';                           // SMTP password
+      $mail->Username = $data['pecData']['user'];// SMTP username
+      $mail->Password = $data['pecData']['pass'];// SMTP password
       $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-      $mail->Port = 465;                                    // TCP port to connect to
-
+      $mail->Port = $data['pecData']['port'];  // TCP port to connect to
       //Recipients
-      $mail->setFrom('ram.investimenti2020@legalmail.it');
+      $mail->setFrom($data['pecData']['user']);
       //$mail->addAddress($data['to']);
-      $mail->addAddress('n.salvatore@gmail.com');     // Add a recipient
-      $mail->addAddress('fiscarelli.giu@gmail.com');               // Name is optional
-    
-
+      $mail->addAddress($data['to']);     // Add a recipient
       //Attachments
       $mail->addAttachment($data['file']);         // Add attachments
-      
       //Content
       $mail->isHTML(true);                                  // Set email format to HTML
       $mail->Subject = $data['Subject'];
       $mail->Body    = $data['body'];
       //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
       $mail->send();
       echo true;
   } catch (Exception $e) {
@@ -425,15 +419,15 @@ function sendMail2($data){
       //Server settings
       //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
       $mail->isSMTP();                                      // Set mailer to use SMTP
-      $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+      $mail->Host = $data['pecData']['host'];//'smtp.gmail.com';  // Specify main and backup SMTP servers
       $mail->SMTPAuth = true;                               // Enable SMTP authentication
-      $mail->Username = 'fiscarelli.giu@gmail.com';                 // SMTP username
-      $mail->Password = '01735583';                           // SMTP password
+      $mail->Username = $data['pecData']['user'];//'fiscarelli.giu@gmail.com';                 // SMTP username
+      $mail->Password = $data['pecData']['pass'];//'01735583';                           // SMTP password
       $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-      $mail->Port = 465;                                    // TCP port to connect to
+      $mail->Port = $data['pecData']['port'];                                    // TCP port to connect to
 
       //Recipients
-      $mail->setFrom('fiscarelli.giu@gmail.com');
+      $mail->setFrom($data['pecData']['user']);
       //$mail->addAddress($data['to']);
       $mail->addAddress('n.salvatore@gmail.com');     // Add a recipient
       $mail->addAddress('fiscarelli.giu@gmail.com');               // Name is optional
@@ -451,12 +445,38 @@ function sendMail2($data){
       $mail->send();
       return true;
   } catch (Exception $e) {
-     // echo 'Message could not be sent.';
-     // echo 'Mailer Error: ' . $mail->ErrorInfo;
+   
+      //echo 'Message could not be sent.';
+      //echo 'Mailer Error: ' . $mail->ErrorInfo;
       return false;
   }
 
     
+}
+function updateDataPec($data){
+  /*
+  * @var $conn mysqli
+  */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $id = $data['id'];
+  $user = $data['user'];
+  $pass = $data['pass'];
+  $host = $data['host'];
+  $port = $data['port'];
+  $sql ='UPDATE pec_indirizzo SET ';
+  $sql .= "user = '$user', pass = $pass, host ='$host', port='$port' ";
+  $sql .=' WHERE id = '.$id;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
 }
 function upReportSendMail($data){
   /*
