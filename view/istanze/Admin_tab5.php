@@ -139,7 +139,10 @@ if($check_stato_istruttoria){
                                                     <td>
                                                     <div class="row">
                                                        <!--<button type="button" onclick="newMail(<?=$rep['id']?>);"class="btn btn-warning btn-xs" title="componi pec" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-envelope" aria-hidden="true"></i></button>-->
-                                                        <?php if($rep['tipo_report']==1){?>
+                                                        <?php if($rep['tipo_report']==1){
+                                                            if($rep['stato']=="B"){?>
+                                                        <button type="button" onclick="modRep(<?=$rep['id']?>);"class="btn btn-warning btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                                        <?php } ?>
                                                         <button type="button" onclick="prevRep(<?=$rep['id']?>);"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                                                         <button type="button" onclick="downRep(<?=$rep['id']?>);"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>
 
@@ -265,6 +268,7 @@ if($check_stato_istruttoria){
             }
         })
  })
+    
     function showRep(id){
         alert(id)
     }
@@ -499,7 +503,9 @@ if($check_stato_istruttoria){
                                 $('#lista_report > li').remove();
                                 $("#lista_report").append('<li>Nessun Report Disponibile</li>');
                                 if(data.tipo_report==1){
-                                    td4='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
+                                    //td4='<button type="button" onclick="modRep('+data.id+');"class="btn btn-warning btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-edit" aria-hidden="true"></i></button>'
+                                    td4='<button type="button" onclick="modRep('+data.id+');"class="btn btn-warning btn-xs" title="Modifica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-edit" aria-hidden="true"></i></button>'
+                                    td4+='<button type="button" onclick="prevRep('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                                     td4+='<button type="button" onclick="downRep('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
                                     text_istr = 'Integrazione';
                                     type_istr = 'warning';
@@ -541,7 +547,11 @@ if($check_stato_istruttoria){
                                 span_istr = '<span class="badge badge-'+type_istr+' blink">'+text_istr+'</span> <br> <b class="blink">Pec da inviare</b>';
                                 //console.log(span_istr);
                                 $('#status_istruttoria').html('Stato istruttoria '+span_istr)
-                                $("#reportTable > tbody").prepend(html);
+                                mode = $('#mode_1').val()
+                                if (mode ==='save'){
+                                    $("#reportTable > tbody").prepend(html);
+                                }
+                               
                                 $("#reportTable").show();
                                 $('#tipo_report').selectpicker('refresh')
                             }
@@ -879,6 +889,44 @@ if($check_stato_istruttoria){
     }
    
     progtr=1;
+    function modRep(id){
+        $('#mode_1').val('update')
+        $('#reportModal').modal('toggle');
+        $('#reportModal').find('.modal-title').text("Modifica richiesta di integrazione")
+        $("#tab_int > tbody").html("");
+        $('#id_report').val("")
+        $('#prot_RAM').val("")
+        $('#tipo_integrazione').val('').selectpicker("refresh");
+        $.ajax({
+                    type: "POST",
+                    url: "controller/updateIstanze.php?action=upIntegrazione",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function(data){
+                            
+                            $('#id_report').val(data.report.id)
+                            $('#prot_RAM').val(data.report.prot_RAM)
+                            const options = {  year: 'numeric', month: '2-digit', day: '2-digit' };
+                            dataP = new Date(data.report.data_prot).toLocaleDateString('it-IT', options)
+                            
+                            data_prot= dataP;
+                            $('#data_prot').val(data_prot)
+                            $.each(data.dettagli, function (k,v){
+                                console.log(v)
+                                btn_del = '<button type="button" class="btn btn-danger btn-sm" onclick="delInt('+v.id+')"> <i class="fa fa-trash" aria-hidden="true"></i> </button>'
+                                html= '<tr id="row_dett_1_'+v.id+'"><td>'+v.tipodett+'</td><td id="desc_'+progtr+'">'+v.descrizione+'</td><td>'+btn_del+'</td></tr>'
+                                $("#tab_int > tbody").append(html);
+                                progtr++;  
+                            })
+                            $("#div_tab_int").show();
+                            $('#des_int,#div_btn_add_int').hide();
+        
+                          
+                          
+
+                    }
+                  }) 
+    }
     function addInt(){
         id_RAM= <?=$i['id_RAM']?>;
         id_report= $('#id_report').val();
@@ -1217,12 +1265,18 @@ if($check_stato_istruttoria){
     }
     $('#tipo_report').change(function(){
       $('#veiNonConf').hide()
+      $('#mode_1').val('save')
       $('#tabVeiNonConf >tbody').empty()
         tipo=$('#tipo_report option:selected').val()
         
         console.log(tipo);
         if(tipo ==1){
                 $('#reportModal').modal('toggle');
+                $('#reportModal').find('.modal-title').text("Nuova richiesta di integrazione")
+                $("#div_tab_int").hide();
+                $('#des_int,#div_btn_add_int').show();
+                $('#id_report').val("")
+                $('#prot_RAM').val("")
                 newInt(tipo);
                 id_RAM = <?=$i['id_RAM']?>;
                   $.ajax({
@@ -1391,6 +1445,7 @@ if($check_stato_istruttoria){
       </div>
       <div class="modal-body">
         <input type="hidden" name="id_report" id="id_report" value="">
+        <input type="hidden" name="mode_1" id="mode_1" value="save">
         <form id="modal1">
             <div class="row">
                 <div class="col-6">
@@ -1753,10 +1808,22 @@ if($check_stato_istruttoria){
         addInt4()
      })
      $('#reportModal').on('shown.bs.modal', function (e) {
-        $('#tipo_integrazione').val('').selectpicker("refresh");
-        $('#prot_RAM, #data_prot').val('');
-        $("#tab_int > tbody").html("");
-        $("#div_tab_int").hide();
+         mode= $('#mode_1').val()
+         console.log(mode)
+         if(mode === 'save'){
+            $('#tipo_integrazione').val('').selectpicker("refresh");
+            $('#prot_RAM, #data_prot').val('');
+            $("#tab_int > tbody").html("");
+            $("#div_tab_int").hide();
+            $('#des_int,#div_btn_add_int').hide();
+         }
+       
+    })
+    $('#data_prot,#prot_RAM').on('change', function(){
+        mode= $('#mode_1').val()
+        if(mode === 'update'){
+            $('#saveRepBtn1,#prev_btn').prop('disabled',false)
+        }
     })
     $('#reportModal2').on('shown.bs.modal', function (e) {
         

@@ -13,6 +13,24 @@ switch ($action){
     case 'store':
       
     break; 
+    case 'upIntegrazione':
+      $id = $_REQUEST['id'];
+      $rep = getReportId($id);
+      $dettagli = getDettReport($id);
+      $dett= [];
+      foreach($dettagli as $d){
+        $tipo = getTipoInt($d['tipo']);
+        $dettTipo = $tipo['descrizione'];
+        $d['tipodett'] = $dettTipo;
+        array_push($dett,$d);
+      }
+      $json = array(
+        'report' => $rep,
+        //'dettagli' => $dettagli,
+        'dettagli' => $dett
+      );
+      echo json_encode($json);
+      break;
     case 'getTipDoc':
 
       $tipo_documento=$_REQUEST['tipo'];
@@ -486,8 +504,10 @@ switch ($action){
       //var_dump($data);die;
       $res = saveReport($data);
       $res2 =getReportId($data['id']);
+      
       $res3 = getTipoRep($res2['tipo_report']);
-      if ($res3['id'] === 3){
+      
+      if ($res2['tipo_report'] === 3){
         $dett= array(
           'id_RAM' => $res['id_RAM'],
           'id_report'=> $data['id'],
