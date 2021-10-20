@@ -60,7 +60,12 @@ if(!empty($_POST)){
                
             }
         }*/
-       
+
+        if(isUserUser()){
+            $_SESSION = [];
+            header('Location: index.php');
+            exit;
+        }
             $_SESSION['message'] = $result['message'];
             header('Location: home.php');
         

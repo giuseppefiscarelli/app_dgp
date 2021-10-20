@@ -21,7 +21,14 @@ $_SESSION['csrf']= $token;
 require_once 'view/template/top.php';
 
 ?>
-
+<style>
+  .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
   <body>
         <div class="it-header-slim-wrapper">
             <div class="container">
@@ -151,6 +158,13 @@ if(!empty($_SESSION['message'])){
   } 
       ?>
       <div class="container my-4">
+        <div class="row">
+          <div class="col-12 ">
+            <h1 style="text-align: center;">Attenzione! sistema attualmente in manutenzione.</h1>
+          <img src="images/work.jpg" style="width:300px;" class="center">
+
+          </div>
+        </div>
         <div class="it-carousel-wrapper it-carousel-landscape-abstract">
           <div class="it-carousel-all owl-carousel" >
             <div class="it-single-slide-wrapper" >
