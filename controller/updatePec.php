@@ -65,6 +65,7 @@ switch ($action){
       $bodymod = str_replace('%*', '<br>', $bodymod);
       $pecEnv = $envProd?1:0;
       $pecData = getPecData($pecEnv);
+    
       $data = array(
         'To'=> $istanza['pec'],
         'file' =>  $pathReport.$report['nome_file'],
