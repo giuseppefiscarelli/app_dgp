@@ -200,7 +200,7 @@ $cat=getCatInc();//var_dump(count($cat));
                     foot+='<td style="background-color: #06c6;text-align:right;">'+totrete+'</td>'
                     foot+='<td style="background-color: #d6dce3;text-align:right;">'+tottotale+'</td>'
                     foot+='</tr>'
-                    if (limite){
+                    if (limite){ 
                         foot += '<tr><td colspan="9" style="color:red;"><b>* Limite contributo di '+tottotale+'</b></td></tr>'
                     }
                     $('#tab_riepilogo_amm > tfoot').append(foot)
