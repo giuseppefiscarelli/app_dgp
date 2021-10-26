@@ -79,7 +79,7 @@ switch ($action){
       }else{
         $res = sendMail2($data);
       }
-    var_dump($res);die;
+   
      if($res){
        $data = array(
          'id' => $id,
