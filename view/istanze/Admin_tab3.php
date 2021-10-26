@@ -144,6 +144,7 @@ $cat=getCatInc();//var_dump(count($cat));
                 $('#tab_riepilogo_resp > tbody').empty()
                     //console.log(data.datavei);
                     $.each(data.datavei, function (k,v){
+                        
                         categoria = '<td><span class="badge badge-danger" style="font-size:20px;">'+v.categoria+'</span></td>'
                         tipologia = '<td><span class="badge badge-secondary" style="font-size:20px;width: -webkit-fill-available;">'+v.tipologia+'</span></td>'
                         targa = '<td><span class="badge badge-primary" style="font-size:20px;width: -webkit-fill-available;">'+v.targa+'</span></td>'
@@ -156,6 +157,7 @@ $cat=getCatInc();//var_dump(count($cat));
                         pmi = '<td style="background-color: #bfd4ea;text-align:right;">'+pmieuro+'</td>'
                         reteeuro = parseFloat(v.rete).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                         rete ='<td style="background-color: #bfd4ea;text-align:right;">'+reteeuro+'</td>'
+                        
                         totaleeuro = parseFloat(v.totale).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                         totale ='<td style="background-color: #d6dce338;text-align:right;">'+totaleeuro+'</td>'
                         note = '<td>'+v.note+'</td>'
@@ -179,6 +181,13 @@ $cat=getCatInc();//var_dump(count($cat));
                         foot+='</tr>'
                         $('#tab_riepilogo_amm > tfoot').append(foot)
                     }
+                    limite = false
+                    flaglimite = ''
+                    if(data.tottotale> 550000){
+                            limite = true
+                            data.tottotale = 550000
+                            flaglimite = '<b style="color:red;"> *</b>'
+                        }
                     totcontr=parseFloat(data.totcontr).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                     totcosto=parseFloat(data.totcosto).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                     totpmi=parseFloat(data.totpmi).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
@@ -186,11 +195,14 @@ $cat=getCatInc();//var_dump(count($cat));
                     tottotale=parseFloat(data.tottotale).toLocaleString('it-IT', {style: 'currency', currency: 'EUR'});
                     foot='<tr style="font-weight:bold;"><td colspan="4" style="text-align:right;"> Totale</td>'
                     foot+='<td style="text-align:right;">'+totcosto+'</td>'
-                    foot+='<td style="text-align:right;">'+totcontr+'</td>'
+                    foot+='<td style="text-align:right;">'+totcontr+flaglimite+'</td>'
                     foot+='<td style="background-color: #06c6;text-align:right;">'+totpmi+'</td>'
                     foot+='<td style="background-color: #06c6;text-align:right;">'+totrete+'</td>'
                     foot+='<td style="background-color: #d6dce3;text-align:right;">'+tottotale+'</td>'
                     foot+='</tr>'
+                    if (limite){
+                        foot += '<tr><td colspan="9" style="color:red;"><b>* Limite contributo di '+tottotale+'</b></td></tr>'
+                    }
                     $('#tab_riepilogo_amm > tfoot').append(foot)
             }
         })
