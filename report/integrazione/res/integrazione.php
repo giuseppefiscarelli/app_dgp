@@ -145,7 +145,7 @@
         <table >
             <tr><td style="text-align:justify;">Pertanto, ai sensi e per gli effetti dell&#39;art. 12, comma 4 del D.D 7 agosto 2020 n.145,
             Vi invitiamo a fornirci la suddetta documentazione <b>entro e non oltre il termine perentorio di
-            dieci giorni</b> decorrenti dalla data di ricezione della presente, accedendo al gestionale
+            quindici giorni</b> decorrenti dalla data di ricezione della presente, accedendo al gestionale
             dedicato sul Portale, già utilizzato per la rendicondazione della domanda.
             Il Portale sarà abilitato alla modifica dei dati e, all&#39;interno della Sezione &quot;Richieste
             integrazioni&quot;, al caricamento dei documenti contenenti le integrazioni richieste.</td></tr>               
