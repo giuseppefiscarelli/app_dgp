@@ -55,7 +55,7 @@ switch ($action){
         'pecData' => $pecData
       );
       if($envProd){
-        //$res = sendMail($data);
+        $res = sendMail($data);
       }else{
         $res = sendMail2($data);
       }
