@@ -545,8 +545,12 @@ function upReportConfMail($data){
   $result=0;
   $id = $data['id'];
   $prot_RAM = $data['prot_RAM'];
-  $data_prot = date("Y-m-d H:i:s", strtotime($data['data_prot']));
   
+  if($data['data_prot']){
+    $date_prot = $data['data_prot'];
+    $date = str_replace('/', '-', $date_prot);
+    $data_prot=date("Y-m-d", strtotime( $date));
+  }
   
   $sql ='UPDATE report SET ';
   $sql .= "data_prot = '$data_prot', prot_RAM = '$prot_RAM' ";

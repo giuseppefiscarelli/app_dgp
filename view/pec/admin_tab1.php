@@ -267,7 +267,7 @@
                 $('#id_pec').val(id)
                 $('#id_ram_pec').val(data.data.id_RAM)
                 $('#pec_dest').val(data.istanza.pec_impr)
-                $('#pec_object').val(data.type.object)
+                $('#pec_object').val(data.type.object+ ' ' + data.info)
                 const options = {  year: 'numeric', month: '2-digit', day: '2-digit' };
                 dataP = new Date(data.data.data_prot).toLocaleDateString('it-IT', options)
                 
@@ -278,6 +278,9 @@
                 html=data.type.body.replaceAll('%*', '\n').replace('%ragSoc%', data.istanza.ragione_sociale)
                 $('#pec_body').html(html)
                 $('#msgModal').modal('toggle')
+                if(tipo == 3){
+                    input = ''
+                }
             }
         });
     }

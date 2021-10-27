@@ -14,6 +14,8 @@ switch ($action){
         $id = $_REQUEST['id'];
         //var_dump($id);
         $res=getReportId($id);
+        $istanza = getInfoPecIstanza($res['id_RAM']);
+        $tipo_istanza = getTipoIstanza($istanza['tipo_istanza']);
         if ($res){
             $tipo = getInfoReport($res['tipo_report']);
             $istanza = getIstanza($res['id_RAM']);
@@ -22,7 +24,8 @@ switch ($action){
                 'data' => $res,
                 'type' => $tipo,
                 'istanza' => $istanza,
-                'attr'=> $attr
+                'attr'=> $attr,
+                'info' => 'In '.$res['id_RAM'].'/'.$tipo_istanza['anno']
             ];
             echo json_encode($json);
         }

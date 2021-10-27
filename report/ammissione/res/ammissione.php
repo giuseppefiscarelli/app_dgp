@@ -104,7 +104,7 @@
     
     </table>
     <table>
-        <tr><td style="text-align:justify;">ferma restando la permanenza dei requisiti da ammissibilità richiesti dalla normativa vigente, dispone per l'istanza di finanziamento dagli investimenti da Codesta impresa la relativa</td></tr>
+        <tr><td style="text-align:justify;">fermo restando la permanenza dei requisiti di ammissibilità richiesti dalla normativa vigente, dispone per l'istanza di finanziamento presenteta da Codesta impresa la relativa</td></tr>
     </table>
     <h5 style="text-align:center">AMMISSIONE</h5>
     <table>
@@ -219,12 +219,19 @@
         <td style="text-align:right; border: 1px solid black;padding:3px;"><?=number_format($tot7, 2, ',', '.').' €' ?></td>
        </tr>
        <tr >
-        <td style=" border: 1px solid black;padding:3px;text-align:right;"colspan="5" >Totale Contributo finanziabile (€)</td>
+        <td style=" border: 1px solid black;padding:3px;text-align:right;"colspan="5" >Totale Contributo(€)</td>
         
         <td style="text-align:right; border: 1px solid black;;padding:3px;font-weight:bold;"><?=number_format($totFin, 2, ',', '.').' €' ?></td>
        </tr>
+      
              
     </table>
+    <?php if($totFin > 550000){?>
+    <table>
+        <tr><td style="text-align:justify;">come stabilito dall'art 1 comma 7 del DM 12 maggio 2020 n. 203, qualora il valore del contributo superi l'importo massimo
+ammissibile, questo <b>viene ridotto fino al raggiungimento della soglia ammessa di € 550.000,00</b></td></tr>
+    </table>
+    <?php } ?>
     </page>
     <page pagegroup="new"  style="font-size:14px" backtop="10mm" backleft="15mm" backright="15mm" backbottom="9mm">
     <p style="text-align:justify;">Si comunica altresì che, ai sensi dell’art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è
@@ -236,7 +243,7 @@
     <br>
     Si ricorda che a norma dell’<b>Art. 1 co. 9 del DM 203/2020 i mezzi oggetti di contributo non possono essere alienati,
 concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario</b> del contributo fino a tutto
-il 31 dicembre 2023, pena la revoca del contributo erogato. Non si procede all'erogazione del contributo anche nel
+il <b>31 dicembre 2023</b>, pena la revoca del contributo erogato. Non si procede all'erogazione del contributo anche nel
 caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di
 presentazione della domanda e la data di pagamento del beneficio.
     </p>
@@ -267,8 +274,8 @@ identità del legale rappresentante dell’impresa)</b>, tramite posta elettroni
     
 
     <table style="margin-left:400px;margin-top:10px;">
-    
-    <tr><td><img style="width:75%;display:inline;"  src="../../images/firma_resp.png"></td></tr>
-
+    <tr><td>Il Direttore Generale</td></tr>
+    <tr><td style="font-style:italic;">(Ing. Vito Di Santo)</td></tr>
+   
     </table>
     </page>
