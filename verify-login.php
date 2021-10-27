@@ -40,7 +40,7 @@ if(!empty($_POST)){
         $_SESSION['userData'] = $result['user'];
         //$homePage = $result['user']['ambiente'];
         $result['user']['status'] = 'online';
-        /*if(!isUserUser()){
+        if(!isUserUser()){
             $enableAccess = isset($_SESSION['userData']['network']);
             //var_dump($enableAccess);die;
             if($enableAccess){
@@ -59,13 +59,9 @@ if(!empty($_POST)){
                
                
             }
-        }*/
-
-        if(isUserUser()){
-            $_SESSION = [];
-            header('Location: index.php');
-            exit;
         }
+
+       
             $_SESSION['message'] = $result['message'];
             header('Location: home.php');
         
