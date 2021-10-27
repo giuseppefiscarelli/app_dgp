@@ -260,13 +260,6 @@ if($check_stato_istruttoria){
                             }
                         }
                        
-                    }else{
-                        $("#tipo_report option[value='1']").attr('disabled', true);
-                            $("#tipo_report option[value='2']").attr('disabled', true);
-                            $("#tipo_report option[value='3']").attr('disabled', true);
-                            $("#tipo_report option[value='4']").attr('disabled', true);  
-                            $('#lista_report > li').remove();
-                            $("#lista_report").append('<li>Nessun Report Disponibile</li>')  
                     }
 
 
