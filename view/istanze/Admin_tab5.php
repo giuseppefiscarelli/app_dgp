@@ -202,6 +202,7 @@ if($check_stato_istruttoria){
             dataType: "json",
             success: function(data){
                 console.log(data)
+                if(data.stato_rendicondazione == true){
                     console.log(data.check_ammissione)
                     $("#tipo_report option[value='1']").attr('disabled', true);
                     $("#tipo_report option[value='2']").attr('disabled', true);
@@ -261,6 +262,15 @@ if($check_stato_istruttoria){
                         }
                        
                     }
+                }else{
+                    $("#tipo_report option[value='1']").attr('disabled', true);
+                            $("#tipo_report option[value='2']").attr('disabled', true);
+                            $("#tipo_report option[value='3']").attr('disabled', true);
+                            $("#tipo_report option[value='4']").attr('disabled', true);  
+                            $('#lista_report > li').remove();
+                            $("#lista_report").append('<li>Nessun Report Disponibile</li>')
+                }
+                    
 
 
                     $('#tipo_report').selectpicker('refresh')

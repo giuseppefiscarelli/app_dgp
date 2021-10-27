@@ -735,6 +735,17 @@ switch ($action){
     case 'getComunicazioni':
       $id_RAM = $_REQUEST['id_RAM'];
       $stato_istruttoria = getStatusIstruttoria_full($id_RAM);
+      $status= checkRend($id_RAM);
+     
+      if($status){
+        if($status['aperta'] == '1'){
+          $statusRend = false;
+        }else{
+          $statusRend = true;
+        }
+      }else{
+        $statusRend = false;
+      }
      if(!$stato_istruttoria){
        $stato_istruttoria = 0;
      }
@@ -750,7 +761,8 @@ switch ($action){
       //var_dump($stato_istruttoria);
       $json = [
         'check_ammissione' =>$check_ammissione,
-        'stato_istruttoria'=>$stato_istruttoria
+        'stato_istruttoria'=>$stato_istruttoria,
+        'stato_rendicondazione' => $statusRend
       ];
       echo json_encode($json);
       break;
