@@ -405,7 +405,7 @@ function sendMail($data){
       $mail->Body    = $data['body'];
       //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
       $mail->send();
-      echo true;
+      return true;
   } catch (Exception $e) {
       echo 'Message could not be sent.';
       echo 'Mailer Error: ' . $mail->ErrorInfo;
