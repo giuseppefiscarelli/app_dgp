@@ -54,7 +54,7 @@ switch ($action){
         'body' => $bodymod,
         'pecData' => $pecData
       );
-      var_dump($data);die;
+     
       if($envProd){
         $res = sendMail($data);
       }else{

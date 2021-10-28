@@ -396,7 +396,7 @@ function sendMail($data){
       //Recipients
       $mail->setFrom($data['pecData']['user']);
       //$mail->addAddress($data['to']);
-      $mail->addAddress($data['to']);     // Add a recipient
+      $mail->addAddress($data['To']);     // Add a recipient
       //Attachments
       $mail->addAttachment($data['file']);         // Add attachments
       //Content
