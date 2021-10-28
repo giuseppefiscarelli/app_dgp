@@ -158,13 +158,13 @@ if(!empty($_SESSION['message'])){
   } 
       ?>
       <div class="container my-4">
-        <div class="row">
+        <!--<div class="row">
           <div class="col-12 ">
             <h1 style="text-align: center;">Attenzione! sistema attualmente in manutenzione.</h1>
           <img src="images/work.jpg" style="width:300px;" class="center">
 
           </div>
-        </div>
+        </div>-->
         <div class="it-carousel-wrapper it-carousel-landscape-abstract">
           <div class="it-carousel-all owl-carousel" >
             <div class="it-single-slide-wrapper" >
