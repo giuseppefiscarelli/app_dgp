@@ -46,7 +46,8 @@ function getReport(array $params = []){
         $sql .=" id_RAM LIKE '%$search2%' ";
         
       }
-    $sql .= " ORDER BY data_ins  $orderDir LIMIT $start, $limit";
+   // $sql .= " ORDER BY data_ins  $orderDir LIMIT $start, $limit";
+    $sql .= " ORDER BY data_ins  $orderDir ";
    
 
     $res = $conn->query($sql);
