@@ -489,10 +489,17 @@ $(document).ready(function() {
                               data_ins=convData(data.data_agg)
                               $('#data_'+tipo).html(data_ins)
                               $('#upload_'+tipo).hide()
+                              $('#download_'+tipo).empty()
                               $('#download_'+tipo).show()
-                              $('#open_'+tipo).attr("onclick","window.open('allegato.php?id="+data.id+"', '_blank')");
+                              btnOpen = '<button id="open_'+tipo+'"type="button" onclick="window.open(\'allegato.php?id='+data.id+'\', \'_blank\')"class="btn btn-primary btn-xs" title="Visualizza Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-archive-o" aria-hidden="true"></i></button>'
+                              btnDown = '<a d="down_'+tipo+'"type="button" href="download.php?id='+data.id+'" download class="btn btn-success btn-xs" title="Download Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></a>'
+                              btnDel = '<button id="del_'+tipo+'" type="button" onclick="delAlle('+data.id+',this);"class="btn btn-danger btn-xs" title="Elimina Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>'
+                              /*$('#open_'+tipo).attr("onclick","window.open('allegato.php?id="+data.id+"', '_blank')");
                               $('#del_'+tipo).attr("onclick","delAlle("+data.id+",this);");
-                              $('#down_'+tipo).attr("href","download.php?id="+data.id)
+                              $('#down_'+tipo).attr("href","download.php?id="+data.id)*/
+                              $('#download_'+tipo).append(btnOpen+btnDown+btnDel)
+
+
                               //id_table= formData.get('doc_idvei')
                               $('#file_allegato').val(null);
                               

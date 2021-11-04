@@ -49,6 +49,7 @@
                                                                     $enableSost = $alle['id'];
                                                                 }
                                                             }else{
+                                                                $enableSost = false;
                                                                 $displayupload=true;
                                                             }
                                                            ?>
