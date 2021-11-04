@@ -48,6 +48,8 @@
                                                                     $file = false;
                                                                     $enableSost = $alle['id'];
                                                                 }
+                                                            }else{
+                                                                $displayupload=true;
                                                             }
                                                            ?>
                                                             <div id="upload_<?=$tipo?>" style="display:<?=$displayupload?'':'none'?>"  >
