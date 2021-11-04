@@ -27,7 +27,7 @@
                                                        // var_dump($activeIst);
                                                         //var_dump($file);
                                                         //var_dump($alle); 
-                                                        // var_dump($status_integrazione);
+                                                        // var_dump($status_integrazione); 
                                                             if(!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true){
                                                                 $enableSost = false;?> 
 
