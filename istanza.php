@@ -61,7 +61,7 @@ $(document).ready(function() {
 
                  
 
-                  if (f.type==='application/pdf') {
+                  if (f.type==='application/pdf'|| f.type === 'application/pkcs7-mime') {
                         if (f.size > 3388608 || f.fileSize > 3388608)
                   {
                   //show an alert to the user
@@ -73,7 +73,7 @@ $(document).ready(function() {
                   }
                        
                   }else{
-                        Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF", "warning");
+                        Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF o P7M", "warning");
                         fa.value = null;
                   }
             
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
                 
 
-                 if (f.type==='application/pdf') {
+                 if (f.type==='application/pdf' || f.type === 'application/pkcs7-mime') {
                        if (f.size > 3388608 || f.fileSize > 3388608)
                  {
                  //show an alert to the user
@@ -104,7 +104,7 @@ $(document).ready(function() {
                  }
                       
                  }else{
-                       Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF", "warning");
+                       Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF o P7M", "warning");
                        fa.value = null;
                  }
            
@@ -344,7 +344,7 @@ $(document).ready(function() {
                                                 $('#campi_allegati').append(field); 
                                                 field='<div class="form-group">'
                                                 field+='<label for="file_allegato" class="active">Documento</label>'
-                                                field+='<input type="file" accept="application/pdf" class="form-control-file" id="file_allegato" onchange="checkAlle();" name="file_allegato"required><small>dimensioni max 3MB  - accettati solo PDF</small></div>'
+                                                field+='<input type="file" accept="application/pdf, .p7m" class="form-control-file" id="file_allegato" onchange="checkAlle();" name="file_allegato"required><small>dimensioni max 3MB  - accettati solo PDF, P7M</small></div>'
 
                                                 $('#campi_allegati').append(field) 
 

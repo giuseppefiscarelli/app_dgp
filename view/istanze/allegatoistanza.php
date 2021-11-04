@@ -24,9 +24,10 @@
                                                         <?php
                                                        // var_dump(!isUserAdmin());
                                                        // var_dump($rend['aperta']);
-                                                       // var_dump($activeIst==true);
+                                                       // var_dump($activeIst);
                                                         //var_dump($file);
-                                                           // var_dump($status_integrazione);
+                                                        //var_dump($alle); 
+                                                        // var_dump($status_integrazione);
                                                             if(!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true){
                                                                 $enableSost = false;?> 
 
@@ -34,8 +35,8 @@
                                                             <button type="button" onclick="docmagmodal('<?=$tipo?>',<?=$tipo_doc?>,<?=$enableSost?>);"class="btn btn-primary btn-xs" title="Carica Allegato"style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-archive-o" aria-hidden="true"></i> Carica Allegato</button>
                                                         </div>
                                                         <?php
-                                                        }elseif ( $status_integrazione && $alle['stato_admin'] !=='B' ){
-                                                            if($alle){
+                                                        }elseif ( $status_integrazione  ){
+                                                            if($alle && $alle['stato_admin'] !=='B'){
                                                                 //var_dump($alle);
                                                                 
                                                                 if(strtotime($alle['data_agg']) > strtotime($status['data_chiusura'])){

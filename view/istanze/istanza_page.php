@@ -526,7 +526,7 @@ if($status_istr && $status_istr['id'] && $status_istr['data_invio']){
 
               <div class="form-group">
                 <label for="file_allegato" class="active">Allegato</label>
-                <input type="file" accept="application/pdf" class="form-control-file" onchange="checkAlle();" id="file_allegato" name="file_allegato"required><small>Dimensioni Max 3MB - accettati solo PDF</small>
+                <input type="file" accept=".pdf, .p7m" class="form-control-file" onchange="checkAlle();" id="file_allegato" name="file_allegato"required><small>Dimensioni Max 3MB - accettati solo PDF, P7M</small>
               </div>
 
             
