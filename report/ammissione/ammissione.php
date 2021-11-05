@@ -175,7 +175,7 @@ foreach ($data as $d){
 }
 //var_dump($data); die;
 
-$totFin = $tot2A+$tot2B+$tot2C+$tot3+$tot4+$tot5A+$tot5B+$tot5B+$tot5C+$tot7+$contr_rottamazione;
+$totFin = $tot2A+$tot2B+$tot2C+$tot3+$tot4+$tot5A+$tot5B+$tot5C+$tot7+$contr_rottamazione;
 $tipo = $_GET['tipo'];
 
 use Spipu\Html2Pdf\Html2Pdf;
