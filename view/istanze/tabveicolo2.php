@@ -174,7 +174,7 @@
                                                                                         <td>
                                                                                             <?php
                                                                                             
-                                                                                            if( !$rend['data_chiusura'] && $alle['data_agg'] > $rend['data_chiusura']){ ?>
+                                                                                            if( !is_null($rend['data_chiusura']) && $alle['data_agg'] > $rend['data_chiusura']){ ?>
                                                                                         <i class="fa fa-repeat " aria-hidden="true" style="color:#ffc107;"></i>
                                                                                          <?php } ?> 
                                                                                             <?=$tipoDoc?>
