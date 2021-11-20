@@ -344,25 +344,7 @@ function getIstanze( array $params = []){
 
 
         }
-/*
-        if($search5){
-          if($search5 === 'A'){
-            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=1 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
-          }
-          if($search5 === 'B'){
-            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=2 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
 
-          }
-          if($search5 === 'C'){
-            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=3 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
-
-          }
-          if($search5 === 'D'){
-            $parB = " id_RAM = ( SELECT id_RAM FROM `report` WHERE report.id_RAM=istanze_view.id_RAM and report.tipo_report=4 and report.data_invio = (select max(report.data_invio) FROM report WHERE report.id_RAM = istanze_view.id_RAM and report.stato = 'C'))";
-
-          }
-        }
-       */
         if($search5){
           if($search5 === 'A'){
             $parB = " tipo_report = 1";
@@ -460,6 +442,196 @@ function getIstanze( array $params = []){
         }
 
     return $records;
+
+}
+function getIstanzeHome( array $params = []){
+
+  /**
+   * @var $conn mysqli
+   */
+
+      $conn = $GLOBALS['mysqli'];
+
+      $orderBy = array_key_exists('orderBy', $params) ? $params['orderBy'] : 'data_invio';
+      if($orderBy){
+        if($orderBy=='data_invio'){
+          $orderBy='data_invio';
+        }
+        elseif($orderBy=='idRAM'){
+          $orderBy='id_RAM';
+        }
+        elseif($orderBy=='ragione_sociale'){
+          $orderBy='ragione_sociale';
+        }
+        elseif($orderBy=='pec_impr'){
+          $orderBy='pec_impr';
+        }
+      }
+      $orderDir = array_key_exists('orderDir', $params) ? $params['orderDir'] : 'ASC';
+     
+     
+      $now =date("Y-m-d H:i:s");
+      
+      $search1 = array_key_exists('search1', $params) ? $params['search1'] : '';
+      $search1 = $conn->escape_string($search1);
+      $search2 = array_key_exists('search2', $params) ? $params['search2'] : '';
+      $search2 = $conn->escape_string($search2);
+      $search3 = array_key_exists('search3', $params) ? $params['search3'] : '';
+      $search3 = $conn->escape_string($search3);
+      $search4 = array_key_exists('search4', $params) ? $params['search4'] : '';
+      $search4 = $conn->escape_string($search4);
+      $search5 = array_key_exists('search5', $params) ? $params['search5'] : '';
+      $search5 = $conn->escape_string($search5);
+      if($orderDir !=='ASC' && $orderDir !=='DESC'){
+        $orderDir = 'ASC';
+      }
+      $records = [];
+      $data_inizio = '';
+      $data_fine = '';
+      $data_rend_inizio = '';
+      $data_rend_fine = '';
+      if ($search3){
+        $tipo= getTipoIstanza($search3);
+        $data_inizio = $tipo['data_invio_inizio'];
+        $data_fine = $tipo['data_invio_fine'];
+        $data_rend_inizio = $tipo['data_rendicontazione_inizio'];
+        $data_rend_fine = $tipo['data_rendicontazione_fine'];
+       
+       }
+      if($search4){
+
+        if($search4=='A'&&$data_rend_fine>$now){
+          $parA = ' id_RAM not in( SELECT id_RAM FROM `rendicontazione`)';
+        }
+        if($search4=='A'&&$data_rend_fine<$now){
+          $parA = '  id_RAM =0';
+          
+       }
+        if($search4=='B'){
+          $parA = ' data_annullamento IS NOT NULL';
+        }
+        /*
+        if($search4=='B'&&$data_rend_fine<$now){
+          $parA = ' and istanza.id_RAM  not in( SELECT id_RAM FROM `rendicontazione` WHERE aperta=0 and data_chiusura IS NOT NULL)';
+        }*/
+        
+        if($search4=='C'&&$data_rend_fine>$now){
+          $parA = ' aperta=1 and data_chiusura IS NULL and data_annullamento IS NULL';
+        }
+        if($search4=='C'&&$data_rend_fine<$now){
+           $parA = '  id_RAM =0';
+
+        }
+        if($search4=='D'){
+          $parA = ' aperta=0 and data_chiusura IS NOT NULL and data_annullamento IS NULL';
+        }
+        if($search4=='E'&&$data_rend_fine>$now){
+          $parA = '  id_RAM =0';
+        }
+        if($search4=='E'&&$data_rend_fine<$now){
+          $parA = '  (aperta=1 or aperta is null) and data_chiusura IS NULL and data_annullamento IS NULL';
+
+        }
+
+
+      }
+
+      if($search5){
+        if($search5 === 'A'){
+          $parB = " tipo_report = 1";
+        }
+        if($search5 === 'B'){
+          $parB = " tipo_report = 2";
+
+        }
+        if($search5 === 'C'){
+          $parB = " tipo_report = 3";
+
+        }
+        if($search5 === 'D'){
+          $parB = " tipo_report = 4";
+
+        }
+      }
+      
+      //$sql ="SELECT istanza.*, xml.data_invio, xml.pec FROM istanza  INNER JOIN xml on istanza.pec_msg_identificativo = xml.identificativo and istanza.pec_msg_id = xml.msg_id ";
+      //$sql .=" and istanza.eliminata != '1'";
+        //mod view
+        $sql = "SELECT * FROM istanze_view";
+        if($search1 || $search2 || $search3 || $search4 || $search5){
+          $sql .=" WHERE";
+        }
+        if ($search1){
+          $sql .=" pec LIKE '%$search1%' ";
+          if($search2 || $search3 || $search4 || $search5){
+            $sql .=" AND";
+          }
+
+          
+        }
+        if ($search2){
+            $sql .="  id_RAM = '$search2' ";
+            if( $search3 || $search4 || $search5){
+              $sql .=" AND";
+            }
+
+        }
+        if ($search3){
+          $sql .=" tipo_istanza = $search3 ";
+          if( $search4 || $search5){
+            $sql .=" AND";
+          }
+          
+        }
+        if($search4){
+          $sql .= $parA;
+          if( $search5){
+            $sql .=" AND";
+          }
+        }
+        if($search5){
+          $sql .= $parB;
+        }
+  
+   //echo $sql;
+
+      $res = $conn->query($sql);
+      if($res) {
+        
+        while( $row = $res->fetch_assoc()) {
+          $row['stato_des']='';
+          if($row['data_invio_inizio']<date("Y-m-d H:i:s")){
+            if($row['aperta'] != null){
+                if($row['aperta']==1){
+                  $row['stato'] = 'C';
+                }elseif($row['aperta']==0){
+                  $row['stato'] = 'D';
+                  $row['stato_des'] ='<br>Rendicondazione chiusa il '.date("d/m/Y", strtotime($row['data_chiusura']));
+                }
+                if($row['data_annullamento']){
+                  $row['stato'] = 'B';
+                  $row['stato_des'] ='<br>Annullata da impresa ';
+                }
+                if(($row['fine_edizione']<$now&&$row['aperta']==1)){
+                  $row['stato'] = 'E';
+                  $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
+                } 
+              
+            }else{
+              $row['stato'] = 'A';
+              if($row['fine_edizione']<$now){
+               
+                $row['stato'] = 'E';
+                $row['stato_des'] ='<br>Termine per la rend. scaduti il '.date("d/m/Y",strtotime($row['fine_edizione']));
+              } 
+            }
+          
+          }
+            $records[] = $row;   
+        }
+      }
+
+  return $records;
 
 }
 function countIstanze( array $params = []){

@@ -932,4 +932,84 @@ switch ($action){
         echo json_encode($json);
 
       break;
+      case 'displayHome2': 
+      
+        $tipi_istanze=getTipiIstanza();
+        $json = []; 
+        $now =date("Y-m-d H:i:s");
+        foreach ($tipi_istanze as $ti){
+          $params['search4']='';
+          $params['search5']='';
+          $params['search3']=intval($ti['id']);
+          $totIst= getIstanzeHome($params);
+          $totalIstanze =0;
+          $istAttive = 0;
+          $istAnnullate = 0;
+          $istRend = 0;
+          $istIstr = 0;
+          $istScadute = 0;
+          $IstrIntegrazione = 0;
+          $IstrPreavviso = 0;
+          $IstrAmmessa = 0;
+          $IstrRigettata = 0;
+          foreach($totIst as $total){
+           
+            $totalIstanze ++;
+            
+            if(is_null($total['aperta']) && $ti['data_rendicontazione_fine']>$now){
+              $istAttive ++;
+            }
+            if(!is_null($total['data_annullamento'])){
+              $istAnnullate ++;
+            }
+            if($total['aperta'] == 1 && $ti['data_rendicontazione_fine']>$now && is_null($total['data_chiusura']) && is_null($total['data_annullamento'])){
+              $istRend ++;
+            }
+            
+            if($total['aperta'] == 0  && !is_null($total['data_chiusura']) && is_null($total['data_annullamento'])){
+              $istIstr ++;
+              if($total['tipo_report'] ==1){
+                $IstrIntegrazione ++;
+              }
+              if($total['tipo_report'] ==2){
+                $IstrPreavviso ++;
+              }
+              if($total['tipo_report'] ==3){
+                $IstrAmmessa ++;
+              }
+
+            }
+            if($total['tipo_report'] ==4){
+              $IstrRigettata ++;
+            }
+            if(($total['aperta'] == 1 || is_null($total['aperta'])) && $ti['data_rendicontazione_fine']<$now && is_null($total['data_chiusura']) && is_null($total['data_annullamento'])){
+              $istScadute ++;
+            }
+
+          }
+
+          $js = array(
+            'tipo' => $ti['id'],
+            'titolo' => $ti['des'],
+            'totali' => $totalIstanze,
+            'attive' => $istAttive,
+            'annullate' => $istAnnullate,
+            'rendicontazione' => $istRend,
+            'istruttoria' => $istIstr,
+            'scadute' => $istScadute,
+            'integrazione' => $IstrIntegrazione,
+            'preavviso' => $IstrPreavviso,
+            'ammessa' => $IstrAmmessa,
+            'rigettata' => $IstrRigettata
+          
+
+          );
+          array_push($json,$js);
+
+        }
+      
+        echo json_encode($json);
+      
+      
+        break;
     }
