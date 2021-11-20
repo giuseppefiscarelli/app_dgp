@@ -328,6 +328,7 @@
         var f = fa.files[0]
         console.log(f)
         formData = new FormData(this);
+        idRAM = $('#id_ram_pec').val()
         tipo = $('#tipo').val()
         if(tipo == 1 ){reportDir = 'report/integrazione/integrazione.php'} 
         if(tipo == 2 ){reportDir = 'report/rigetto/rigetto.php'} 
@@ -366,7 +367,7 @@
                     $.ajax({
                         type: "POST",
                         url: "controller/updateIstanze.php?action=upContributo",
-                        data: {idRAM:<?=$i['id_RAM']?>},
+                        data: {idRAM:idRAM},
                         dataType: "json",
                         success: function(data){
                         
@@ -426,7 +427,7 @@
                                         $.ajax({
                                             type: "POST",
                                             url: "controller/updateIstanze.php?action=upContributo",
-                                            data: {idRAM:<?=$i['id_RAM']?>},
+                                            data: {idRAM:idRAM},
                                             dataType: "json",
                                             success: function(data){
                                             
