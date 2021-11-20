@@ -593,3 +593,30 @@ function getDettagliReport($id){
 
   return $records;
 }
+
+function upDettaglioReport($data){
+  /*
+  * @var $conn mysqli
+  */
+
+  $conn = $GLOBALS['mysqli'];
+  $result=0;
+  $id= $data['id'];
+  $descrizione = $data['des'];
+  
+  $sql ='UPDATE dettaglio_report SET ';
+  $sql .= "descrizione = '$descrizione' ";
+  $sql .=" WHERE id = '$id' ";
+  //print_r($data);
+  echo $sql;die;
+  $res = $conn->query($sql);
+  
+  if($res ){
+    $result =  $conn->affected_rows;
+    
+  }else{
+    $result -1;  
+  }
+  return $result;
+
+}

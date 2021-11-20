@@ -192,7 +192,7 @@
                     </div>
                     <form method="post"  id="form_allegato_pec"  enctype="multipart/form-data">
                         <input type="hidden" id="id_pec" name="id" value="">
-                        <input type="hidden" id=" id_ram_pec" name=" id_ram" value="">
+                        <input type="hidden" id="id_ram_pec" name=" id_ram" value="">
                         <input type="hidden" id="tipo" value="">
                     
                         <input type="file" name="upload1" id="upload1" class="upload" onchange="checkDoc();" />
@@ -218,7 +218,7 @@
                 </div>
                 <div class="col-lg-6 col-12" id="datiAllegato">
                     <h5>Dati Allegato</h5>
-                        <div class="row" style="margin-top:30px;">
+                        <div class="row" style="margin-top:30px;" id="row_dati_allegato">
                       
                             <div class="form-group col-lg-6 col-12" >
                                 <input  type="text" form="form_allegato_pec" id="protRam_object" name="prot_RAM" placeholder=" ">
@@ -229,6 +229,15 @@
                                 <div class="form-group">
                                     <input form="form_allegato_pec" class="form-control it-date-datepicker" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_prot_object" name="data_prot" type="text" value="" placeholder="gg/mm/aaaa" >
                                     <label for="data_prot_object">Data Documento</label>
+                                    <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
+                                </div>
+                            </div>
+       
+                            <div class="it-datepicker-wrapper col-lg-6 col-12">
+                                <div class="form-group">
+                                    <input type="hidden" id="data_verbale_id" value="">
+                                    <input form="form_allegato_pec" class="form-control it-date-datepicker dataverbale" onkeypress="return event.charCode >= 47 && event.charCode <= 57" id="data_verbale_object" name="data_verbale" type="text" value="" placeholder="gg/mm/aaaa" >
+                                    <label for="data_verbale_object">Data Verbale</label>
                                     <small class="form-text text-muted">inserisci la data in formato gg/mm/aaaa</small>
                                 </div>
                             </div>
@@ -256,7 +265,8 @@
 
 
 }); 
-    function msgModal(id,tipo){     
+    function msgModal(id,tipo){
+       $('.dataverbale').hide()
         $.ajax({
             type: "POST",
             url: "controller/updateReport.php?action=getReportId",
@@ -265,6 +275,7 @@
             success: function(data){
                 console.log(data)
                 $('#id_pec').val(id)
+                console.log(data.data.id_RAM)
                 $('#id_ram_pec').val(data.data.id_RAM)
                 $('#pec_dest').val(data.istanza.pec_impr)
                 $('#pec_object').val(data.type.object+ ' ' + data.info)
@@ -272,17 +283,35 @@
                 dataP = new Date(data.data.data_prot).toLocaleDateString('it-IT', options)
                 
                 data_prot= dataP;
-                $('#protRam_object').val(data.data.prot_RAM)
-                $('#data_prot_object').val(data_prot)
                 $('#tipo').val(tipo)
                 html=data.type.body.replaceAll('%*', '\n').replace('%ragSoc%', data.istanza.ragione_sociale)
                 $('#pec_body').html(html)
                 $('#msgModal').modal('toggle')
                 if(tipo == 3){
-                    input = ''
+                    $('.dataverbale').show()
+                
+                    $.each(data.attr,function(k,v){
+                       
+                        if(v.tipo === '3'){
+                            $('#data_prot_object').val(v.descrizione)
+                        }
+                        if(v.tipo === '4'){
+                           
+                            $('#protRam_object').val(v.descrizione)
+                        }
+                        if(v.tipo === '5'){
+                            $('#data_verbale_id').val(v.id)
+                            $('#data_verbale_object').val(v.descrizione)
+                        }
+                   } )
+
+                }else{
+                        $('#protRam_object').val(data.data.prot_RAM)
+                        $('#data_prot_object').val(data_prot)
                 }
             }
         });
+         
     }
     function prevRep(id, dir){  
         var url = dir+'?id='+id+'&tipo=P';
@@ -364,10 +393,22 @@
             },
             success: function(data){
                 if(tipo ==3){
+                    data_verbale_id = $('#data_verbale_id').val()
+                    data_verbale_des = $('#data_verbale_object').val()
                     $.ajax({
                         type: "POST",
                         url: "controller/updateIstanze.php?action=upContributo",
                         data: {idRAM:idRAM},
+                        dataType: "json",
+                        success: function(data){
+                        
+                            console.log(data)
+                        }
+                    })
+                    $.ajax({
+                        type: "POST",
+                        url: "controller/updateReport.php?action=upDettaglioReport",
+                        data: {data_verbale_id:data_verbale_id,data_verbale_des:data_verbale_des },
                         dataType: "json",
                         success: function(data){
                         
@@ -423,11 +464,24 @@
                                     Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
                                 },
                                 success: function(data){
+                                    
                                     if(tipo ==3){
+                                        data_verbale_id = $('#data_verbale_id').val()
+                                        data_verbale_des = $('#data_verbale_object').val()
                                         $.ajax({
                                             type: "POST",
                                             url: "controller/updateIstanze.php?action=upContributo",
                                             data: {idRAM:idRAM},
+                                            dataType: "json",
+                                            success: function(data){
+                                            
+                                                console.log(data)
+                                            }
+                                        })
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "controller/updateReport.php?action=upDettaglioReport",
+                                            data: {data_verbale_id:data_verbale_id,data_verbale_des:data_verbale_des },
                                             dataType: "json",
                                             success: function(data){
                                             

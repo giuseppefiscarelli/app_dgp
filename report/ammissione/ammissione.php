@@ -31,20 +31,20 @@ $data_doc='';
 
     foreach($dettagli as $dett){
 
-        if($dett['tipo']==1){
+        if($dett['tipo']=='1'){
             $prot_amm = $dett['descrizione'];
         }
         if($dett['tipo']==2){
             $data_prot = $dett['descrizione'];
         }
         if($dett['tipo']==3){
-            $data_verb = $dett['descrizione'];
+            $data_prot = $dett['descrizione'];
         }
         if($dett['tipo']==4){
             $prot = $dett['descrizione'];
         }
-        if($dett['tipo']==5){
-            $data_doc = $dett['descrizione'];
+        if($dett['tipo']=='5'){
+            $data_verb = $dett['descrizione'];
         }
     }
     

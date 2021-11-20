@@ -27,11 +27,15 @@ switch ($action){
                 'attr'=> $attr,
                 'info' => 'In '.$res['id_RAM'].'/'.$tipo_istanza['anno']
             ];
+            
             echo json_encode($json);
         }
        
 
     break;
-    
-
+    case 'upDettaglioReport':
+        $data = $_REQUEST;
+        $res = upDettaglioReport($data);
+        echo json_encode($res);
+    break;
 }
