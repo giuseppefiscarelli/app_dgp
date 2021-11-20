@@ -264,7 +264,7 @@
             $('#home').append(element)
           
           })
-          $('#loadSpin').fadeOut("slow")
+        //  $('#loadSpin').fadeOut("slow")
 
       }
                 

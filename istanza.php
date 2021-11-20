@@ -43,9 +43,9 @@ $(document).ready(function() {
             inputFormat: ["dd/MM/yyyy"],
             outputFormat: 'dd/MM/yyyy',
             
-      });
-
-
+      });                                     
+  $('#loadSpin').fadeOut();
+  $('#istanza_container').fadeIn();
 });  
    
     function checkAlle(){
