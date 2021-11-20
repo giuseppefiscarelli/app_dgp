@@ -122,9 +122,13 @@ $tipiveicolo = getTipiVeicolo();
                     if($v['stato_admin']=='A'||$v['stato_admin']==null){
                         $check_ammissione++;
                     }
-                    $allegatiIntegrazione =intval(getAllegatiIntegrazione($i['id_RAM'], $status['data_chiusura'],$v['tipo_veicolo'],$v['progressivo']));
+                   
+                    $allegatiIntegrazione= 0;
+                    if(!is_null($status['data_chiusura'])){
+                        $allegatiIntegrazione =intval(getAllegatiIntegrazione($i['id_RAM'], $status['data_chiusura'],$v['tipo_veicolo'],$v['progressivo']));
+                    }
         
-                    // var_dump($allegatiIntegrazione);
+                     
                     $tipo = getTipoVeicolo($v['tipo_veicolo']);
                     //var_dump($v['tipo_veicolo']);
                     //var_dump($tipo);
@@ -618,9 +622,10 @@ $tipiveicolo = getTipiVeicolo();
                               
                               if(data.tipo_acquisizione =="01"){
                                     tipoac="Acquisto";
-                              }
-                              if(data.tipo_acquisizione =="02"){
+                              }else if(data.tipo_acquisizione =="02"){
                                     tipoac="Leasing";
+                              }else{
+                                    tipoac="";
                               }
                               $('#info_tipo_acquisizione').html(tipoac);
                              cat='<span class="badge badge-danger" style="font-size:20px;width: -webkit-fill-available;">'+cat+'</span>';
@@ -636,7 +641,6 @@ $tipiveicolo = getTipiVeicolo();
                                     dataType: "json",
                                     success: function(response){
                                         date_rend = new Date(response.rend)
-                                        
                                         alle = response.res
                                         validalle =response.ok
                                         if(validalle == false){
@@ -644,14 +648,11 @@ $tipiveicolo = getTipiVeicolo();
                                             $("#stato_istruttoria option[value='B']").attr('disabled', true);
                                             $('#stato_istruttoria').selectpicker('refresh')
                                         }
-                                        //console.log(alle)
-                                        //console.log(validalle)
-                                        //console.log('stato allegato '+stato_alle)
                                          $.each(alle, function (k,v){
                                             integrazione = false
                                              date_send = new Date(v.data_agg)
                                              intbadge = ''
-                                             if(date_send > date_rend){
+                                             if( response.rend !== null && date_send > date_rend){
                                                  integrazione = true
                                                  intbadge=' <span class="badge badge-warning ">Integrazione</span>'
                                              }
