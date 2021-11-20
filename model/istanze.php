@@ -2951,10 +2951,10 @@ function calcolaContributo($data){
   }
   */
   if ($tv){
-    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. " AND tipo_veicolo = ".$tv." AND progressivo = ".$progr;
+    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check, istanza.pmi as ist_pmi FROM veicolo INNER JOIN istanza on istanza.id_RAM = ".$id_ram." LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. " AND tipo_veicolo = ".$tv." AND progressivo = ".$progr;
   //	$sql = "SELECT istanza.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.impresa as impresa_check FROM istanza LEFT JOIN istanza_check ON istanza.id_ram = istanza_check.id_ram WHERE istanza.id_RAM = ".$id_ram;
   } else {
-    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check FROM veicolo LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. "  order by veicolo.id_RAM, tipo_veicolo, progressivo";
+    $sql = "SELECT veicolo.*, istanza_check.pmi as pmi_check, istanza_check.rete as rete_check, istanza_check.dim_impresa as impresa_check, istanza.pmi as ist_pmi FROM veicolo INNER JOIN istanza on istanza.id_RAM = ".$id_ram." LEFT JOIN istanza_check ON veicolo.id_ram = istanza_check.id_ram WHERE veicolo.id_RAM = ".$id_ram. "  order by veicolo.id_RAM, tipo_veicolo, progressivo";
   }
   //echo $sql;die;
  
@@ -2968,7 +2968,7 @@ function calcolaContributo($data){
   }
   $i = 0;
   while ($row = mysqli_fetch_array($rs)) {
-   // var_dump($row);die;
+    //var_dump($row);die;
     $i ++;
     if ($i == 1){
       $pmi = $row['pmi_check'];
@@ -2990,7 +2990,7 @@ function calcolaContributo($data){
   
     if ($tv != '15' && $tv != '16' ){
       $valore_contributo = $valori[$tv];
-      if ($pmi) $maggiorazione_pmi = $valore_contributo * .10;
+      if ($pmi && $row['ist_pmi'] == 'Yes') $maggiorazione_pmi = $valore_contributo * .10;
       if ($rete) $maggiorazione_rete = $valore_contributo * .10;
     } else {
       if ($impresa == 3) $valore_contributo = 1500;

@@ -304,6 +304,7 @@ switch ($action){
         $res['check_rottamazione'] = false;
       }
       $c_i = checkIstanza($res['id_RAM']);
+      //var_dump($c_i);
       $c_iCheck = false;
       if($c_i){
         if(!is_null($c_i['pmi'])&&!is_null($c_i['rete'])&&!is_null($c_i['pec'])&&!is_null($c_i['firma'])&&!is_null($c_i['doc'])&&!is_null($c_i['contratto'])&&!is_null($c_i['delega'])&&!is_null($c_i['dim_impresa'])){
