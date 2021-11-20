@@ -252,7 +252,48 @@ switch ($action){
 
       echo json_encode($res);
     break;  
+    case 'upContributo':
+      $id_RAM = $_REQUEST['idRAM'];
+      $veiRiep = getVeicoli($id_RAM);
+      $datavei = array();
+      $tottotale=0;
+      $check_rottamazione = false;
+      $check_rottamazione = checkMaggRottamazione($id_RAM);
+      foreach($veiRiep as $v){
+        if($v['stato_admin'] == 'B'){
+            $totale = $v['valore_contr']+$v['pmi_istr']+$v['rete_istr'];
+            $tottotale += $totale;
+        }    
+      }
+      if($check_rottamazione){
+        $tottotale += 2000;
+      }
+      if($tottotale> 550000){
+        $tottotale = 550000;
+      }
+      $json= array(
+        'id_RAM' => $id_RAM,
+        'tot_contributo' => $tottotale
+      );
+      //var_dump($json);
+      $up = upContributo($json);
+      //var_dump($up);
+      echo json_encode($up);
 
+      break;  
+      case 'delContributo':
+        $id_RAM = $_REQUEST['idRAM'];
+        
+        $json= array(
+          'id_RAM' => $id_RAM,
+          'tot_contributo' => 0
+        );
+        //var_dump($json);
+        $up = upContributo($json);
+        //var_dump($up);
+        echo json_encode($up);
+  
+        break;  
     case 'getInfoVei': 
       $id=$_REQUEST['id'];
       $res =getInfoVei($id);

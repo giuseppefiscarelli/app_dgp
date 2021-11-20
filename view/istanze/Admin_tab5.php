@@ -686,6 +686,16 @@ if($check_stato_istruttoria){
                          $("#lista_report").append('<li>Chiusura del procedimento con inammissibilità</li>');*/
 
                    }else if(data.tipo_report==3){
+                    $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=upContributo",
+                        data: {idRAM:<?=$i['id_RAM']?>},
+                        dataType: "json",
+                        success: function(data){
+                        
+                            console.log(data)
+                        }
+                    })
                          td4='<button type="button" onclick="prevRep3('+data.id+');"class="btn btn-success btn-xs" title="Visualizza Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>'
                          td4+='<button type="button" onclick="downRep3('+data.id+');"class="btn btn-primary btn-xs" title="Scarica Documento" style="margin-right:10px;padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i></button>'
                          text_istr = 'Ammessa';

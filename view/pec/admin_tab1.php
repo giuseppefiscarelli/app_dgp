@@ -362,6 +362,18 @@
                 Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
             },
             success: function(data){
+                if(tipo ==3){
+                    $.ajax({
+                        type: "POST",
+                        url: "controller/updateIstanze.php?action=upContributo",
+                        data: {idRAM:<?=$i['id_RAM']?>},
+                        dataType: "json",
+                        success: function(data){
+                        
+                            console.log(data)
+                        }
+                    })
+                }
                 console.log(data)
                 Swal.fire({
                     title:"Operazione Completata!",
@@ -410,6 +422,18 @@
                                     Swal.fire("Operazione Non Completata!", "Allegato non caricato correttamente.", "warning");
                                 },
                                 success: function(data){
+                                    if(tipo ==3){
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "controller/updateIstanze.php?action=upContributo",
+                                            data: {idRAM:<?=$i['id_RAM']?>},
+                                            dataType: "json",
+                                            success: function(data){
+                                            
+                                                console.log(data)
+                                            }
+                                        })
+                                    }
                                     Swal.fire({
                                         title:"Operazione Completata!",
                                         html:"Allegato caricato correttamente.",

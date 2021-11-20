@@ -3184,6 +3184,36 @@ function  upCert($data){
    }
    return $result;
 }
+function upContributo($data){
+
+      /**
+          * @var $conn mysqli
+      */
+
+    $conn = $GLOBALS['mysqli'];
+    $result=0;
+    
+    $id_ram = $data['id_RAM'];
+    
+    $tot_contributo = $data['tot_contributo'];
+    
+    $sql ='UPDATE istanza_check SET ';
+    $sql .= "tot_contributo = $tot_contributo ";
+    $sql .=' WHERE id_ram = '.$id_ram;
+    //print_r($data);
+   // echo $sql;
+    
+    $res = $conn->query($sql);
+    
+    if($res ){
+      $result =  $conn->affected_rows;
+      
+    }else{
+      $result -1;  
+    }
+    return $result;
+
+}
  function getcheckIstanza($data){
   
   /**
