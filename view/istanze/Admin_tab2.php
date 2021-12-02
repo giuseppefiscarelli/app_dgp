@@ -361,7 +361,6 @@ $tipiveicolo = getTipiVeicolo();
                                         </span>
                                     </td>
                                 </tr>
-                                <!--
                                 <tr>
                                     <td style="vertical-align:middle;">Maggiorazione PMI</td>
                                     <td style="vertical-align:middle;" id="contr_pmi"></td>
@@ -381,7 +380,7 @@ $tipiveicolo = getTipiVeicolo();
                                     <td style="vertical-align:middle;">Maggiorazione Rottamazione</td>
                                     <td style="vertical-align:middle;" colspan="2" id="contr_rottamazione"></td>
                                     
-                                </tr>-->
+                                </tr>
                                 <tr><td>Note</td>
                                     <td  colspan="2"> <div class="form-group">
                                                 <textarea id="info_note_admin" rows="3" readonly></textarea>
