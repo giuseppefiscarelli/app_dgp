@@ -596,7 +596,7 @@ function getIstanzeHome( array $params = []){
    //echo $sql;
 
       $res = $conn->query($sql);
-      if($res) {
+     /* if($res) {
         
         while( $row = $res->fetch_assoc()) {
           $row['stato_des']='';
@@ -629,7 +629,17 @@ function getIstanzeHome( array $params = []){
           }
             $records[] = $row;   
         }
+      }*/
+      if($res) {
+
+        while( $row = $res->fetch_assoc()) {
+            $records[] = $row;
+            
+        }
+    
       }
+    
+      
 
   return $records;
 

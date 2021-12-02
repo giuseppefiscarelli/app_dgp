@@ -227,7 +227,7 @@ if($status_istr && $check_stato_istruttoria){
   if($status_istr['tipo_report'] === '1'){
       $text_istr = 'Integrazione';
       $type_istr = 'warning';
-      $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
+      $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$.' days'));
       $add_span = '<br>Ricezione documentazione entro e non oltre il '.$date_scad;
       $report_status = 'A';
       if($status_istr['data_invio']){

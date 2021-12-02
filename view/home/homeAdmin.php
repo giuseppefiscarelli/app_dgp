@@ -76,7 +76,7 @@
     font-size: 18px;
   }
  </style>      
-  <div id="loadSpin">
+    <div id="loadSpin">
         <div class="d-flex justify-content-center" >
             <p style="position:absolute;"><strong>Caricamento in corso...</strong></p>
             <div class="progress-spinner progress-spinner-active" style="margin-top:30px;">
@@ -85,203 +85,18 @@
         </div>
     </div>
 
-<?php
-/*
-  $tipi_istanze=getTipiIstanza();
-
-  foreach ($tipi_istanze as $ti){
-    $title= $ti['des'];
-    $params['search4']='';
-    $params['search5']='';
-    $params['search3']=intval($ti['id']);
-    $totalIstanze= countIstanze($params);
-   
-    $params['search4']='A';
-    $istAttive =countIstanze($params);
-    $params['search4']='B';
-    $istAnnullate =countIstanze($params);
-    $params['search4']='C';
-    $istRend =countIstanze($params);
-    $params['search4']='D';
-    $istIstr =countIstanze($params);
-    $params['search4']='E';
-    $istScadute =countIstanze($params);
-
-    $params['search4']='D';
-    $params['search5']='A';
-    $IstrIntegrazione =countIstanze($params);
-    $params['search5']='B';
-    $IstrPreavviso =countIstanze($params);
-    $params['search5']='C';
-    $IstrAmmessa =countIstanze($params);
-    $params['search4']='';
-    $params['search5']='D';
-    $IstrRigettata =countIstanze($params);
-   
-    ?>
-  <div class="row">
-    <div class="col-12 ">
-      <div class="card-wrapper card-space">
-        <div class="card card-bg">
-          <div class="card-body">
-            <h3 class="card-title" style="align-text:center;">Istanze "<?=$title?>"</h3>
-   
-
-            <div class="row">
-              <div class="col-md-2 col-12">
-                <div class="card-counter primary">
-                  <i class="fa fa-list"></i>
-                  <span class="count-numbers"><?=$totalIstanze?> <small>Istanze</small></span>
-                  <span class="count-name">Totali</span>
-                </div>
-              </div>
-
-              <div class="col-md-2 col-12">
-                <div class="card-counter success">
-                  <i class="fa fa-ticket"></i>
-                  <span class="count-numbers"><?=$istAttive?> <small>istanze</small></span>
-                  <span class="count-name">Attive</span>
-                </div>
-              </div>
-
-              <div class="col-md-2 col-12">
-                <div class="card-counter warning">
-                  <i class="fa fa-pencil"></i>
-                  <span class="count-numbers"><?=$istRend?> <small>istanze</small></span>
-                  <span class="count-name">In Rendicontazione</span>
-                </div>
-              </div>
-
-              <div class="col-md-2 col-12">
-                <div class="card-counter info" onclick="$('.istr_<?=$ti['id']?>').toggle();" style="cursor: pointer;">
-                  <i class="fa fa-users"></i>
-                  <span class="count-numbers"><?=$istIstr?> <small>istanze</small></span>
-                  <span class="count-name">In Istruttoria</span>
-                  
-                </div>
-                
-                <?php
-                if($istIstr >0){?>
-                <p><em>Clicca per visualizzare le istanze</em></p>
-
-                <div class="card-counter-baby info istr_<?=$ti['id']?>"style="display:none; cursor:pointer;"
-                      onclick="javascript:location.href='istanze.php?search3=<?=$ti['id']?>&search4=D'">
-                  <i class="fa fa-users"></i>
-                  <span class="count-numbers"><?=$istIstr?> <small style="font-size: 0.8vw;">istanze</small></span>
-                  <span class="count-name" style="float: right;">Tutte le istanze</span>
-                </div>
-
-                <div class="card-counter-baby warning istr_<?=$ti['id']?>" style="display:none; cursor:pointer;"
-                      onclick="javascript:location.href='istanze.php?search3=<?=$ti['id']?>&search4=D&search5=A'"
-                >
-                  <i class="fa fa-pencil"></i>
-                  <span class="count-numbers"><?=$IstrIntegrazione?> <small style="font-size: 0.8vw;">istanze</small></span>
-                  <span class="count-name" style="float: right;">Integrazione</span>
-                </div>
-
-                <div class="card-counter-baby warning istr_<?=$ti['id']?>" style="display:none; cursor:pointer;"
-                      onclick="javascript:location.href='istanze.php?search3=<?=$ti['id']?>&search4=D&search5=B'">
-                  <i class="fa fa-times"></i>
-                  <span class="count-numbers"><?=$IstrPreavviso?> <small style="font-size: 0.8vw;">istanze</small></span>
-                  <span class="count-name" style="float: right;">Preavviso di rigetto</span>
-                </div>
-
-                <div class="card-counter-baby success istr_<?=$ti['id']?>" style="display:none; cursor:pointer;"
-                      onclick="javascript:location.href='istanze.php?search3=<?=$ti['id']?>&search4=D&search5=C'">
-                  <i class="fa fa-check"></i>
-                  <span class="count-numbers"><?=$IstrAmmessa?> <small style="font-size: 0.8vw;">istanze</small></span>
-                  <span class="count-name" style="float: right;">Ammesse</span>
-                </div>
-                <div class="card-counter-baby danger istr_<?=$ti['id']?>" style="display:none; cursor:pointer;"
-                      onclick="javascript:location.href='istanze.php?search3=<?=$ti['id']?>&search4=D&search5=D'">
-                  <i class="fa fa-ban"></i>
-                  <span class="count-numbers"><?=$IstrRigettata?> <small style="font-size: 0.8vw;">istanze</small></span>
-                  <span class="count-name" style="float: right;">Rigettate</span>
-                </div>
-                  <?php } ?>
-
-              </div>
-              <div class="col-md-2 col-12">
-                <div class="card-counter danger">
-                  <i class="fa fa-calendar-times-o"></i>
-                  <span class="count-numbers"><?=$istScadute?> <small>istanze</small></span>
-                  <span class="count-name">Scadute</span>
-                </div>
-              </div>
-              <div class="col-md-2 col-12">
-                <div class="card-counter danger">
-                  <i class="fa fa-times"></i>
-                  <span class="count-numbers"><?=$istAnnullate?> <small>istanze</small></span>
-                  <span class="count-name">Annullate</span>
-                </div>
-              </div>
-            </div>
-
-
-
-          </div>  
-        </div>  
-      </div>  
-    </div>  
-  </div>  
-
-  
-    <?php
-  }
-*/
-?>
 
 
 <script>
   $(document).ready(function(){
     $('#loadSpin').fadeOut("slow")
-
-   /* $.ajax({
-      type: "POST",
-      url: "controller/updateIstanze.php?action=displayHome",
-      data: {},
-      dataType: "json",
-      success: function(response){
-        
-          $.each(response, function (k,v){
-           
-            element = '<div class="row"><div class="col-12 "><div class="card-wrapper card-space"><div class="card card-bg"><div class="card-body"><h3 class="card-title" style="align-text:center;">Istanze "'+v.titolo+'"</h3><div class="row">'
-            element +='<div class="col-md-2 col-12"><div class="card-counter primary"><i class="fa fa-list"></i><span class="count-numbers">'+v.totali+' <small>Istanze</small></span><span class="count-name">Totali</span></div></div>'
-            element +='<div class="col-md-2 col-12"><div class="card-counter success"><i class="fa fa-ticket"></i><span class="count-numbers">'+v.attive+' <small>istanze</small></span><span class="count-name">Attive</span></div></div>' 
-            element +='<div class="col-md-2 col-12"><div class="card-counter warning"><i class="fa fa-pencil"></i><span class="count-numbers">'+v.rendicontazione+' <small>istanze</small></span><span class="count-name">In Rendicontazione</span></div></div>'
-            element += '<div class="col-md-2 col-12"><div class="card-counter info" onclick="$(\'.istr_'+v.tipo+'\').toggle();" style="cursor: pointer;"><i class="fa fa-users"></i><span class="count-numbers">'+v.istruttoria+' <small>istanze</small></span><span class="count-name">In Istruttoria</span></div>'
-            if(parseInt(v.istruttoria) >0 ){
-                  element += '<p><em>Clicca per visualizzare le istanze</em></p>'
-                  element +='<div class="card-counter-baby info istr_'+v.tipo+'"style="display:none; cursor:pointer;" onclick="javascript:location.href=\'istanze.php?search3='+v.tipo+'&search4=D\'"><i class="fa fa-users"></i><span class="count-numbers">'+v.istruttoria+' <small style="font-size: 0.8vw;">istanze</small></span><span class="count-name" style="float: right;">Tutte le istanze</span></div>'
-                  element +='<div class="card-counter-baby warning istr_'+v.tipo+'" style="display:none; cursor:pointer;"onclick="javascript:location.href=\'istanze.php?search3='+v.tipo+'>&search4=D&search5=A\'"><i class="fa fa-pencil"></i><span class="count-numbers">'+v.integrazione+' <small style="font-size: 0.8vw;">istanze</small></span><span class="count-name" style="float: right;">Integrazione</span></div>'
-                  element +='<div class="card-counter-baby warning istr_'+v.tipo+'" style="display:none; cursor:pointer;"onclick="javascript:location.href=\'istanze.php?search3='+v.tipo+'&search4=D&search5=B\'"><i class="fa fa-times"></i><span class="count-numbers">'+v.preavviso+' <small style="font-size: 0.8vw;">istanze</small></span><span class="count-name" style="float: right;">Preavviso di rigetto</span></div>'
-                  element +='<div class="card-counter-baby success istr_'+v.tipo+'" style="display:none; cursor:pointer;"onclick="javascript:location.href=\'istanze.php?search3='+v.tipo+'&search4=D&search5=C\'"><i class="fa fa-check"></i><span class="count-numbers">'+v.ammessa+' <small style="font-size: 0.8vw;">istanze</small></span><span class="count-name" style="float: right;">Ammesse</span></div>'
-                  element +='<div class="card-counter-baby danger istr_'+v.tipo+'" style="display:none; cursor:pointer;"onclick="javascript:location.href=\'istanze.php?search3='+v.tipo+'&search4=D&search5=D\'"><i class="fa fa-ban"></i><span class="count-numbers">'+v.rigettata+' <small style="font-size: 0.8vw;">istanze</small></span><span class="count-name" style="float: right;">Rigettate</span></div>'
-            }
-            element +='</div>'
-            element +='<div class="col-md-2 col-12"><div class="card-counter danger"><i class="fa fa-calendar-times-o"></i><span class="count-numbers">'+v.scadute+' <small>istanze</small></span><span class="count-name">Scadute</span></div></div>'
-            element +='<div class="col-md-2 col-12"><div class="card-counter danger"><i class="fa fa-times"></i><span class="count-numbers">'+v.annullate+' <small>istanze</small></span><span class="count-name">Annullate</span></div></div>'
-            element += '</div></div></div></div></div></div>'
-            $('#home').append(element)
-          
-          })
-         $('#loadSpin').fadeOut("slow")
-
-      }
-
-     
-   
-
-  })*/
-
-  $.ajax({
+    $.ajax({
       type: "POST",
       url: "controller/updateIstanze.php?action=displayHome2",
       data: {},
       dataType: "json",
       success: function(response){
         $.each(response, function (k,v){
-           
            element = '<div class="row"><div class="col-12 "><div class="card-wrapper card-space"><div class="card card-bg"><div class="card-body"><h3 class="card-title" style="align-text:center;">Istanze "'+v.titolo+'"</h3><div class="row">'
            element +='<div class="col-md-2 col-12"><div class="card-counter primary"><i class="fa fa-list"></i><span class="count-numbers">'+v.totali+' <small>Istanze</small></span><span class="count-name">Totali</span></div></div>'
            element +='<div class="col-md-2 col-12"><div class="card-counter success"><i class="fa fa-ticket"></i><span class="count-numbers">'+v.attive+' <small>istanze</small></span><span class="count-name">Attive</span></div></div>' 
@@ -300,15 +115,9 @@
            element +='<div class="col-md-2 col-12"><div class="card-counter danger"><i class="fa fa-times"></i><span class="count-numbers">'+v.annullate+' <small>istanze</small></span><span class="count-name">Annullate</span></div></div>'
            element += '</div></div></div></div></div></div>'
            $('#home').append(element)
-         
          })
-        $('#loadSpin').fadeOut("slow")
-        
-      }
-                
-          
-                                        
-          
+        $('#loadSpin').fadeOut("slow") 
+      }    
     })
   })
 </script>

@@ -108,7 +108,7 @@ if($status_istr && $status_istr['id'] && $status_istr['data_invio']){
       $date_scad =  date("d/m/Y", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
       $add_span = '<br>Inviare documentazione entro e non oltre il '.$date_scad;
       $today = date("Y-m-d H:i:s");
-      $scad= date("Y-m-d H:i:s", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
+      $scad= date("Y-m-d 23:59:59", strtotime($status_istr['data_invio'].' + '.$daysOpenRend.' days'));
      
       if($today < $scad){
         $status_integrazione=true;
@@ -576,12 +576,4 @@ if($status_istr && $status_istr['id'] && $status_istr['data_invio']){
   </div>
   <!-- Modal -->
                                                 
-                                              
-<script>
-$(document).ready(function() { 
-
-  $('#loadSpin').fadeOut();
-  $('#istanza_container').fadeIn();
-
-});
-</script>                                         
+                                        
