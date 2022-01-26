@@ -118,6 +118,7 @@ $tipiveicolo = getTipiVeicolo();
         $veicoli = getVeicoli($i['id_RAM']);
         //var_dump($veicoli);
             $check_ammissione = 0;
+            
                 foreach($veicoli as $v){
                     if($v['stato_admin']=='A'||$v['stato_admin']==null){
                         $check_ammissione++;

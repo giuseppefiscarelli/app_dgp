@@ -280,7 +280,7 @@ switch ($action){
       //var_dump($up);
       echo json_encode($up);
 
-      break;  
+    break;  
       case 'delContributo':
         $id_RAM = $_REQUEST['idRAM'];
         

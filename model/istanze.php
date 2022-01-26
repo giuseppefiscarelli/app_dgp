@@ -2570,43 +2570,22 @@ function upCostoIstr($data){
 
 }
 function getAlleOk($id_RAM,$tipo_veicolo,$progressivo){
-
-   
   /**
    * @var $conn mysqli
    */
-
-            $conn = $GLOBALS['mysqli'];
-
-              
-           
-              
-            $total = 0;
-
-  
-      
-
-
-     
-                $sql = 'SELECT count(*) as total FROM allegato';
-
-                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo = 's' and stato_admin = 'B'";
-               // $sql .=" where stato_admin = 'B'";
-                  //echo $sql;
-                
-
-                
-                  $res = $conn->query($sql);
-                  if($res) {
-  
-                  $row = $res->fetch_assoc();
-                  $total = $row['total'];
-                  
-                  return $total;
-  
-                }
-                return $total;
-          
+    $conn = $GLOBALS['mysqli'];
+    $total = 0;
+    $sql = 'SELECT count(*) as total FROM allegato';
+    $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo = 's' and stato_admin = 'B'";
+      // $sql .=" where stato_admin = 'B'";
+      //echo $sql;
+      $res = $conn->query($sql);
+      if($res) {
+        $row = $res->fetch_assoc();
+        $total = $row['total'];
+        return $total;
+      }
+    return $total;
 }
 function getAlleNo($id_RAM,$tipo_veicolo,$progressivo){
 
@@ -2615,33 +2594,17 @@ function getAlleNo($id_RAM,$tipo_veicolo,$progressivo){
    * @var $conn mysqli
    */
 
-            $conn = $GLOBALS['mysqli'];
-
-              
-           
-              
-            $total = 0;
-
-  
-      
-
-
-     
-                $sql = 'SELECT count(*) as total FROM allegato';
-
-                $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s' and stato_admin='C'";
-                //  echo $sql;
-                
-
-                $res = $conn->query($sql);
-                if($res) {
-
-                $row = $res->fetch_assoc();
-                $total = $row['total'];
-                
-                return $total;
-
-              }
+    $conn = $GLOBALS['mysqli'];
+    $total = 0;
+    $sql = 'SELECT count(*) as total FROM allegato';
+    $sql .=" WHERE id_ram = $id_RAM and tipo_veicolo = $tipo_veicolo and progressivo = $progressivo and attivo='s' and stato_admin='C'";
+        //  echo $sql;
+    $res = $conn->query($sql);
+        if($res) {
+        $row = $res->fetch_assoc();
+        $total = $row['total'];
+        return $total;
+      }
           
 }
 function getAlleValid($id_RAM,$tipo_veicolo,$progressivo){

@@ -49,66 +49,33 @@ $(document).ready(function() {
 });  
    
     function checkAlle(){
-           
-            
             var fa = document.getElementById("file_allegato");
             var f = fa.files[0]
-            
-            //var len = fa.files.length;
-            console.log(f)
-           // console.log(len)
-            
+            var checkExtension = f.name.split('.').pop()
 
-                 
-
-                  if (f.type==='application/pdf'|| f.type === 'application/pkcs7-mime') {
-                        if (f.size > 3388608 || f.fileSize > 3388608)
-                  {
-                  //show an alert to the user
-                  
-                  Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
-
-                  //reset file upload control
-                  fa.value = null;
-                  }
-                       
-                  }else{
-                        Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF o P7M", "warning");
+            if (f.type==='application/pdf'|| f.type === 'application/pkcs7-mime' || checkExtension.toLowerCase() == 'p7m' || checkExtension.toUpperCase() == 'P7M') {
+                  if (f.size > 3388608 || f.fileSize > 3388608){
+                        Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
                         fa.value = null;
-                  }
-            
-            
+                  }   
+            }else{
+                  Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF o P7M", "warning");
+                  fa.value = null;
+            }      
     }
     function checkAlleMail(){
-           
-            
            var fa = document.getElementById("file_allegato_mail");
            var f = fa.files[0]
-           
-           //var len = fa.files.length;
-           console.log(f)
-          // console.log(len)
-           
-
-                
-
-                 if (f.type==='application/pdf' || f.type === 'application/pkcs7-mime') {
-                       if (f.size > 3388608 || f.fileSize > 3388608)
-                 {
-                 //show an alert to the user
-                 
-                 Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
-
-                 //reset file upload control
-                 fa.value = null;
-                 }
-                      
+           var checkExtension = f.name.split('.').pop()
+            if (f.type==='application/pdf' || f.type === 'application/pkcs7-mime'|| checkExtension.toLowerCase() == 'p7m' || checkExtension.toUpperCase() == 'P7M') {
+                  if (f.size > 3388608 || f.fileSize > 3388608){
+                        Swal.fire("Operazione Non Completata!", " L'allegato supera le dimensioni di 3MB", "warning");
+                        fa.value = null;
+                 }   
                  }else{
                        Swal.fire("Operazione Non Completata!", " L'allegato è del tipo errato. Selezionare un file PDF o P7M", "warning");
                        fa.value = null;
-                 }
-           
-           
+                 }     
     }
     $('#form_infovei').submit(function( event ) {
             id_RAM = <?=$i['id_RAM']?>;

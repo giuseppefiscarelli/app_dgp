@@ -79,7 +79,7 @@
                                                                         <tr >
                                                                         <th>
                                                                         <?php
-                                                                            if((!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true) || ($status_integrazione && !$rv['targa']) ){
+                                                                            if((!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true) || ($status_integrazione && $rv['stato_admin'] !== 'B') ){
                                                                         
                                                                                 if(!$rv['targa']&&!$rv['marca']&&!$rv['modello']&&!$rv['tipo_acquisizione']&&!$rv['costo']){?>
                                                                             <button type="button" id="btn_up_<?=$rv['progressivo']?>_<?=$rv['id']?>"class="btn btn-success btn-sm" onclick="infomodal(<?=$rv['progressivo']?>,<?=$rv['id']?>);" ><i class="fa fa-info" aria-hidden="true"></i> Inserisci dati veicolo</button>
@@ -166,8 +166,8 @@
                                                                                     foreach ($allegati as $alle) {
                                                                                         $tipoDoc = getTipDoc($alle['tipo_documento']);
                                                                                         $campoDoc = getCampoDoc($alle['tipo_documento']);
-                                                                                        //var_dump($campoDoc);
-                                                                                        
+                                                                                       
+
 
                                                                                         ?>
                                                                                     <tr>
@@ -187,7 +187,7 @@
                                                                                             <button type="button" onclick="window.open('allegato.php?id=<?=$alle['id']?>', '_blank')"title="Vedi Documento"class="btn btn-xs btn-primary " style="padding-left:12px;padding-right:12px;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
                                                                                             <a type="button" href="download.php?id=<?=$alle['id']?>" download title="Scarica Documento"class="btn btn-xs btn-success " style="padding-left:12px;padding-right:12px;"><i class="fa fa-download" aria-hidden="true"></i> </a>
                                                                                             <?php
-                                                                                                    if((!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true) || ($alle['data_agg'] > $rend['data_chiusura'])){?>
+                                                                                                    if((!isUserAdmin()&&$rend['aperta']==1&&$activeIst==true) || ( ($alle['data_agg'] > $rend['data_chiusura']) && ($status_integrazione && $rv['stato_admin'] !== 'B'))){?>
                                                                                             <button type="button" onclick="delAll(<?=$alle['id']?>,<?=$rv['tipo_veicolo']?>,<?=$rv['progressivo']?>,this)"title="Elimina Documento"class="btn btn-xs btn-danger " style="padding-left:12px;padding-right:12px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                                                                             <?php
                                                                                             }
