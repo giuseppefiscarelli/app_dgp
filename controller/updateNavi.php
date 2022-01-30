@@ -86,6 +86,7 @@ switch ($action){
 		$data = $_REQUEST;
 		$id = $_REQUEST['id'];
 		$res = updateNave($data, $id);
+		
 		unset($params['action']);
 		echo json_encode($res);
 	break;

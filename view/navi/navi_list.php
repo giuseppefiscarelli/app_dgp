@@ -11,8 +11,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
   }
 </style>
 
-<!--div id="header_menu"class="it-header-navbar-wrapper affix-top" style="z-index:1;">
-<div class="container "-->
+
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -24,7 +23,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                    REGISTRO
                 </h4>
 
-              <div class="form-group row" style="width: 100%; ">
+              <div class="form-group row ">
 
 
                 <div class="bootstrap-select-wrapper col-lg-2"  >
@@ -84,16 +83,11 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                
 
               </div>
-              <div class="form-footer" >
+              <div class="form-footer" style="margin-top: 0px;" >
                     <button type="button" onclick="location.href='<?=$pageUrl?>'" id="resetBtn" class="btn btn-danger"><i class="fa fa-trash"></i> Reset</button>
                     <button type="submit" onclick="document.forms.searchForm.page.value=1" class="btn btn-success"><i class="fa fa-search"></i> Ricerca</button>
                     <button type="button" class="btn btn-primary" onclick="downCsv()" ><i class="fa fa-file-excel-o"></i> Esporta dati in CSV</button>
-
-                </div>
-
-
-
-
+              </div>
             </form>
       </div>
     </div>
