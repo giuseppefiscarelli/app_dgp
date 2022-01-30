@@ -1,7 +1,7 @@
 <?php
 $orderDirClass = $orderDir;
 $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
-//var_dump($casellaPec);
+
 
 ?>
 <style>
@@ -32,10 +32,10 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
                       name="search2"
                       id="search2"
                       onchange="document.forms.searchForm.submit()">
-                          <option value="RI">Internazionale</option>
-                          <option value="RO">Ordinario</option>
-                          <option value="RS">Speciale</option>
-                          <option value="tutti">tutti i registri</option>
+                          <option value="RI" <?=$search2 == 'RI'?'selected':''?>>Internazionale</option>
+                          <option value="RO" <?=$search2 == 'RO'?'selected':''?>>Ordinario</option>
+                          <option value="RS" <?=$search2 == 'RS'?'selected':''?>>Speciale</option>
+                          <option value="tutti"  <?=$search2 == 'tutti'?'selected':''?>>Tutti i registri</option>
                     </select>
                 </div>
 
@@ -46,7 +46,7 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
 
                 <div>
                   <div class="row form-check  form-check-inline">
-                    <input id="search4" name="search4" type="checkbox" value=1 <?=$search4 == 1 ?'checked':''?>>
+                    <input  onchange="document.forms.searchForm.submit()" id="search4" name="search4" type="checkbox" value=1 <?=$search4 == 1 ?'checked':''?>>
                     <label for="search4">attive</label>
                   </div>
                 </div>

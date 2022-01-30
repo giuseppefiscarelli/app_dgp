@@ -187,8 +187,8 @@ function selectArmatore(){
 
 $('#upModal').on('click', function(){
   $('#nav_nome,#nav_call_sign, #nav_imo,#nav_anno_costruzione,#nav_cantiere,#nav_num_iscrizione,#nav_uffico_prec,#note,#nav_provenienza,#nav_nome_prec,#nav_gt,#nav_lung,#nav_nt,#nav_larg,#nav_dwt,#nav_power,#nav_atto_naz,#nav_luogo_rilascio,#nav_data_rilascio,#nav_motivo_rilascio').attr("readonly", false);
-  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2').attr("disabled",false)
-  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2').selectpicker("refresh")
+  $('#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2,#nav_cantiere_nazione').attr("disabled",false)
+  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2,#nav_cantiere_nazione').selectpicker("refresh")
   $('#closeModal').html('Esci senza salvare')
   $('#upModal').hide()
   $('#saveModal').show()
@@ -270,8 +270,8 @@ function newNave(){
             $('#nav_motivo_rilascio').val("")
               setTimeout(() => {
                 $('#nav_nome,#nav_call_sign, #nav_imo,#nav_anno_costruzione,#nav_cantiere,#nav_num_iscrizione,#nav_uffico_prec,#note,#nav_provenienza,#nav_nome_prec,#nav_gt,#nav_lung,#nav_nt,#nav_larg,#nav_dwt,#nav_power,#nav_atto_naz,#nav_luogo_rilascio,#nav_data_rilascio,#nav_motivo_rilascio').attr("readonly", false);
-  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2').attr("disabled",false)
-  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2').selectpicker("refresh")
+  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2,#nav_cantiere_nazione').attr("disabled",false)
+  $('#nav_registro,#nav_servizio,#nav_sezione,#nome,#nav_bandiera_prec,#nav_id_armatore,#nav_id_proprietario,#radio1,#radio2,#nav_cantiere_nazione').selectpicker("refresh")
   $('#closeModal').html('Esci senza salvare')
   $('#upModal').hide()
   $('#saveModal').show()
