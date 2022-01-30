@@ -75,18 +75,15 @@ switch ($action){
 		$id = $_REQUEST['id'];
 
 		$res = getDatiNave($id);
-		
+	
 		echo json_encode($res);
 		//echo $res;
-
 		break;
 
 	case 'updateNave':
-
 		$data = $_REQUEST;
 		$id = $_REQUEST['id'];
 		$res = updateNave($data, $id);
-		
 		unset($params['action']);
 		echo json_encode($res);
 	break;
