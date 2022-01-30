@@ -10,11 +10,11 @@ $orderDir = $orderDir === 'ASC' ? 'DESC' : 'ASC';
           <div class="card">
             <div class="card-body">
               <form id="searchForm" method="get" action="<?=$pageUrl?>">
-              <input type="hidden" name="page" id="page" value="<?=$page?>" >
-                <h4 class="form-header text-uppercase"  style="font-size: 12px;margin-bottom: 10px;">
-                  <i class="fa fa-search"></i>
-                   Ricerca
-                </h4>
+                <input type="hidden" name="page" id="page" value="<?=$page?>" >
+                    <h4 class="form-header text-uppercase"  style="font-size: 12px;margin-bottom: 10px;">
+                    <i class="fa fa-search"></i>
+                    Ricerca
+                    </h4>
                 <div class="form-group row">
                   <label for="search1" class="col-sm-6 col-form-label">Globale</label>
                   <div class="col-sm-6">

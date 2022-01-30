@@ -125,7 +125,6 @@ function getArmatoriCSV(array $params = []){
       
     }
   
-   // $sql .= " ORDER BY data_ins  $orderDir LIMIT $start, $limit";
     $sql .= " ORDER BY data_agg  $orderDir ";
    
 
@@ -179,27 +178,7 @@ function countArmatori( array $params = []){
     
     
     }
-    /*
-    if ($search2){
-        $sql .=" id_RAM LIKE '%$search2%' ";
-        if($search3 >=0||$search4 ){
-            $sql .="AND";
-        }
-        
-    }
-    if ($search3 >= 0){
-        $sql .=" read_msg = '$search3' ";
-        if($search4 >= 0){
-            $sql .="AND";
-        }
-        
-    }
-    if ($search4 >= 0){
-        $sql .=" risolto = '$search4' ";
-    
-        
-    }
-    */
+
     $sql .= " ORDER BY data_agg  $orderDir LIMIT $start, $limit";
 
    // echo $sql;    
