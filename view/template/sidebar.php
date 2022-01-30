@@ -30,9 +30,9 @@
                         </li>
                         <li class="nav-item active"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='home.php'?'active':''?>" href="home.php"><span><i class="fa fa-home" aria-hidden="true"></i> Home</span><span class="sr-only">current</span></a></li>
                         <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='users.php'?'active':''?>" href="users.php"><span><i class="fa fa-users" aria-hidden="true"></i> Gestione Utenti </span></a></li>
-                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='istanze.php'?'active':''?>" href="istanze.php"><span><i class="fa fa-list" aria-hidden="true"></i> Istanze </span></a></li>
-                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='comunicazioni.php'?'active':''?>" href="comunicazioni.php"><span><i class="fa fa-inbox" aria-hidden="true"></i> Help Desk</span></a></li>
-                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='pec_config.php'?'active':''?>" href="pec_config.php"><span><i class="fa fa-envelope" aria-hidden="true"></i> Configurazione pec </span></a></li>
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='navi.php'?'active':''?>" href="navi.php"><span><i class="fa fa-ship" aria-hidden="true"></i> Navi </span></a></li>
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='armatori.php'?'active':''?>" href="armatori.php"><span><i class="fa fa-users" aria-hidden="true"></i> Armatori </span></a></li>
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='proprietari.php'?'active':''?>" href="proprietari.php"><span><i class="fa fa-list" aria-hidden="true"></i> Proprietari </span></a></li>
 
                       </ul>
                     </div>

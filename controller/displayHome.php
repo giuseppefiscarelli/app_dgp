@@ -38,7 +38,7 @@ if(!empty($_SESSION['message'])){
          // $users = getUsers($params);
           //var_dump($users);
           if(isUserSuadmin() || isUserAdmin()){
-            require_once 'model/istanze.php';
+          //  require_once 'model/istanze.php';
            
          
 

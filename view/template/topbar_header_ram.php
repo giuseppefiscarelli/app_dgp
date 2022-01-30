@@ -84,7 +84,7 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title">Accedi ad area riservata</h5>
+                          <h5 class="modal-title">Accedi al sistema di controllo delle PEC</h5>
                           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <svg class="icon">
                                 <use xlink:href="svg/sprite.svg#it-close"></use>
@@ -98,7 +98,7 @@
                                 <div class="form-group">
                                   <label for="exampleInputEmail1">Email</label>
                                   <input type="email" class="form-control" id="email" name="email"aria-describedby="emailHelp" placeholder="Inserisci email">
-                                  <small id="emailHelp" class="form-text text-muted">indirizzo email utente</small>
+                                  <small id="emailHelp" class="form-text text-muted">inserisci il tuo indirizzo email</small>
                                 </div>
                                 <div class="form-group">
                                   <label for="exampleInputPassword1">Password</label>
@@ -124,33 +124,17 @@
                   <div class="it-header-center-content-wrapper" >
                     <div class="it-brand-wrapper" style="min-width: -webkit-fill-available;">
                       <div class="row">
-                        <table>
-                          <tr>
-                            <td>
                         <a href="#">
-                          <img src="images/logo.svg" alt="Home" style="max-height: -webkit-fill-available; padding: 7px; width: 30%; height: auto;">
-                          <div class="it-brand-text">
+                          <!--img src="images/logo.svg" alt="Home" style="max-height: -webkit-fill-available;    padding: 7px;"-->
+                          <!--div class="it-brand-text">
                             <h2 class="no_toc">Ministero
                             </h2>
-                            <h3 class="no_toc  d-md-block"> delle Infrastrutture e</h3>
-                            <h3 class="no_toc  d-md-block"> della Mobilità sostenibili</h3>
-                          </div>
+                            <h3 class="no_toc  d-md-block"> delle Infrastrutture e dei Trasporti</h3>
+                          </div-->
                           <div style="padding: 20px;">
-                           <!--img src="images/logo-ram-2018.png" alt="Home" style="max-height: -webkit-fill-available;"-->
+                           <img src="images/logo-ram-2018.png" alt="Home" style="max-height: -webkit-fill-available;">
                           </div>
                         </a>
-                      </td>
-                      <td>
-                        <a href="#">
-                        <div class="it-brand-text" style="max-height: -webkit-fill-available;">
-                          <h3 class="no_toc"> </h3>
-                          <h2 class="no_toc">DGVPTM</h2>
-                          <h3 class="no_toc d-md-block">Registri Navali</h3>
-                        </div>
-                      </a>
-                      </td>
-                    </tr>
-                  </table>
 
                       </div>
                     </div>

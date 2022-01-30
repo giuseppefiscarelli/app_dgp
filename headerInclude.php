@@ -25,10 +25,10 @@ $page =getParam ('page',1);
     }
     
     if(isUserAdmin()){
-      require_once 'view/template/sidebarAdmin.php';
+   //   require_once 'view/template/sidebarAdmin.php';
     }
     if(isUserUser()){
-      require_once 'view/template/sidebarUser.php';
+  //    require_once 'view/template/sidebarUser.php';
     }
     
 ?>

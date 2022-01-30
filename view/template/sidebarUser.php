@@ -23,13 +23,14 @@
                             <img src="images/logo.svg" alt="Home" style="max-height: 50px;    padding: 7px;">
                               <div class="it-brand-text">
                                 <b class="no_toc" style="color:white;">Ministero</b>
-                                <b class="no_toc d-none d-md-block" style="color:white;font-size: 11px;">delle Infrastrutture<br> e della Mobiltà Sostenibili</b>
+                                <b class="no_toc d-none d-md-block" style="color:white;font-size: 11px;">delle Infrastrutture e dei Trasporti</b>
                               </div>
                           </div>
                         </li>
                         <li class="nav-item active"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='home.php'?'active':''?>" href="home.php"><span><i class="fa fa-home" aria-hidden="true"></i> Home</span><span class="sr-only">current</span></a></li>
-                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='istanze.php'?'active':''?>" href="istanze.php"><span>La mie Istanze </span></a></li>
-                        
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='armatori.php'?'active':''?>" href="armatori.php"><span><i class="fa fa-ship" aria-hidden="true"></i> Armatori </span></a></li>
+                        <li class="nav-item"><a class="nav-link <?=basename($_SERVER["PHP_SELF"])=='proprietari.php'?'active':''?>" href="proprietari.php"><span><i class="fa fa-users" aria-hidden="true"></i> Proprietari </span></a></li>
+
                       </ul>
                     </div>
                   </div>
